@@ -7,7 +7,13 @@ Snapshot taken 2026-10-21 (heads as listed in each note). Each note has a recomm
 findings ordered by severity with ready-to-paste comment text, questions, nits, and a list of threads other
 reviewers already covered so nothing is repeated.
 
-## Stack and status
+## RFC #1955 (added 2026-10-23)
+
+[reviews/vllm-torchtpu/RFC-1955.md](reviews/vllm-torchtpu/RFC-1955.md) reviews the RFC itself: six findings (mixed-batch dispatch promised in the thread but gone from the stack; GDN conv history silently moved from FP32 to BF16; the dependency table no longer matches the PRs; boundary leaks; uneven validation; PD contracts to verify), a status table for the nine questions already asked on the thread, and a ready-to-paste follow-up comment. [reviews/vllm-torchtpu/PR-1971.md](reviews/vllm-torchtpu/PR-1971.md) checks the P/D PR against the RFC's contracts and proposes causes for the open cross-host mismatch.
+
+**Restack notice.** Between 2026-10-21 and 2026-10-23 the author rewrote most heads: #1964 was replaced by #2291, #1969 was closed, #2123 (fused decode) appeared, and #1968 grew to 67 files. The per-PR notes below were written against the heads recorded in each note; the "Stack state" table at the end of the RFC note says, per PR, which findings still apply and which need a re-check.
+
+## Stack and status (snapshot 2026-10-21)
 
 Ordered bottom-up by dependency.
 
