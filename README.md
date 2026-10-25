@@ -57,6 +57,7 @@ These recur across several PRs and are worth raising once on the RFC (#1955) rat
 
 ## Layout
 
+- `AGENTS.md` – context for agents: what this repo is, where things are, the owner's rules.
 - `README.md` – this index.
 - `handoff/<topic>.md` – handoff notes for ongoing work, written for another engineer or agent.
 - `reviews/vllm-torchtpu/PR-<n>.md` – one note per PR: recommendation, findings by severity with ready-to-paste comment text, questions, nits, threads already covered by other reviewers, test coverage assessment.
