@@ -7,6 +7,13 @@ Snapshot taken 2026-10-21 (heads as listed in each note). Each note has a recomm
 findings ordered by severity with ready-to-paste comment text, questions, nits, and a list of threads other
 reviewers already covered so nothing is repeated.
 
+## Handoff: decode DRAM as a prefill KV tier (added 2026-10-25)
+
+[handoff/decode-dram-kv-tier.md](handoff/decode-dram-kv-tier.md) records our understanding of
+vllm-torchtpu's offload and evict sweep, tpu-sync/Raiden's managers and transfer paths, the
+relevant parts of sglang-torchtpu, every design tried with its measurements, the code as it
+stands on the fork, and the next steps. Written so another agent can continue the work.
+
 ## RFC #1955 (added 2026-10-23)
 
 [reviews/vllm-torchtpu/RFC-1955.md](reviews/vllm-torchtpu/RFC-1955.md) reviews the RFC itself: six findings (mixed-batch dispatch promised in the thread but gone from the stack; GDN conv history silently moved from FP32 to BF16; the dependency table no longer matches the PRs; boundary leaks; uneven validation; PD contracts to verify), a status table for the nine questions already asked on the thread, and a ready-to-paste follow-up comment. [reviews/vllm-torchtpu/PR-1971.md](reviews/vllm-torchtpu/PR-1971.md) checks the P/D PR against the RFC's contracts and proposes causes for the open cross-host mismatch.
@@ -51,6 +58,7 @@ These recur across several PRs and are worth raising once on the RFC (#1955) rat
 ## Layout
 
 - `README.md` – this index.
+- `handoff/<topic>.md` – handoff notes for ongoing work, written for another engineer or agent.
 - `reviews/vllm-torchtpu/PR-<n>.md` – one note per PR: recommendation, findings by severity with ready-to-paste comment text, questions, nits, threads already covered by other reviewers, test coverage assessment.
 
 ## How these were produced
