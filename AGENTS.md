@@ -9,7 +9,7 @@ sglang-torchtpu work. No code in this repo runs. Read this file first, then the 
 | Path | What it is | Read it when |
 |---|---|---|
 | `README.md` | Index of everything here, with dates | Always, to find the latest notes |
-| `handoff/decode-dram-kv-tier.md` | Current state of the "decode DRAM as an extension of the prefill KV cache" project: how vllm-torchtpu, tpu-sync/Raiden and sglang-torchtpu work, every design tried with measurements, code on the fork, next steps, hosts, harness, rules | Continuing any P/D disaggregation, HiCache, Raiden or KV offload work |
+| `handoff/decode-dram-kv-tier.md` | Current state of the "decode DRAM as an extension of the prefill KV cache" project: how vllm-torchtpu, tpu-sync/Raiden and sglang-torchtpu work; the victim-cache branch solution with measurements, code on the fork and in tpu-sync, next steps, hosts, harness, rules | Continuing any P/D disaggregation, HiCache, Raiden or KV offload work |
 | `reviews/vllm-torchtpu/PR-<n>.md`, `RFC-<n>.md` | Review notes for vllm-torchtpu PRs (Qwen4Exp stack, RFC #1955), with findings by severity and ready-to-paste comments | Reviewing or following up on those PRs |
 
 ## The three systems, in one paragraph each

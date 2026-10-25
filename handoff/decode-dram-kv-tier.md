@@ -1,13 +1,15 @@
 # Decode DRAM as an extension of the prefill's KV cache: handoff notes
 
 Written 2026-10-25 for another engineer or AI agent picking up this work. It records what we
-know about three systems (vllm-torchtpu, tpu-sync/Raiden, sglang-torchtpu), the goal, every
-design tried and how it measured, the code as it stands, and what to do next. Facts were
-checked against code at the commits named in each section; anything not verified is marked.
+know about three systems (vllm-torchtpu, tpu-sync/Raiden, sglang-torchtpu), the goal, and the
+one solution being pursued: the victim-cache branch `pd-victim-prefix-cache` on the fork. It
+covers how that branch works, how it measured, the code as it stands, and what to do next.
+Facts were checked against code at the commits named in each section; anything not verified
+is marked.
 
 Design website with diagrams, kept in sync with this file: <https://claude.ai/artifact/88muTVYCfUV99d8RXiGk3C>
-(private to the owner). The sections that matter most are `#bg-writers`, `#bg-demoted`,
-`#c-holder`, `#c-demote`, `#c-fetch`, `#c-victim` and `#c-victim-results`.
+(private to the owner). The sections for this work are `#bg-writers` and `#bg-demoted` (the
+vllm-torchtpu reference), `#c-victim` (the branch, mapped) and `#c-victim-results` (measured).
 
 ---
 
@@ -21,8 +23,7 @@ long multi-turn sessions. Prefill HBM plus prefill host RAM hold about 12 to 14 
 **Goal:** when the prefill's host tier is under pressure, move its cold KV into the decode
 host's RAM, and when a later turn needs it, bring it back instead of recomputing. Keep
 SGLang's HiCache as the only owner of cache state (the radix tree is the directory) and use
-Raiden only to move bytes. This was the reviewer's direction ("HiCache manages, Raiden only
-moves") and is called **Plan C** on the design page.
+Raiden only to move bytes ("HiCache manages, Raiden only moves").
 
 Target model and rig: `openai/gpt-oss-120b` (hybrid: 18 full-attention + 18 sliding-window
 layers, so every page has a full part and a window part), FP8 KV, page size 64, TP8+EP8 per
@@ -130,14 +131,21 @@ handoff). There is no device-to-device network path on TPU; the NIC is on the ho
 - Every manager starts a block-transport server on an ephemeral port; `transfer_address`
   reports it. That is the `peer` string for any H2H call.
 
-**API we added (local patch, not upstream yet).** `KVCacheManager.h2h_push(peer,
-src_block_ids, dst_block_ids, uuid, layer_idx=-1, parallelism=1)`, a named, documented,
-keyword-only wrapper over `push_registered_plan`. Patch:
-`sglang_tpu/disaggregation/raiden/tpu_sync_h2h_push.patch` on the fork branch; applied to the
-installed wheel on the decode host (`~/venv/sglang/...`). **Not yet applied on the prefill
-host** (host a); apply it there before a live run (`patch` against
-`tpu_sync/api/torch/kv_cache_manager.py`). A clean upstream version would be a native
-`H2hPush` binding plus a CPU test against two managers on loopback.
+**API we added: `KVCacheManager.h2h_push`.** `h2h_push(peer, src_block_ids, dst_block_ids,
+uuid, layer_idx=-1, parallelism=1)`, a named, documented, keyword-only wrapper over
+`push_registered_plan`, rejecting empty or mismatched id lists.
+- **tpu-sync commit `4dacbe3b`** on local branch `h2h-push` in `~/tpu-sync` (a clone of
+  `google/tpu-sync` at `0d6e6e09`; not pushed, the owner has read-only access). One commit with
+  the API in `tpu_sync/api/torch/kv_cache_manager.py` and three tests in
+  `tpu_sync/api/torch/kv_cache_manager_host_test.py` (`H2hPushTest`): forwarding and argument
+  validation against a fake impl (both pass), and a loopback push between two host-only
+  managers that checks every layer lands in the named blocks and other blocks stay untouched.
+  The loopback test needs the CPU-only native module `_tpu_raiden_host`, which the installed
+  wheel does not ship, so it has **not been run**; run it in a tpu-sync bazel build
+  (`//tpu_sync/api/torch:kv_cache_manager_host_test`).
+- **On the hosts**, the same API is applied to the installed wheel through the patch the sglang
+  branch carries, `sglang_tpu/disaggregation/raiden/tpu_sync_h2h_push.patch`. Applied on the
+  decode host (b) only; **apply it on the prefill host (a) before a live run**.
 
 ---
 
@@ -177,40 +185,47 @@ asymmetric-TP reshard path, which still stages HBM through `d2h` and lands in de
 
 **No global directory.** Nothing in HiCache or the branch knows which decode's RAM holds which
 KV. KV events (`BlockStored`/`BlockRemoved`), L3 storage backends, and the gateway's
-cache-aware tree are the nearest things. Every design here relies on the room binding plus
-session affinity instead.
+cache-aware tree are the nearest things. The branch relies on the room binding plus session
+affinity instead.
 
 ---
 
-## 5. Designs tried, and how each measured
+## 5. The branch solution and how it measured
 
-All measurements on the same pair, gpt-oss-120b. Workload "ladder": N concurrent sessions,
-131k-token unique prefix, 4 turns of 4k new tokens + 256 output tokens. Baseline (prefill-only
-caching, HiCache ratio 2) is 368 to 386 s at 16 sessions (about 43 output tok/s), later-turn
-TTFT p50 about 90 s.
+**Idea.** The prefill stays the primary prefix cache. When its host pool runs low, it exports a
+cold cached session (a "victim") to the decode that served that session, and after the decode
+stores it, the prefill makes its own copy the next thing it evicts. The decode keeps pushed
+victims in its radix tree and stops caching the requests it serves. On a later turn the decode
+offers the prefix it holds (in its `PULL_REQ`), and the prefill pulls only the pages it lacks
+from both of its own tiers before computing the suffix. Ownership is recorded per cached leaf
+at checkpoint, so the export goes to the decode the router will send the session's next turn
+to; with several decodes this requires session affinity at the router.
 
-| Design | Where | Transport | 16-session ladder | Status |
-|---|---|---|---|---|
-| Plan B: Raiden store processes on the decode host as a HiCache L3 backend, global registry | tpu-rl bundle, worktree `~/sglang-spill` history | store `WriteRemote`/`Fetch`, DRAM to DRAM | 94.4 tok/s, TTFT p50 26 s | Works; rejected by review (second directory, extra processes, append-only stores) |
-| Plan C step 4: prefill asks its room-bound decode (`PrefixReq`), decode restores to HBM, prefill `start_read`s into HBM | fork `decode-dram-spill`, commit `9e3cd9ed1e`, draft PR alisachen-google/sglang-torchtpu#1 | P/D engine, HBM to HBM via staging | 145 s, 112.7 tok/s, TTFT p50 14.7 s (`planc_20`) | Works on hardware after 13 live defects; recall single-turn 1.28 s at 128k |
-| Plan C step 5: prefill demotes cold host leaves to decode RAM under 3 %/5 % watermarks, vllm-sweep style | fork `decode-dram-spill`, commit `e8c9ba1995`, `sglang_tpu/disaggregation/raiden/peer_demote.py` | `push_registered_plan` host to host | not run on TPU | 15 CPU tests; FULL component only |
-| Victim cache, device path: prefill exports a cold branch to the decode that served it; decode reads it into HBM; reverse prefix pull | fork `pd-victim-prefix-cache` up to `0b8149c3c1` | P/D engine; host-only victims loaded back to HBM first | 375 s, 43.7 tok/s (= baseline) | Measured 2026-10-24, see below |
-| Victim cache, RAM-to-RAM (current) | fork `pd-victim-prefix-cache` at `07300a18a9` | host-pool `h2h_push` | not run yet | 11 victim tests, 320 tests across touched suites pass on CPU |
+Measurements on the pair, gpt-oss-120b. Workload "ladder": N concurrent sessions, 131k-token
+unique prefix, 4 turns of 4k new tokens + 256 output tokens. Baseline is the same recipe with
+the two feature switches off (prefill-only caching, HiCache prefill ratio 1.2, decode ratio 3.5).
 
-**Victim cache, device path, measured (runs `victim_3` and baseline `victim_base_3`).**
-- Ladder 12/16/20 sessions: 254/375/475 s vs baseline 289/386/484 s; within noise.
-- Pushes at 20 sessions: 2,057 started, 29 stored, 2,028 declined "no room": the decode's
-  admission keeps 25 % of its device pool free and four running 131k requests on a 786k pool
-  never leave that. Reverse pulls committed in the whole run: 6.
-- Session sweep (4k prefixes, the shape from the branch's own plan): 64 and 128 sessions about
-  19,000 tok/s on both; token hit rate 83 % vs 97 %, because the branch disables the decode's
-  own cache of served requests.
+| Version | Transport for the export | 16-session ladder | Status |
+|---|---|---|---|
+| Device path, up to `0b8149c3c1` | P/D engine: a host-only victim is loaded back into prefill HBM, read into decode HBM through both staging slots, reaches decode RAM only via the decode's write-through | 375 s, 43.7 tok/s; baseline 386 s, 42.5 tok/s | Measured 2026-10-24 (runs `victim_3`, `victim_base_3`) |
+| RAM-to-RAM, `07300a18a9` (current) | HiCache host pool to HiCache host pool with `h2h_push`; landed as a host-only node | not run yet | 11 victim tests; 320 tests across the touched suites pass on CPU |
+
+**Device path, measured.**
+- Ladder 12/16/20 sessions: 254/375/475 s against the baseline's 289/386/484 s, within noise.
+- Pushes at 20 sessions: 2,057 started, 29 stored, 2,028 declined "no room". The decode's
+  admission keeps 25 % of its device pool free, and four running 131k requests on a 786k pool
+  never leave that much. Reverse pulls committed in the whole run: 6.
+- Session sweep (4k prefixes, 4 turns in 2 rounds, concurrency 4): 64 and 128 sessions about
+  19,000 tok/s on both; token hit rate 83 % vs 97 %, because the branch disables the decode's own
+  cache of served requests.
 - 256 sessions: at 01:50:48 three rooms logged "ranks planned different pulls, giving up" on
-  every prefill rank and the prefill stopped completing requests; at 01:58:24 six prefill
-  ranks aborted in tpu-sync (`absl raw_hash_map::at`, a missing native map key) and the pair
-  died. Undiagnosed. The baseline completed 256 and 512.
-- Conclusion: landing in decode HBM does not work at this pool size. That motivated the
-  current RAM-to-RAM rewrite.
+  every prefill rank and the prefill stopped completing requests; at 01:58:24 six prefill ranks
+  aborted in tpu-sync (`absl raw_hash_map::at`, a missing native map key) and the pair died.
+  Undiagnosed. The baseline completed 256 and 512.
+- Single-turn recall after a prefill flush recomputed (6.35 s at 128k); by design this test
+  cannot hit, since an idle single request is never pushed.
+- Conclusion: landing victims in decode HBM does not work at this pool size, which motivated
+  the RAM-to-RAM rewrite.
 
 ---
 
@@ -255,10 +270,6 @@ pages missing from both its tiers; decode registers (`receiver.py:391, 464`); pr
 into fresh HBM pages and inserts at commit (`prefix_pull.py:489, 561, 272`). A pushed
 host-only node on the decode is restored to decode HBM before the offer.
 
-**Fork branch `decode-dram-spill`** (worktree `~/sglang-spill`, `e8c9ba1995`): Plan C pull +
-step 5 demotion (`peer_demote.py`: `peer_demote_tick` 310, `_demote_start_push` 526,
-`peer_demote_serve` 694, `_demote_land` 868). Its protocol layer (pins, completion thread,
-landing lease, abort path) is the model the RAM-to-RAM victim push followed.
 
 ---
 
@@ -266,30 +277,32 @@ landing lease, abort path) is the model the RAM-to-RAM victim push followed.
 
 1. **Apply the tpu-sync patch on the prefill host** and sync the worktree
    (`~/pd_disagg/spill/sync_victim_to_a.sh`).
-2. **Validate `h2h_push` on hardware** between two HiCache host pools before anything else:
-   a one-page push from prefill rank 0's host pool to decode rank 0's, then compare bytes with
-   `read_block_bytes`. No live test has ever pushed between two HiCache pools.
+2. **Validate `h2h_push` on hardware** between two HiCache host pools before anything else: a
+   one-page push from prefill rank 0's host pool to decode rank 0's, then compare bytes with
+   `read_block_bytes`. No live test has ever pushed between two HiCache pools. Also run the
+   loopback unit test in a tpu-sync build.
 3. **Rerun the victim chain** (`~/pd_disagg/spill/chain_victim.sh`, recipes
    `~/pd_disagg/recipes/gpt-oss_C_victim{,_base}.json`): ladder 12/16/20, sweep 64 to 512,
-   stress. Add `--mini-lb-policy session_affinity` to the recipe if the harness uses MiniLB.
-   Success criterion: 16 sessions near the Plan C 145 s, not the 375 s baseline.
-4. **Diagnose the 256-session defects**: the rank-divergent pull plan (the plan depends on
-   each rank's own tree; a mismatch "gives up" but evidently leaves ranks out of step) and the
-   native missing-key abort eight minutes later. Logs: `~/pd_disagg/results/runs/victim_3/
-   {prefill,decode}/server.log` (prefill log is on host a, readable with sudo). Related
+   stress. Add `--mini-lb-policy session_affinity` if the harness uses MiniLB. Success
+   criterion: the 16-session ladder well below the 386 s baseline, with most pushes stored
+   rather than declined, and the 256 and 512 sweep points completing.
+4. **Diagnose the 256-session defects**: the rank-divergent pull plan (the plan depends on each
+   rank's own tree; a mismatch "gives up" but evidently leaves ranks out of step) and the native
+   missing-key abort eight minutes later. Logs: `~/pd_disagg/results/runs/victim_3/
+   {prefill,decode}/server.log` (the prefill log is on host a, readable with sudo). Related
    upstream: sglang-torchtpu #854 (agree the matched prefix across attention-TP ranks).
-5. **Sliding window**: the RAM-to-RAM push sends only FULL. On gpt-oss a pushed session is
-   only pullable if the decode still has the window. Next: push the path-end window from the
-   prefill's SWA host pool into the decode's SWA host pool with a second `h2h_push`, insert the
-   SWA component's host value with it.
-6. **Recall RAM to RAM (step 6 plan on the design page)**: replace the device-path reverse
-   pull with a fetch that lands in the prefill's host pool, using the same `h2h_push` from the
-   decode side, then let HiCache's own `load_back` finish. Would remove the decode-side restore
-   and both staging slots from the recall.
-7. **Decide** whether the decode should keep caching what it serves (the branch turns that
-   off; it cost 97 % to 83 % hit rate in the sweep) and whether the prefill should free its copy
-   at once after a stored push (vllm does) or only demote it in its LRU (branch does).
-8. **Upstream tpu-sync**: propose a native `H2hPush` (or bind `H2hReadExplicit`) with tests.
+5. **Sliding window**: the RAM-to-RAM push sends only FULL. On gpt-oss a pushed session is only
+   pullable if the decode still has the window. Next: push the path-end window from the prefill's
+   SWA host pool into the decode's SWA host pool with a second `h2h_push`, and insert the SWA
+   component's host value with it.
+6. **Recall RAM to RAM**: the reverse pull still goes through decode HBM (restore, then device
+   read). Replace it with a fetch that lands in the prefill's host pool via `h2h_push` from the
+   decode side, then let HiCache's own `load_back` finish.
+7. **Decide** whether the decode should keep caching what it serves (turning it off cost
+   97 % to 83 % hit rate in the sweep) and whether the prefill should free its copy at once
+   after a stored push or only move it to the front of its LRU (current behaviour).
+8. **Upstream tpu-sync**: propose commit `4dacbe3b` (or a native `H2hPush`, or binding
+   `H2hReadExplicit` for a destination-driven pull).
 
 ---
 

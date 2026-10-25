@@ -11,8 +11,8 @@ reviewers already covered so nothing is repeated.
 
 [handoff/decode-dram-kv-tier.md](handoff/decode-dram-kv-tier.md) records our understanding of
 vllm-torchtpu's offload and evict sweep, tpu-sync/Raiden's managers and transfer paths, the
-relevant parts of sglang-torchtpu, every design tried with its measurements, the code as it
-stands on the fork, and the next steps. Written so another agent can continue the work.
+relevant parts of sglang-torchtpu, and the victim-cache branch solution: how it works, how it
+measured, the code on the fork and in tpu-sync, and the next steps. Written so another agent can continue the work.
 
 ## RFC #1955 (added 2026-10-23)
 
