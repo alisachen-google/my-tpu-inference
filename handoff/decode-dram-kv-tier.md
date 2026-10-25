@@ -207,8 +207,8 @@ the two feature switches off (prefill-only caching, HiCache prefill ratio 1.2, d
 
 | Version | Transport for the export | 16-session ladder | Status |
 |---|---|---|---|
-| Device path, up to `0b8149c3c1` | P/D engine: a host-only victim is loaded back into prefill HBM, read into decode HBM through both staging slots, reaches decode RAM only via the decode's write-through | 375 s, 43.7 tok/s; baseline 386 s, 42.5 tok/s | Measured 2026-10-24 (runs `victim_3`, `victim_base_3`) |
-| RAM-to-RAM, `07300a18a9` (current) | HiCache host pool to HiCache host pool with `h2h_push`; landed as a host-only node | not run yet | 11 victim tests; 320 tests across the touched suites pass on CPU |
+| Device path (earlier history, `0b8149c3c1` in the backup branch) | P/D engine: a host-only victim is loaded back into prefill HBM, read into decode HBM through both staging slots, reaches decode RAM only via the decode's write-through | 375 s, 43.7 tok/s; baseline 386 s, 42.5 tok/s | Measured 2026-10-24 (runs `victim_3`, `victim_base_3`) |
+| RAM-to-RAM, `c0e561665c` (current) | HiCache host pool to HiCache host pool with `h2h_push`; landed as a host-only node | not run yet | 11 victim tests; 320 tests across the touched suites pass on CPU |
 
 **Device path, measured.**
 - Ladder 12/16/20 sessions: 254/375/475 s against the baseline's 289/386/484 s, within noise.
@@ -231,10 +231,11 @@ the two feature switches off (prefill-only caching, HiCache prefill ratio 1.2, d
 
 ## 6. Current code (what the next agent starts from)
 
-**Fork branch `alisachen-google/sglang-torchtpu:pd-victim-prefix-cache` at `07300a18a9`**,
-worktree `~/sglang-victim` on the decode host. Commits on top of upstream main `49ddede7`:
-`4810aabe80` the victim cache, `1c380de516` / `52f8d208a3` / `0b8149c3c1` three live-run
-hardening fixes, `07300a18a9` RAM-to-RAM push.
+**Fork branch `alisachen-google/sglang-torchtpu:pd-victim-prefix-cache` at `c0e561665c`**,
+worktree `~/sglang-victim` on the decode host. Two commits on top of upstream main `49ddede7`: `bee4c18a52` carries the tpu-sync (Raiden)
+`h2h_push` change with its unit tests as a format-patch, and `c0e561665c` is everything else
+(victim cache, the live-run hardening fixes, and the RAM-to-RAM push). The earlier five-commit
+history is kept locally as branch `backup/pd-victim-prefix-cache-5commits`.
 
 Opt-in: `SGLANG_DISAGG_PREFILL_PULL_DECODE_PREFIX=1` and `SGLANG_DISAGG_PREFIX_VICTIM_PUSH=1`
 on both roles; HiCache with `--hicache-io-backend raiden` on both; decode
