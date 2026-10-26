@@ -5,6 +5,15 @@ Written 2026-10-26 against SGLang `6c60fd77b79f` and native tpu-sync
 `f2d8c3e58ea6a47a89ead8f9f4a4a81a1eab629d`. These probes live here at the owner's request; they are not part
 of the SGLang feature commit. They do not launch or access TPU model servers.
 
+## Spill-first milestones
+
+`test_spill_first_lifecycle.py` constructs the actual victim controller over a
+real CPU FULL cache, then drives its empty bootstrap and paused cleanup hooks.
+It checks that a host export starts without recall, keeps its source pinned
+through acknowledgement, and releases ownership only after native completion.
+Select each intermediate checkout with `SGLANG_REVIEW_ROOT` and `PYTHONPATH` to
+check the spill-first milestones as well as the final inherited controller.
+
 ## Idle completion cleanup
 
 `test_host_spill_cleanup.py` executes the real `DecodeReceiver.step` with an

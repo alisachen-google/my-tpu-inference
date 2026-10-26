@@ -7,6 +7,13 @@ Snapshot taken 2026-10-21 (heads as listed in each note). Each note has a recomm
 findings ordered by severity with ready-to-paste comment text, questions, nits, and a list of threads other
 reviewers already covered so nothing is repeated.
 
+## Victim prefix cache: spill-first milestones (added 2026-10-26)
+
+[handoff/pd-victim-spill-first-milestones-2026-10-26.md](handoff/pd-victim-spill-first-milestones-2026-10-26.md)
+records the spill → SWA preservation → recall commit sequence, independent
+intermediate lifecycle and unchanged final tree. Its extra lifecycle regression
+stays in this research repository.
+
 ## Victim prefix cache: design and reliability review (added 2026-10-26)
 
 [handoff/pd-victim-prefix-cache-review-2026-10-26.md](handoff/pd-victim-prefix-cache-review-2026-10-26.md)
