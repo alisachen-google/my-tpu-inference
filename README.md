@@ -7,6 +7,14 @@ Snapshot taken 2026-10-21 (heads as listed in each note). Each note has a recomm
 findings ordered by severity with ready-to-paste comment text, questions, nits, and a list of threads other
 reviewers already covered so nothing is repeated.
 
+## Benchmark: spill-over KV cache, fork `pd-victim-prefix-cache` vs its base (added 2026-10-26, in progress)
+
+[benchmarks/2026-10-26-victim-fork-goal/](benchmarks/2026-10-26-victim-fork-goal/README.md) is the before/after
+benchmark of our feature (fork branch `pd-victim-prefix-cache` on tpu-sync `759530c7`) against upstream main
+`49ddede7` on gpt-oss-120b 1P1D: prefill cache hit rate, TTFT, end-to-end latency and throughput on the recall and
+static prefix-reuse workloads (128k/256k prefix + 8k/16k new + 1k output), with the device and host caches wiped
+and verified before every point. The "before" side is complete; the "after" column is being filled in.
+
 ## Benchmark: victim prefix cache, commit 6c60fd77 (added 2026-10-26)
 
 [benchmarks/2026-10-26-victim-6c60/](benchmarks/2026-10-26-victim-6c60/README.md) holds a before/after benchmark of

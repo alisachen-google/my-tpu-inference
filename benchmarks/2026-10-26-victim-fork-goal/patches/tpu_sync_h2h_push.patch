@@ -1,0 +1,157 @@
+From 4dacbe3b5265d6820f320efce0d29f0621dbb7f6 Mon Sep 17 00:00:00 2001
+From: alisachen-google <280552753+alisachen-google@users.noreply.github.com>
+Date: Sun, 25 Oct 2026 05:37:11 +0000
+Subject: [PATCH] Add KVCacheManager.h2h_push for host-to-host block pushes
+
+Exposes the block transport's explicit-destination host push as a named
+API: copy this manager's host blocks into a peer manager's host blocks by
+id, all layers by default, with no device memory, no staging slot and no
+registered plan. It wraps push_registered_plan, whose native side never
+looks the plan up; the uuid only labels the push at the receiver.
+
+Callers that keep their own host cache (SGLang's HiCache host pool) can now
+move cold KV DRAM to DRAM between engines without a KVCacheStore or a
+RaidenController.
+
+Tests: forwarding and argument validation against a fake impl, and a
+loopback push between two host-only managers that checks every layer lands
+in the named destination blocks and leaves other blocks untouched.
+---
+ tpu_sync/api/torch/kv_cache_manager.py        | 44 ++++++++++++
+ .../api/torch/kv_cache_manager_host_test.py   | 67 +++++++++++++++++++
+ 2 files changed, 111 insertions(+)
+
+diff --git a/tpu_sync/api/torch/kv_cache_manager.py b/tpu_sync/api/torch/kv_cache_manager.py
+index a0a954d4..fc41cbda 100644
+--- a/tpu_sync/api/torch/kv_cache_manager.py
++++ b/tpu_sync/api/torch/kv_cache_manager.py
+@@ -316,6 +316,50 @@ class KVCacheManager:
+         parallelism,
+     )
+
++  def h2h_push(
++      self,
++      *,
++      peer: str,
++      src_block_ids: Sequence[int],
++      dst_block_ids: Sequence[int],
++      uuid: int,
++      layer_idx: int = -1,
++      parallelism: int = 1,
++  ) -> None:
++    """Host-to-host (H2H) push: copies host blocks into a peer's host blocks.
++
++    Copies this manager's host blocks ``src_block_ids`` into the peer
++    manager's host blocks ``dst_block_ids`` over the block transport, every
++    layer unless ``layer_idx`` names one. No device memory and no staging slot
++    is touched on either side, and no plan has to be registered: ``uuid`` only
++    labels the transfer at the receiver. Blocks until the push has landed.
++
++    Args:
++      peer: The peer manager's ``transfer_address``.
++      src_block_ids: Host block ids in this manager's host pool.
++      dst_block_ids: Host block ids in the peer's host pool, same length.
++      uuid: Transfer label, unique per in-flight push from this manager.
++      layer_idx: One layer, or -1 for all layers.
++      parallelism: Parallel network copies per layer.
++
++    Raises:
++      ValueError: The block id lists are empty or differ in length.
++      RuntimeError: The push failed.
++    """
++    if not src_block_ids or len(src_block_ids) != len(dst_block_ids):
++      raise ValueError(
++          "src_block_ids and dst_block_ids must be non-empty and the same"
++          " length"
++      )
++    self._impl.push_registered_plan(
++        uuid,
++        peer,
++        list(src_block_ids),
++        list(dst_block_ids),
++        layer_idx,
++        parallelism,
++    )
++
+   def read_block_bytes(self, layer_idx: int, block_id: int) -> bytes:
+     """Returns one host block as bytes."""
+     return self._impl.read_block_bytes(layer_idx, block_id)
+diff --git a/tpu_sync/api/torch/kv_cache_manager_host_test.py b/tpu_sync/api/torch/kv_cache_manager_host_test.py
+index e3eeef19..a5027870 100644
+--- a/tpu_sync/api/torch/kv_cache_manager_host_test.py
++++ b/tpu_sync/api/torch/kv_cache_manager_host_test.py
+@@ -247,5 +247,72 @@ class PollStatsWithDetailsTest(unittest.TestCase):
+     self.assertEqual(failed.phase, "d2h")
+
+
++class _FakePushImpl:
++
++  def __init__(self):
++    self.calls = []
++
++  def push_registered_plan(self, *args):
++    self.calls.append(args)
++
++
++class H2hPushTest(unittest.TestCase):
++
++  def test_forwards_to_the_explicit_destination_push(self):
++    manager = object.__new__(kv_cache_manager.KVCacheManager)
++    manager._impl = _FakePushImpl()  # pylint: disable=protected-access
++
++    manager.h2h_push(
++        peer="10.0.0.2:31000", src_block_ids=(1, 2), dst_block_ids=(7, 8), uuid=9
++    )
++
++    self.assertEqual(
++        manager._impl.calls,  # pylint: disable=protected-access
++        [(9, "10.0.0.2:31000", [1, 2], [7, 8], -1, 1)],
++    )
++
++  def test_rejects_empty_or_mismatched_block_lists(self):
++    manager = object.__new__(kv_cache_manager.KVCacheManager)
++    manager._impl = _FakePushImpl()  # pylint: disable=protected-access
++
++    for src, dst in (([], []), ([1, 2], [7])):
++      with self.subTest(src=src, dst=dst):
++        with self.assertRaises(ValueError):
++          manager.h2h_push(peer="p", src_block_ids=src, dst_block_ids=dst, uuid=1)
++    self.assertEqual(manager._impl.calls, [])  # pylint: disable=protected-access
++
++  def test_pushes_host_blocks_into_named_peer_blocks(self):
++    def make(node_id):
++      return kv_cache_manager.KVCacheManager.create_host_only_for_testing(
++          num_layers=2,
++          num_shards=1,
++          slice_byte_size=128,
++          node_id=node_id,
++          host_blocks=4,
++          parallelism=1,
++      )
++
++    src, dst = make(1), make(2)
++    payload = {
++        (layer, block): bytes([16 * layer + block]) * 128
++        for layer in range(2)
++        for block in range(2)
++    }
++    for (layer, block), data in payload.items():
++      src.write_block_bytes(layer, block, data)
++    untouched = b"\xee" * 128
++    dst.write_block_bytes(0, 1, untouched)
++
++    # Blocks land at the ids the caller names, crossed on purpose.
++    src.h2h_push(
++        peer=dst.transfer_address, src_block_ids=[0, 1], dst_block_ids=[3, 2], uuid=5
++    )
++
++    for layer in range(2):
++      self.assertEqual(dst.read_block_bytes(layer, 3), payload[(layer, 0)])
++      self.assertEqual(dst.read_block_bytes(layer, 2), payload[(layer, 1)])
++    self.assertEqual(dst.read_block_bytes(0, 1), untouched)
++
++
+ if __name__ == "__main__":
+   unittest.main()
+--
+2.43.0

@@ -1,0 +1,13 @@
+diff --git a/sglang_tpu/raiden_transfer.py b/sglang_tpu/raiden_transfer.py
+index 9cbeaf4777..7641747ae2 100644
+--- a/sglang_tpu/raiden_transfer.py
++++ b/sglang_tpu/raiden_transfer.py
+@@ -216,5 +216,7 @@ class RaidenKVTransfer:
+             peer=peer,
+             src_block_ids=[int(p) for p in src_pages],
+             dst_block_ids=[int(p) for p in dst_pages],
+-            uuid=uuid,
++            # tpu-sync 759530c7 rejects a push whose uuid has no receive session on
++            # the peer unless the uuid is 0; the landing pages are tracked by VictimDone.
++            uuid=0,
+         )

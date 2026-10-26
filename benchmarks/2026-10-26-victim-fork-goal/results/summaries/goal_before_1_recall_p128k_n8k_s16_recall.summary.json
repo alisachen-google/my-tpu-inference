@@ -1,0 +1,116 @@
+{
+ "run": "goal_before_1",
+ "label": "recall_p128k_n8k_s16_recall",
+ "sessions": 16,
+ "prefix": 131072,
+ "new": 8192,
+ "out_tokens": 1024,
+ "concurrency": 4,
+ "seed": 7,
+ "order": "oldest",
+ "working_set_tokens": 2228768,
+ "recall": {
+  "requests": 16,
+  "errors": 0,
+  "wall_s": 114.0,
+  "prompt_tokens": 2361232,
+  "cached_tokens": 2228224,
+  "token_hit_rate": 0.9437,
+  "reusable_tokens": 2228768,
+  "reuse_recovered": 0.9998,
+  "sessions_fully_reused": 16,
+  "ttft_p50": 20.482695166007034,
+  "ttft_p95": 20.694437351994566,
+  "e2e_p50": 26.82318895299977,
+  "e2e_p95": 27.353899583002203,
+  "total_tok_s": 20856.3,
+  "output_tok_s": 143.7,
+  "cached_tokens_by_tier": {
+   "device": 2228224,
+   "host": 0,
+   "storage": 0
+  }
+ },
+ "recall_by_quarter": [
+  {
+   "sessions": "0-3",
+   "requests": 4,
+   "errors": 0,
+   "prompt_tokens": 590308,
+   "cached_tokens": 557056,
+   "token_hit_rate": 0.9437,
+   "reusable_tokens": 557192,
+   "reuse_recovered": 0.9998,
+   "sessions_fully_reused": 4,
+   "ttft_p50": 20.694437351994566,
+   "ttft_p95": 27.6537339159986,
+   "e2e_p50": 27.353899583002203,
+   "e2e_p95": 34.331740114997956,
+   "cached_tokens_by_tier": {
+    "device": 557056,
+    "host": 0,
+    "storage": 0
+   }
+  },
+  {
+   "sessions": "4-7",
+   "requests": 4,
+   "errors": 0,
+   "prompt_tokens": 590308,
+   "cached_tokens": 557056,
+   "token_hit_rate": 0.9437,
+   "reusable_tokens": 557192,
+   "reuse_recovered": 0.9998,
+   "sessions_fully_reused": 4,
+   "ttft_p50": 20.400769092011615,
+   "ttft_p95": 20.455714002993773,
+   "e2e_p50": 26.948168328002794,
+   "e2e_p95": 26.971329389998573,
+   "cached_tokens_by_tier": {
+    "device": 557056,
+    "host": 0,
+    "storage": 0
+   }
+  },
+  {
+   "sessions": "8-11",
+   "requests": 4,
+   "errors": 0,
+   "prompt_tokens": 590308,
+   "cached_tokens": 557056,
+   "token_hit_rate": 0.9437,
+   "reusable_tokens": 557192,
+   "reuse_recovered": 0.9998,
+   "sessions_fully_reused": 4,
+   "ttft_p50": 20.506662840998615,
+   "ttft_p95": 20.57179263199214,
+   "e2e_p50": 26.998148584010778,
+   "e2e_p95": 27.063381378990016,
+   "cached_tokens_by_tier": {
+    "device": 557056,
+    "host": 0,
+    "storage": 0
+   }
+  },
+  {
+   "sessions": "12-15",
+   "requests": 4,
+   "errors": 0,
+   "prompt_tokens": 590308,
+   "cached_tokens": 557056,
+   "token_hit_rate": 0.9437,
+   "reusable_tokens": 557192,
+   "reuse_recovered": 0.9998,
+   "sessions_fully_reused": 4,
+   "ttft_p50": 20.545080935000442,
+   "ttft_p95": 20.649950817998615,
+   "e2e_p50": 26.798950273005175,
+   "e2e_p95": 26.82318895299977,
+   "cached_tokens_by_tier": {
+    "device": 557056,
+    "host": 0,
+    "storage": 0
+   }
+  }
+ ]
+}
