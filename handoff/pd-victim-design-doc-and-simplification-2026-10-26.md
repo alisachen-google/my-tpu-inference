@@ -2,6 +2,40 @@
 
 Written 2026-10-26.
 
+## Shared Prefill/Decode pool construction (unit-only, 2026-10-26)
+
+Local SGLang commit `3a2bb016cabc1344d198e60ea15423f9c98ace48` on
+`pd-victim-prefix-cache-simplified` consolidates the TPU host stack into
+`_SwaHostStrategy` / `_build_host_stack`. Prefill retains normal fixed/ratio
+capacity, packed draft mappings and allocation callbacks. Decode retains its
+FULL-only default or separately budgeted SWA-window tier. Both use existing
+pool builders and one controller construction path; role-specific restore
+markers are applied outside the builder. Physical pools remain independent.
+Shared core, transport, recall and victim lifecycles are unchanged.
+
+The feature commit changes one runtime module and adapts existing fixtures in
+two unit files. No SGLang test methods are added or removed. A broad run also
+reproduced an existing room-cleanup test failure on unchanged `14a6d804`: it
+expected request-room cleanup to remove independently keyed victim sessions.
+Its assertion now checks that those sessions survive; runtime cleanup is unchanged.
+
+Final validation: 371 CPU unit tests plus 259 subtests passed, including seven
+additional construction/equivalence checks in this notes repository. The
+runner preserves plugin discovery and supplies an import-only TPU compiler
+guard; it verifies zero compiler invocations and no `torch_tpu` import. See
+`tests/pd_victim_review/run_shared_swa_host_stack_units.py`. JUnit results remain
+local at `~/pd_disagg/results/shared-swa-host-stack-review/unit-tests.xml`.
+Configured Ruff, formatting, isort and whitespace checks pass on feature files.
+An unrelated existing F841 unused local in the broad offload test is outside
+the repository's configured Ruff selection and was left unchanged.
+
+No benchmarks, model servers or native transfer runs were started. Previous
+`14a6d8049d2b2d7fd0f0c06de1148ab2c187f697` is also retained as local ref
+`benchmark/pd-victim-before-host-stack-consolidation`; the original published
+runtime `9d9c2d89` and `pd-victim-prefix-cache` ref are unchanged. Normal push
+of the simplified branch failed because the tool terminal lacks GitHub HTTPS
+credentials. Author and committer are both `alisachen-google`.
+
 ## End-to-end technical design (updated 2026-10-26)
 
 The same private website now opens on `?section=design-brief`, with linked

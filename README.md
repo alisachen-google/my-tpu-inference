@@ -13,6 +13,8 @@ reviewers already covered so nothing is repeated.
 records the published commentable design document, durable review data,
 pending automatic-AI setup, and the separate behavior-preserving code cleanup.
 Additional website persistence checks live under `tests/design_doc/`.
+The same note records the later shared Prefill/Decode host-stack consolidation
+and its unit-only validation, with the previous benchmark revision preserved.
 
 ## Victim prefix cache: spill-first milestones (added 2026-10-26)
 

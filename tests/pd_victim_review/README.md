@@ -5,7 +5,28 @@ Written 2026-10-26 against SGLang `6c60fd77b79f` and native tpu-sync
 `f2d8c3e58ea6a47a89ead8f9f4a4a81a1eab629d`. These probes live here at the owner's request; they are not part
 of the SGLang feature commit. They do not launch or access TPU model servers.
 
-## Spill-first milestones
+## Shared Prefill/Decode host-stack construction
+
+`test_shared_swa_host_stack.py` checks Prefill equivalence with the upstream
+hybrid builder, fixed/ratio sizing, Decode window budgeting, packed draft
+mapping, unified allocation callbacks, independent allocations, failed-build
+policy state and registry selection. It exercises real pool groups and mappings
+over mocked host-buffer/native-controller boundaries.
+
+Run the related unit suites plus these seven extra checks with:
+
+```bash
+python tests/pd_victim_review/run_shared_swa_host_stack_units.py \
+  --sglang-root /path/to/sglang-victim-simplified \
+  --junit-xml /path/to/local-results/unit-tests.xml
+```
+
+The runner disables TPU autoload, preserves the plugin-discovery tests, and
+registers an import-only compiler guard that fails if invoked. The validated
+run passed 371 tests and 259 subtests with zero TPU compiler calls and no
+`torch_tpu` import. No benchmark or model workload is run.
+
+## Spill-first milestone lifecycle
 
 `test_spill_first_lifecycle.py` constructs the actual victim controller over a
 real CPU FULL cache, then drives its empty bootstrap and paused cleanup hooks.
