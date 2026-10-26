@@ -12,6 +12,10 @@ checkout; they do not launch TPU workloads or mutate hosted review records.
   It signs into the portable preview identity and creates local-only QA threads.
   It checks persistence across reloads, replies, resolve/reopen, cross-origin
   rejection and the authenticated MCP read surface on desktop/mobile.
+- `check_swa_milestone.cjs` checks the bbc4b298 chapter's pinned source links,
+  completion scenarios, responsive layout, section-specific saved questions,
+  and its inclusion in the authenticated document tool. It uses the same
+  local preview environment variables and never writes hosted records.
 
 Automatic OpenAI replies have not been live-tested: the hosted Site has no AI
 credentials configured. Unavailable-provider behavior preserves questions and

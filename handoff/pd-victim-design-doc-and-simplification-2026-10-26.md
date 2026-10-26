@@ -2,6 +2,27 @@
 
 Written 2026-10-26.
 
+## Milestone 2 explanation (updated 2026-10-26)
+
+The website now has a dedicated `?section=milestone-swa` chapter pinned to
+`bbc4b298e12be849427f4f2d5254451abe376013`. It explains matching FULL/SWA
+endpoints, transfer-tail rounding versus host-budget allowance, the cache
+builder and path-end backup policy, the two-pool transfer lifecycle, ownership
+records, partial failures, ordinary FULL-only restore behavior, and the exact
+boundary before milestone 3 recall. Source links point at that historical
+revision. Interactive completion cases are illustrations, not measurements.
+
+Website source: `9507357de77ee1605f1f63305f7416406ec88520`.
+Deployment: `appgdep_6adfa6c31d348191bcf6036e8838f209`.
+Validation: TypeScript and production build passed; nine SQLite checks passed;
+the new local-D1 desktop/mobile probe verifies pinned code links, all four
+completion scenarios, section-specific saved questions and chapter inclusion
+in the authenticated document tool. Screenshots and QA output remain local in
+`~/pd_disagg/results/milestone-swa-doc-review/`. No SGLang source or tests were
+changed, and no live TPU or hosted AI request was performed.
+
+The following records the prior deployment and separate code cleanup.
+
 The private design document is published at
 https://pd-victim-cache-design-20261026.groovyteal9.chatgpt.site .
 It preserves the memory/architecture diagrams and now provides section-linked
