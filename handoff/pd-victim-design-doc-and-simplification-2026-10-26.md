@@ -2,6 +2,31 @@
 
 Written 2026-10-26.
 
+## Milestone 3 explanation (updated 2026-10-26)
+
+The private design website now has `?section=milestone-recall`, matching the
+milestone 2 chapter's format and pinned to
+`9d9c2d89e0e5a1009de44d383892efb0b035e5fc`. It explains Decode host-to-HBM
+restore, M selection, OFFER/PULL/READY, precise FULL/SWA ranges, rank-agreed
+allocation and completion, the planning/offer/restore/tree-pin handoffs, and
+fallback/deferred native destinations. The architecture and walkthrough name
+the original inherited controller and parallel metadata tables; later
+simplification commits are distinguished explicitly.
+
+The chapter adds a downloadable architecture SVG, reuses the recall sequence
+SVG, and includes five interactive ownership/fallback scenarios. It is included
+in the section discussion UI, server document context and self-contained offline
+download. Embedded copies of reused SVGs now have unique IDs. Source commit:
+`a9bbc8bb25e5d3487dd3048f9e3cdb95fcad4170`; deployment:
+`appgdep_6adfcabe9f448191a62e0c8788729503`.
+
+TypeScript, production build and nine SQLite checks pass. Local-D1 desktop/mobile
+QA verifies pinned code links, loaded diagrams, scenario behavior, saved and
+reloaded section questions, and authenticated document-tool context. The offline
+chapter and prior spillover/calculator checks also pass. Artifacts stay local in
+`~/pd_disagg/results/milestone3-doc-review/`; no hosted QA threads, live AI calls,
+SGLang changes, TPU runs or benchmarks were made.
+
 ## Shared Prefill/Decode pool construction (unit-only, 2026-10-26)
 
 Local SGLang commit `3a2bb016cabc1344d198e60ea15423f9c98ace48` on

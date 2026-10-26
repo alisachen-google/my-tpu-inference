@@ -70,7 +70,7 @@ fs.mkdirSync(output, { recursive: true });
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(`file://${path.resolve(site, 'public/document/spillover-design.html')}`, { waitUntil: 'load' });
-    assert.equal(await page.locator('svg.technical-inline').count(), 2);
+    assert.equal(await page.locator('#phase-guide svg.technical-inline').count(), 2);
     assert.equal(await page.locator('#perf-savings-result').textContent(), '+33.8 ms');
     await page.locator('#perf-reuse').fill('0');
     assert.equal(await page.locator('#perf-tokens-result').textContent(), '0');

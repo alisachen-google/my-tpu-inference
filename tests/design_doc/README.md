@@ -16,6 +16,10 @@ checkout; they do not launch TPU workloads or mutate hosted review records.
   completion scenarios, responsive layout, section-specific saved questions,
   and its inclusion in the authenticated document tool. It uses the same
   local preview environment variables and never writes hosted records.
+- `check_recall_milestone.cjs` checks the 9d9c2d89 chapter's code links,
+  diagrams, five ownership/fallback scenarios, saved section questions and
+  document-tool context. It also checks the interactive offline export and
+  unique diagram IDs. Set `DESIGN_DOC_SITE_ROOT` as well as the preview variables.
 - `check_spillover_design.cjs` checks the four end-to-end chapters, calculator
   break-even behavior, loaded sequence diagrams, new discussion sections and
   the self-contained download under an offline browser context. Also set
