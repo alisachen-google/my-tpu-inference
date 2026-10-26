@@ -47,7 +47,11 @@ class TestRecallIdleOwnership(unittest.TestCase):
         room = self.fixtures.ROOM
         self.manager._prefill.decode_addr[room] = ("10.0.0.2", 5555)
         self.manager._prefill.prefix_offer_since[room] = time.time()
-        self.manager._prefill.prefix_offers[room] = (16, [3, 4, 5, 6])
+        self.manager._on_prefix_offer(
+            self.fixtures.PrefixOffer(
+                room=room, prefix_tokens=16, blocks=[3, 4, 5, 6]
+            ).to_frames()
+        )
         self.tree = self.fixtures._FakeTree(have_tokens=4)
         self.allocator = self.fixtures._FakeAllocator(free_tokens=64)
         self.puller = DecodePrefixPuller(
@@ -62,12 +66,15 @@ class TestRecallIdleOwnership(unittest.TestCase):
         )
         self.req = self.fixtures._req()
         self.puller.advance([self.req])
-        self.manager._prefill.prefix_ready[room] = (
-            self.fixtures.PX,
-            99,
-            self.fixtures.DECODE_RAIDEN,
-            1,
-            3,
+        self.manager._on_prefix_ready(
+            self.fixtures.PrefixReady(
+                room=room,
+                req_id=self.fixtures.PX,
+                uuid=99,
+                endpoint=self.fixtures.DECODE_RAIDEN,
+                first_page=1,
+                num_pages=3,
+            ).to_frames()
         )
         self.puller.advance([self.req])
         self.assertEqual(self.puller._plans[room].state, "pulling")

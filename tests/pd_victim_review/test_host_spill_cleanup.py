@@ -101,23 +101,23 @@ class TestHostSpillIdleOwnership(CustomTestCase):
         self.manager.decode_peer.return_value = ("127.0.0.1", 5001)
         self.acks: dict[int, VictimAck] = {}
         self.manager.take_victim_ack.side_effect = lambda seq: self.acks.pop(seq, None)
-        self.pusher = victim.PrefillPusher(
-            SimpleNamespace(
-                _mgr=self.manager,
-                _tree_cache=self.cache,
-                _page_size=1,
-                _groups=[],
-            )
+        self.puller = victim.VictimPrefixPuller(
+            kv_manager=self.manager,
+            scheduler=SimpleNamespace(
+                tree_cache=self.cache,
+                token_to_kv_pool_allocator=self.allocator,
+                req_to_token_pool=self.cache.req_to_token_pool,
+                attn_tp_cpu_group=None,
+                attn_cp_cpu_group=None,
+            ),
         )
+        self.pusher = self.puller.pusher
         self.tokens = list(range(8))
         self.fixtures.insert_tokens(self.cache, self.allocator, self.tokens)
         self.pusher.record(
             SimpleNamespace(bootstrap_room=1, origin_input_ids=self.tokens)
         )
         self.cache.evict(EvictParams(num_tokens=8))
-        self.puller = victim.VictimPrefixPuller.__new__(victim.VictimPrefixPuller)
-        self.puller._external_reads_outstanding = False
-        self.puller.pusher = self.pusher
 
     def test_host_exports_keep_idle_false_without_reverse_read_zombies(self) -> None:
         self.assertFalse(self.puller.has_pending_deferred_releases())

@@ -7,6 +7,13 @@ Snapshot taken 2026-10-21 (heads as listed in each note). Each note has a recomm
 findings ordered by severity with ready-to-paste comment text, questions, nits, and a list of threads other
 reviewers already covered so nothing is repeated.
 
+## Design review website and simplification branch (added 2026-10-26)
+
+[handoff/pd-victim-design-doc-and-simplification-2026-10-26.md](handoff/pd-victim-design-doc-and-simplification-2026-10-26.md)
+records the published commentable design document, durable review data,
+pending automatic-AI setup, and the separate behavior-preserving code cleanup.
+Additional website persistence checks live under `tests/design_doc/`.
+
 ## Victim prefix cache: spill-first milestones (added 2026-10-26)
 
 [handoff/pd-victim-spill-first-milestones-2026-10-26.md](handoff/pd-victim-spill-first-milestones-2026-10-26.md)

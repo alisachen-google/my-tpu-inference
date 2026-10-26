@@ -66,11 +66,39 @@ const server = http.createServer((req, res) => {
       await page.locator('.code-tab[data-code="wrapper"]').click();
       assert.match(await page.locator('#code-snippet').textContent(), /local_control_port/);
       await page.locator('.code-tab[data-code="spill"]').click();
+      assert.equal(await page.locator('#architecture svg').count(), 1);
+      assert.equal(await page.locator('#data-model tbody tr').count(), 6);
+      await page.locator('[data-milestone="swa"]').click();
+      assert.match(await page.locator('#milestone-title').textContent(), /2\..*SWA/);
+      assert.match(await page.locator('#milestone-source').getAttribute('href'), /bbc4b298e12b/);
+      assert.match(await page.locator('#milestone-data').textContent(), /swa_indices/);
+      await page.locator('[data-milestone="recall"]').click();
+      assert.match(await page.locator('#milestone-title').textContent(), /3\..*Prefill/);
+      assert.match(await page.locator('#milestone-source').getAttribute('href'), /9d9c2d89e0e5/);
+      assert.match(await page.locator('#milestone-data').textContent(), /PrefixPullPlan/);
+      await page.locator('[data-milestone="spill"]').click();
+      assert.match(await page.locator('#milestone-rationale').textContent(), /Separate storage from recall/);
+      assert.equal(await page.locator('#milestone-files a').count(), 4);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${name}: architecture content overflows viewport`);
+      await page.locator('#architecture').scrollIntoViewIfNeeded();
+      await page.screenshot({ path: path.join(out, `${name}-architecture.png`) });
+      await page.locator('#milestones').scrollIntoViewIfNeeded();
+      await page.screenshot({ path: path.join(out, `${name}-milestones.png`) });
+      await page.locator('#data-model').scrollIntoViewIfNeeded();
+      await page.screenshot({ path: path.join(out, `${name}-data-model.png`) });
+      if (name === 'mobile') {
+        await page.locator('.arch-scroll').evaluate(node => { node.scrollLeft = node.scrollWidth; });
+        assert.equal(await page.locator('.arch-scroll').evaluate(node => node.scrollLeft > 0), true);
+        await page.locator('.arch-scroll').evaluate(node => { node.scrollLeft = 0; });
+        await page.locator('.model-scroll').evaluate(node => { node.scrollLeft = node.scrollWidth; });
+        assert.equal(await page.locator('.model-scroll').evaluate(node => node.scrollLeft > 0), true);
+        await page.locator('.model-scroll').evaluate(node => { node.scrollLeft = 0; });
+      }
       await page.screenshot({ path: path.join(out, `${name}-full.png`), fullPage: true });
       await page.locator('#memory-map').scrollIntoViewIfNeeded();
       await page.screenshot({ path: path.join(out, `${name}-diagram.png`) });
       assert.deepEqual(errors, [], `${name}: browser errors`);
-      result.push({ name, viewport, console_errors: errors, checks_passed: 14 });
+      result.push({ name, viewport, console_errors: errors, checks_passed: 28 });
       await page.close();
     }
     fs.writeFileSync(path.join(out, 'browser-qa.json'), JSON.stringify(result, null, 2) + '\n');
