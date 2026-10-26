@@ -16,6 +16,10 @@ checkout; they do not launch TPU workloads or mutate hosted review records.
   completion scenarios, responsive layout, section-specific saved questions,
   and its inclusion in the authenticated document tool. It uses the same
   local preview environment variables and never writes hosted records.
+- `check_spillover_design.cjs` checks the four end-to-end chapters, calculator
+  break-even behavior, loaded sequence diagrams, new discussion sections and
+  the self-contained download under an offline browser context. Also set
+  `DESIGN_DOC_SITE_ROOT` to the selected Sites checkout.
 
 Automatic OpenAI replies have not been live-tested: the hosted Site has no AI
 credentials configured. Unavailable-provider behavior preserves questions and

@@ -2,6 +2,37 @@
 
 Written 2026-10-26.
 
+## End-to-end technical design (updated 2026-10-26)
+
+The same private website now opens on `?section=design-brief`, with linked
+`native-contract`, `phase-guide` and `workload-impact` chapters. These describe
+the published runtime `9d9c2d89` and native `759530c7`, independent of the later
+simplification branch. The native API snapshot's SHA256 matches the prior
+benchmark manifest. The guide calls out the pinned Python constructor's
+positive host-control-port requirement, initial Prefill D2H, direct host spill,
+FULL/SWA publication, current device-backed recall, rank agreement and cleanup.
+
+Two downloadable SVG sequence diagrams distinguish control metadata, native
+pull control and KV payloads. A self-contained HTML download embeds the diagrams,
+styles and interactions; it works offline and includes print/save-PDF styling.
+Editable chapter fragments and the reproducible exporter live in the Site
+source. No SGLang source or tests are changed.
+
+Performance coverage explains reuse/capacity versus transport savings, workload
+fit, contention costs and a transparent break-even calculator. Native-only
+table rows come from the local `ram2ram-759530c7/native-results.json`; integrated
+case counts come from its separate validation manifest. Neither establishes
+final-revision model TTFT, TPOT, throughput or hit-rate gains. Full benchmark
+programs, samples and raw artifacts remain local, absent the feature commits.
+
+Website source: `fcda1a643ed4a39f21abeeda9e656f4f5c1032d1`.
+Deployment: `appgdep_6adfaadd5a70819198a80a69beebdd72`.
+Validation: TypeScript and production build passed, nine SQLite checks passed,
+and the new desktop/mobile/local-D1 plus offline-browser probe passed. It checks
+all four discussion sections, diagram loading, calculator zero-reuse/regression
+cases and offline asset independence. QA stays in
+`~/pd_disagg/results/spillover-design-review/`; no hosted QA records were created.
+
 ## Milestone 2 explanation (updated 2026-10-26)
 
 The website now has a dedicated `?section=milestone-swa` chapter pinned to
