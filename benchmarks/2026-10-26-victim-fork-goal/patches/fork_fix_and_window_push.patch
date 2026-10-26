@@ -1,0 +1,1430 @@
+diff --git a/sglang_tpu/disaggregation/raiden/prefix_pull.py b/sglang_tpu/disaggregation/raiden/prefix_pull.py
+index 62167f8f91..cd2657eb2e 100644
+--- a/sglang_tpu/disaggregation/raiden/prefix_pull.py
++++ b/sglang_tpu/disaggregation/raiden/prefix_pull.py
+@@ -158,6 +158,7 @@ class DecodePrefixPuller:
+         # Pages of dropped requests whose reads raiden may still be landing, as
+         # (read ids, full KV indices, window tokens).
+         self._zombies: List[Tuple[List[str], Any, int]] = []
++        self._stats_logged_at = 0.0
+         self.stats = {
+             "offers": 0,
+             "pulls": 0,
+@@ -182,6 +183,13 @@ class DecodePrefixPuller:
+         """
+         self._reap_zombies()
+         self._unpin_departed(queued_reqs=[*reqs, *waiting_reqs])
++        now = time.time()
++        if now - self._stats_logged_at > 30:
++            self._stats_logged_at = now
++            logger.info(
++                "[prefix-pull] stats=%s plans=%d zombies=%d",
++                self.stats, len(self._plans), len(self._zombies),
++            )
+         if not reqs:
+             return
+         rooms = [req.bootstrap_room for req in reqs]
+@@ -237,7 +245,10 @@ class DecodePrefixPuller:
+             states = [self._mgr.prefix_read_state(rid) for rid in plan.read_ids()]
+             settled = int("pending" not in states)
+             done = int(all(state == "done" for state in states))
+-        kept = int(not (plan is None and self._mgr.prefix_pull_resolved(room)))
++        kept = int(
++            not (plan is None and self._mgr.prefix_pull_resolved(room))
++            and not (plan is not None and plan.state == "failed")
++        )
+         ready = int(
+             plan is not None
+             and plan.state == "asked"
+@@ -492,6 +503,15 @@ class DecodePrefixPuller:
+         new_indices = None
+         if self._fits_with_reserve(plan):
+             new_indices = self._alloc(plan)
++        # Every rank keeps the pages or none does: one rank freeing pages the
++        # others hold makes admission diverge and the TP collectives deadlock.
++        agreed = self._all_ranks_reduce(
++            [[int(new_indices is not None)]], dist.ReduceOp.MIN
++        )[0][0]
++        if not agreed:
++            if new_indices is not None:
++                self._allocator.free(new_indices)
++            new_indices = None
+         if new_indices is None:
+             self.stats["no_memory"] += 1
+             logger.info(
+@@ -584,7 +604,8 @@ class DecodePrefixPuller:
+                 *served,
+                 *asked,
+             )
+-            self._abandon(room, plan)
++            # Abandoned by every rank on the next step (see _local_flags).
++            plan.state = "failed"
+             return
+         page = self._page_size
+         local = [int(x) for x in kv_to_page_indices(plan.new_indices, page)]
+@@ -608,7 +629,7 @@ class DecodePrefixPuller:
+             plan.started_at = time.time()
+         elif outcome == "failed":
+             self.stats["failed"] += 1
+-            self._abandon(room, plan)
++            plan.state = "failed"
+         # "retry": no host staging free yet. The next step asks again.
+ 
+     def _window_local_pages(self, plan: PrefixPullPlan) -> List[int]:
+@@ -660,9 +681,12 @@ class DecodePrefixPuller:
+         if plan.new_indices is None:
+             return
+         read_ids = plan.read_ids()
+-        if self._any_read_pending(read_ids):
++        pending = self._all_ranks_reduce(
++            [[int(self._any_read_pending(read_ids))]], dist.ReduceOp.MAX
++        )[0][0]
++        if pending:
+             # Raiden cannot cancel a read, so the pages stay allocated until
+-            # every read settles.
++            # every read settles -- on every rank, so the allocators stay equal.
+             swa_tokens = plan.swa_num_pages * self._page_size
+             self._zombies.append((read_ids, plan.new_indices, swa_tokens))
+             return
+@@ -674,11 +698,14 @@ class DecodePrefixPuller:
+     def _reap_zombies(self) -> None:
+         if not self._zombies:
+             return
++        settled = self._all_ranks_reduce(
++            [[int(not self._any_read_pending(z[0]))] for z in self._zombies],
++            dist.ReduceOp.MIN,
++        )
+         keep = []
+-        for zombie in self._zombies:
+-            read_ids, indices, _ = zombie
+-            if self._any_read_pending(read_ids):
+-                keep.append(zombie)
++        for zombie, (done,) in zip(self._zombies, settled):
++            if done:
++                self._allocator.free(zombie[1])
+             else:
+-                self._allocator.free(indices)
++                keep.append(zombie)
+         self._zombies = keep
+diff --git a/sglang_tpu/disaggregation/raiden/sender.py b/sglang_tpu/disaggregation/raiden/sender.py
+index 6450db48d1..e337273f4a 100644
+--- a/sglang_tpu/disaggregation/raiden/sender.py
++++ b/sglang_tpu/disaggregation/raiden/sender.py
+@@ -560,6 +560,7 @@ class RaidenSenderMixin:
+         extra_key=None,
+         cache_salt=None,
+         is_eagle=False,
++        swa_blocks=(),
+     ) -> bool:
+         """Offer a host-resident session; the bytes move once the ack names
+         landing pages (pd_victim_push.PrefillPusher)."""
+@@ -579,6 +580,7 @@ class RaidenSenderMixin:
+                     extra_key=extra_key,
+                     cache_salt=cache_salt,
+                     is_eagle=is_eagle,
++                    swa_blocks=[int(b) for b in swa_blocks],
+                 ).to_frames(),
+             )
+         except Exception as exc:  # noqa: BLE001 - a lost offer is a declined push
+@@ -1685,6 +1687,34 @@ class RaidenKVSender(CommonKVSender):
+                 finish - self._transfer_start_time
+             )
+ 
++    def _diag_pending_send(self) -> None:
++        """DIAG (temporary): log the room's transfer state once a minute while its send is pending."""
++        now = time.time()
++        if now - self.init_time < 20 or now - getattr(self, "_diag_at", 0.0) < 20:
++            return
++        self._diag_at = now
++        m = self.kv_mgr
++        room = self.bootstrap_room
++        with m._state_lock:
++            done = sorted(k for k in m._completed_send if m._is_room_transfer(k, room))
++            reads = sorted(m._send_reads.get(room, ()))
++            nfail = sorted(k for k in m._native_failed if m._is_room_transfer(k, room))
++            failed = sorted(k for k in m._failed if m._is_room_transfer(k, room))
++            sup = sorted(k for k in getattr(m, "_superseded_sender_reads", ()) if m._is_room_transfer(k, room))
++            swa_pages = m._prefill.decode_swa_pages.get(room) if m._prefill is not None else None
++            aborted = room in m._aborted
++            reason = None
++            for attr in ("_failure_reasons", "_failures", "_room_failures"):
++                d = getattr(m, attr, None)
++                if isinstance(d, dict) and room in d:
++                    reason = d[room]
++        logger.warning(
++            "[diag-send] rank%d room=%s status=%s age=%.0fs completed=%s send_reads=%s native_failed=%s failed=%s "
++            "superseded=%s aborted=%s reason=%s swa_engine=%s decode_swa_pages=%s send_done=%s active_io=%s",
++            m.attn_tp_rank, room, m.check_status(room), now - self.init_time, done, reads, nfail, failed, sup,
++            aborted, reason, m._swa_engine is not None, swa_pages, m.is_send_done(room), m.sender_has_active_io(room),
++        )
++
+     def poll(self) -> KVPoll:
+         if self.conclude_state is not None:
+             return self.conclude_state
+@@ -1692,6 +1722,7 @@ class RaidenKVSender(CommonKVSender):
+             self.conclude_state = KVPoll.Success
+             return KVPoll.Success
+         self.kv_mgr._drain_engine()
++        self._diag_pending_send()
+         # A recorded failure outranks a completion that lands after it, and
+         # Failed is withheld while a stage or push still reads the room's
+         # pages -- the scheduler frees them on it.
+diff --git a/sglang_tpu/disaggregation/raiden/serde.py b/sglang_tpu/disaggregation/raiden/serde.py
+index aadc767e31..6f2b880974 100644
+--- a/sglang_tpu/disaggregation/raiden/serde.py
++++ b/sglang_tpu/disaggregation/raiden/serde.py
+@@ -173,6 +173,9 @@ class VictimPush(WireMessage):
+     extra_key: Optional[str] = None
+     cache_salt: Optional[str] = None
+     is_eagle: bool = False
++    # Host page ids of the path's trailing SWA window, in the SWA host pool;
++    # empty on models without sliding-window layers.
++    swa_blocks: list[int] = msgspec.field(default_factory=list)
+ 
+ 
+ class VictimAck(WireMessage):
+@@ -188,6 +191,9 @@ class VictimAck(WireMessage):
+     stored: bool
+     landing: list[int] = msgspec.field(default_factory=list)
+     address: str = ""
++    # Same for the SWA window, in the decode rank's SWA host pool.
++    swa_landing: list[int] = msgspec.field(default_factory=list)
++    swa_address: str = ""
+ 
+ 
+ class VictimDone(WireMessage):
+diff --git a/sglang_tpu/pd_victim_push.py b/sglang_tpu/pd_victim_push.py
+index 871955b5c7..fce58b802b 100644
+--- a/sglang_tpu/pd_victim_push.py
++++ b/sglang_tpu/pd_victim_push.py
+@@ -46,11 +46,19 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
+ 
+ import msgspec
+ import torch
++
++from sglang.srt.utils import rank_consensus_checker
+ import torch.distributed as dist
+ 
+ from sglang.srt.disaggregation.decode import DecodePreallocQueue, DecodeTransferQueue
+ from sglang.srt.mem_cache.base_prefix_cache import MatchPrefixParams
++from sglang.srt.mem_cache.hicache_storage import (
++    PoolName,
++    PoolTransfer,
++    PoolTransferResult,
++)
+ from sglang.srt.mem_cache.radix_cache import RadixKey
++from sglang.srt.mem_cache.unified_cache.components.base import CacheTransferPhase
+ from sglang.srt.mem_cache.unified_cache.component_type import ComponentType
+ from sglang.srt.mem_cache.unified_radix_cache import UnifiedRadixCache
+ from sglang_tpu.disaggregation.raiden.conn import RaidenKVManager
+@@ -61,6 +69,7 @@ from sglang_tpu.envs import envs as tpu_envs
+ logger = logging.getLogger(__name__)
+ 
+ _FULL = ComponentType.FULL
++_SWA = ComponentType.SWA
+ 
+ # Arbitrary: bounds the host pages a prefill pins and a decode holds at once.
+ _MAX_INFLIGHT = 4
+@@ -80,6 +89,10 @@ _LOG_INTERVAL_S = 30.0
+ # Arbitrary: how long a cache flush waits for in-flight pushes to settle.
+ _DRAIN_TIMEOUT_S = 60.0
+ 
++# Victim paths take access stamps counting up from here, so they stay older
++# than any live node (the tree's counter starts at 0) yet never tie.
++_VICTIM_STAMP_BASE = -1.0e15
++
+ _is_installed = False
+ 
+ 
+@@ -151,21 +164,43 @@ def _path_tokens(root: Any, leaf: Any) -> List[int]:
+     return tokens
+ 
+ 
+-def _host_pages(root: Any, host_pool: Any, leaf: Any) -> Optional[List[int]]:
+-    """Host page ids of the full KV from the root to ``leaf``, in token order;
+-    None unless every node is host-backed with no backup still in flight."""
++def _host_pages(
++    root: Any, host_pool: Any, leaf: Any, *, component=_FULL, tail_tokens=None
++) -> Optional[List[int]]:
++    """Host page ids of a host-backed path (or its trailing ``tail_tokens``),
++    in token order; None unless every node is host-backed with no backup
++    still in flight. A window may start inside a radix node: only its
++    intersecting suffix is exported."""
+     segments = []
++    remaining = tail_tokens
+     node = leaf
+-    while node is not root:
+-        data = node.component_data[_FULL]
++    while node is not root and (remaining is None or remaining > 0):
++        data = node.component_data[component]
+         if data.host_value is None or node.write_through_pending_id is not None:
+             return None
+-        segments.append(host_pool._to_page_ids(data.host_value))
++        count = len(node.key) if remaining is None else min(remaining, len(node.key))
++        segments.append(host_pool._to_page_ids(data.host_value[-count:]))
++        if remaining is not None:
++            remaining -= count
+         node = node.parent
+-    pages: List[int] = []
+-    for segment in reversed(segments):
+-        pages.extend(int(p) for p in segment)
+-    return pages
++    if remaining:
++        return None
++    return [int(p) for segment in reversed(segments) for p in segment]
++
++
++def _swa_host_pool(cache: Any) -> Any:
++    """The HiCache host pool holding SWA windows, or None without one."""
++    if not cache.supports_swa():
++        return None
++    return cache.host_pool_group.get_pool(PoolName.SWA)
++
++
++def _window_tokens(cache: Any, page_size: int) -> int:
++    """Tokens of the SWA window a decode needs with a pushed path (0 = dense)."""
++    if not cache.supports_swa():
++        return 0
++    window = cache.components[_SWA].sliding_window_size
++    return -(-window // page_size) * page_size
+ 
+ 
+ def _page_hashes(tokens: List[int], page_size: int) -> List[str]:
+@@ -216,6 +251,8 @@ class _Push(msgspec.Struct):
+     # "offered" until the ack, "pushing" while the thread runs, then "done".
+     state: str = "offered"
+     landing: List[int] = []
++    swa_pages: List[int] = []
++    swa_landing: List[int] = []
+     ok: Optional[bool] = None
+     thread: Any = None
+ 
+@@ -229,6 +266,8 @@ class PrefillPusher:
+         self._page_size = puller._page_size
+         self._groups = list(puller._groups)
+         self._host_pool = _anchor_host_pool(self._cache)
++        self._swa_host_pool = _swa_host_pool(self._cache)
++        self._window_tokens = _window_tokens(self._cache, self._page_size)
+         # Incarnation shared by this prefill's ranks: independent prefills and
+         # restarts cannot alias push labels on one decode.
+         epoch = _all_ranks_reduce(
+@@ -244,6 +283,9 @@ class PrefillPusher:
+         # Path length last pushed, or found unpushable, per session.
+         self._pushed_len = weakref.WeakKeyDictionary()
+         self._next_seq = 1
++        # Access stamps handed to victim paths: far below the tree's access
++        # counter (which starts at 0 and only grows), increasing per node.
++        self._victim_stamp = _VICTIM_STAMP_BASE
+         self.stats = dict.fromkeys(
+             ("started", "pushed", "stored", "declined", "aborted"), 0
+         )
+@@ -272,6 +314,11 @@ class PrefillPusher:
+             match = self._cache.match_prefix(MatchPrefixParams(key=key))
+             node_id = match.best_match_node
+         node = tree_core.node_by_id(node_id)
++        # DIAG: the remembered leaf must be the same node on every rank.
++        rank_consensus_checker.assert_same(
++            "victim remember room=%s node=%s depth=%s",
++            req.bootstrap_room, node_id, _depth(node, tree_core.root_node),
++        )
+         if node is not tree_core.root_node and not node.children:
+             tokens = _path_tokens(tree_core.root_node, node)
+             self._routes[node] = (
+@@ -317,9 +364,15 @@ class PrefillPusher:
+             if push.state == "offered":
+                 ack = self._mgr.take_victim_ack(push.seq)
+                 if ack is not None:
+-                    if ack.stored and ack.landing and ack.address:
++                    if (
++                        ack.stored
++                        and ack.landing
++                        and ack.address
++                        and (not push.swa_pages or (ack.swa_landing and ack.swa_address))
++                    ):
+                         push.landing = list(ack.landing)
+-                        self._start_push(push, ack.address)
++                        push.swa_landing = list(ack.swa_landing)
++                        self._start_push(push, ack.address, ack.swa_address)
+                     else:
+                         push.ok = False
+                         push.state = "done"
+@@ -342,22 +395,26 @@ class PrefillPusher:
+             self.stats["stored" if ok else "declined"] += 1
+             self._finish(push, stored=bool(ok))
+ 
+-    def _start_push(self, push: _Push, address: str) -> None:
+-        if len(push.landing) != len(push.pages):
++    def _start_push(self, push: _Push, address: str, swa_address: str = "") -> None:
++        if len(push.landing) != len(push.pages) or len(push.swa_landing) != len(
++            push.swa_pages
++        ):
+             push.ok = False
+             push.state = "done"
+             return
+         uuid = self._uuid_base | (push.seq & 0xFFFFFFFF)
+-        transfer = self._host_pool.transfer
++        transfers = [(self._host_pool.transfer, address, push.pages, push.landing)]
++        if push.swa_pages:
++            transfers.append(
++                (self._swa_host_pool.transfer, swa_address, push.swa_pages, push.swa_landing)
++            )
+ 
+         def run() -> None:
+             try:
+-                transfer.push_host_pages(
+-                    peer=address,
+-                    src_pages=push.pages,
+-                    dst_pages=push.landing,
+-                    uuid=uuid,
+-                )
++                for transfer, peer, src, dst in transfers:
++                    transfer.push_host_pages(
++                        peer=peer, src_pages=src, dst_pages=dst, uuid=uuid
++                    )
+                 push.ok = True
+                 self.stats["pushed"] += 1
+             except Exception as exc:  # noqa: BLE001 - reported as a failed push
+@@ -395,7 +452,11 @@ class PrefillPusher:
+             node = node.parent
+         lrus = [*tree_core.lru_lists.values(), *tree_core.host_lru_lists.values()]
+         for node in nodes:
+-            node.last_access_time = 0
++            # Device eviction heaps order leaves by last_access_time and break
++            # ties by set iteration order, which differs per rank; every victim
++            # node gets a unique stamp below any live node's counter value.
++            self._victim_stamp += 1.0
++            node.last_access_time = self._victim_stamp
+             for lru in lrus:
+                 if lru.in_list(node):
+                     lru.reset_node_lru(node)
+@@ -424,8 +485,28 @@ class PrefillPusher:
+         _, decode, leaf = picked
+         num_tokens = _depth(leaf, tree_core.root_node)
+         pages = _host_pages(tree_core.root_node, self._host_pool, leaf)
+-        shape = [num_tokens, -1 if pages is None else len(pages)]
+-        if not _agree(self._groups, shape) or pages is None:
++        swa_pages: Optional[List[int]] = []
++        if self._window_tokens:
++            # A sliding-window model's prefix is only reusable with its window
++            # (what the normal KV send carries on the SWA engine), so the push
++            # carries the path's trailing window from the SWA host pool.
++            swa_pages = (
++                _host_pages(
++                    tree_core.root_node,
++                    self._swa_host_pool,
++                    leaf,
++                    component=_SWA,
++                    tail_tokens=min(num_tokens, self._window_tokens),
++                )
++                if self._swa_host_pool is not None
++                else None
++            )
++        shape = [
++            num_tokens,
++            -1 if pages is None else len(pages),
++            -1 if swa_pages is None else len(swa_pages),
++        ]
++        if not _agree(self._groups, shape) or pages is None or swa_pages is None:
+             # Not whole on host everywhere: not again at this length.
+             self._pushed_len[leaf] = num_tokens
+             return
+@@ -436,6 +517,7 @@ class PrefillPusher:
+             decode=decode,
+             tokens=path[: num_tokens + int(tree_core.is_eagle)],
+             pages=pages,
++            swa_pages=swa_pages,
+             path_len=num_tokens,
+             anchor_id=leaf.id,
+             host_receipt=self._cache.inc_host_lock_ref(leaf.id).to_dec_params(),
+@@ -457,6 +539,7 @@ class PrefillPusher:
+             extra_key=push.extra_key,
+             cache_salt=push.cache_salt,
+             is_eagle=push.is_eagle,
++            swa_blocks=swa_pages,
+         )
+         if not sent:
+             push.ok = False
+@@ -497,6 +580,7 @@ class _Landing(msgspec.Struct):
+     push: Any
+     indices: Any
+     granted_at: float
++    swa_indices: Any = None
+ 
+ 
+ class DecodeReceiver:
+@@ -508,6 +592,8 @@ class DecodeReceiver:
+         self._cache = queue.tree_cache
+         self._page_size = int(scheduler.token_to_kv_pool_allocator.page_size)
+         self._host_pool = _anchor_host_pool(self._cache)
++        self._swa_host_pool = _swa_host_pool(self._cache)
++        self._window_tokens = _window_tokens(self._cache, self._page_size)
+         self._groups = _cpu_groups(scheduler)
+         self._iterations = 0
+         self._rounds = 0
+@@ -580,6 +666,7 @@ class DecodeReceiver:
+                     push.cache_salt,
+                     push.is_eagle,
+                     len(push.blocks),
++                    len(push.swa_blocks),
+                 ),
+             ): key
+             for key, push in received.items()
+@@ -606,20 +693,34 @@ class DecodeReceiver:
+             num_tokens > 0
+             and num_tokens == len(push.blocks) * self._page_size
+             and push.is_eagle == self._cache.tree_core.is_eagle
++            # The window must match this decode's model exactly: a prefix
++            # without its window is never offered back to a prefill.
++            and len(push.swa_blocks) * self._page_size
++            == min(num_tokens, self._window_tokens)
++            and (not self._window_tokens or self._swa_host_pool is not None)
+         )
+         valid = _all_ranks_reduce(self._groups, [[int(valid)]], dist.ReduceOp.MIN)[0][0]
+         if not valid:
+             return False
+         indices = self._alloc_host(num_tokens)
++        swa_indices = (
++            self._alloc_host(len(push.swa_blocks) * self._page_size, swa=True)
++            if push.swa_blocks
++            else None
++        )
+         allocated = _all_ranks_reduce(
+-            self._groups, [[int(indices is not None)]], dist.ReduceOp.MIN
++            self._groups,
++            [[int(indices is not None and (not push.swa_blocks or swa_indices is not None))]],
++            dist.ReduceOp.MIN,
+         )[0][0]
+         if not allocated:
+             if indices is not None:
+                 self._host_pool.free(indices)
++            if swa_indices is not None:
++                self._swa_host_pool.free(swa_indices)
+             return False
+         self._landings[key] = _Landing(
+-            push=push, indices=indices, granted_at=time.monotonic()
++            push=push, indices=indices, swa_indices=swa_indices, granted_at=time.monotonic()
+         )
+         self.stats["granted"] += 1
+         self._mgr.send_victim_ack(
+@@ -629,17 +730,32 @@ class DecodeReceiver:
+                 stored=True,
+                 landing=[int(p) for p in self._host_pool._to_page_ids(indices)],
+                 address=self._host_pool.transfer.host_transfer_address,
++                swa_landing=(
++                    [int(p) for p in self._swa_host_pool._to_page_ids(swa_indices)]
++                    if swa_indices is not None
++                    else []
++                ),
++                swa_address=(
++                    self._swa_host_pool.transfer.host_transfer_address
++                    if swa_indices is not None
++                    else ""
++                ),
+             ),
+         )
+         return True
+ 
+-    def _alloc_host(self, num_tokens: int):
+-        pool = self._host_pool
++    def _alloc_host(self, num_tokens: int, *, swa: bool = False):
++        pool = self._swa_host_pool if swa else self._host_pool
+         short = num_tokens - pool.available_size()
+         if short > 0:
+-            self._cache.evict_host(short, _FULL)
++            self._cache.evict_host(short, _SWA if swa else _FULL)
+         return pool.alloc(num_tokens)
+ 
++    def _free_landing(self, landing: _Landing) -> None:
++        self._host_pool.free(landing.indices)
++        if landing.swa_indices is not None:
++            self._swa_host_pool.free(landing.swa_indices)
++
+     def _finish_agreed(self) -> None:
+         dones = self._mgr.victim_dones()
+         for key in list(dones):
+@@ -656,7 +772,7 @@ class DecodeReceiver:
+             if ok:
+                 self._insert(landing)
+             else:
+-                self._host_pool.free(landing.indices)
++                self._free_landing(landing)
+                 self.stats["failed"] += 1
+         if not self._landings:
+             return
+@@ -672,7 +788,7 @@ class DecodeReceiver:
+         )
+         for key, (gone,) in zip(keys, expired):
+             if gone:
+-                self._host_pool.free(self._landings.pop(key).indices)
++                self._free_landing(self._landings.pop(key))
+                 self.stats["expired"] += 1
+ 
+     def _insert(self, landing: _Landing) -> None:
+@@ -692,16 +808,66 @@ class DecodeReceiver:
+         )
+         self._cache._apply_cache_actions(result.cache_actions)
+         if result.host_insert_dropped or result.inserted_host_node is None:
+-            self._host_pool.free(landing.indices)
++            self._free_landing(landing)
+             self.stats["dropped"] += 1
+             return
+         # Pages the tree already held for the shared prefix are duplicates.
+         if result.prefix_len > 0:
+             self._host_pool.free(landing.indices[: result.prefix_len])
++        if landing.swa_indices is not None:
++            # The prefetch commit splits the window boundary, fills the SWA
++            # tombstones and releases duplicate window slices.
++            actions = []
++            core.commit_hicache_transfers(
++                core.root_node.id,
++                CacheTransferPhase.PREFETCH,
++                {
++                    _SWA: [
++                        PoolTransfer(name=PoolName.SWA, host_indices=landing.swa_indices)
++                    ]
++                },
++                cache_actions=actions,
++                insert_result=result,
++                pool_storage_result=PoolTransferResult(
++                    kv_hit_pages=len(push.blocks),
++                    extra_pool_hit_pages={PoolName.SWA: len(push.swa_blocks)},
++                ),
++            )
++            self._cache._apply_cache_actions(actions)
+         self.stats["landed"] += 1
+         self.stats["landed_tokens"] += num_tokens - result.prefix_len
+ 
+ 
++def _lru_tail_digest(tree_core, limit: int = 6) -> str:
++    """The next FULL-component device victims in eviction order: id/tokens/host-backed."""
++    lru = tree_core.lru_lists[_FULL]
++    pt = lru._pt
++    out = []
++    node = lru.tail.lru_prev[pt]
++    while node is not lru.head and len(out) < limit:
++        data = node.component_data[_FULL]
++        out.append(f"{node.id}:{len(node.key)}:{int(data.host_value is not None)}:{data.lock_ref}")
++        node = node.lru_prev[pt]
++    return ",".join(out)
++
++
++def _note_scheduler_state(cache, reqs, waiting_reqs) -> None:
++    """Rank-local admission inputs, one trace line per step (SGLANG_TPU_COLLECTIVE_TRACE)."""
++    from sglang_tpu import collective_trace
++
++    if collective_trace._state["dir"] is None:
++        return
++    alloc = cache.token_to_kv_pool_allocator
++    host = cache.cache_controller.mem_pool_host if cache.cache_controller is not None else None
++    collective_trace.note(
++        f"lru_tail={_lru_tail_digest(cache.tree_core)} "
++        f"kv_avail={alloc.available_size()} evictable={cache.evictable_size()} "
++        f"protected={cache.protected_size()} host_avail={host.available_size() if host is not None else -1} "
++        f"bootstrap_q={len(reqs)} waiting={len(waiting_reqs)} "
++        f"waiting_rids={[getattr(r, 'rid', '?')[-6:] for r in waiting_reqs][:4]}"
++    )
++
++
+ class VictimPrefixPuller(DecodePrefixPuller):
+     """Prefill orchestration selected by Raiden's existing backend factory."""
+ 
+@@ -714,6 +880,7 @@ class VictimPrefixPuller(DecodePrefixPuller):
+         self.pusher.record(req)
+ 
+     def advance(self, reqs, *, waiting_reqs=()):
++        _note_scheduler_state(self._tree_cache, reqs, waiting_reqs)
+         super().advance(reqs, waiting_reqs=waiting_reqs)
+         self.pusher.step()
+ 
+@@ -842,6 +1009,9 @@ def _wrap(owner: Any, name: str, impl: Callable) -> None:
+ 
+ def install() -> None:
+     global _is_installed
++    from sglang_tpu import collective_trace
++
++    collective_trace.install_from_env()
+     if _is_installed or not tpu_envs.SGLANG_DISAGG_PREFIX_VICTIM_PUSH.get():
+         return
+     _is_installed = True
+diff --git a/sglang_tpu/raiden_transfer.py b/sglang_tpu/raiden_transfer.py
+index 9cbeaf4777..7641747ae2 100644
+--- a/sglang_tpu/raiden_transfer.py
++++ b/sglang_tpu/raiden_transfer.py
+@@ -216,5 +216,7 @@ class RaidenKVTransfer:
+             peer=peer,
+             src_block_ids=[int(p) for p in src_pages],
+             dst_block_ids=[int(p) for p in dst_pages],
+-            uuid=uuid,
++            # tpu-sync 759530c7 rejects a push whose uuid has no receive session on
++            # the peer unless the uuid is 0; the landing pages are tracked by VictimDone.
++            uuid=0,
+         )
+diff --git a/test/registered/unit/disaggregation/test_raiden_prefix_pull.py b/test/registered/unit/disaggregation/test_raiden_prefix_pull.py
+index 526454d7cd..94fe7df1de 100644
+--- a/test/registered/unit/disaggregation/test_raiden_prefix_pull.py
++++ b/test/registered/unit/disaggregation/test_raiden_prefix_pull.py
+@@ -1096,6 +1096,10 @@ class TestPullerReads(CustomTestCase):
+         mgr.ready[ROOM] = (PX, 99, DECODE_RAIDEN, 0, 4)
+         puller.advance([req])
+         self.assertEqual(mgr.started, [])
++        # Marked failed here; every rank abandons it together on the next step.
++        self.assertEqual(puller._plans[ROOM].state, "failed")
++        self.assertEqual(allocator.freed, [])
++        puller.advance([req])
+         self.assertEqual(allocator.freed, [NEW_INDICES])
+         self.assertEqual(
+             (tree.lock_refs, mgr.resolved, mgr.forgot), (0, {ROOM}, [ROOM])
+@@ -1119,6 +1123,8 @@ class TestPullerReads(CustomTestCase):
+         mgr.ready[ROOM] = (PX, 99, DECODE_RAIDEN, 1, 3)
+         mgr.start_outcome = "failed"
+         puller.advance([req])
++        self.assertEqual(puller._plans[ROOM].state, "failed")
++        puller.advance([req])
+         self.assertEqual(allocator.freed, [NEW_INDICES])
+         self.assertEqual((tree.lock_refs, mgr.resolved), (0, {ROOM}))
+         self.assertNotIn(ROOM, puller._plans)
+@@ -1927,6 +1933,8 @@ class TestHybridPuller(CustomTestCase):
+         mgr.swa_ready[ROOM] = (PXS, 98, DECODE_SWA_RAIDEN, 2, 0)
+         puller.advance([req])
+         self.assertEqual(mgr.started, [])
++        self.assertEqual(puller._plans[ROOM].state, "failed")
++        puller.advance([req])
+         self.assertEqual(allocator.freed, [NEW_INDICES])
+         self.assertEqual((tree.lock_refs, mgr.resolved), (0, {ROOM}))
+ 
+diff --git a/test/registered/unit/hardware_backend/tpu/test_pd_victim_push.py b/test/registered/unit/hardware_backend/tpu/test_pd_victim_push.py
+index ae5d5b5c2d..b0412a5fad 100644
+--- a/test/registered/unit/hardware_backend/tpu/test_pd_victim_push.py
++++ b/test/registered/unit/hardware_backend/tpu/test_pd_victim_push.py
+@@ -13,6 +13,8 @@ from sglang.test.ci.ci_register import register_cpu_ci
+ register_cpu_ci(est_time=5, suite="base-a-test-cpu")
+ 
+ import unittest
++import heapq
++import time
+ from array import array
+ from types import SimpleNamespace
+ from unittest.mock import MagicMock, patch
+@@ -21,12 +23,14 @@ import torch
+ 
+ from sglang.srt.managers.cache_controller import HiCacheAck
+ from sglang.srt.mem_cache.allocator import TokenToKVPoolAllocator
++from sglang.srt.mem_cache.allocator.swa import SWATokenToKVPoolAllocator
+ from sglang.srt.mem_cache.base_prefix_cache import (
+     EvictParams,
+     InsertParams,
+     MatchPrefixParams,
+ )
+ from sglang.srt.mem_cache.cache_init_params import CacheInitParams
++from sglang.srt.mem_cache.hicache_storage import PoolName
+ from sglang.srt.mem_cache.memory_pool import MHATokenToKVPool, ReqToTokenPool
+ from sglang.srt.mem_cache.radix_cache import RadixKey
+ from sglang.srt.mem_cache.unified_cache.component_type import ComponentType
+@@ -57,14 +61,15 @@ class _FakeHostPool:
+ 
+     shared_allocation_domain = None
+ 
+-    def __init__(self, capacity: int):
++    def __init__(self, capacity: int, page_size: int = 1, address: str = "10.0.0.5:9000"):
++        self.page_size = page_size
+         self.capacity = capacity
+         self.used = 0
+         self.transfer = MagicMock()
+-        self.transfer.host_transfer_address = "10.0.0.5:9000"
++        self.transfer.host_transfer_address = address
+ 
+     def _to_page_ids(self, indices):
+-        return [int(i) for i in indices]
++        return [int(i) // self.page_size for i in indices[:: self.page_size]]
+ 
+     def available_size(self) -> int:
+         return self.capacity - self.used
+@@ -176,6 +181,45 @@ def full_cache(*, kv_size=64, host_capacity=64):
+     return cache, allocator
+ 
+ 
++def hybrid_cache(*, window=128):
++    """Real paged FULL+SWA tree with a FULL and an SWA host pool; mocked device."""
++    allocator = MagicMock(spec=SWATokenToKVPoolAllocator)
++    allocator.device = torch.device("cpu")
++    allocator.page_size = 64
++    allocator._swa_req_ring = False
++    allocator.translate_loc_from_full_to_swa.side_effect = lambda indices: indices
++    cache = UnifiedRadixCache(
++        CacheInitParams(
++            disable=False,
++            req_to_token_pool=MagicMock(spec=ReqToTokenPool),
++            token_to_kv_pool_allocator=allocator,
++            page_size=64,
++            sliding_window_size=window,
++            tree_components=(FULL, ComponentType.SWA),
++            tree_core_backend="python",
++        )
++    )
++    controller = _FakeRaidenController(host_capacity=4096)
++    controller.host.page_size = 64
++    swa = _FakeHostPool(1024, page_size=64, address="10.0.0.5:9001")
++    cache.cache_controller = controller
++    # No asynchronous host users in this fixture: release duplicate pages now.
++    controller.append_host_mem_release = lambda *, extra_pools: [
++        swa.free(xfer.host_indices) for xfer in extra_pools
++    ]
++    cache.components[FULL]._full_kv_pool_host = controller.host
++    cache.components[ComponentType.SWA]._swa_kv_pool_host = swa
++    pools = {PoolName.KV: controller.host, PoolName.SWA: swa}
++    cache.host_pool_group = SimpleNamespace(
++        get_pool=pools.get,
++        free=lambda indices, pool=PoolName.KV: pools[pool].free(indices),
++    )
++    cache.tree_core.set_hicache_enabled()
++    cache.tree_core.has_swa_host_pool = True
++    cache.tree_core.is_write_back = cache.is_write_back = True
++    return cache, allocator
++
++
+ def insert_tokens(cache, allocator, tokens):
+     cache.insert(
+         InsertParams(
+@@ -224,8 +268,9 @@ class TestHostTransfer(CustomTestCase):
+         transfer = RaidenKVTransfer.__new__(RaidenKVTransfer)
+         transfer._mgr = MagicMock()
+         transfer.push_host_pages(peer="p:1", src_pages=[1, 2], dst_pages=[7, 8], uuid=9)
++        # tpu-sync 759530c7 accepts a push with no receive session only under uuid 0.
+         transfer._mgr.h2h_push.assert_called_once_with(
+-            peer="p:1", src_block_ids=[1, 2], dst_block_ids=[7, 8], uuid=9
++            peer="p:1", src_block_ids=[1, 2], dst_block_ids=[7, 8], uuid=0
+         )
+         with self.assertRaises(ValueError):
+             transfer.push_host_pages(peer="p:1", src_pages=[1], dst_pages=[], uuid=9)
+@@ -301,6 +346,44 @@ class TestPrefillPusher(CustomTestCase):
+         self.assertEqual(host_hit(self.cache, self.a), 0)
+         self.assertEqual(host_hit(self.cache, self.b), 8)
+ 
++    def test_stored_victim_path_evicts_in_the_same_order_on_every_rank(self):
++        """A stored victim's path must take unique access stamps, each older
++        than every live node. Stamping the whole path with one value tied the
++        eviction heap, whose ties pop in set-iteration (per-rank memory) order,
++        so TP ranks evicted different nodes after the first stored push."""
++        c = list(range(300, 308))
++        insert_tokens(self.cache, self.allocator, c[:4])  # a two-node path
++        insert_tokens(self.cache, self.allocator, c)
++        leaf = root_node(self.cache, c[0])
++        while leaf.children:
++            leaf = next(iter(leaf.children.values()))
++        self.pusher._make_next_victim(leaf.id)
++        tree_core = self.cache.tree_core
++        victims, node = [], leaf
++        while node is not tree_core.root_node:
++            victims.append(node)
++            node = node.parent
++        self.assertGreaterEqual(len(victims), 2)
++        live, stack = [], list(tree_core.root_node.children.values())
++        while stack:
++            node = stack.pop()
++            stack.extend(node.children.values())
++            if node not in victims:
++                live.append(node)
++        self.assertTrue(live)
++        stamps = [node.last_access_time for node in victims]
++        self.assertEqual(len(set(stamps)), len(stamps), "victim nodes tie")
++        self.assertLess(max(stamps), min(node.last_access_time for node in live))
++        # The eviction heap pops the same nodes whichever order a rank's leaf
++        # set yields them in.
++        entries = [(node.last_access_time, node) for node in victims + live]
++        orders = []
++        for candidates in (entries, entries[::-1]):
++            heap = list(candidates)
++            heapq.heapify(heap)
++            orders.append([heapq.heappop(heap)[1].id for _ in range(len(heap))])
++        self.assertEqual(orders[0], orders[1])
++
+     def test_declined_push_unlocks_and_is_not_repeated(self):
+         sent = self.offer_once()
+         self.acks[sent["seq"]] = VictimAck(seq=sent["seq"], stored=False)
+@@ -418,5 +501,119 @@ class TestDecodeReceiver(CustomTestCase):
+         self.assertFalse(self.receiver.holds_pages())
+ 
+ 
++
++
++class TestHybridVictims(CustomTestCase):
++    """Sliding-window models: a pushed prefix travels with its SWA window."""
++
++    def make_receiver(self, *, window=128):
++        cache, allocator = hybrid_cache(window=window)
++        mgr = MagicMock()
++        scheduler = SimpleNamespace(
++            token_to_kv_pool_allocator=allocator,
++            attn_tp_cpu_group=None,
++            attn_cp_cpu_group=None,
++        )
++        receiver = victim_push.DecodeReceiver(
++            queue=SimpleNamespace(scheduler=scheduler, tree_cache=cache), mgr=mgr
++        )
++        return receiver, mgr
++
++    def push(self, count, seq=1, *, window=128):
++        return VictimPush(
++            prefill="hybrid",
++            seq=seq,
++            ack_endpoint="tcp://p",
++            tokens=list(range(count)),
++            blocks=list(range(count // 64)),
++            swa_blocks=list(range(min(count, -(-window // 64) * 64) // 64)),
++        )
++
++    def land(self, receiver, push):
++        key = (push.prefill, push.seq)
++        self.assertTrue(receiver._grant(key, push))
++        receiver._insert(receiver._landings.pop(key))
++
++    def test_missing_or_wrong_window_is_declined(self):
++        receiver, _ = self.make_receiver()
++        push = self.push(256)
++        for pages in ([], [1], [1, 2, 3]):
++            push.swa_blocks = pages
++            self.assertFalse(receiver._grant((push.prefill, push.seq), push))
++        self.assertEqual(receiver._host_pool.used, 0)
++        self.assertEqual(receiver._swa_host_pool.used, 0)
++
++    def test_landing_keeps_the_window_and_the_ack_names_both_pools(self):
++        receiver, mgr = self.make_receiver()
++        push = self.push(256)
++        self.assertTrue(receiver._grant((push.prefill, push.seq), push))
++        ack = mgr.send_victim_ack.call_args.kwargs["ack"]
++        self.assertEqual((len(ack.landing), len(ack.swa_landing)), (4, 2))
++        self.assertEqual((ack.address, ack.swa_address), ("10.0.0.5:9000", "10.0.0.5:9001"))
++        receiver._insert(receiver._landings.pop((push.prefill, push.seq)))
++        self.assertEqual(receiver._host_pool.used, 256)
++        self.assertEqual(receiver._swa_host_pool.used, 128)
++        core = receiver._cache.tree_core
++        leaf = root_node(receiver._cache, 0)
++        while leaf.children:
++            leaf = next(iter(leaf.children.values()))
++        # The landed path exports its window the way a prefill push reads it.
++        self.assertEqual(
++            victim_push._host_pages(
++                core.root_node,
++                receiver._swa_host_pool,
++                leaf,
++                component=ComponentType.SWA,
++                tail_tokens=128,
++            ),
++            ack.swa_landing,
++        )
++        receiver._cache.evict_host(4096, FULL)
++        self.assertEqual((receiver._host_pool.used, receiver._swa_host_pool.used), (0, 0))
++
++    def test_prefill_pushes_full_pages_then_window_pages(self):
++        receiver, _ = self.make_receiver()
++        self.land(receiver, self.push(256))
++        mgr = MagicMock()
++        acks = {}
++        mgr.decode_peer.return_value = ("10.0.0.1", 5001)
++        mgr.take_victim_ack.side_effect = lambda seq: acks.pop(seq, None)
++        pusher = victim_push.PrefillPusher(
++            SimpleNamespace(
++                _mgr=mgr, _tree_cache=receiver._cache, _page_size=64, _groups=[]
++            )
++        )
++        pusher.record(SimpleNamespace(bootstrap_room=1, origin_input_ids=list(range(256))))
++        pusher.step()
++        offered = mgr.send_victim_push.call_args.kwargs
++        self.assertEqual((len(offered["blocks"]), len(offered["swa_blocks"])), (4, 2))
++        seq = offered["seq"]
++        # A decode that cannot name window pages gets no bytes.
++        acks[seq] = VictimAck(seq=seq, stored=True, landing=[9, 8, 7, 6], address="d:9000")
++        pusher.step()
++        self.assertEqual(pusher.stats["declined"], 1)
++        self.assertNotIn(seq, pusher._pushes)
++        receiver._host_pool.transfer.push_host_pages.assert_not_called()
++        mgr.send_victim_push.reset_mock()
++        pusher._pushed_len.clear()
++        pusher.step()
++        seq = mgr.send_victim_push.call_args.kwargs["seq"]
++        acks[seq] = VictimAck(
++            seq=seq, stored=True, landing=[9, 8, 7, 6], address="d:9000",
++            swa_landing=[3, 2], swa_address="d:9001",
++        )
++        pusher.step()  # takes the ack and starts the push thread
++        for _ in range(100):
++            if pusher.stats["pushed"]:
++                break
++            time.sleep(0.02)
++        pusher.step()  # settles it
++        self.assertEqual((pusher.stats["pushed"], pusher.stats["stored"]), (1, 1))
++        full = receiver._host_pool.transfer.push_host_pages.call_args.kwargs
++        swa = receiver._swa_host_pool.transfer.push_host_pages.call_args.kwargs
++        self.assertEqual((full["peer"], full["src_pages"], full["dst_pages"]), ("d:9000", offered["blocks"], [9, 8, 7, 6]))
++        self.assertEqual((swa["peer"], swa["src_pages"], swa["dst_pages"]), ("d:9001", offered["swa_blocks"], [3, 2]))
++
++
+ if __name__ == "__main__":
+     unittest.main()
+diff --git a/test/registered/unit/hardware_backend/tpu/test_pd_victim_lockstep.py b/test/registered/unit/hardware_backend/tpu/test_pd_victim_lockstep.py
+new file mode 100644
+index 0000000000..a97ad40184
+--- /dev/null
++++ b/test/registered/unit/hardware_backend/tpu/test_pd_victim_lockstep.py
+@@ -0,0 +1,461 @@
++"""Lockstep tests for the P/D victim cache: every attention-TP rank must run the
++same collectives, in the same order, with the same shapes.
++
++A rank that skips or adds one leaves the others waiting in a gloo collective
++forever. On hardware this surfaced as a prefill hang (ranks in different
++all-reduces) followed, minutes later, by libtpu's telemetry harvester aborting
++every rank. These tests reproduce the class on CPU in seconds: K simulated ranks
++run the same component on K threads with rank-divergent inputs (an ack, a READY,
++an allocation failure or a settled read that only some ranks see). The collective
++helpers are replaced by a barrier that matches calls across ranks by kind, op,
++shape and call site, computes the real result, and raises LockstepFault with
++every rank's stack when they disagree or one rank never arrives.
++"""
++
++from __future__ import annotations
++
++import importlib.util
++import sys
++import threading
++import time
++import traceback
++from pathlib import Path
++from types import SimpleNamespace
++from unittest.mock import MagicMock, patch
++
++import torch.distributed as dist
++
++from sglang.srt.mem_cache.base_prefix_cache import EvictParams
++from sglang.test.ci.ci_register import register_cpu_ci
++from sglang.test.test_utils import CustomTestCase
++from sglang_tpu import pd_victim_push as victim_push
++from sglang_tpu.disaggregation.raiden.prefix_pull import DecodePrefixPuller
++from sglang_tpu.disaggregation.raiden.serde import VictimAck, VictimDone, VictimPush
++
++_HERE = Path(__file__).resolve().parent
++
++
++def _load_sibling(name: str, path: Path):
++    """Import a sibling test module for its fixtures without re-registering its tests."""
++    with patch("sglang.test.ci.ci_register.register_cpu_ci", lambda *a, **k: (lambda c: c)):
++        spec = importlib.util.spec_from_file_location(name, path)
++        module = importlib.util.module_from_spec(spec)
++        sys.modules[name] = module
++        spec.loader.exec_module(module)
++    return module
++
++
++_vp = _load_sibling("_lockstep_victim_fixtures", _HERE / "test_pd_victim_push.py")
++_pp = _load_sibling(
++    "_lockstep_pull_fixtures",
++    _HERE.parents[1] / "disaggregation" / "test_raiden_prefix_pull.py",
++)
++
++register_cpu_ci(est_time=10, suite="base-a-test-cpu")
++
++WORLD = 4
++
++
++class LockstepFault(AssertionError):
++    """The simulated ranks disagreed on a collective (or one never arrived)."""
++
++
++class Lockstep:
++    """Barrier standing in for the TP/CP collectives of K simulated ranks."""
++
++    def __init__(self, world: int, timeout: float = 5.0):
++        self.world = world
++        self.timeout = timeout
++        self._cv = threading.Condition()
++        self._ranks: dict[int, int] = {}
++        self._threads: dict[int, int] = {}
++        self._pending: dict[int, tuple] = {}
++        self._gen = 0
++        self._result = None
++        self.fault: str | None = None
++        self.trace: dict[int, list] = {r: [] for r in range(world)}
++
++    def bind(self, rank: int) -> None:
++        self._ranks[threading.get_ident()] = rank
++        self._threads[rank] = threading.get_ident()
++
++    def rank(self) -> int:
++        return self._ranks[threading.get_ident()]
++
++    # The three helpers under test, with the real helpers' early returns.
++    def reduce(self, rows, op):
++        if not rows:
++            return [list(row) for row in rows]
++        return self._call("reduce", str(op), [list(r) for r in rows])
++
++    def common(self, keys):
++        return self._call("common", "", sorted(keys)[: victim_push._AGREE_SLOTS])
++
++    @staticmethod
++    def _site() -> str:
++        for frame in traceback.extract_stack()[::-1]:
++            if not frame.filename.endswith("test_pd_victim_lockstep.py"):
++                return f"{Path(frame.filename).name}:{frame.lineno}:{frame.name}"
++        return "?"
++
++    @staticmethod
++    def _shape(kind, payload):
++        if kind == "reduce":
++            return (len(payload), len(payload[0]) if payload else 0)
++        return ("common",)
++
++    def _stacks(self, ranks) -> str:
++        frames = sys._current_frames()
++        out = []
++        for r in ranks:
++            tid = self._threads.get(r)
++            if tid in frames:
++                stack = "".join(traceback.format_stack(frames[tid])[-8:])
++                out.append(f"--- rank {r} stack:\n{stack}")
++            else:
++                out.append(f"--- rank {r}: thread finished (ran fewer collectives)")
++        return "\n".join(out)
++
++    def _combine(self, kind, op, payloads):
++        if kind == "common":
++            common = set(payloads[0])
++            for p in payloads[1:]:
++                common &= set(p)
++            return sorted(common)
++        pick = min if op.endswith("MIN") else max
++        return [
++            [pick(p[i][j] for p in payloads) for j in range(len(payloads[0][i]))]
++            for i in range(len(payloads[0]))
++        ]
++
++    def _call(self, kind, op, payload):
++        rank = self.rank()
++        site = self._site()
++        shape = self._shape(kind, payload)
++        with self._cv:
++            self.trace[rank].append((kind, op, shape, site))
++            if self.fault:
++                raise LockstepFault(self.fault)
++            gen = self._gen
++            self._pending[rank] = (kind, op, shape, site, payload)
++            if len(self._pending) == self.world:
++                sigs = {v[:4] for v in self._pending.values()}
++                if len(sigs) > 1:
++                    listing = "\n".join(
++                        f"  rank {r}: {v[0]} {v[1]} shape={v[2]} at {v[3]}"
++                        for r, v in sorted(self._pending.items())
++                    )
++                    self.fault = f"ranks disagree on the collective:\n{listing}"
++                else:
++                    self._result = self._combine(
++                        kind, op, [self._pending[r][4] for r in range(self.world)]
++                    )
++                self._pending = {}
++                self._gen += 1
++                self._cv.notify_all()
++                if self.fault:
++                    raise LockstepFault(self.fault)
++                return self._result
++            while self._gen == gen and not self.fault:
++                if not self._cv.wait(timeout=self.timeout):
++                    here = sorted(self._pending)
++                    missing = [r for r in range(self.world) if r not in self._pending]
++                    self.fault = (
++                        f"ranks {here} called {kind} {op} shape={shape} at {site}; "
++                        f"ranks {missing} did not within {self.timeout}s\n"
++                        + self._stacks(missing)
++                    )
++                    self._cv.notify_all()
++            if self.fault:
++                raise LockstepFault(self.fault)
++            return self._result
++
++
++def run_ranks(world, body, timeout=30.0):
++    """Run body(rank, lockstep) on one thread per rank with the collectives patched."""
++    ls = Lockstep(world)
++    errors: dict[int, str] = {}
++
++    def main(rank):
++        ls.bind(rank)
++        try:
++            body(rank, ls)
++        except BaseException:  # noqa: BLE001 - every rank's failure is reported
++            errors[rank] = traceback.format_exc()
++
++    with (
++        patch.object(victim_push, "_all_ranks_reduce", lambda groups, rows, op: ls.reduce(rows, op)),
++        patch.object(victim_push, "_all_ranks_common", lambda groups, keys: ls.common(keys)),
++        patch.object(DecodePrefixPuller, "_all_ranks_reduce", lambda self, rows, op: ls.reduce(rows, op)),
++    ):
++        threads = [
++            threading.Thread(target=main, args=(r,), name=f"rank{r}", daemon=True)
++            for r in range(world)
++        ]
++        for t in threads:
++            t.start()
++        for t in threads:
++            t.join(timeout)
++        alive = [t.name for t in threads if t.is_alive()]
++    return ls, errors, alive
++
++
++class LockstepCase(CustomTestCase):
++    def assert_lockstep(self, ls, errors, alive):
++        report = "\n".join(f"rank {r}:\n{tb}" for r, tb in sorted(errors.items()))
++        self.assertFalse(errors, f"ranks raised:\n{report}\nfault={ls.fault}")
++        self.assertFalse(alive, f"ranks still running: {alive}\nfault={ls.fault}")
++        self.assertIsNone(ls.fault)
++        traces = [ls.trace[r] for r in range(ls.world)]
++        for r in range(1, ls.world):
++            self.assertEqual(
++                traces[r], traces[0], f"rank {r} ran different collectives than rank 0"
++            )
++        return traces[0]
++
++
++class TestLockstepHarness(LockstepCase):
++    def test_a_rank_that_skips_a_collective_is_reported(self):
++        def body(rank, ls):
++            ls.reduce([[1]], dist.ReduceOp.MIN)
++            if rank == 0:
++                ls.reduce([[1]], dist.ReduceOp.MIN)  # the extra call
++
++        ls, errors, alive = run_ranks(2, body)
++        self.assertIn(0, errors)
++        self.assertIn("ranks [1] did not", errors[0])
++        self.assertIn("ran fewer collectives", errors[0])
++
++    def test_ranks_that_disagree_on_shape_are_reported(self):
++        def body(rank, ls):
++            ls.reduce([[1]] * (rank + 1), dist.ReduceOp.MIN)
++
++        ls, errors, alive = run_ranks(2, body)
++        self.assertTrue(errors)
++        self.assertIn("disagree", next(iter(errors.values())))
++
++    def test_results_are_the_real_reduction(self):
++        seen = {}
++
++        def body(rank, ls):
++            seen[rank] = (
++                ls.reduce([[rank, 10 - rank]], dist.ReduceOp.MIN),
++                ls.reduce([[rank, 10 - rank]], dist.ReduceOp.MAX),
++                ls.common([rank, 7, 8]),
++            )
++
++        ls, errors, alive = run_ranks(3, body)
++        self.assert_lockstep(ls, errors, alive)
++        self.assertEqual(seen[2], ([[0, 8]], [[2, 10]], [7, 8]))
++
++
++def _pusher_fixture():
++    cache, allocator = _vp.full_cache(host_capacity=32)
++    mgr = MagicMock()
++    acks: dict = {}
++    mgr.take_victim_ack.side_effect = lambda seq: acks.pop(seq, None)
++    peers = {1: ("10.0.0.1", 5001), 2: ("10.0.0.2", 5002)}
++    mgr.decode_peer.side_effect = lambda room: peers.get(room)
++    puller = SimpleNamespace(
++        _mgr=mgr,
++        _tree_cache=cache,
++        _allocator=allocator,
++        _page_size=1,
++        _groups=["sim"],
++        _window_pages=None,
++    )
++    a, b = list(range(100, 108)), list(range(200, 208))
++    for tokens in (a, b):
++        _vp.insert_tokens(cache, allocator, tokens)
++    return SimpleNamespace(cache=cache, allocator=allocator, mgr=mgr, acks=acks, puller=puller, a=a, b=b)
++
++
++class TestPrefillPusherLockstep(LockstepCase):
++    """Acks, push outcomes and send failures reach ranks at different times;
++    the pushers must still run identical collectives and settle every push."""
++
++    def test_divergent_acks_push_outcomes_and_send_failures(self):
++        fx = [_pusher_fixture() for _ in range(WORLD)]
++        landing = list(range(8))
++
++        def body(rank, ls):
++            f = fx[rank]
++            pusher = victim_push.PrefillPusher(f.puller)
++            for room, tokens in ((1, f.a), (2, f.b)):
++                pusher.record(SimpleNamespace(bootstrap_room=room, origin_input_ids=tokens))
++            f.cache.evict(EvictParams(num_tokens=16))  # both sessions host-only
++            host = f.cache.cache_controller.host
++            if rank == 2:  # this rank's RAM-to-RAM push fails
++                host.transfer.push_host_pages.side_effect = RuntimeError("peer refused")
++            if rank == 3:  # this rank's offer never leaves (ZMQ failure)
++                f.mgr.send_victim_push.return_value = False
++            pusher.step()  # step 1: every rank starts the first push
++            self.assertEqual(len(pusher._pushes), 1)
++            first = next(iter(pusher._pushes))
++            for step in range(2, 10):
++                if step == 2 and rank in (0, 1):  # the ack reaches two ranks first
++                    f.acks[first] = VictimAck(seq=first, stored=True, landing=landing, address="10.0.0.5:9000")
++                if step == 4 and rank in (2, 3):
++                    f.acks[first] = VictimAck(seq=first, stored=True, landing=landing, address="10.0.0.5:9000")
++                for push in list(pusher._pushes.values()):
++                    if push.thread is not None:
++                        push.thread.join(2)
++                pusher.step()
++                time.sleep(0.01)
++            self.assertNotIn(first, pusher._pushes, "the first push never settled")
++            f.stats = dict(pusher.stats)
++
++        ls, errors, alive = run_ranks(WORLD, body)
++        trace = self.assert_lockstep(ls, errors, alive)
++        self.assertGreater(len(trace), 10)
++        # One rank's failed push fails the push on every rank: declined everywhere.
++        self.assertEqual({f.stats["declined"] for f in fx}, {1})
++        self.assertEqual({f.stats["stored"] for f in fx}, {0})
++
++
++def _receiver_fixture(host_capacity):
++    cache, allocator = _vp.full_cache(host_capacity=host_capacity)
++    mgr = MagicMock()
++    pushes: dict = {}
++    dones: dict = {}
++    mgr.victim_pushes.side_effect = lambda: dict(pushes)
++    mgr.take_victim_push.side_effect = lambda key: pushes.pop(key, None)
++    mgr.victim_dones.side_effect = lambda: dict(dones)
++    mgr.take_victim_done.side_effect = lambda key: dones.pop(key, None)
++    scheduler = SimpleNamespace(
++        token_to_kv_pool_allocator=allocator, attn_tp_cpu_group=None, attn_cp_cpu_group=None
++    )
++    queue = SimpleNamespace(scheduler=scheduler, tree_cache=cache)
++    return SimpleNamespace(cache=cache, mgr=mgr, pushes=pushes, dones=dones, queue=queue)
++
++
++class TestDecodeReceiverLockstep(LockstepCase):
++    """Pushes and done notices reach ranks in different rounds and one rank's
++    host pool is too small; the receivers must still agree on every landing."""
++
++    def test_divergent_pushes_host_room_and_dones(self):
++        fx = [_receiver_fixture(host_capacity=64 if r != 3 else 6) for r in range(WORLD)]
++        big = VictimPush(prefill="ab12", seq=1, ack_endpoint="tcp://p", tokens=list(range(300, 308)), blocks=list(range(8)))
++        small = VictimPush(prefill="ab12", seq=2, ack_endpoint="tcp://p", tokens=list(range(400, 404)), blocks=list(range(4)))
++
++        def body(rank, ls):
++            f = fx[rank]
++            receiver = victim_push.DecodeReceiver(queue=f.queue, mgr=f.mgr)
++
++            def round_(n):
++                for _ in range(n * victim_push._CADENCE):
++                    receiver.step()
++
++            if rank in (0, 1):
++                f.pushes[("ab12", 1)] = big  # two ranks see the offer a round early
++            round_(1)
++            f.pushes[("ab12", 1)] = big
++            round_(1)  # every rank agrees; rank 3 cannot fit 8 pages -> refused everywhere
++            self.assertFalse(receiver.holds_pages())
++            f.pushes[("ab12", 2)] = small
++            round_(1)  # granted everywhere (fits rank 3's 6 pages)
++            self.assertTrue(receiver.holds_pages())
++            if rank == 1:
++                f.dones[("ab12", 2)] = VictimDone(prefill="ab12", seq=2, ok=True)
++            round_(1)  # one rank's done notice is not enough
++            self.assertTrue(receiver.holds_pages())
++            f.dones[("ab12", 2)] = VictimDone(prefill="ab12", seq=2, ok=True)
++            round_(1)  # all agree: inserted on every rank
++            self.assertFalse(receiver.holds_pages())
++            f.stats = dict(receiver.stats)
++
++        ls, errors, alive = run_ranks(WORLD, body)
++        self.assert_lockstep(ls, errors, alive)
++        self.assertEqual({f.stats["no_room"] for f in fx}, {1})
++        self.assertEqual({f.stats["landed"] for f in fx}, {1})
++
++
++def _pull_fixture(free_tokens=64):
++    return _pp._offered(have_tokens=4, free_tokens=free_tokens)
++
++
++class TestPrefixPullerLockstep(LockstepCase):
++    """Regression for the prefill deadlock: READY replies, allocation failures,
++    READY mismatches and read settlement differ per rank, yet every rank must
++    run the same collectives and free the same device pages."""
++
++    def test_ready_on_a_subset_and_allocation_failure_on_one_rank(self):
++        fx = [_pull_fixture() for _ in range(WORLD)]
++
++        def body(rank, ls):
++            puller, tree, allocator, mgr = fx[rank]
++            req = _pp._req()
++            puller.advance([req])  # offer taken and asked on every rank
++            if rank in (0, 2):
++                mgr.ready[_pp.ROOM] = (_pp.PX, 99, _pp.DECODE_RAIDEN, 1, 3)
++            puller.advance([req])  # READY on two ranks only: nobody allocates
++            self.assertEqual(allocator.allocs, [])
++            mgr.ready[_pp.ROOM] = (_pp.PX, 99, _pp.DECODE_RAIDEN, 1, 3)
++            allocator.fail = rank == 1  # one rank has no room for the pull
++            puller.advance([req])  # agreed: nobody keeps pages, the room resolves
++            self.assertNotIn(_pp.ROOM, puller._plans)
++            self.assertIn(_pp.ROOM, mgr.resolved)
++            fx[rank] = (puller, tree, allocator, mgr)
++
++        ls, errors, alive = run_ranks(WORLD, body)
++        self.assert_lockstep(ls, errors, alive)
++        # The ranks that allocated freed exactly what they took; nobody holds pages.
++        for rank, (_, _, allocator, _) in enumerate(fx):
++            taken = sum(allocator.allocs) if not allocator.fail else 0
++            freed = sum(len(x) for x in allocator.freed)
++            self.assertEqual((rank, taken), (rank, freed))
++
++    def test_reads_settle_on_a_subset_of_ranks_first(self):
++        fx = [_pull_fixture() for _ in range(WORLD)]
++
++        def body(rank, ls):
++            puller, tree, allocator, mgr = fx[rank]
++            req = _pp._req()
++            puller.advance([req])
++            mgr.ready[_pp.ROOM] = (_pp.PX, 99, _pp.DECODE_RAIDEN, 1, 3)
++            puller.advance([req])  # allocated and started on every rank
++            self.assertEqual(puller._plans[_pp.ROOM].state, "pulling")
++            mgr.read_states[_pp.PX] = "pending"
++            # Reads settle on two ranks first; the plan completes only when all did.
++            if rank in (0, 3):
++                mgr.read_states[_pp.PX] = "done"
++            puller.advance([req])
++            self.assertIsNone(puller._plans[_pp.ROOM].agreed_done)
++            mgr.read_states[_pp.PX] = "done"
++            puller.advance([req])
++            self.assertTrue(puller._plans[_pp.ROOM].agreed_done)
++            puller.commit(req)
++            self.assertNotIn(_pp.ROOM, puller._plans)
++            fx[rank] = (puller, tree, allocator, mgr)
++
++        ls, errors, alive = run_ranks(WORLD, body)
++        self.assert_lockstep(ls, errors, alive)
++        self.assertEqual({fx[r][0].stats["pulls"] for r in range(WORLD)}, {1})
++
++    def test_mismatched_ready_marks_failed_then_all_ranks_abandon(self):
++        fx = [_pull_fixture() for _ in range(WORLD)]
++
++        def body(rank, ls):
++            puller, tree, allocator, mgr = fx[rank]
++            req = _pp._req()
++            puller.advance([req])
++            mgr.ready[_pp.ROOM] = (_pp.PX, 99, _pp.DECODE_RAIDEN, 1, 3)
++            puller.advance([req])  # allocate on every rank, reads start
++            mgr.read_states[_pp.PX] = "pending"
++            # Pages are allocated; now one rank's decode re-sends READY for another range.
++            if rank == 2:
++                mgr.ready[_pp.ROOM] = (_pp.PX, 99, _pp.DECODE_RAIDEN, 0, 4)
++                puller._plans[_pp.ROOM].state = "asked"  # as if the start had not happened yet
++                puller.advance([req])
++                self.assertEqual(puller._plans[_pp.ROOM].state, "failed")
++            else:
++                puller.advance([req])
++            puller.advance([req])  # agreed: abandoned on every rank
++            self.assertNotIn(_pp.ROOM, puller._plans)
++            fx[rank] = (puller, tree, allocator, mgr)
++
++        ls, errors, alive = run_ranks(WORLD, body)
++        self.assert_lockstep(ls, errors, alive)
++        # Reads were pending on every rank except the failed one: zombies on all, no frees yet.
++        self.assertEqual({len(fx[r][0]._zombies) for r in range(WORLD)}, {1})
++        self.assertEqual({len(fx[r][2].freed) for r in range(WORLD)}, {0})

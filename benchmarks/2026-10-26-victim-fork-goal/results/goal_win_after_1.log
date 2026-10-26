@@ -1,0 +1,22 @@
+2026-10-26 23:25:42 starting win_after_1 (after)
+2026-10-26 23:25:42 pair already up; not restarting
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-26 23:27:41 WIPE CHECK: after flush, prefill cached 0/139298, decode cached 0/139298 (both must be 0)
+2026-10-26 23:27:52 static_p128k_n8k_k8
+POINT {"cfg": "win_after_1", "kind": "static", "label": "static_p128k_n8k_k8", "sessions": 8, "prefill_hit": 0.6219, "prefill_cached": 2079040, "prefill_cached_log": 2079040, "prefill_prompt": 3343104, "decode_reuse": 0.627, "ttft50": 6.667536063992884, "ttft95": 13.626379219989758, "e2e50": 15.5275032799982, "e2e95": 22.54240748801385, "tok_s": 35918.8, "out_tok_s": 262.1, "wall": 93.8, "errors": 0, "victim": " prefill push: role=prefill started=180 pushed=164 stored=164 declined=16 prefix-pull commits (TP0): 2 prefix-pull tokens (TP0): 256 decode push: role=decode received=185 granted=169 no_room=16 landed=169 landed_tokens=3497344 decode offers (TP0): 5 decode non-empty offers (TP0): 3 prefill sglang:cached_tokens_total 2079040 prefill sglang:num_requests_total 50 prefill sglang:prompt_tokens_total 6964852 decode sglang:cached_tokens_total 2096000 decode sglang:num_requests_total 50 decode sglang:prompt_tokens_total 6964852 "}
+2026-10-26 23:29:56 static_p128k_n8k_k12
+POINT {"cfg": "win_after_1", "kind": "static", "label": "static_p128k_n8k_k12", "sessions": 12, "prefill_hit": 0.5905, "prefill_cached": 2961280, "prefill_cached_log": 2961280, "prefill_prompt": 5014656, "decode_reuse": 0.6073, "ttft50": 4.014245019003283, "ttft95": 19.037521118996665, "e2e50": 13.294018821994541, "e2e95": 26.824151087988866, "tok_s": 34599.4, "out_tok_s": 252.5, "wall": 146.0, "errors": 0, "victim": " prefill push: role=prefill started=292 pushed=269 stored=269 declined=23 prefix-pull commits (TP0): 15 prefix-pull tokens (TP0): 1920 decode push: role=decode received=294 granted=271 no_room=23 landed=271 landed_tokens=5225344 decode offers (TP0): 23 decode non-empty offers (TP0): 20 prefill sglang:cached_tokens_total 5040320 prefill sglang:num_requests_total 86 prefill sglang:prompt_tokens_total 11979508 decode sglang:cached_tokens_total 5141568 decode sglang:num_requests_total 86 decode sglang:prompt_tokens_total 11979508 "}
+2026-10-26 23:32:51 recall_p128k_n8k_s12 fill
+2026-10-26 23:34:47 recall_p128k_n8k_s12 recall
+POINT {"cfg": "win_after_1", "kind": "recall", "label": "recall_p128k_n8k_s12", "sessions": 12, "prefill_hit": 0.5719, "prefill_cached": 1012800, "prefill_cached_log": 1012800, "prefill_prompt": 1770924, "decode_reuse": 0.7292, "ttft50": 7.598846894019516, "ttft95": 15.679392532998463, "e2e50": 15.362630140996771, "e2e95": 24.6252692489943, "tok_s": 31673.4, "out_tok_s": 218.3, "wall": 56.3, "errors": 0, "victim": " prefill push: role=prefill started=419 pushed=384 stored=384 declined=35 prefix-pull commits (TP0): 25 prefix-pull tokens (TP0): 2795968 decode push: role=decode received=419 granted=384 no_room=35 landed=384 landed_tokens=6714624 decode offers (TP0): 35 decode non-empty offers (TP0): 32 prefill sglang:cached_tokens_total 6053120 prefill sglang:num_requests_total 110 prefill sglang:prompt_tokens_total 15422008 decode sglang:cached_tokens_total 6432896 decode sglang:num_requests_total 110 decode sglang:prompt_tokens_total 15422008 "}
+2026-10-26 23:36:13 recall_p128k_n8k_s16 fill

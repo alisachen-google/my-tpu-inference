@@ -1,1 +1,123 @@
-2026-10-26 18:39:35 starting goal_after_1 (after)
+2026-10-26 20:11:11 starting goal_after_1 (after)
+2026-10-26 20:14:59 warmup complete on both roles
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-26 20:16:58 WIPE CHECK: after flush, prefill cached 0/139298, decode cached 0/139298 (both must be 0)
+2026-10-26 20:17:09 static_p128k_n8k_k8
+POINT {"cfg": "goal_after_1", "kind": "static", "label": "static_p128k_n8k_k8", "sessions": 8, "prefill_hit": -0.0, "prefill_cached": 0, "prefill_cached_log": 1432960, "prefill_prompt": -1810874, "decode_reuse": 0.4276, "ttft50": 6.84756926598493, "ttft95": 545.7748931550013, "e2e50": 16.57136542801163, "e2e95": 545.7762274669949, "tok_s": 4983.0, "out_tok_s": 29.8, "wall": 618.7, "errors": 2, "victim": " prefill push: role=prefill started=35 pushed=26 stored=26 declined=9 prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode push: role=decode received=35 granted=26 no_room=9 landed=26 landed_tokens=2244224 decode sglang:cached_tokens_total 1310336 decode sglang:num_requests_total 35 decode sglang:prompt_tokens_total 4875386 "}
+2026-10-26 20:27:45 LB unhealthy before static_p128k_n8k_k12
+2026-10-26 20:50:53 starting goal_after_1 (after)
+2026-10-26 20:54:41 warmup complete on both roles
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-26 20:56:40 WIPE CHECK: after flush, prefill cached 0/139298, decode cached 0/139298 (both must be 0)
+2026-10-26 20:56:51 static_p128k_n8k_k8
+2026-10-26 21:05:21 starting goal_after_1 (after)
+2026-10-26 21:09:10 warmup complete on both roles
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-26 21:11:42 WIPE: prefill flush refused after 60 s (inflight send never settled); restarting the pair
+2026-10-26 21:15:30 warmup complete on both roles
+2026-10-26 21:15:30 WIPE: pair restarted (restart #1)
+2026-10-26 21:15:55 WIPE CHECK: after flush, prefill cached 0/139298, decode cached 0/139298 (both must be 0)
+2026-10-26 21:16:06 static_p128k_n8k_k8
+2026-10-26 21:53:16 starting goal_after_1 (after)
+2026-10-26 21:57:03 warmup complete on both roles
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-26 22:00:21 WIPE: decode flush failed
+2026-10-26 22:23:46 starting goal_after_1 (after)
+2026-10-26 22:27:33 warmup complete on both roles
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-26 22:29:29 starting goal_after_1 (after)
+2026-10-26 22:33:01 warmup complete on both roles
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-26 22:34:59 WIPE CHECK: after flush, prefill cached 0/139298, decode cached 0/139298 (both must be 0)
+2026-10-26 22:35:10 static_p128k_n8k_k8
+POINT {"cfg": "goal_after_1", "kind": "static", "label": "static_p128k_n8k_k8", "sessions": 8, "prefill_hit": 0.5829, "prefill_cached": 1948800, "prefill_cached_log": 1948800, "prefill_prompt": 3343104, "decode_reuse": 0.6247, "ttft50": 6.405884915991919, "ttft95": 13.411201943003107, "e2e50": 15.082955721009057, "e2e95": 21.99754650500836, "tok_s": 34719.2, "out_tok_s": 253.4, "wall": 97.0, "errors": 0, "victim": " prefill push: role=prefill started=124 pushed=112 stored=112 declined=12 prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode push: role=decode received=123 granted=111 no_room=12 landed=111 landed_tokens=1859456 prefill sglang:cached_tokens_total 1948800 prefill sglang:num_requests_total 37 prefill sglang:prompt_tokens_total 5153978 decode sglang:cached_tokens_total 2088576 decode sglang:num_requests_total 37 decode sglang:prompt_tokens_total 5153978 "}
+2026-10-26 22:37:15 static_p128k_n8k_k12
+POINT {"cfg": "goal_after_1", "kind": "static", "label": "static_p128k_n8k_k12", "sessions": 12, "prefill_hit": 0.3279, "prefill_cached": 1644352, "prefill_cached_log": 1644352, "prefill_prompt": 5014656, "decode_reuse": 0.6171, "ttft50": 9.671780400996795, "ttft95": 19.02395251300186, "e2e50": 17.98740347198327, "e2e95": 26.002732963010203, "tok_s": 29056.7, "out_tok_s": 212.0, "wall": 173.9, "errors": 0, "victim": " prefill push: role=prefill started=323 pushed=294 stored=294 declined=27 prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode push: role=decode received=342 granted=315 no_room=27 landed=315 landed_tokens=3587712 prefill sglang:cached_tokens_total 3593152 prefill sglang:num_requests_total 73 prefill sglang:prompt_tokens_total 10168634 decode sglang:cached_tokens_total 5183360 decode sglang:num_requests_total 73 decode sglang:prompt_tokens_total 10168634 "}
+2026-10-26 22:40:37 static_p128k_n8k_k16
+POINT {"cfg": "goal_after_1", "kind": "static", "label": "static_p128k_n8k_k16", "sessions": 16, "prefill_hit": 0.2805, "prefill_cached": 1875648, "prefill_cached_log": 1875648, "prefill_prompt": 6686208, "decode_reuse": 0.6188, "ttft50": 10.927368948992807, "ttft95": 17.703661186998943, "e2e50": 18.919191595021402, "e2e95": 26.832676977996016, "tok_s": 28853.9, "out_tok_s": 210.6, "wall": 233.4, "errors": 0, "victim": " prefill push: role=prefill started=690 pushed=640 stored=640 declined=49 prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode push: role=decode received=690 granted=641 no_room=49 landed=641 landed_tokens=5755392 prefill sglang:cached_tokens_total 5468800 prefill sglang:num_requests_total 121 prefill sglang:prompt_tokens_total 16854842 decode sglang:cached_tokens_total 9320960 decode sglang:num_requests_total 121 decode sglang:prompt_tokens_total 16854842 "}
+2026-10-26 22:44:58 static_p128k_n8k_k20
+POINT {"cfg": "goal_after_1", "kind": "static", "label": "static_p128k_n8k_k20", "sessions": 20, "prefill_hit": 0.198, "prefill_cached": 1654976, "prefill_cached_log": 1654976, "prefill_prompt": 8357760, "decode_reuse": 0.5867, "ttft50": 11.572794470994268, "ttft95": 17.648412375012413, "e2e50": 19.887561491981614, "e2e95": 25.312887225009035, "tok_s": 26833.8, "out_tok_s": 195.8, "wall": 313.8, "errors": 0, "victim": " prefill push: role=prefill started=1147 pushed=1081 stored=1081 declined=64 prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode push: role=decode received=1164 granted=1099 no_room=65 landed=1099 landed_tokens=8830400 prefill sglang:cached_tokens_total 7123776 prefill sglang:num_requests_total 181 prefill sglang:prompt_tokens_total 25212602 decode sglang:cached_tokens_total 14224320 decode sglang:num_requests_total 181 decode sglang:prompt_tokens_total 25212602 "}
+2026-10-26 22:50:39 static_p128k_n8k_k24
+POINT {"cfg": "goal_after_1", "kind": "static", "label": "static_p128k_n8k_k24", "sessions": 24, "prefill_hit": 0.165, "prefill_cached": 1654848, "prefill_cached_log": 1654848, "prefill_prompt": 10029312, "decode_reuse": 0.5334, "ttft50": 12.569060328998603, "ttft95": 17.88301576100639, "e2e50": 20.510416081000585, "e2e95": 26.388393245986663, "tok_s": 25955.6, "out_tok_s": 189.4, "wall": 389.2, "errors": 0, "victim": " prefill push: role=prefill started=1802 pushed=1712 stored=1712 declined=89 prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode push: role=decode received=1809 granted=1720 no_room=89 landed=1720 landed_tokens=12996672 prefill sglang:cached_tokens_total 8778624 prefill sglang:num_requests_total 253 prefill sglang:prompt_tokens_total 35241914 decode sglang:cached_tokens_total 19573696 decode sglang:num_requests_total 253 decode sglang:prompt_tokens_total 35241914 "}
+2026-10-26 22:57:36 static_p128k_n8k_k28
+POINT {"cfg": "goal_after_1", "kind": "static", "label": "static_p128k_n8k_k28", "sessions": 28, "prefill_hit": 0.1506, "prefill_cached": 1762048, "prefill_cached_log": 1762048, "prefill_prompt": 11700864, "decode_reuse": 0.4355, "ttft50": 13.814221342996461, "ttft95": 17.70498098700773, "e2e50": 21.803863136010477, "e2e95": 26.46727714300505, "tok_s": 25798.9, "out_tok_s": 188.3, "wall": 456.9, "errors": 0, "victim": " prefill push: role=prefill started=2527 pushed=2410 stored=2410 declined=115 prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode push: role=decode received=2537 granted=2422 no_room=115 landed=2422 landed_tokens=19145088 prefill sglang:cached_tokens_total 10540672 prefill sglang:num_requests_total 337 prefill sglang:prompt_tokens_total 46942778 decode sglang:cached_tokens_total 24669376 decode sglang:num_requests_total 337 decode sglang:prompt_tokens_total 46942778 "}
+2026-10-26 23:05:41 static_p256k_n16k_k2
+POINT {"cfg": "goal_after_1", "kind": "static", "label": "static_p256k_n16k_k2", "sessions": 2, "prefill_hit": 0.6274, "prefill_cached": 1048576, "prefill_cached_log": 1048576, "prefill_prompt": 1671360, "decode_reuse": 0.6274, "ttft50": 52.90431163099129, "ttft95": 69.88386648098822, "e2e50": 60.252630653994856, "e2e95": 101.17957687098533, "tok_s": 15102.7, "out_tok_s": 55.3, "wall": 111.1, "errors": 0, "victim": " prefill push: role=prefill started=2537 pushed=2422 stored=2422 declined=115 prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode push: role=decode received=2537 granted=2422 no_room=115 landed=2422 landed_tokens=19145088 prefill sglang:cached_tokens_total 11589248 prefill sglang:num_requests_total 343 prefill sglang:prompt_tokens_total 48614138 decode sglang:cached_tokens_total 25717952 decode sglang:num_requests_total 343 decode sglang:prompt_tokens_total 48614138 "}
+2026-10-26 23:08:01 static_p256k_n16k_k4
+POINT {"cfg": "goal_after_1", "kind": "static", "label": "static_p256k_n16k_k4", "sessions": 4, "prefill_hit": 0.2384, "prefill_cached": -11589248, "prefill_cached_log": 524288, "prefill_prompt": -48614138, "decode_reuse": 0.2353, "ttft50": 68.1135767979722, "ttft95": 86.60092706102296, "e2e50": 96.92510800398304, "e2e95": 120.19984738301719, "tok_s": 15093.8, "out_tok_s": 41.5, "wall": 148.0, "errors": 4, "victim": " prefill push: role=prefill started=2549 pushed=2433 stored=2433 declined=115 prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode push: role=decode received=2550 granted=2435 no_room=115 landed=2435 landed_tokens=19997056 decode sglang:cached_tokens_total 26242240 decode sglang:num_requests_total 351 decode sglang:prompt_tokens_total 50842618 "}
+2026-10-26 23:10:45 LB unhealthy before static_p256k_n16k_k6
+2026-10-26 23:26:33 starting goal_after_1 (after)
+2026-10-26 23:30:05 warmup complete on both roles
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-26 23:32:03 WIPE CHECK: after flush, prefill cached 0/139298, decode cached 0/139298 (both must be 0)
+2026-10-26 23:32:14 static_p256k_n16k_k6

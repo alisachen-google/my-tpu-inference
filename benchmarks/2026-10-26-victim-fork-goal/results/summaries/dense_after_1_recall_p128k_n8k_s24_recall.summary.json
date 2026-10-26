@@ -1,0 +1,116 @@
+{
+ "run": "dense_after_1",
+ "label": "recall_p128k_n8k_s24_recall",
+ "sessions": 24,
+ "prefix": 131072,
+ "new": 8192,
+ "out_tokens": 1024,
+ "concurrency": 4,
+ "seed": 7,
+ "order": "oldest",
+ "working_set_tokens": 3343214,
+ "recall": {
+  "requests": 24,
+  "errors": 24,
+  "wall_s": 0.2,
+  "prompt_tokens": 0,
+  "cached_tokens": 0,
+  "token_hit_rate": null,
+  "reusable_tokens": 0,
+  "reuse_recovered": null,
+  "sessions_fully_reused": 0,
+  "ttft_p50": null,
+  "ttft_p95": null,
+  "e2e_p50": null,
+  "e2e_p95": null,
+  "total_tok_s": 0.0,
+  "output_tok_s": 0.0,
+  "cached_tokens_by_tier": {
+   "device": 0,
+   "host": 0,
+   "storage": 0
+  }
+ },
+ "recall_by_quarter": [
+  {
+   "sessions": "0-5",
+   "requests": 6,
+   "errors": 6,
+   "prompt_tokens": 0,
+   "cached_tokens": 0,
+   "token_hit_rate": null,
+   "reusable_tokens": 0,
+   "reuse_recovered": null,
+   "sessions_fully_reused": 0,
+   "ttft_p50": null,
+   "ttft_p95": null,
+   "e2e_p50": null,
+   "e2e_p95": null,
+   "cached_tokens_by_tier": {
+    "device": 0,
+    "host": 0,
+    "storage": 0
+   }
+  },
+  {
+   "sessions": "6-11",
+   "requests": 6,
+   "errors": 6,
+   "prompt_tokens": 0,
+   "cached_tokens": 0,
+   "token_hit_rate": null,
+   "reusable_tokens": 0,
+   "reuse_recovered": null,
+   "sessions_fully_reused": 0,
+   "ttft_p50": null,
+   "ttft_p95": null,
+   "e2e_p50": null,
+   "e2e_p95": null,
+   "cached_tokens_by_tier": {
+    "device": 0,
+    "host": 0,
+    "storage": 0
+   }
+  },
+  {
+   "sessions": "12-17",
+   "requests": 6,
+   "errors": 6,
+   "prompt_tokens": 0,
+   "cached_tokens": 0,
+   "token_hit_rate": null,
+   "reusable_tokens": 0,
+   "reuse_recovered": null,
+   "sessions_fully_reused": 0,
+   "ttft_p50": null,
+   "ttft_p95": null,
+   "e2e_p50": null,
+   "e2e_p95": null,
+   "cached_tokens_by_tier": {
+    "device": 0,
+    "host": 0,
+    "storage": 0
+   }
+  },
+  {
+   "sessions": "18-23",
+   "requests": 6,
+   "errors": 6,
+   "prompt_tokens": 0,
+   "cached_tokens": 0,
+   "token_hit_rate": null,
+   "reusable_tokens": 0,
+   "reuse_recovered": null,
+   "sessions_fully_reused": 0,
+   "ttft_p50": null,
+   "ttft_p95": null,
+   "e2e_p50": null,
+   "e2e_p95": null,
+   "cached_tokens_by_tier": {
+    "device": 0,
+    "host": 0,
+    "storage": 0
+   }
+  }
+ ]
+}

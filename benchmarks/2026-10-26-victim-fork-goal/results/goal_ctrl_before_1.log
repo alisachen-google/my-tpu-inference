@@ -1,0 +1,19 @@
+2026-10-26 22:22:28 starting ctrl_before_1 (before)
+2026-10-26 22:40:37 WARN: warmup not confirmed after 10 min (prefill=0 decode=0)
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-26 22:42:37 WIPE CHECK: after flush, prefill cached 0/139298, decode cached 0/139298 (both must be 0)
+2026-10-26 22:42:48 static_p128k_n8k_k8
+POINT {"cfg": "ctrl_before_1", "kind": "static", "label": "static_p128k_n8k_k8", "sessions": 8, "prefill_hit": 0.6051, "prefill_cached": 2022912, "prefill_cached_log": 2022912, "prefill_prompt": 3343104, "decode_reuse": 0.6273, "ttft50": 6.661090264009545, "ttft95": 13.667974109994248, "e2e50": 15.048972052987665, "e2e95": 21.972039685002528, "tok_s": 36481.4, "out_tok_s": 266.2, "wall": 92.3, "errors": 0, "victim": " prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode offers (TP0): 0 decode non-empty offers (TP0): 0 prefill sglang:cached_tokens_total 2022912 prefill sglang:num_requests_total 37 prefill sglang:prompt_tokens_total 5153978 decode sglang:cached_tokens_total 2097152 decode sglang:num_requests_total 37 decode sglang:prompt_tokens_total 5153978 "}
+2026-10-26 22:44:51 static_p128k_n8k_k12
+POINT {"cfg": "ctrl_before_1", "kind": "static", "label": "static_p128k_n8k_k12", "sessions": 12, "prefill_hit": 0.3572, "prefill_cached": 1791424, "prefill_cached_log": 1791424, "prefill_prompt": 5014656, "decode_reuse": 0.6272, "ttft50": 8.760264716023812, "ttft95": 19.024427329015452, "e2e50": 17.030940433003707, "e2e95": 26.20271414599847, "tok_s": 31035.7, "out_tok_s": 226.5, "wall": 162.8, "errors": 0, "victim": " prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode offers (TP0): 0 decode non-empty offers (TP0): 0 prefill sglang:cached_tokens_total 3814336 prefill sglang:num_requests_total 73 prefill sglang:prompt_tokens_total 10168634 decode sglang:cached_tokens_total 5242432 decode sglang:num_requests_total 73 decode sglang:prompt_tokens_total 10168634 "}
+2026-10-26 22:47:54 GOAL before DONE (pair restarts for refused wipes: 0)
