@@ -1,5 +1,10 @@
 # Decode DRAM as an extension of the prefill's KV cache: handoff notes
 
+> Historical snapshot: the current native host API and reliability corrections are
+> documented in [the 2026-10-26 review](pd-victim-prefix-cache-review-2026-10-26.md).
+> The embedded H2H patch described below is obsolete and is not required by native
+> revision `759530c7`.
+
 Written 2026-10-25 for another engineer or AI agent picking up this work. It records what we
 know about three systems (vllm-torchtpu, tpu-sync/Raiden, sglang-torchtpu), the goal, and the
 one solution being pursued: the victim-cache branch `pd-victim-prefix-cache` on the fork. It

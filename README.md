@@ -7,6 +7,15 @@ Snapshot taken 2026-10-21 (heads as listed in each note). Each note has a recomm
 findings ordered by severity with ready-to-paste comment text, questions, nits, and a list of threads other
 reviewers already covered so nothing is repeated.
 
+## Victim prefix cache: design and reliability review (added 2026-10-26)
+
+[handoff/pd-victim-prefix-cache-review-2026-10-26.md](handoff/pd-victim-prefix-cache-review-2026-10-26.md)
+explains the FULL/SWA host spill design and code changes, records reproduced
+cleanup and rank-consistency bugs and their fixes, and distinguishes the native
+socket deadline limitation from safe buffer ownership. Additional regression
+probes live in [tests/pd_victim_review/](tests/pd_victim_review/), outside the
+SGLang feature commit. The note also links the saved design website.
+
 ## Handoff: decode DRAM as a prefill KV tier (added 2026-10-25)
 
 [handoff/decode-dram-kv-tier.md](handoff/decode-dram-kv-tier.md) records our understanding of
