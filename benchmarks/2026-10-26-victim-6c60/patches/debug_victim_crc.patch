@@ -1,0 +1,73 @@
+diff --git a/sglang_tpu/pd_victim_push.py b/sglang_tpu/pd_victim_push.py
+index 4e3cd2ecde..0946f30b0c 100644
+--- a/sglang_tpu/pd_victim_push.py
++++ b/sglang_tpu/pd_victim_push.py
+@@ -37,6 +37,7 @@ from __future__ import annotations
+ import functools
+ import hashlib
+ import logging
++import os
+ import secrets
+ import time
+ import weakref
+@@ -159,6 +160,25 @@ def _path_tokens(root: Any, leaf: Any) -> List[int]:
+     return tokens
+ 
+ 
++
++def _debug_crc(pool: Any, page_ids: Sequence[int]) -> Tuple[int, int]:
++    """CRC32 over every layer of the given host pages (debug: SGLANG_TPU_DEBUG_VICTIM_CRC)."""
++    import zlib
++
++    mgr = pool.transfer._mgr
++    crc = 0
++    n = 0
++    for layer in range(pool.transfer.layer_num):
++        for page in page_ids:
++            data = mgr.read_block_bytes(layer, int(page))
++            crc = zlib.crc32(data, crc)
++            n += len(data)
++    return crc, n
++
++
++def _debug_crc_on() -> bool:
++    return os.environ.get("SGLANG_TPU_DEBUG_VICTIM_CRC") == "1"
++
+ def _host_pages(
+     root: Any, host_pool: Any, leaf: Any, *, component=_FULL, tail_tokens=None
+ ) -> Optional[List[int]]:
+@@ -403,6 +423,13 @@ class PrefillPusher:
+                 if not pages:
+                     continue
+                 req_id = _transfer_id(self._mgr.victim_namespace, push.seq, component)
++                if _debug_crc_on():
++                    crc, nbytes = _debug_crc(pool, pages)
++                    logger.info(
++                        "[victim-crc] role=prefill ns=%s seq=%d comp=%s rank=%d pages=%d bytes=%d crc=%08x",
++                        self._mgr.victim_namespace, push.seq, component,
++                        dist.get_rank(), len(pages), nbytes, crc,
++                    )
+                 # False can mean an early pull already completed. The native
+                 # terminal report, rather than the return value, releases pins.
+                 pool.transfer.register_read(req_id, push.uuid, pages, source="host")
+@@ -840,6 +867,20 @@ class DecodeReceiver:
+                 self._mgr.take_victim_done(key)
+                 self._landings.pop(key)
+                 if received and done and ok:
++                    if _debug_crc_on():
++                        for component, pool, indices in (
++                            ("full", self._host_pool, landing.indices),
++                            ("swa", self._swa_host_pool, landing.swa_indices),
++                        ):
++                            if indices is None:
++                                continue
++                            pages = pool._to_page_ids(indices)
++                            crc, nbytes = _debug_crc(pool, pages)
++                            logger.info(
++                                "[victim-crc] role=decode ns=%s seq=%d comp=%s rank=%d pages=%d bytes=%d crc=%08x",
++                                landing.push.prefill, landing.push.seq, component,
++                                dist.get_rank(), len(pages), nbytes, crc,
++                            )
+                     self._insert(landing)
+                 else:
+                     self._free_landing(landing)

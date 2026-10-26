@@ -7,6 +7,15 @@ Snapshot taken 2026-10-21 (heads as listed in each note). Each note has a recomm
 findings ordered by severity with ready-to-paste comment text, questions, nits, and a list of threads other
 reviewers already covered so nothing is repeated.
 
+## Benchmark: victim prefix cache, commit 6c60fd77 (added 2026-10-26)
+
+[benchmarks/2026-10-26-victim-6c60/](benchmarks/2026-10-26-victim-6c60/README.md) holds a before/after benchmark of
+the P/D victim prefix cache on gpt-oss-120b 1P1D: parent 49ddede7 against 6c60fd77 with tpu-sync 759530c7. The
+workloads are static 128k/256k-prefix prompts with 8k/16k new tokens and 1k output. Also included: an H2H
+microbenchmark of tpu-sync (loopback and cross-host), a concurrency audit of the D2D and H2H paths, host-memory
+measurements, the crash found in the "after" config, plus raw results, harness and recipes. The "before" side is
+complete; the "after" sweep is pending.
+
 ## Handoff: decode DRAM as a prefill KV tier (added 2026-10-25)
 
 [handoff/decode-dram-kv-tier.md](handoff/decode-dram-kv-tier.md) records our understanding of

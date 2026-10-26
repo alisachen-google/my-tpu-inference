@@ -1,0 +1,10 @@
+RESULT {"pages": 16, "MiB_per_pair": 2.25, "pairs": 1, "streams": 1, "reps": 5, "data_ok": true, "lat_p50_ms": 2.32, "lat_min_ms": 2.13, "lat_max_ms": 2.66, "GiBps_aggregate_p50": 0.946}
+RESULT {"pages": 128, "MiB_per_pair": 18.0, "pairs": 1, "streams": 1, "reps": 5, "data_ok": true, "lat_p50_ms": 7.17, "lat_min_ms": 6.84, "lat_max_ms": 7.5, "GiBps_aggregate_p50": 2.451}
+RESULT {"pages": 512, "MiB_per_pair": 72.0, "pairs": 1, "streams": 1, "reps": 5, "data_ok": true, "lat_p50_ms": 24.0, "lat_min_ms": 23.35, "lat_max_ms": 26.91, "GiBps_aggregate_p50": 2.929}
+RESULT {"pages": 2176, "MiB_per_pair": 306.0, "pairs": 1, "streams": 1, "reps": 5, "data_ok": true, "lat_p50_ms": 100.53, "lat_min_ms": 89.65, "lat_max_ms": 104.55, "GiBps_aggregate_p50": 2.972}
+RESULT {"pages": 4352, "MiB_per_pair": 612.0, "pairs": 1, "streams": 1, "reps": 5, "data_ok": true, "lat_p50_ms": 187.85, "lat_min_ms": 176.8, "lat_max_ms": 189.62, "GiBps_aggregate_p50": 3.182}
+RESULT {"pages": 16, "MiB_per_pair": 2.25, "pairs": 1, "streams": 4, "reps": 5, "data_ok": true, "lat_p50_ms": 2.49, "lat_min_ms": 2.16, "lat_max_ms": 2.72, "GiBps_aggregate_p50": 0.884}
+RESULT {"pages": 128, "MiB_per_pair": 18.0, "pairs": 1, "streams": 4, "reps": 5, "data_ok": true, "lat_p50_ms": 6.67, "lat_min_ms": 6.31, "lat_max_ms": 6.98, "GiBps_aggregate_p50": 2.636}
+RESULT {"pages": 512, "MiB_per_pair": 72.0, "pairs": 1, "streams": 4, "reps": 5, "data_ok": true, "lat_p50_ms": 20.75, "lat_min_ms": 20.53, "lat_max_ms": 21.63, "GiBps_aggregate_p50": 3.388}
+RESULT {"pages": 2176, "MiB_per_pair": 306.0, "pairs": 1, "streams": 4, "reps": 5, "data_ok": true, "lat_p50_ms": 84.33, "lat_min_ms": 83.06, "lat_max_ms": 84.73, "GiBps_aggregate_p50": 3.543}
+RESULT {"pages": 4352, "MiB_per_pair": 612.0, "pairs": 1, "streams": 4, "reps": 5, "data_ok": true, "lat_p50_ms": 169.64, "lat_min_ms": 161.48, "lat_max_ms": 173.62, "GiBps_aggregate_p50": 3.523}

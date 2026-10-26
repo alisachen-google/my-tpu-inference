@@ -1,0 +1,14 @@
+2026-10-26 06:25:36 starting static_after_1 (after)
+2026-10-26 06:30:05 static_after_1 p128k_n8k_s4
+SUMMARY {"run": "static_after_1", "label": "p128k_n8k_s4", "sessions": 4, "turns": 4, "prefix": 131072, "shared": 0, "turn_new": 8192, "turn_out": 1024, "wall_s": 65.5, "errors": 0, "ttft_turn0_p50": 13.484331532003125, "ttft_later_p50": 0.7909030550072202, "ttft_later_p95": 1.9067488709988538, "ttft_later_max": 8.525687661996926, "ttft_per_turn_p50": {"0": 13.48, "1": 1.91, "2": 0.79, "3": 0.8}, "cached_tokens_by_tier": {"device": 1671936, "host": 0, "storage": 0}, "prompt_tokens_total": 2296168, "session_wall_p50": 59.0, "output_tokens_total": 16384, "aggregate_output_tok_s": 250.1, "requests_ok": 16, "cached_tokens_total": 1671936, "token_hit_rate": 0.7281, "later_token_hit_rate": 0.9437, "total_tok_s": 35298.7, "e2e_later_p50": 9.710238070008927, "e2e_later_p95": 10.750088525004685}
+  [p128k_n8k_s4]   prefill push: role=prefill 
+  [p128k_n8k_s4]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s4]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s4]   decode push: role=decode 
+  [p128k_n8k_s4]   prefill sglang:cached_tokens_total 1671936
+  [p128k_n8k_s4]   prefill sglang:num_requests_total 16
+  [p128k_n8k_s4]   prefill sglang:prompt_tokens_total 2296168
+  [p128k_n8k_s4]   decode sglang:cached_tokens_total 1671936
+  [p128k_n8k_s4]   decode sglang:num_requests_total 16
+  [p128k_n8k_s4]   decode sglang:prompt_tokens_total 2296168
+2026-10-26 06:31:30 static_after_1 p128k_n8k_s8

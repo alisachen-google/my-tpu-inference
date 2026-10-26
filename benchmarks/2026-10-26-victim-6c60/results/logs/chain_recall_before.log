@@ -1,0 +1,295 @@
+2026-10-26 06:47:39 starting recall_before_1 (before)
+2026-10-26 06:52:07 recall_before_1 p128k_n8k_s8 stats before
+  [p128k_n8k_s8 pre]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s8 pre]   prefix-pull tokens (TP0): 0
+2026-10-26 06:52:11 recall_before_1 p128k_n8k_s8 fill
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s8_fill", "sessions": 8, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 1114384, "fill": {"requests": 8, "errors": 0, "wall_s": 56.3, "prompt_tokens": 1114384, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 17.715823299004114, "ttft_p95": 25.460256427992135, "e2e_p50": 24.51180029301031, "e2e_p95": 32.545676105000894, "total_tok_s": 19939.2, "output_tok_s": 145.5, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 06:58:29 recall_before_1 p128k_n8k_s8 settled ()
+  [p128k_n8k_s8 mid]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s8 mid]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s8 mid]   prefill sglang:num_requests_total 8
+  [p128k_n8k_s8 mid]   prefill sglang:prompt_tokens_total 1114384
+  [p128k_n8k_s8 mid]   decode sglang:num_requests_total 8
+  [p128k_n8k_s8 mid]   decode sglang:prompt_tokens_total 1114384
+2026-10-26 06:58:32 recall_before_1 p128k_n8k_s8 recall
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s8_recall", "sessions": 8, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 1114384, "recall": {"requests": 8, "errors": 0, "wall_s": 41.5, "prompt_tokens": 1180616, "cached_tokens": 1114112, "token_hit_rate": 0.9437, "reusable_tokens": 1114384, "reuse_recovered": 0.9998, "sessions_fully_reused": 8, "ttft_p50": 11.786238152999431, "ttft_p95": 17.20953581800859, "e2e_p50": 18.787757040001452, "e2e_p95": 23.882121150003513, "total_tok_s": 28646.0, "output_tok_s": 197.4, "cached_tokens_by_tier": {"device": 852672, "host": 261440, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-1", "requests": 2, "errors": 0, "prompt_tokens": 295154, "cached_tokens": 278528, "token_hit_rate": 0.9437, "reusable_tokens": 278596, "reuse_recovered": 0.9998, "sessions_fully_reused": 2, "ttft_p50": 2.001366604003124, "ttft_p95": 5.172916249008267, "e2e_p50": 9.749030804989161, "e2e_p95": 12.87811714100826, "cached_tokens_by_tier": {"device": 131008, "host": 147520, "storage": 0}}, {"sessions": "2-3", "requests": 2, "errors": 0, "prompt_tokens": 295154, "cached_tokens": 278528, "token_hit_rate": 0.9437, "reusable_tokens": 278596, "reuse_recovered": 0.9998, "sessions_fully_reused": 2, "ttft_p50": 1.43860397899698, "ttft_p95": 11.786238152999431, "e2e_p50": 9.144669450994115, "e2e_p95": 18.787757040001452, "cached_tokens_by_tier": {"device": 278528, "host": 0, "storage": 0}}, {"sessions": "4-5
+  [p128k_n8k_s8 post]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s8 post]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s8 post]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s8 post]   prefill sglang:num_requests_total 16
+  [p128k_n8k_s8 post]   prefill sglang:prompt_tokens_total 2295000
+  [p128k_n8k_s8 post]   decode sglang:cached_tokens_total 1114112
+  [p128k_n8k_s8 post]   decode sglang:num_requests_total 16
+  [p128k_n8k_s8 post]   decode sglang:prompt_tokens_total 2295000
+2026-10-26 06:59:33 recall_before_1 p128k_n8k_s12 stats before
+  [p128k_n8k_s12 pre]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s12 pre]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s12 pre]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s12 pre]   prefill sglang:num_requests_total 16
+  [p128k_n8k_s12 pre]   prefill sglang:prompt_tokens_total 2295000
+  [p128k_n8k_s12 pre]   decode sglang:cached_tokens_total 1114112
+  [p128k_n8k_s12 pre]   decode sglang:num_requests_total 16
+  [p128k_n8k_s12 pre]   decode sglang:prompt_tokens_total 2295000
+2026-10-26 06:59:37 recall_before_1 p128k_n8k_s12 fill
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s12_fill", "sessions": 12, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 1671576, "fill": {"requests": 12, "errors": 0, "wall_s": 80.7, "prompt_tokens": 1671576, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 17.645543145001284, "ttft_p95": 19.18933315599861, "e2e_p50": 24.768265159000293, "e2e_p95": 26.47371121699689, "total_tok_s": 20865.7, "output_tok_s": 152.3, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 07:06:21 recall_before_1 p128k_n8k_s12 settled ()
+  [p128k_n8k_s12 mid]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s12 mid]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s12 mid]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s12 mid]   prefill sglang:num_requests_total 28
+  [p128k_n8k_s12 mid]   prefill sglang:prompt_tokens_total 3966576
+  [p128k_n8k_s12 mid]   decode sglang:cached_tokens_total 1114112
+  [p128k_n8k_s12 mid]   decode sglang:num_requests_total 28
+  [p128k_n8k_s12 mid]   decode sglang:prompt_tokens_total 3966576
+2026-10-26 07:06:24 recall_before_1 p128k_n8k_s12 recall
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s12_recall", "sessions": 12, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 1671576, "recall": {"requests": 12, "errors": 0, "wall_s": 87.4, "prompt_tokens": 1770924, "cached_tokens": 1671168, "token_hit_rate": 0.9437, "reusable_tokens": 1671576, "reuse_recovered": 0.9998, "sessions_fully_reused": 12, "ttft_p50": 20.238400914997328, "ttft_p95": 20.849848425990785, "e2e_p50": 27.05175133999728, "e2e_p95": 27.589819536995492, "total_tok_s": 20402.9, "output_tok_s": 140.6, "cached_tokens_by_tier": {"device": 1671168, "host": 0, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-2", "requests": 3, "errors": 0, "prompt_tokens": 442731, "cached_tokens": 417792, "token_hit_rate": 0.9437, "reusable_tokens": 417894, "reuse_recovered": 0.9998, "sessions_fully_reused": 3, "ttft_p50": 13.971110430997214, "ttft_p95": 20.849848425990785, "e2e_p50": 20.712009119990398, "e2e_p95": 27.589819536995492, "cached_tokens_by_tier": {"device": 417792, "host": 0, "storage": 0}}, {"sessions": "3-5", "requests": 3, "errors": 0, "prompt_tokens": 442731, "cached_tokens": 417792, "token_hit_rate": 0.9437, "reusable_tokens": 417894, "reuse_recovered": 0.9998, "sessions_fully_reused": 3, "ttft_p50": 20.303076146010426, "ttft_p95": 27.412402401008876, "e2e_p50": 27.06416344399622, "e2e_p95": 33.95208401601121, "cached_tokens_by_tier": {"device": 417792, "host": 0, "storage": 0}}, {"sessions": "6-8
+  [p128k_n8k_s12 post]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s12 post]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s12 post]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s12 post]   prefill sglang:num_requests_total 40
+  [p128k_n8k_s12 post]   prefill sglang:prompt_tokens_total 5737500
+  [p128k_n8k_s12 post]   decode sglang:cached_tokens_total 2785280
+  [p128k_n8k_s12 post]   decode sglang:num_requests_total 40
+  [p128k_n8k_s12 post]   decode sglang:prompt_tokens_total 5737500
+2026-10-26 07:08:12 recall_before_1 p128k_n8k_s16 stats before
+  [p128k_n8k_s16 pre]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s16 pre]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s16 pre]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s16 pre]   prefill sglang:num_requests_total 40
+  [p128k_n8k_s16 pre]   prefill sglang:prompt_tokens_total 5737500
+  [p128k_n8k_s16 pre]   decode sglang:cached_tokens_total 2785280
+  [p128k_n8k_s16 pre]   decode sglang:num_requests_total 40
+  [p128k_n8k_s16 pre]   decode sglang:prompt_tokens_total 5737500
+2026-10-26 07:08:15 recall_before_1 p128k_n8k_s16 fill
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s16_fill", "sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 2228768, "fill": {"requests": 16, "errors": 0, "wall_s": 105.6, "prompt_tokens": 2228768, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 17.755677085995558, "ttft_p95": 19.019654240997625, "e2e_p50": 24.703938717997517, "e2e_p95": 26.092893660999835, "total_tok_s": 21260.9, "output_tok_s": 155.2, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 07:15:23 recall_before_1 p128k_n8k_s16 settled ()
+  [p128k_n8k_s16 mid]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s16 mid]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s16 mid]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s16 mid]   prefill sglang:num_requests_total 56
+  [p128k_n8k_s16 mid]   prefill sglang:prompt_tokens_total 7966268
+  [p128k_n8k_s16 mid]   decode sglang:cached_tokens_total 2785280
+  [p128k_n8k_s16 mid]   decode sglang:num_requests_total 56
+  [p128k_n8k_s16 mid]   decode sglang:prompt_tokens_total 7966268
+2026-10-26 07:15:26 recall_before_1 p128k_n8k_s16 recall
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s16_recall", "sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 2228768, "recall": {"requests": 16, "errors": 0, "wall_s": 114.1, "prompt_tokens": 2361232, "cached_tokens": 2228224, "token_hit_rate": 0.9437, "reusable_tokens": 2228768, "reuse_recovered": 0.9998, "sessions_fully_reused": 16, "ttft_p50": 20.355611932987813, "ttft_p95": 20.67642250600329, "e2e_p50": 26.97297364300175, "e2e_p95": 27.432246314012446, "total_tok_s": 20838.0, "output_tok_s": 143.6, "cached_tokens_by_tier": {"device": 2228224, "host": 0, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-3", "requests": 4, "errors": 0, "prompt_tokens": 590308, "cached_tokens": 557056, "token_hit_rate": 0.9437, "reusable_tokens": 557192, "reuse_recovered": 0.9998, "sessions_fully_reused": 4, "ttft_p50": 20.67642250600329, "ttft_p95": 27.49161556099716, "e2e_p50": 27.31971163500566, "e2e_p95": 34.039111409991165, "cached_tokens_by_tier": {"device": 557056, "host": 0, "storage": 0}}, {"sessions": "4-7", "requests": 4, "errors": 0, "prompt_tokens": 590308, "cached_tokens": 557056, "token_hit_rate": 0.9437, "reusable_tokens": 557192, "reuse_recovered": 0.9998, "sessions_fully_reused": 4, "ttft_p50": 20.363106792006874, "ttft_p95": 20.392781610993552, "e2e_p50": 26.973844813997857, "e2e_p95": 27.06868459600082, "cached_tokens_by_tier": {"device": 557056, "host": 0, "storage": 0}}, {"sessions": "8-11"
+  [p128k_n8k_s16 post]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s16 post]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s16 post]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s16 post]   prefill sglang:num_requests_total 72
+  [p128k_n8k_s16 post]   prefill sglang:prompt_tokens_total 10327500
+  [p128k_n8k_s16 post]   decode sglang:cached_tokens_total 5013504
+  [p128k_n8k_s16 post]   decode sglang:num_requests_total 72
+  [p128k_n8k_s16 post]   decode sglang:prompt_tokens_total 10327500
+2026-10-26 07:17:41 recall_before_1 p128k_n8k_s24 stats before
+  [p128k_n8k_s24 pre]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s24 pre]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s24 pre]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s24 pre]   prefill sglang:num_requests_total 72
+  [p128k_n8k_s24 pre]   prefill sglang:prompt_tokens_total 10327500
+  [p128k_n8k_s24 pre]   decode sglang:cached_tokens_total 5013504
+  [p128k_n8k_s24 pre]   decode sglang:num_requests_total 72
+  [p128k_n8k_s24 pre]   decode sglang:prompt_tokens_total 10327500
+2026-10-26 07:17:43 recall_before_1 p128k_n8k_s24 fill
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s24_fill", "sessions": 24, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 3343152, "fill": {"requests": 24, "errors": 0, "wall_s": 155.2, "prompt_tokens": 3343152, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 17.80455352300487, "ttft_p95": 19.080042906003655, "e2e_p50": 24.8539152059966, "e2e_p95": 26.081145204007044, "total_tok_s": 21699.3, "output_tok_s": 158.4, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 07:25:42 recall_before_1 p128k_n8k_s24 settled ()
+  [p128k_n8k_s24 mid]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s24 mid]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s24 mid]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s24 mid]   prefill sglang:num_requests_total 96
+  [p128k_n8k_s24 mid]   prefill sglang:prompt_tokens_total 13670652
+  [p128k_n8k_s24 mid]   decode sglang:cached_tokens_total 5013504
+  [p128k_n8k_s24 mid]   decode sglang:num_requests_total 96
+  [p128k_n8k_s24 mid]   decode sglang:prompt_tokens_total 13670652
+2026-10-26 07:25:45 recall_before_1 p128k_n8k_s24 recall
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s24_recall", "sessions": 24, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 3343152, "recall": {"requests": 24, "errors": 0, "wall_s": 168.1, "prompt_tokens": 3541848, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 3343152, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 20.019230484002037, "ttft_p95": 20.754792168008862, "e2e_p50": 26.896924188986304, "e2e_p95": 27.830285107003874, "total_tok_s": 21216.1, "output_tok_s": 146.2, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-5", "requests": 6, "errors": 0, "prompt_tokens": 885462, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 835788, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 19.83839322300628, "ttft_p95": 27.552793615002884, "e2e_p50": 27.017210998004884, "e2e_p95": 34.68320542400761, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, {"sessions": "6-11", "requests": 6, "errors": 0, "prompt_tokens": 885462, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 835788, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 19.84799040199141, "ttft_p95": 19.960959710006136, "e2e_p50": 26.737675522992504, "e2e_p95": 26.91403134400025, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, {"sessions": "12-17", "requests": 6, "errors": 0, "prompt_tokens": 
+  [p128k_n8k_s24 post]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s24 post]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s24 post]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s24 post]   prefill sglang:num_requests_total 120
+  [p128k_n8k_s24 post]   prefill sglang:prompt_tokens_total 17212500
+  [p128k_n8k_s24 post]   decode sglang:cached_tokens_total 5013504
+  [p128k_n8k_s24 post]   decode sglang:num_requests_total 120
+  [p128k_n8k_s24 post]   decode sglang:prompt_tokens_total 17212500
+2026-10-26 07:28:53 recall_before_1 p128k_n8k_s32 stats before
+  [p128k_n8k_s32 pre]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s32 pre]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s32 pre]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s32 pre]   prefill sglang:num_requests_total 120
+  [p128k_n8k_s32 pre]   prefill sglang:prompt_tokens_total 17212500
+  [p128k_n8k_s32 pre]   decode sglang:cached_tokens_total 5013504
+  [p128k_n8k_s32 pre]   decode sglang:num_requests_total 120
+  [p128k_n8k_s32 pre]   decode sglang:prompt_tokens_total 17212500
+2026-10-26 07:28:56 recall_before_1 p128k_n8k_s32 fill
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s32_fill", "sessions": 32, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 4457536, "fill": {"requests": 32, "errors": 0, "wall_s": 204.9, "prompt_tokens": 4457536, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 17.800178844001493, "ttft_p95": 17.98268559599819, "e2e_p50": 24.772694580999087, "e2e_p95": 25.130084815988084, "total_tok_s": 21914.6, "output_tok_s": 159.9, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 07:37:43 recall_before_1 p128k_n8k_s32 settled ()
+  [p128k_n8k_s32 mid]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s32 mid]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s32 mid]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s32 mid]   prefill sglang:num_requests_total 152
+  [p128k_n8k_s32 mid]   prefill sglang:prompt_tokens_total 21670036
+  [p128k_n8k_s32 mid]   decode sglang:cached_tokens_total 5013504
+  [p128k_n8k_s32 mid]   decode sglang:num_requests_total 152
+  [p128k_n8k_s32 mid]   decode sglang:prompt_tokens_total 21670036
+2026-10-26 07:37:47 recall_before_1 p128k_n8k_s32 recall
+SUMMARY {"run": "recall_before_1", "label": "p128k_n8k_s32_recall", "sessions": 32, "prefix": 131072, "new": 8192, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 4457536, "recall": {"requests": 32, "errors": 0, "wall_s": 222.1, "prompt_tokens": 4722464, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 4457536, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 20.01557080898783, "ttft_p95": 20.32384915999137, "e2e_p50": 26.94153138701222, "e2e_p95": 27.29038272499747, "total_tok_s": 21410.3, "output_tok_s": 147.5, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-7", "requests": 8, "errors": 0, "prompt_tokens": 1180616, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 1114384, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 19.919462776000728, "ttft_p95": 27.495351703997585, "e2e_p50": 26.8558927999984, "e2e_p95": 34.41774527799862, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, {"sessions": "8-15", "requests": 8, "errors": 0, "prompt_tokens": 1180616, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 1114384, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 20.019587881004554, "ttft_p95": 20.141032103987527, "e2e_p50": 27.011824096989585, "e2e_p95": 27.118142469989834, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, {"sessions": "16-23", "requests": 8, "errors": 0, "prompt_tokens":
+  [p128k_n8k_s32 post]   prefix-pull commits (TP0): 0
+  [p128k_n8k_s32 post]   prefix-pull tokens (TP0): 0
+  [p128k_n8k_s32 post]   prefill sglang:cached_tokens_total 482496
+  [p128k_n8k_s32 post]   prefill sglang:num_requests_total 184
+  [p128k_n8k_s32 post]   prefill sglang:prompt_tokens_total 26392500
+  [p128k_n8k_s32 post]   decode sglang:cached_tokens_total 5013504
+  [p128k_n8k_s32 post]   decode sglang:num_requests_total 184
+  [p128k_n8k_s32 post]   decode sglang:prompt_tokens_total 26392500
+2026-10-26 07:41:49 recall_before_1 p256k_n16k_s4 stats before
+  [p256k_n16k_s4 pre]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s4 pre]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s4 pre]   prefill sglang:cached_tokens_total 482496
+  [p256k_n16k_s4 pre]   prefill sglang:num_requests_total 184
+  [p256k_n16k_s4 pre]   prefill sglang:prompt_tokens_total 26392500
+  [p256k_n16k_s4 pre]   decode sglang:cached_tokens_total 5013504
+  [p256k_n16k_s4 pre]   decode sglang:num_requests_total 184
+  [p256k_n16k_s4 pre]   decode sglang:prompt_tokens_total 26392500
+2026-10-26 07:41:52 recall_before_1 p256k_n16k_s4 fill
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s4_fill", "sessions": 4, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 1114248, "fill": {"requests": 4, "errors": 0, "wall_s": 79.4, "prompt_tokens": 1114248, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 55.22944423300214, "ttft_p95": 73.04786268899625, "e2e_p50": 62.09603960700042, "e2e_p95": 79.25801147799939, "total_tok_s": 14084.9, "output_tok_s": 51.6, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 07:48:34 recall_before_1 p256k_n16k_s4 settled ()
+  [p256k_n16k_s4 mid]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s4 mid]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s4 mid]   prefill sglang:cached_tokens_total 482496
+  [p256k_n16k_s4 mid]   prefill sglang:num_requests_total 188
+  [p256k_n16k_s4 mid]   prefill sglang:prompt_tokens_total 27506748
+  [p256k_n16k_s4 mid]   decode sglang:cached_tokens_total 5013504
+  [p256k_n16k_s4 mid]   decode sglang:num_requests_total 188
+  [p256k_n16k_s4 mid]   decode sglang:prompt_tokens_total 27506748
+2026-10-26 07:48:37 recall_before_1 p256k_n16k_s4 recall
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s4_recall", "sessions": 4, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 1114248, "recall": {"requests": 4, "errors": 0, "wall_s": 40.8, "prompt_tokens": 1180132, "cached_tokens": 1114112, "token_hit_rate": 0.9441, "reusable_tokens": 1114248, "reuse_recovered": 0.9999, "sessions_fully_reused": 4, "ttft_p50": 29.897109141005785, "ttft_p95": 34.23307140200632, "e2e_p50": 36.80597186800151, "e2e_p95": 40.77045191600337, "total_tok_s": 29025.2, "output_tok_s": 100.4, "cached_tokens_by_tier": {"device": 876544, "host": 237568, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-0", "requests": 1, "errors": 0, "prompt_tokens": 295033, "cached_tokens": 278528, "token_hit_rate": 0.9441, "reusable_tokens": 278562, "reuse_recovered": 0.9999, "sessions_fully_reused": 1, "ttft_p50": 4.121876776000136, "ttft_p95": 4.121876776000136, "e2e_p50": 12.61227786100062, "e2e_p95": 12.61227786100062, "cached_tokens_by_tier": {"device": 278528, "host": 0, "storage": 0}}, {"sessions": "1-1", "requests": 1, "errors": 0, "prompt_tokens": 295033, "cached_tokens": 278528, "token_hit_rate": 0.9441, "reusable_tokens": 278562, "reuse_recovered": 0.9999, "sessions_fully_reused": 1, "ttft_p50": 29.897109141005785, "ttft_p95": 29.897109141005785, "e2e_p50": 36.80597186800151, "e2e_p95": 36.80597186800151, "cached_tokens_by_tier": {"device": 204800, "host": 73728, "storage": 0}}, {"sessions": "2-2
+  [p256k_n16k_s4 post]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s4 post]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s4 post]   prefill sglang:cached_tokens_total 1358976
+  [p256k_n16k_s4 post]   prefill sglang:num_requests_total 192
+  [p256k_n16k_s4 post]   prefill sglang:prompt_tokens_total 28686880
+  [p256k_n16k_s4 post]   decode sglang:cached_tokens_total 6127616
+  [p256k_n16k_s4 post]   decode sglang:num_requests_total 192
+  [p256k_n16k_s4 post]   decode sglang:prompt_tokens_total 28686880
+2026-10-26 07:49:38 recall_before_1 p256k_n16k_s6 stats before
+  [p256k_n16k_s6 pre]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s6 pre]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s6 pre]   prefill sglang:cached_tokens_total 1358976
+  [p256k_n16k_s6 pre]   prefill sglang:num_requests_total 192
+  [p256k_n16k_s6 pre]   prefill sglang:prompt_tokens_total 28686880
+  [p256k_n16k_s6 pre]   decode sglang:cached_tokens_total 6127616
+  [p256k_n16k_s6 pre]   decode sglang:num_requests_total 192
+  [p256k_n16k_s6 pre]   decode sglang:prompt_tokens_total 28686880
+2026-10-26 07:49:41 recall_before_1 p256k_n16k_s6 fill
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s6_fill", "sessions": 6, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 1671372, "fill": {"requests": 6, "errors": 0, "wall_s": 115.7, "prompt_tokens": 1671372, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 55.0922998390015, "ttft_p95": 73.25820196399582, "e2e_p50": 63.51948037699913, "e2e_p95": 81.73924792000616, "total_tok_s": 14498.8, "output_tok_s": 53.1, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 07:56:59 recall_before_1 p256k_n16k_s6 settled ()
+  [p256k_n16k_s6 mid]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s6 mid]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s6 mid]   prefill sglang:cached_tokens_total 1358976
+  [p256k_n16k_s6 mid]   prefill sglang:num_requests_total 198
+  [p256k_n16k_s6 mid]   prefill sglang:prompt_tokens_total 30358252
+  [p256k_n16k_s6 mid]   decode sglang:cached_tokens_total 6127616
+  [p256k_n16k_s6 mid]   decode sglang:num_requests_total 198
+  [p256k_n16k_s6 mid]   decode sglang:prompt_tokens_total 30358252
+2026-10-26 07:57:03 recall_before_1 p256k_n16k_s6 recall
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s6_recall", "sessions": 6, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 1671372, "recall": {"requests": 6, "errors": 0, "wall_s": 104.7, "prompt_tokens": 1770198, "cached_tokens": 1671168, "token_hit_rate": 0.9441, "reusable_tokens": 1671372, "reuse_recovered": 0.9999, "sessions_fully_reused": 6, "ttft_p50": 39.024498686994775, "ttft_p95": 71.03691302999505, "e2e_p50": 47.570960929995636, "e2e_p95": 77.03075308899861, "total_tok_s": 16966.0, "output_tok_s": 58.7, "cached_tokens_by_tier": {"device": 1531840, "host": 139328, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-0", "requests": 1, "errors": 0, "prompt_tokens": 295033, "cached_tokens": 278528, "token_hit_rate": 0.9441, "reusable_tokens": 278562, "reuse_recovered": 0.9999, "sessions_fully_reused": 1, "ttft_p50": 58.992771752004046, "ttft_p95": 58.992771752004046, "e2e_p50": 67.25911693100352, "e2e_p95": 67.25911693100352, "cached_tokens_by_tier": {"device": 278528, "host": 0, "storage": 0}}, {"sessions": "1-1", "requests": 1, "errors": 0, "prompt_tokens": 295033, "cached_tokens": 278528, "token_hit_rate": 0.9441, "reusable_tokens": 278562, "reuse_recovered": 0.9999, "sessions_fully_reused": 1, "ttft_p50": 39.024498686994775, "ttft_p95": 39.024498686994775, "e2e_p50": 47.570960929995636, "e2e_p95": 47.570960929995636, "cached_tokens_by_tier": {"device": 278528, "host": 0, "storage": 0}}, {"sessions": "2
+  [p256k_n16k_s6 post]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s6 post]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s6 post]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s6 post]   prefill sglang:num_requests_total 204
+  [p256k_n16k_s6 post]   prefill sglang:prompt_tokens_total 32128450
+  [p256k_n16k_s6 post]   decode sglang:cached_tokens_total 7798784
+  [p256k_n16k_s6 post]   decode sglang:num_requests_total 204
+  [p256k_n16k_s6 post]   decode sglang:prompt_tokens_total 32128450
+2026-10-26 07:59:07 recall_before_1 p256k_n16k_s8 stats before
+  [p256k_n16k_s8 pre]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s8 pre]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s8 pre]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s8 pre]   prefill sglang:num_requests_total 204
+  [p256k_n16k_s8 pre]   prefill sglang:prompt_tokens_total 32128450
+  [p256k_n16k_s8 pre]   decode sglang:cached_tokens_total 7798784
+  [p256k_n16k_s8 pre]   decode sglang:num_requests_total 204
+  [p256k_n16k_s8 pre]   decode sglang:prompt_tokens_total 32128450
+2026-10-26 07:59:10 recall_before_1 p256k_n16k_s8 fill
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s8_fill", "sessions": 8, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 2228496, "fill": {"requests": 8, "errors": 0, "wall_s": 152.0, "prompt_tokens": 2228496, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 64.10246472799918, "ttft_p95": 73.47101731099247, "e2e_p50": 71.03936949199124, "e2e_p95": 81.84396392898634, "total_tok_s": 14715.1, "output_tok_s": 53.9, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 08:07:06 recall_before_1 p256k_n16k_s8 settled ()
+  [p256k_n16k_s8 mid]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s8 mid]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s8 mid]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s8 mid]   prefill sglang:num_requests_total 212
+  [p256k_n16k_s8 mid]   prefill sglang:prompt_tokens_total 34356946
+  [p256k_n16k_s8 mid]   decode sglang:cached_tokens_total 7798784
+  [p256k_n16k_s8 mid]   decode sglang:num_requests_total 212
+  [p256k_n16k_s8 mid]   decode sglang:prompt_tokens_total 34356946
+2026-10-26 08:07:09 recall_before_1 p256k_n16k_s8 recall
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s8_recall", "sessions": 8, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 2228496, "recall": {"requests": 8, "errors": 0, "wall_s": 166.3, "prompt_tokens": 2360264, "cached_tokens": 2228224, "token_hit_rate": 0.9441, "reusable_tokens": 2228496, "reuse_recovered": 0.9999, "sessions_fully_reused": 8, "ttft_p50": 71.14252963100444, "ttft_p95": 80.66871981599252, "e2e_p50": 77.80338282999583, "e2e_p95": 89.2064419840026, "total_tok_s": 14242.1, "output_tok_s": 49.3, "cached_tokens_by_tier": {"device": 2228224, "host": 0, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-1", "requests": 2, "errors": 0, "prompt_tokens": 590066, "cached_tokens": 557056, "token_hit_rate": 0.9441, "reusable_tokens": 557124, "reuse_recovered": 0.9999, "sessions_fully_reused": 2, "ttft_p50": 20.81346848400426, "ttft_p95": 80.66871981599252, "e2e_p50": 29.455843716001255, "e2e_p95": 89.2064419840026, "cached_tokens_by_tier": {"device": 557056, "host": 0, "storage": 0}}, {"sessions": "2-3", "requests": 2, "errors": 0, "prompt_tokens": 590066, "cached_tokens": 557056, "token_hit_rate": 0.9441, "reusable_tokens": 557124, "reuse_recovered": 0.9999, "sessions_fully_reused": 2, "ttft_p50": 40.58147499599727, "ttft_p95": 60.5429536629963, "e2e_p50": 49.15960793099657, "e2e_p95": 69.13660087499011, "cached_tokens_by_tier": {"device": 557056, "host": 0, "storage": 0}}, {"sessions": "4-5", "requests"
+  [p256k_n16k_s8 post]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s8 post]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s8 post]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s8 post]   prefill sglang:num_requests_total 220
+  [p256k_n16k_s8 post]   prefill sglang:prompt_tokens_total 36717210
+  [p256k_n16k_s8 post]   decode sglang:cached_tokens_total 10027008
+  [p256k_n16k_s8 post]   decode sglang:num_requests_total 220
+  [p256k_n16k_s8 post]   decode sglang:prompt_tokens_total 36717210
+2026-10-26 08:10:15 recall_before_1 p256k_n16k_s12 stats before
+  [p256k_n16k_s12 pre]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s12 pre]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s12 pre]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s12 pre]   prefill sglang:num_requests_total 220
+  [p256k_n16k_s12 pre]   prefill sglang:prompt_tokens_total 36717210
+  [p256k_n16k_s12 pre]   decode sglang:cached_tokens_total 10027008
+  [p256k_n16k_s12 pre]   decode sglang:num_requests_total 220
+  [p256k_n16k_s12 pre]   decode sglang:prompt_tokens_total 36717210
+2026-10-26 08:10:18 recall_before_1 p256k_n16k_s12 fill
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s12_fill", "sessions": 12, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 3342744, "fill": {"requests": 12, "errors": 0, "wall_s": 224.7, "prompt_tokens": 3342744, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 64.27666782600863, "ttft_p95": 64.45324986599735, "e2e_p50": 72.52566186900367, "e2e_p95": 72.9367427519901, "total_tok_s": 14931.2, "output_tok_s": 54.7, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 08:19:26 recall_before_1 p256k_n16k_s12 settled ()
+  [p256k_n16k_s12 mid]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s12 mid]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s12 mid]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s12 mid]   prefill sglang:num_requests_total 232
+  [p256k_n16k_s12 mid]   prefill sglang:prompt_tokens_total 40059954
+  [p256k_n16k_s12 mid]   decode sglang:cached_tokens_total 10027008
+  [p256k_n16k_s12 mid]   decode sglang:num_requests_total 232
+  [p256k_n16k_s12 mid]   decode sglang:prompt_tokens_total 40059954
+2026-10-26 08:19:29 recall_before_1 p256k_n16k_s12 recall
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s12_recall", "sessions": 12, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 3342744, "recall": {"requests": 12, "errors": 0, "wall_s": 246.2, "prompt_tokens": 3540396, "cached_tokens": 278528, "token_hit_rate": 0.0787, "reusable_tokens": 3342744, "reuse_recovered": 0.0833, "sessions_fully_reused": 1, "ttft_p50": 71.4889219780016, "ttft_p95": 71.72135870000056, "e2e_p50": 79.81182180400356, "e2e_p95": 79.97094190899224, "total_tok_s": 14430.1, "output_tok_s": 49.9, "cached_tokens_by_tier": {"device": 278528, "host": 0, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-2", "requests": 3, "errors": 0, "prompt_tokens": 885099, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 835686, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 60.54253871800029, "ttft_p95": 80.5110402420105, "e2e_p50": 68.88211096600571, "e2e_p95": 88.77606984801241, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, {"sessions": "3-5", "requests": 3, "errors": 0, "prompt_tokens": 885099, "cached_tokens": 278528, "token_hit_rate": 0.3147, "reusable_tokens": 835686, "reuse_recovered": 0.3333, "sessions_fully_reused": 1, "ttft_p50": 71.4889219780016, "ttft_p95": 71.72135870000056, "e2e_p50": 79.94412042500335, "e2e_p95": 79.97094190899224, "cached_tokens_by_tier": {"device": 278528, "host": 0, "storage": 0}}, {"sessions": "6-8", "requests": 3, "errors": 0
+  [p256k_n16k_s12 post]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s12 post]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s12 post]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s12 post]   prefill sglang:num_requests_total 244
+  [p256k_n16k_s12 post]   prefill sglang:prompt_tokens_total 43600350
+  [p256k_n16k_s12 post]   decode sglang:cached_tokens_total 10305536
+  [p256k_n16k_s12 post]   decode sglang:num_requests_total 244
+  [p256k_n16k_s12 post]   decode sglang:prompt_tokens_total 43600350
+2026-10-26 08:23:55 recall_before_1 p256k_n16k_s16 stats before
+  [p256k_n16k_s16 pre]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s16 pre]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s16 pre]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s16 pre]   prefill sglang:num_requests_total 244
+  [p256k_n16k_s16 pre]   prefill sglang:prompt_tokens_total 43600350
+  [p256k_n16k_s16 pre]   decode sglang:cached_tokens_total 10305536
+  [p256k_n16k_s16 pre]   decode sglang:num_requests_total 244
+  [p256k_n16k_s16 pre]   decode sglang:prompt_tokens_total 43600350
+2026-10-26 08:23:58 recall_before_1 p256k_n16k_s16 fill
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s16_fill", "sessions": 16, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 4456992, "fill": {"requests": 16, "errors": 0, "wall_s": 297.2, "prompt_tokens": 4456992, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 64.39895251599955, "ttft_p95": 64.5583483849914, "e2e_p50": 72.57441604199994, "e2e_p95": 73.0294758490054, "total_tok_s": 15051.7, "output_tok_s": 55.1, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}
+2026-10-26 08:34:18 recall_before_1 p256k_n16k_s16 settled ()
+  [p256k_n16k_s16 mid]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s16 mid]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s16 mid]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s16 mid]   prefill sglang:num_requests_total 260
+  [p256k_n16k_s16 mid]   prefill sglang:prompt_tokens_total 48057342
+  [p256k_n16k_s16 mid]   decode sglang:cached_tokens_total 10305536
+  [p256k_n16k_s16 mid]   decode sglang:num_requests_total 260
+  [p256k_n16k_s16 mid]   decode sglang:prompt_tokens_total 48057342
+2026-10-26 08:34:21 recall_before_1 p256k_n16k_s16 recall
+SUMMARY {"run": "recall_before_1", "label": "p256k_n16k_s16_recall", "sessions": 16, "prefix": 262144, "new": 16384, "out_tokens": 1024, "concurrency": 4, "seed": 7, "working_set_tokens": 4456992, "recall": {"requests": 16, "errors": 0, "wall_s": 326.1, "prompt_tokens": 4720528, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 4456992, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 71.4341007359908, "ttft_p95": 71.66234222298954, "e2e_p50": 79.64582525000151, "e2e_p95": 80.05692086998897, "total_tok_s": 14525.9, "output_tok_s": 50.2, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-3", "requests": 4, "errors": 0, "prompt_tokens": 1180132, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 1114248, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 60.727693392997026, "ttft_p95": 80.70183094000095, "e2e_p50": 68.91534494800726, "e2e_p95": 89.03210552599921, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, {"sessions": "4-7", "requests": 4, "errors": 0, "prompt_tokens": 1180132, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 1114248, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 71.5967003179976, "ttft_p95": 71.66234222298954, "e2e_p50": 79.93008925800677, "e2e_p95": 80.05692086998897, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, {"sessions": "8-11", "requests": 4, "errors": 0, "prompt_tokens": 118013
+  [p256k_n16k_s16 post]   prefix-pull commits (TP0): 0
+  [p256k_n16k_s16 post]   prefix-pull tokens (TP0): 0
+  [p256k_n16k_s16 post]   prefill sglang:cached_tokens_total 1727488
+  [p256k_n16k_s16 post]   prefill sglang:num_requests_total 276
+  [p256k_n16k_s16 post]   prefill sglang:prompt_tokens_total 52777870
+  [p256k_n16k_s16 post]   decode sglang:cached_tokens_total 10305536
+  [p256k_n16k_s16 post]   decode sglang:num_requests_total 276
+  [p256k_n16k_s16 post]   decode sglang:prompt_tokens_total 52777870
+2026-10-26 08:39:58 recall_before_1 done
+2026-10-26 08:40:42 ALL DONE

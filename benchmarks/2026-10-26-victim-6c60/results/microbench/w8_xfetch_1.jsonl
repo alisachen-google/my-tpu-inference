@@ -1,0 +1,5 @@
+RESULT {"pages": 16, "MiB": 2.25, "reps": 5, "data_ok": true, "lat_p50_ms": 5.12, "lat_min_ms": 4.64, "lat_max_ms": 5.14, "GiBps_p50": 0.429}
+RESULT {"pages": 128, "MiB": 18.0, "reps": 5, "data_ok": true, "lat_p50_ms": 7.98, "lat_min_ms": 7.69, "lat_max_ms": 17.6, "GiBps_p50": 2.202}
+RESULT {"pages": 512, "MiB": 72.0, "reps": 5, "data_ok": true, "lat_p50_ms": 21.51, "lat_min_ms": 20.28, "lat_max_ms": 22.76, "GiBps_p50": 3.268}
+RESULT {"pages": 2176, "MiB": 306.0, "reps": 5, "data_ok": true, "lat_p50_ms": 1296.96, "lat_min_ms": 75.77, "lat_max_ms": 2528.85, "GiBps_p50": 0.23}
+RESULT {"pages": 4352, "MiB": 612.0, "reps": 5, "data_ok": true, "lat_p50_ms": 1661.76, "lat_min_ms": 163.78, "lat_max_ms": 3168.94, "GiBps_p50": 0.36}
