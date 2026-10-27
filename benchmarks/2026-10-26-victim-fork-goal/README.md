@@ -178,6 +178,19 @@ Recall:
 - Each pull reads a 131,072-token prefix plus its 128-token window in 0.5 to 0.7 s; per point 1.5M to 4.7M tokens
   come back from the decode's RAM and 2M to 6M tokens are offloaded to it.
 
+## Branch tip (PR #1789) sweep, 2026-10-27: `results/compare_table_tip_after.md`
+
+The same 30 points re-run on the branch as submitted (five commits, fixes folded in; recalls land in the
+prefill's RAM, host copies reclaimed tip first), consensus checker off, caches wiped before every point;
+no engine error on either role across the sweep. Headlines against upstream main with the feature off:
+static 128k 12/16/20/24/28 docs 35.6->59.1, 28.2->55.3, 23.0->42.5, 14.7->46.5, 14.1->38.7% hit;
+recall 128k 8/10/12/16 sessions 94.4/94.4/94.4/85.3% hit with TTFT 7x to 12x faster; 256k static 4..10 docs
+57.6/51.6/49.5/53.6%, 256k recall 4..8 sessions 90.2/75.5/62.9/58.7%. Compared with the earlier build that
+landed recalls in HBM (tables above), the branch is equal or better up to 16 sessions and 16 docs and trails
+at the heaviest points (for example 128k recall 24 sessions 23.5% vs 30.8%, 256k static 12 docs 29.5% vs
+48.2%), where the prefill's RAM has no room to land recalls. Defects found and fixed on the way, the byte-level
+transfer verification, the probe-free output check and the live edge cases are in `FIXES-2026-10-27.md`.
+
 ## Files
 
 - [FIXES-2026-10-27.md](FIXES-2026-10-27.md): defects found by the branch-tip validation and how each was fixed.
