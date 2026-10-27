@@ -1,0 +1,25 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793098895.876349 1480829 pjrt_api.cc:119] GetPjrtApi was found for TPU at /home/alisachen_google_com/venv/sglang/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1793098895.893510 1480829 tpu_profiler_plugin.cc:804] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+I0000 00:00:1793098896.329518 1480829 device_rt.cc:140] PjRt runtime initialization deferred for tpu
+Successfully renamed PrivateUse1 backend to 'tpu'. Device: device(type='tpu')
+Registered Python module for 'tpu'.
+I0000 00:00:1793098896.332426 1480829 libtpu_version.cc:124] Setting libtpu version to: 0.0.47
+Device type: tpu, Device index: default
+Initializing TPU distributed runtime
+ref: 0 probes
+Exception in thread Thread-1 (prober):
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+fill
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1010, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/alisachen_google_com/pd_disagg/spill/victim_integrity.py", line 114, in prober
+    p = i % a.probes
+        ~~^~~~~~~~~~
+ZeroDivisionError: integer modulo by zero
+settle
+recall
+verify: flush + recompute
+SUMMARY {"sessions": 12, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 162.4, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 12, "exact": 12, "min_agree": 64, "pulled_sessions": 8}}
