@@ -1,0 +1,28 @@
+2026-10-27 12:22:58 starting tipcheck3_after_1 (after)
+2026-10-27 12:22:58 pair already up; not restarting
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+sh: 1: cannot open /home/alisachen_google_com/pd_disagg/results/runs/tipcheck3_after_1/prefill/server.log: No such file
+sh: 1: cannot open /home/alisachen_google_com/pd_disagg/results/runs/tipcheck3_after_1/prefill/server.log: No such file
+2026-10-27 12:25:37 WIPE CHECK: after flush, prefill cached 0/139298, decode cached 0/139298 (both must be 0)
+sh: 1: cannot open /home/alisachen_google_com/pd_disagg/results/runs/tipcheck3_after_1/prefill/server.log: No such file
+2026-10-27 12:25:48 static_p256k_n16k_k8
+sh: 1: cannot open /home/alisachen_google_com/pd_disagg/results/runs/tipcheck3_after_1/prefill/server.log: No such file
+chain_pair.sh: line 41: $2: unbound variable
+POINT {"cfg": "tipcheck3_after_1", "kind": "static", "label": "static_p256k_n16k_k8", "sessions": 8, "prefill_hit": 0.4202, "prefill_cached": 2809344, "prefill_cached_log": 0, "prefill_prompt": 6685440, "decode_reuse": 0.6212, "ttft50": 56.46173386400915, "ttft95": 72.20535743699293, "e2e50": 88.91129290001118, "e2e95": 103.71691773997736, "tok_s": 12446.2, "out_tok_s": 45.6, "wall": 539.1, "errors": 0, "victim": " prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode offers (TP0): 0 decode non-empty offers (TP0): 0 prefill sglang:cached_tokens_total 11430144 prefill sglang:num_requests_total 182 prefill sglang:prompt_tokens_total 28793656 decode sglang:cached_tokens_total 14345792 decode sglang:num_requests_total 182 decode sglang:prompt_tokens_total 28793656 "}
+2026-10-27 12:35:22 recall_p256k_n16k_s6 fill
+sh: 1: cannot open /home/alisachen_google_com/pd_disagg/results/runs/tipcheck3_after_1/prefill/server.log: No such file
+2026-10-27 12:38:26 recall_p256k_n16k_s6 recall
+sh: 1: cannot open /home/alisachen_google_com/pd_disagg/results/runs/tipcheck3_after_1/prefill/server.log: No such file
+chain_pair.sh: line 41: $2: unbound variable
+POINT {"cfg": "tipcheck3_after_1", "kind": "recall", "label": "recall_p256k_n16k_s6", "sessions": 6, "prefill_hit": 0.5738, "prefill_cached": 1015808, "prefill_cached_log": 0, "prefill_prompt": 1770198, "decode_reuse": 0.87, "ttft50": 42.66393137499108, "ttft95": 86.532788979006, "e2e50": 67.49871400598204, "e2e95": 121.51596789300675, "tok_s": 13467.3, "out_tok_s": 46.6, "wall": 131.9, "errors": 0, "victim": " prefix-pull commits (TP0): 0 prefix-pull tokens (TP0): 0 decode offers (TP0): 0 decode non-empty offers (TP0): 0 prefill sglang:cached_tokens_total 12445952 prefill sglang:num_requests_total 194 prefill sglang:prompt_tokens_total 32235226 decode sglang:cached_tokens_total 15885888 decode sglang:num_requests_total 194 decode sglang:prompt_tokens_total 32235226 "}
+2026-10-27 12:40:58 GOAL after DONE (pair restarts for refused wipes: 0)
