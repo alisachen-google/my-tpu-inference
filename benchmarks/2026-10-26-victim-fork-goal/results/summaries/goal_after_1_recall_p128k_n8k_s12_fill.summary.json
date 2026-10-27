@@ -1,0 +1,34 @@
+{
+ "run": "goal_after_1",
+ "label": "recall_p128k_n8k_s12_fill",
+ "sessions": 12,
+ "prefix": 131072,
+ "new": 8192,
+ "out_tokens": 1024,
+ "concurrency": 4,
+ "seed": 7,
+ "order": "oldest",
+ "working_set_tokens": 1671576,
+ "fill": {
+  "requests": 12,
+  "errors": 0,
+  "wall_s": 80.9,
+  "prompt_tokens": 1671576,
+  "cached_tokens": 0,
+  "token_hit_rate": 0.0,
+  "reusable_tokens": 0,
+  "reuse_recovered": null,
+  "sessions_fully_reused": 0,
+  "ttft_p50": 17.908203339000465,
+  "ttft_p95": 19.239234141015913,
+  "e2e_p50": 24.771570723998593,
+  "e2e_p95": 26.034953985014,
+  "total_tok_s": 20814.1,
+  "output_tok_s": 151.9,
+  "cached_tokens_by_tier": {
+   "device": 0,
+   "host": 0,
+   "storage": 0
+  }
+ }
+}
