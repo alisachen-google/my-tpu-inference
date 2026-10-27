@@ -2,22 +2,22 @@
 
 | Prefix+new | Sessions | Prefill hit before → after | Hit gain | TTFT p50 before → after | TTFT speedup | E2E p50 before → after | Total tok/s before → after | Throughput gain | KV offloaded to decode DRAM (after) | KV pulled from decode DRAM (after) | Pulled share of prompt | Pulls (after) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 128k+8k | 8 | 36.7% → - | - | 14.7 s → - | - | 21.4 s → - | 27,142 → - | - | - | - | - | - |
-| 128k+8k | 10 | 0.0% → - | - | 20.4 s → - | - | 26.6 s → - | 20,245 → - | - | - | - | - | - |
-| 128k+8k | 12 | 0.0% → - | - | 20.6 s → - | - | 27.0 s → - | 20,403 → - | - | - | - | - | - |
-| 128k+8k | 16 | 0.0% → - | - | 20.5 s → - | - | 26.8 s → - | 20,856 → - | - | - | - | - | - |
-| 128k+8k | 20 | 0.0% → - | - | 20.5 s → - | - | 27.0 s → - | 21,078 → - | - | - | - | - | - |
-| 128k+8k | 24 | 0.0% → - | - | 20.4 s → - | - | 27.0 s → - | 21,229 → - | - | - | - | - | - |
-| 128k+8k | 28 | 0.0% → - | - | 20.4 s → - | - | 26.9 s → - | 21,338 → - | - | - | - | - | - |
-| 128k+8k | 32 | 0.0% → - | - | 20.5 s → - | - | 27.0 s → - | 21,420 → - | - | - | - | - | - |
-| 256k+16k | 4 | 51.3% → - | - | 32.5 s → - | - | 39.0 s → - | 21,571 → - | - | - | - | - | - |
-| 256k+16k | 5 | 6.1% → - | - | 57.1 s → - | - | 65.3 s → - | 14,358 → - | - | - | - | - | - |
-| 256k+16k | 6 | 20.8% → - | - | 45.4 s → - | - | 53.4 s → - | 16,018 → - | - | - | - | - | - |
-| 256k+16k | 8 | 0.0% → - | - | 71.8 s → - | - | 78.2 s → - | 14,268 → - | - | - | - | - | - |
-| 256k+16k | 10 | 0.0% → - | - | 71.4 s → - | - | 78.1 s → - | 14,358 → - | - | - | - | - | - |
-| 256k+16k | 12 | 0.0% → - | - | 71.7 s → - | - | 79.7 s → - | 14,430 → - | - | - | - | - | - |
-| 256k+16k | 14 | 0.0% → - | - | 71.7 s → - | - | 79.6 s → - | 14,492 → - | - | - | - | - | - |
-| 256k+16k | 16 | 0.0% → - | - | 71.8 s → - | - | 79.8 s → - | 14,539 → - | - | - | - | - | - |
+| 128k+8k | 8 | 36.7% → 94.4% | +57.7 pts (2.57x) | 14.7 s → 2.1 s | 7.15x | 21.4 s → 10.7 s | 27,142 → 52,141 | 1.92x | 0.99M (43 pushes) | 0.50M | 42.4% | 7 |
+| 128k+8k | 10 | 0.0% → 94.4% | +94.4 pts (-) | 20.4 s → 1.7 s | 12.04x | 26.6 s → 10.8 s | 20,245 → 49,699 | 2.45x | 1.29M (71 pushes) | 0.95M | 64.5% | 9 |
+| 128k+8k | 12 | 0.0% → 94.4% | +94.4 pts (-) | 20.6 s → 1.7 s | 11.86x | 27.0 s → 10.5 s | 20,403 → 51,989 | 2.55x | 1.71M (110 pushes) | 1.43M | 81.0% | 12 |
+| 128k+8k | 16 | 0.0% → 85.3% | +85.3 pts (-) | 20.5 s → 2.7 s | 7.68x | 26.8 s → 11.8 s | 20,856 → 44,030 | 2.11x | 2.27M (181 pushes) | 1.95M | 82.6% | 14 |
+| 128k+8k | 20 | 0.0% → 50.1% | +50.1 pts (-) | 20.5 s → 9.9 s | 2.07x | 27.0 s → 18.2 s | 21,078 → 32,986 | 1.56x | 3.49M (325 pushes) | 1.44M | 48.8% | 19 |
+| 128k+8k | 24 | 0.0% → 23.5% | +23.5 pts (-) | 20.4 s → 15.0 s | 1.37x | 27.0 s → 24.0 s | 21,229 → 25,456 | 1.20x | 5.91M (470 pushes) | 0.69M | 19.6% | 17 |
+| 128k+8k | 28 | 0.0% → 3.5% | +3.5 pts (-) | 20.4 s → 18.2 s | 1.12x | 26.9 s → 26.6 s | 21,338 → 21,784 | 1.02x | 7.18M (708 pushes) | 0.14M | 3.5% | 3 |
+| 128k+8k | 32 | 0.0% → 4.0% | +4.0 pts (-) | 20.5 s → 17.8 s | 1.15x | 27.0 s → 26.9 s | 21,420 → 21,984 | 1.03x | 8.89M (893 pushes) | 0.05M | 1.0% | 2 |
+| 256k+16k | 4 | 51.3% → 90.2% | +38.9 pts (1.76x) | 32.5 s → 20.1 s | 1.62x | 39.0 s → 28.5 s | 21,571 → 38,827 | 1.80x | 1.12M (32 pushes) | 0.26M | 22.2% | 3 |
+| 256k+16k | 5 | 6.1% → 75.5% | +69.4 pts (12.38x) | 57.1 s → 22.6 s | 2.53x | 65.3 s → 28.9 s | 14,358 → 26,153 | 1.82x | 1.15M (62 pushes) | 0.69M | 46.6% | 3 |
+| 256k+16k | 6 | 20.8% → 62.9% | +42.1 pts (3.02x) | 45.4 s → 22.6 s | 2.01x | 53.4 s → 32.9 s | 16,018 → 24,037 | 1.50x | 1.71M (77 pushes) | 0.99M | 56.0% | 4 |
+| 256k+16k | 8 | 0.0% → 58.7% | +58.7 pts (-) | 71.8 s → 34.6 s | 2.07x | 78.2 s → 43.3 s | 14,268 → 22,840 | 1.60x | 2.20M (145 pushes) | 1.38M | 58.6% | 5 |
+| 256k+16k | 10 | 0.0% → 42.7% | +42.7 pts (-) | 71.4 s → 46.7 s | 1.53x | 78.1 s → 54.6 s | 14,358 → 19,990 | 1.39x | 4.03M (203 pushes) | 1.26M | 42.7% | 7 |
+| 256k+16k | 12 | 0.0% → 15.0% | +15.0 pts (-) | 71.7 s → 60.2 s | 1.19x | 79.7 s → 70.4 s | 14,430 → 15,568 | 1.08x | 5.79M (395 pushes) | 0.51M | 14.3% | 4 |
+| 256k+16k | 14 | 0.0% → 5.9% | +5.9 pts (-) | 71.7 s → 65.9 s | 1.09x | 79.6 s → 76.0 s | 14,492 → 14,915 | 1.03x | 7.34M (493 pushes) | 0.24M | 5.9% | 5 |
+| 256k+16k | 16 | 0.0% → 0.7% | +0.7 pts (-) | 71.8 s → 68.8 s | 1.04x | 79.8 s → 78.7 s | 14,539 → 14,557 | 1.00x | 8.48M (541 pushes) | 0.03M | 0.7% | 2 |
 
 ### Static prefix-reuse workload (K documents x 3 visits, shuffled)
 
@@ -38,4 +38,4 @@
 | 256k+16k | 12 | 9.8% → 29.5% | +19.7 pts (3.01x) | 64.2 s → 50.2 s | 1.28x | 72.5 s → 59.5 s | 16,529 → 18,534 | 1.12x | 4.25M (225 pushes) | 1.79M | 17.9% | 11 |
 | 256k+16k | 14 | 14.1% → 25.2% | +11.1 pts (1.79x) | 55.3 s → 49.7 s | 1.11x | 63.3 s → 57.9 s | 16,580 → 18,140 | 1.09x | 6.37M (363 pushes) | 1.25M | 10.7% | 10 |
 
-_Before points: 30; after points: 14. Offloaded tokens = victim-push tokens that landed in the decode's host pool during the point (decode landed_tokens deltas); pulled tokens = prefix-pull tokens the prefill received from the decode during the point (TP0 counter deltas); pulled share = those tokens / the point's measured-phase prompt tokens (for recall points the pulls of the fill phase are included, so the share can exceed 100%)._
+_Before points: 30; after points: 30. Offloaded tokens = victim-push tokens that landed in the decode's host pool during the point (decode landed_tokens deltas); pulled tokens = prefix-pull tokens the prefill received from the decode during the point (TP0 counter deltas); pulled share = those tokens / the point's measured-phase prompt tokens (for recall points the pulls of the fill phase are included, so the share can exceed 100%)._
