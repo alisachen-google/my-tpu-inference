@@ -6,8 +6,8 @@ def rows(path, kind):
         if s.lower().startswith(kind):
             return [l for l in s.splitlines() if l.startswith("| ") and "→" in l and "→ -" not in l]
     return []
-hdr = ("| Prefix+new | N | Prefill hit before → after | TTFT p50 | TTFT speedup | E2E p50 | Total tok/s | Throughput | KV offloaded to decode RAM | KV pulled from decode RAM | Pulled share of prompt | Pulls |\n"
-       "|---|---|---|---|---|---|---|---|---|---|---|---|")
+hdr = ("| Prefix+new | N | Prefill hit before → after | Hit gain (pts, relative) | TTFT p50 | TTFT speedup | E2E p50 | Total tok/s | Throughput | KV offloaded to decode RAM | KV pulled from decode RAM | Pulled share of prompt | Pulls |\n"
+       "|---|---|---|---|---|---|---|---|---|---|---|---|---|")
 readme = open("README.md").read()
 blocks = [("checker-on run", "results/compare_table_after_window.md"), ("checker-off run", "results/compare_table_after_window_nocheck.md")]
 for marker, path in blocks:

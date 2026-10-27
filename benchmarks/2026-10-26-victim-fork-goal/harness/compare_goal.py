@@ -54,6 +54,15 @@ def per_point(side):
     return out
 
 
+def hit_gain(x, y):
+    """Absolute gain in percentage points and the relative factor."""
+    if x is None or y is None:
+        return "-"
+    pts = (y - x) * 100
+    rel = "-" if x <= 0 else f"{y / x:.2f}x"
+    return f"{pts:+.1f} pts ({rel})"
+
+
 def pull_cols(r, d):
     if r is None or d is None:
         return "- | - | - | -"
@@ -71,15 +80,15 @@ def main():
     for kind, title, unit in (("recall", "Recall workload (fill N sessions, recall oldest first; recall phase)", "Sessions"),
                               ("static", "Static prefix-reuse workload (K documents x 3 visits, shuffled)", "Docs")):
         print(f"### {title}\n")
-        print(f"| Prefix+new | {unit} | Prefill hit before → after | TTFT p50 before → after | TTFT speedup | E2E p50 before → after | Total tok/s before → after | Throughput gain | KV offloaded to decode DRAM (after) | KV pulled from decode DRAM (after) | Pulled share of prompt | Pulls (after) |")
-        print("|---|---|---|---|---|---|---|---|---|---|---|---|")
+        print(f"| Prefix+new | {unit} | Prefill hit before → after | Hit gain | TTFT p50 before → after | TTFT speedup | E2E p50 before → after | Total tok/s before → after | Throughput gain | KV offloaded to decode DRAM (after) | KV pulled from decode DRAM (after) | Pulled share of prompt | Pulls (after) |")
+        print("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
         for lab in labs:
             if not lab.startswith(kind):
                 continue
             x, y = b.get(lab), a.get(lab)
             m = re.match(r"\w+_p(\d+)k_n(\d+)k_[sk](\d+)", lab)
             gx, gy = (x or {}), (y or {})
-            print(f"| {m[1]}k+{m[2]}k | {m[3]} | {pair(gx.get('prefill_hit'), gy.get('prefill_hit'), '{:.1%}')} | "
+            print(f"| {m[1]}k+{m[2]}k | {m[3]} | {pair(gx.get('prefill_hit'), gy.get('prefill_hit'), '{:.1%}')} | {hit_gain(gx.get('prefill_hit'), gy.get('prefill_hit'))} | "
                   f"{pair(gx.get('ttft50'), gy.get('ttft50'), '{:.1f} s')} | {ratio(gx.get('ttft50'), gy.get('ttft50'))} | "
                   f"{pair(gx.get('e2e50'), gy.get('e2e50'), '{:.1f} s')} | {pair(gx.get('tok_s'), gy.get('tok_s'), '{:,.0f}')} | "
                   f"{ratio(gy.get('tok_s'), gx.get('tok_s'))} | {pull_cols(y, ad.get(lab))} |")
