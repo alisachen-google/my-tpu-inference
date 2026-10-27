@@ -1,0 +1,220 @@
+{
+ "args": {
+  "lb": "http://10.128.15.239:8080",
+  "prefill_url": "http://10.128.15.239:30000",
+  "decode_url": "http://10.128.0.20:30000",
+  "prompts": "/home/alisachen_google_com/pd_disagg/prompts/gpt-oss",
+  "tokenizer": "/mnt/data/tt/hf-cache/hub/models--openai--gpt-oss-120b/snapshots/b5c939de8f754692c1647ca79fbf85e8c1e70f8a",
+  "prefix": 131072,
+  "new": 8192,
+  "sessions": 8,
+  "phases": "concurrent,abort",
+  "flush_targets": "both",
+  "spill_wait": 60,
+  "abort_after": 1.0,
+  "pause_hold": 90,
+  "phase_timeout": 1500.0,
+  "health_slow": 2.0,
+  "max_new_tokens": 128,
+  "stores_script": "/home/alisachen_google_com/pd_disagg/spill/spill_stores.sh",
+  "out": "results_goal/tip_stress.json"
+ },
+ "phases": {
+  "concurrent": {
+   "status": "ok",
+   "seconds": 158.2,
+   "result": {
+    "turn1": [
+     {
+      "ttft_s": 6.3624523089965805,
+      "e2e_s": 7.435878666990902,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 17.561836386012146,
+      "e2e_s": 18.634089033992495,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 23.235757326998282,
+      "e2e_s": 24.15446619899012,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 11.8709621099988,
+      "e2e_s": 12.954676187975565,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 28.888724988006288,
+      "e2e_s": 29.815499246993568,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 34.55203422700288,
+      "e2e_s": 35.514989716990385,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 43.48845264100237,
+      "e2e_s": 45.04285602498567,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 45.74020892899716,
+      "e2e_s": 47.1618693539931,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     }
+    ],
+    "turn2": [
+     {
+      "ttft_s": 12.902172132977284,
+      "e2e_s": 13.993000766990008,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 6.699621304986067,
+      "e2e_s": 7.793978100991808,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 19.078790639003273,
+      "e2e_s": 20.202669501013588,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 25.279746398009593,
+      "e2e_s": 26.198539653007174,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 31.465678199980175,
+      "e2e_s": 32.37505791700096,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 37.65428585599875,
+      "e2e_s": 38.52749817899894,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 43.84130590199493,
+      "e2e_s": 45.56678832601756,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     },
+     {
+      "ttft_s": 49.86195230498561,
+      "e2e_s": 50.73626218599384,
+      "cached_tokens": 0,
+      "cached_tokens_details": null,
+      "completion_tokens": 128,
+      "finish_reason": {
+       "type": "length",
+       "length": 128
+      }
+     }
+    ]
+   }
+  },
+  "abort": {
+   "status": "error",
+   "seconds": 67.7,
+   "result": "ConnectionError(ReadTimeoutError(\"HTTPConnectionPool(host='10.128.15.239', port=8080): Read timed out.\"))"
+  }
+ },
+ "health": {
+  "samples": 92,
+  "slow": [],
+  "errors": []
+ }
+}
