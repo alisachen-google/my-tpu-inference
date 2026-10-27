@@ -4,15 +4,15 @@
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 128k+8k | 8 | 36.7% → 88.1% | +51.4 pts (2.40x) | 14.7 s → 4.3 s | 3.43x | 21.4 s → 12.8 s | 27,142 → 46,257 | 1.70x | 0.99M (39 pushes) | 0.61M | 51.4% | 6 |
 | 128k+8k | 10 | 0.0% → 81.4% | +81.4 pts (-) | 20.4 s → 4.9 s | 4.15x | 26.6 s → 13.2 s | 20,245 → 38,698 | 1.91x | 1.28M (60 pushes) | 1.08M | 73.1% | 9 |
-| 128k+8k | 12 | 0.0% → - | - | 20.6 s → - | - | 27.0 s → - | 20,403 → - | - | - | - | - | - |
-| 128k+8k | 16 | 0.0% → - | - | 20.5 s → - | - | 26.8 s → - | 20,856 → - | - | - | - | - | - |
-| 128k+8k | 20 | 0.0% → - | - | 20.5 s → - | - | 27.0 s → - | 21,078 → - | - | - | - | - | - |
-| 128k+8k | 24 | 0.0% → - | - | 20.4 s → - | - | 27.0 s → - | 21,229 → - | - | - | - | - | - |
-| 128k+8k | 28 | 0.0% → - | - | 20.4 s → - | - | 26.9 s → - | 21,338 → - | - | - | - | - | - |
-| 128k+8k | 32 | 0.0% → - | - | 20.5 s → - | - | 27.0 s → - | 21,420 → - | - | - | - | - | - |
-| 256k+16k | 4 | 51.3% → - | - | 32.5 s → - | - | 39.0 s → - | 21,571 → - | - | - | - | - | - |
-| 256k+16k | 5 | 6.1% → - | - | 57.1 s → - | - | 65.3 s → - | 14,358 → - | - | - | - | - | - |
-| 256k+16k | 6 | 20.8% → - | - | 45.4 s → - | - | 53.4 s → - | 16,018 → - | - | - | - | - | - |
+| 128k+8k | 12 | 0.0% → 69.7% | +69.7 pts (-) | 20.6 s → 5.1 s | 4.00x | 27.0 s → 12.4 s | 20,403 → 34,760 | 1.70x | 1.60M (105 pushes) | 1.20M | 67.8% | 10 |
+| 128k+8k | 16 | 0.0% → 77.9% | +77.9 pts (-) | 20.5 s → 2.9 s | 7.06x | 26.8 s → 11.6 s | 20,856 → 40,299 | 1.93x | 2.17M (143 pushes) | 1.84M | 77.9% | 14 |
+| 128k+8k | 20 | 0.0% → 62.0% | +62.0 pts (-) | 20.5 s → 7.0 s | 2.92x | 27.0 s → 14.3 s | 21,078 → 34,359 | 1.63x | 2.66M (200 pushes) | 1.83M | 62.0% | 15 |
+| 128k+8k | 24 | 0.0% → 30.8% | +30.8 pts (-) | 20.4 s → 12.0 s | 1.70x | 27.0 s → 21.2 s | 21,229 → 26,856 | 1.27x | 4.54M (346 pushes) | 1.09M | 30.8% | 12 |
+| 128k+8k | 28 | 0.0% → 19.9% | +19.9 pts (-) | 20.4 s → 14.1 s | 1.44x | 26.9 s → 22.0 s | 21,338 → 25,417 | 1.19x | 6.49M (392 pushes) | 0.82M | 19.9% | 8 |
+| 128k+8k | 32 | 0.0% → 10.6% | +10.6 pts (-) | 20.5 s → 16.6 s | 1.23x | 27.0 s → 24.7 s | 21,420 → 23,356 | 1.09x | 7.79M (561 pushes) | 0.50M | 10.6% | 6 |
+| 256k+16k | 4 | 51.3% → 94.4% | +43.1 pts (1.84x) | 32.5 s → 14.3 s | 2.27x | 39.0 s → 22.2 s | 21,571 → 48,139 | 2.23x | 1.11M (14 pushes) | 0.46M | 38.9% | 3 |
+| 256k+16k | 5 | 6.1% → 94.4% | +88.3 pts (15.48x) | 57.1 s → 15.0 s | 3.82x | 65.3 s → 21.1 s | 14,358 → 44,722 | 3.11x | 1.42M (36 pushes) | 1.11M | 75.5% | 4 |
+| 256k+16k | 6 | 20.8% → 82.3% | +61.5 pts (3.96x) | 45.4 s → 19.1 s | 2.37x | 53.4 s → 26.9 s | 16,018 → 32,774 | 2.05x | 1.70M (59 pushes) | 1.37M | 77.2% | 5 |
 | 256k+16k | 8 | 0.0% → - | - | 71.8 s → - | - | 78.2 s → - | 14,268 → - | - | - | - | - | - |
 | 256k+16k | 10 | 0.0% → - | - | 71.4 s → - | - | 78.1 s → - | 14,358 → - | - | - | - | - | - |
 | 256k+16k | 12 | 0.0% → - | - | 71.7 s → - | - | 79.7 s → - | 14,430 → - | - | - | - | - | - |
@@ -38,4 +38,4 @@
 | 256k+16k | 12 | 9.8% → 48.2% | +38.4 pts (4.92x) | 64.2 s → 36.6 s | 1.76x | 72.5 s → 45.4 s | 16,529 → 22,140 | 1.34x | 4.36M (147 pushes) | 3.69M | 36.7% | 16 |
 | 256k+16k | 14 | 14.1% → 35.6% | +21.5 pts (2.52x) | 55.3 s → 46.2 s | 1.20x | 63.3 s → 55.1 s | 16,580 → 19,823 | 1.20x | 5.99M (232 pushes) | 3.18M | 27.2% | 16 |
 
-_Before points: 30; after points: 16. Offloaded tokens = victim-push tokens that landed in the decode's host pool during the point (decode landed_tokens deltas); pulled tokens = prefix-pull tokens the prefill received from the decode during the point (TP0 counter deltas); pulled share = those tokens / the point's measured-phase prompt tokens (for recall points the pulls of the fill phase are included, so the share can exceed 100%)._
+_Before points: 30; after points: 25. Offloaded tokens = victim-push tokens that landed in the decode's host pool during the point (decode landed_tokens deltas); pulled tokens = prefix-pull tokens the prefill received from the decode during the point (TP0 counter deltas); pulled share = those tokens / the point's measured-phase prompt tokens (for recall points the pulls of the fill phase are included, so the share can exceed 100%)._

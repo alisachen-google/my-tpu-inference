@@ -1,0 +1,34 @@
+{
+ "run": "win_after_1",
+ "label": "recall_p256k_n16k_s14_fill",
+ "sessions": 14,
+ "prefix": 262144,
+ "new": 16384,
+ "out_tokens": 1024,
+ "concurrency": 4,
+ "seed": 7,
+ "order": "oldest",
+ "working_set_tokens": 3899868,
+ "fill": {
+  "requests": 14,
+  "errors": 0,
+  "wall_s": 358.4,
+  "prompt_tokens": 3899868,
+  "cached_tokens": 0,
+  "token_hit_rate": 0.0,
+  "reusable_tokens": 0,
+  "reuse_recovered": null,
+  "sessions_fully_reused": 0,
+  "ttft_p50": 70.61505925800884,
+  "ttft_p95": 72.7758415779972,
+  "e2e_p50": 104.0552269720065,
+  "e2e_p95": 106.66030927997781,
+  "total_tok_s": 10921.3,
+  "output_tok_s": 40.0,
+  "cached_tokens_by_tier": {
+   "device": 0,
+   "host": 0,
+   "storage": 0
+  }
+ }
+}

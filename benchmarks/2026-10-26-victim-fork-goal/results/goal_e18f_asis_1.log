@@ -1,0 +1,15 @@
+2026-10-27 03:04:00 starting e18f_after_1 (after)
+2026-10-27 03:20:25 WARN: warmup not confirmed after 10 min (prefill=0 decode=0)
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+bash: line 1: /.maps: Permission denied
+2026-10-27 03:22:24 WIPE CHECK: after flush, prefill cached 0/139298, decode cached 0/139298 (both must be 0)
+2026-10-27 03:22:35 static_p128k_n8k_k12

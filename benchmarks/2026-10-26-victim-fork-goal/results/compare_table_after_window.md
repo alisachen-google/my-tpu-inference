@@ -16,8 +16,8 @@
 | 256k+16k | 8 | 0.0% → 63.9% | +63.9 pts (-) | 71.8 s → 61.8 s | 1.16x | 78.2 s → 96.1 s | 14,268 → 13,457 | 0.94x | 2.11M (98 pushes) | 1.51M | 63.9% | 6 |
 | 256k+16k | 10 | 0.0% → 63.9% | +63.9 pts (-) | 71.4 s → 50.6 s | 1.41x | 78.1 s → 82.7 s | 14,358 → 13,342 | 0.93x | 2.91M (120 pushes) | 1.88M | 63.9% | 9 |
 | 256k+16k | 12 | 0.0% → 27.5% | +27.5 pts (-) | 71.7 s → 67.1 s | 1.07x | 79.7 s → 98.4 s | 14,430 → 11,866 | 0.82x | 4.65M (162 pushes) | 0.97M | 27.5% | 5 |
-| 256k+16k | 14 | 0.0% → - | - | 71.7 s → - | - | 79.6 s → - | 14,492 → - | - | - | - | - | - |
-| 256k+16k | 16 | 0.0% → - | - | 71.8 s → - | - | 79.8 s → - | 14,539 → - | - | - | - | - | - |
+| 256k+16k | 14 | 0.0% → 6.9% | +6.9 pts (-) | 71.7 s → 74.9 s | 0.96x | 79.6 s → 109.7 s | 14,492 → 11,085 | 0.76x | 6.82M (249 pushes) | 0.29M | 6.9% | 3 |
+| 256k+16k | 16 | 0.0% → 1.2% | +1.2 pts (-) | 71.8 s → 75.6 s | 0.95x | 79.8 s → 110.9 s | 14,539 → 10,847 | 0.75x | 8.39M (277 pushes) | 0.06M | 1.2% | 1 |
 
 ### Static prefix-reuse workload (K documents x 3 visits, shuffled)
 
@@ -38,4 +38,4 @@
 | 256k+16k | 12 | 9.8% → 45.7% | +35.9 pts (4.66x) | 64.2 s → 54.8 s | 1.17x | 72.5 s → 87.3 s | 16,529 → 12,460 | 0.75x | 4.41M (115 pushes) | 3.79M | 37.8% | 17 |
 | 256k+16k | 14 | 14.1% → 36.2% | +22.1 pts (2.56x) | 55.3 s → 58.4 s | 0.95x | 63.3 s → 90.9 s | 16,580 → 11,727 | 0.71x | 5.46M (199 pushes) | 3.37M | 28.8% | 15 |
 
-_Before points: 30; after points: 28. Offloaded tokens = victim-push tokens that landed in the decode's host pool during the point (decode landed_tokens deltas); pulled tokens = prefix-pull tokens the prefill received from the decode during the point (TP0 counter deltas); pulled share = those tokens / the point's measured-phase prompt tokens (for recall points the pulls of the fill phase are included, so the share can exceed 100%)._
+_Before points: 30; after points: 30. Offloaded tokens = victim-push tokens that landed in the decode's host pool during the point (decode landed_tokens deltas); pulled tokens = prefix-pull tokens the prefill received from the decode during the point (TP0 counter deltas); pulled share = those tokens / the point's measured-phase prompt tokens (for recall points the pulls of the fill phase are included, so the share can exceed 100%)._
