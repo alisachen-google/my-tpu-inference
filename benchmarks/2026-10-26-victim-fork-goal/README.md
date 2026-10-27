@@ -1,6 +1,6 @@
 # Spill-over KV cache (prefill RAM → decode RAM): before vs after
 
-Written 2026-10-26, updated 2026-10-27 03:40 UTC. **Status: "before" complete (30 points); "after" is being swept
+Written 2026-10-26, updated 2026-10-27 04:15 UTC. **Status: "before" complete (30 points); "after" is being swept
 on two pairs** (see the two tables below). The comparison is between upstream main and the fork with its two
 fixes from this campaign: the eviction-order fix that stops the hang, and the restored sliding-window half of the
 push, without which nothing is ever pulled back on gpt-oss. Tables are regenerated from the run logs with
@@ -116,8 +116,7 @@ Recall (fill N sessions, recall oldest first; measured phase is the recall; the 
 | 256k+16k | 16 | 0.0% → 1.2% | +1.2 pts (-) | 71.8 s → 75.6 s | 0.95x | 79.8 s → 110.9 s | 14,539 → 10,847 | 0.75x | 8.39M (277 pushes) | 0.06M | 1.2% | 1 |
 ## Before vs after: checker-off run (pair 1, `results/goal_winnc_after_1.log`)
 
-The same sweep with the consensus checker off; this is the definitive "after" column (static series complete,
-recall series in progress).
+The same sweep with the consensus checker off; this is the definitive "after" column (all 30 points).
 
 Static prefix reuse:
 
@@ -155,6 +154,11 @@ Recall:
 | 256k+16k | 4 | 51.3% → 94.4% | +43.1 pts (1.84x) | 32.5 s → 14.3 s | 2.27x | 39.0 s → 22.2 s | 21,571 → 48,139 | 2.23x | 1.11M (14 pushes) | 0.46M | 38.9% | 3 |
 | 256k+16k | 5 | 6.1% → 94.4% | +88.3 pts (15.48x) | 57.1 s → 15.0 s | 3.82x | 65.3 s → 21.1 s | 14,358 → 44,722 | 3.11x | 1.42M (36 pushes) | 1.11M | 75.5% | 4 |
 | 256k+16k | 6 | 20.8% → 82.3% | +61.5 pts (3.96x) | 45.4 s → 19.1 s | 2.37x | 53.4 s → 26.9 s | 16,018 → 32,774 | 2.05x | 1.70M (59 pushes) | 1.37M | 77.2% | 5 |
+| 256k+16k | 8 | 0.0% → 65.9% | +65.9 pts (-) | 71.8 s → 32.9 s | 2.18x | 78.2 s → 41.6 s | 14,268 → 25,116 | 1.76x | 2.29M (118 pushes) | 1.56M | 65.9% | 6 |
+| 256k+16k | 10 | 0.0% → 45.5% | +45.5 pts (-) | 71.4 s → 39.7 s | 1.80x | 78.1 s → 48.2 s | 14,358 → 19,619 | 1.37x | 3.55M (156 pushes) | 1.34M | 45.5% | 6 |
+| 256k+16k | 12 | 0.0% → 33.9% | +33.9 pts (-) | 71.7 s → 54.5 s | 1.32x | 79.7 s → 60.5 s | 14,430 → 18,247 | 1.26x | 4.92M (181 pushes) | 1.20M | 33.9% | 8 |
+| 256k+16k | 14 | 0.0% → 7.9% | +7.9 pts (-) | 71.7 s → 67.5 s | 1.06x | 79.6 s → 76.6 s | 14,492 → 15,056 | 1.04x | 6.93M (265 pushes) | 0.33M | 7.9% | 5 |
+| 256k+16k | 16 | 0.0% → 1.0% | +1.0 pts (-) | 71.8 s → 70.9 s | 1.01x | 79.8 s → 79.3 s | 14,539 → 14,584 | 1.00x | 8.37M (367 pushes) | 0.05M | 1.0% | 1 |
 ## Reading the results so far
 
 - **128k static:** with the window push the prefill hit stays at 55 to 62% up to 20 docs, where the HBM-only cache
@@ -166,7 +170,11 @@ Recall:
   1.2 to 1.8x faster and throughput 7 to 34% higher from 4 docs on. Inside HBM (2 docs) the fork costs 13% at 256k
   (0 to 3% at 128k): the prefill's per-chunk backup of each path's SWA window to host RAM and the pusher's
   bookkeeping, not pushes or pulls (none happen at 2 docs).
-- **256k recall (checker off):** 51% → 94% at 4 sessions, 6% → 94% at 5, 21% → 82% at 6; later points pending.
+- **256k recall (checker off):** 51% → 94% at 4 sessions, 6% → 94% at 5, 21% → 82% at 6, 0% → 66% at 8, 0% → 45% at
+  10, 0% → 34% at 12; 8% and 1% at 14 and 16 sessions, where the working set (3.9M to 4.5M tokens) exceeds what the
+  two RAM tiers hold together (about 3.6M).
+- **128k recall (checker off):** 37% → 88% at 8 sessions, then 81%, 70%, 78%, 62% at 10 to 20 sessions (0% before
+  from 10 on), 31% at 24 and 20% at 28; 11% at 32 sessions.
 - Each pull reads a 131,072-token prefix plus its 128-token window in 0.5 to 0.7 s; per point 1.5M to 4.7M tokens
   come back from the decode's RAM and 2M to 6M tokens are offloaded to it.
 

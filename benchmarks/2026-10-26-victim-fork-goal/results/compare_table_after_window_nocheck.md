@@ -13,11 +13,11 @@
 | 256k+16k | 4 | 51.3% → 94.4% | +43.1 pts (1.84x) | 32.5 s → 14.3 s | 2.27x | 39.0 s → 22.2 s | 21,571 → 48,139 | 2.23x | 1.11M (14 pushes) | 0.46M | 38.9% | 3 |
 | 256k+16k | 5 | 6.1% → 94.4% | +88.3 pts (15.48x) | 57.1 s → 15.0 s | 3.82x | 65.3 s → 21.1 s | 14,358 → 44,722 | 3.11x | 1.42M (36 pushes) | 1.11M | 75.5% | 4 |
 | 256k+16k | 6 | 20.8% → 82.3% | +61.5 pts (3.96x) | 45.4 s → 19.1 s | 2.37x | 53.4 s → 26.9 s | 16,018 → 32,774 | 2.05x | 1.70M (59 pushes) | 1.37M | 77.2% | 5 |
-| 256k+16k | 8 | 0.0% → - | - | 71.8 s → - | - | 78.2 s → - | 14,268 → - | - | - | - | - | - |
-| 256k+16k | 10 | 0.0% → - | - | 71.4 s → - | - | 78.1 s → - | 14,358 → - | - | - | - | - | - |
-| 256k+16k | 12 | 0.0% → - | - | 71.7 s → - | - | 79.7 s → - | 14,430 → - | - | - | - | - | - |
-| 256k+16k | 14 | 0.0% → - | - | 71.7 s → - | - | 79.6 s → - | 14,492 → - | - | - | - | - | - |
-| 256k+16k | 16 | 0.0% → - | - | 71.8 s → - | - | 79.8 s → - | 14,539 → - | - | - | - | - | - |
+| 256k+16k | 8 | 0.0% → 65.9% | +65.9 pts (-) | 71.8 s → 32.9 s | 2.18x | 78.2 s → 41.6 s | 14,268 → 25,116 | 1.76x | 2.29M (118 pushes) | 1.56M | 65.9% | 6 |
+| 256k+16k | 10 | 0.0% → 45.5% | +45.5 pts (-) | 71.4 s → 39.7 s | 1.80x | 78.1 s → 48.2 s | 14,358 → 19,619 | 1.37x | 3.55M (156 pushes) | 1.34M | 45.5% | 6 |
+| 256k+16k | 12 | 0.0% → 33.9% | +33.9 pts (-) | 71.7 s → 54.5 s | 1.32x | 79.7 s → 60.5 s | 14,430 → 18,247 | 1.26x | 4.92M (181 pushes) | 1.20M | 33.9% | 8 |
+| 256k+16k | 14 | 0.0% → 7.9% | +7.9 pts (-) | 71.7 s → 67.5 s | 1.06x | 79.6 s → 76.6 s | 14,492 → 15,056 | 1.04x | 6.93M (265 pushes) | 0.33M | 7.9% | 5 |
+| 256k+16k | 16 | 0.0% → 1.0% | +1.0 pts (-) | 71.8 s → 70.9 s | 1.01x | 79.8 s → 79.3 s | 14,539 → 14,584 | 1.00x | 8.37M (367 pushes) | 0.05M | 1.0% | 1 |
 
 ### Static prefix-reuse workload (K documents x 3 visits, shuffled)
 
@@ -38,4 +38,4 @@
 | 256k+16k | 12 | 9.8% → 48.2% | +38.4 pts (4.92x) | 64.2 s → 36.6 s | 1.76x | 72.5 s → 45.4 s | 16,529 → 22,140 | 1.34x | 4.36M (147 pushes) | 3.69M | 36.7% | 16 |
 | 256k+16k | 14 | 14.1% → 35.6% | +21.5 pts (2.52x) | 55.3 s → 46.2 s | 1.20x | 63.3 s → 55.1 s | 16,580 → 19,823 | 1.20x | 5.99M (232 pushes) | 3.18M | 27.2% | 16 |
 
-_Before points: 30; after points: 25. Offloaded tokens = victim-push tokens that landed in the decode's host pool during the point (decode landed_tokens deltas); pulled tokens = prefix-pull tokens the prefill received from the decode during the point (TP0 counter deltas); pulled share = those tokens / the point's measured-phase prompt tokens (for recall points the pulls of the fill phase are included, so the share can exceed 100%)._
+_Before points: 30; after points: 30. Offloaded tokens = victim-push tokens that landed in the decode's host pool during the point (decode landed_tokens deltas); pulled tokens = prefix-pull tokens the prefill received from the decode during the point (TP0 counter deltas); pulled share = those tokens / the point's measured-phase prompt tokens (for recall points the pulls of the fill phase are included, so the share can exceed 100%)._
