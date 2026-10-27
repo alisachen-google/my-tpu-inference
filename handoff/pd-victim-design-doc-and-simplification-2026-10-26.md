@@ -2,6 +2,57 @@
 
 Written 2026-10-26.
 
+## Host-to-host prefix recall (updated 2026-10-27)
+
+The user requested a new commit on the original `pd-victim-prefix-cache`
+branch, replacing the Decode DRAM → Decode HBM → device-source transfer
+detour with Decode DRAM → Prefill DRAM recall. Local feature commit
+`e18ff55cb76aae57a44fb8328fe579e92eee47c4` is based directly on published
+`9d9c2d89`, in `~/sglang-victim-host-recall` on `pd-victim-host-recall`.
+It does not incorporate or modify the separate simplification branch.
+
+Victim mode uses `HostPrefixSource` and `HostPrefixPuller`. The existing
+OFFER/PULL/READY messages carry an explicit memory domain. Decode offers and
+host-pins completed FULL/SWA host coverage; the host managers register with
+`source="host"`. Prefill allocates named pages in its existing HiCache pools,
+receives with `destination="host"`, then publishes both components through
+the shared host-prefetch insertion helper. Normal Prefill admission performs
+H2D. Device recall outside victim mode is unchanged. Native transfers retain
+ownership through aborts and room cleanup; host tree pins cover the queue-to-
+admission handoff. A wrapper fix preserves completion reports cached while
+listener registration releases the GIL. Runtime changes stay in `sglang_tpu/`.
+
+Twenty-two extra CPU regressions and a guarded runner are committed in this
+notes repo, outside the SGLang feature commit. Final validation passed 517 CPU
+tests plus 268 subtests, including real two-rank Gloo failure/completion
+coordination; there were zero TPU compiler calls and no `torch_tpu` import.
+Configured lint, full F/E9 on runtime files, formatting, import ordering,
+whitespace and unchanged SGLang test-method counts passed. The old request-
+cleanup assertion failed identically on an untouched `9d9c2d89` worktree;
+only that assertion and the existing mock host-pool size field were adapted.
+The owned baseline worktree was removed after verification.
+
+Artifacts remain local in `~/pd_disagg/results/host-prefix-recall-review/`
+(`unit-tests.xml`, `status.json`, `integration.patch`, `feature.patch`).
+No benchmarks, native transfers, model servers or live TPU tests were run.
+No production bandwidth/latency/correctness claim follows from these CPU mocks.
+The native socket-drain limitation documented earlier still applies.
+
+Publication is blocked: Git push from this tool terminal reports missing HTTPS
+credentials; the connected GitHub app identifies as `alisa888cl-eng` and its
+commit API does not expose author/committer overrides. Both local feature
+identities are the requested `alisachen-google` noreply identity. The target
+remote branch was last verified at `9d9c2d89` and is not updated yet. From an
+authenticated terminal, publish the prepared fast-forward with:
+
+```bash
+git -C /home/alisachen_google_com/sglang-victim-host-recall \
+  push fork HEAD:pd-victim-prefix-cache
+```
+
+The website still documents the historical milestone 3 revision `9d9c2d89`;
+it was not changed by this implementation task.
+
 ## Milestone 3 explanation (updated 2026-10-26)
 
 The private design website now has `?section=milestone-recall`, matching the

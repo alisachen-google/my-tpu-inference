@@ -5,6 +5,31 @@ Written 2026-10-26 against SGLang `6c60fd77b79f` and native tpu-sync
 `f2d8c3e58ea6a47a89ead8f9f4a4a81a1eab629d`. These probes live here at the owner's request; they are not part
 of the SGLang feature commit. They do not launch or access TPU model servers.
 
+## Decode DRAM → Prefill DRAM recall (2026-10-27)
+
+`test_host_prefix_recall.py` adds 22 CPU regressions against runtime
+`e18ff55cb76aae57a44fb8328fe579e92eee47c4`, based directly on `9d9c2d89`.
+They use real Raiden wire/protocol managers and Python FULL/SWA radix trees,
+with native transfer and device-allocation boundaries simulated. Coverage
+includes explicit memory domains, joint FULL/SWA publication, local-host reuse,
+bigram keys, normal admission load-back, failed starts, partial registration,
+abort/room cleanup, capacity refusal, queue-to-admission pins, reset guards,
+an early-report registration race and two-rank Gloo asymmetric completion.
+
+```bash
+python tests/pd_victim_review/run_host_prefix_recall_units.py \
+  --sglang-root /path/to/sglang-victim-host-recall \
+  --junit-xml /path/to/local-results/unit-tests.xml
+```
+
+The final broad run passed **517 tests and 268 subtests**, with no TPU compiler
+calls or `torch_tpu` import. The old cleanup assertion failed identically on an
+untouched `9d9c2d89` worktree; the existing test now checks that independently
+keyed victim sessions survive request-room cleanup. No new SGLang test methods
+were added. The two-rank test owns and terminates only its own child processes.
+These checks do not establish real TPU DMA, cross-host byte correctness or
+serving performance. No benchmarks or model servers were run.
+
 ## Shared Prefill/Decode host-stack construction
 
 `test_shared_swa_host_stack.py` checks Prefill equivalence with the upstream

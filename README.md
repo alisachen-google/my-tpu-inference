@@ -15,6 +15,8 @@ pending automatic-AI setup, and the separate behavior-preserving code cleanup.
 Additional website persistence checks live under `tests/design_doc/`.
 The same note records the later shared Prefill/Decode host-stack consolidation
 and its unit-only validation, with the previous benchmark revision preserved.
+Its 2026-10-27 update records direct Decode-DRAM → Prefill-DRAM recall and
+the 517-test CPU validation; the new host-recall probes stay in this repo.
 
 ## Victim prefix cache: spill-first milestones (added 2026-10-26)
 
