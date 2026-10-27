@@ -180,6 +180,8 @@ Recall:
 
 ## Files
 
+- [FIXES-2026-10-27.md](FIXES-2026-10-27.md): defects found by the branch-tip validation and how each was fixed.
+
 - `results/goal_before_1.log`, `results/goal_after_1.log`: one `POINT {...}` JSON line per point (prefill hit from
   metrics and from the log, decode reuse, latency, throughput, victim counters), plus the wipe-check lines.
 - `results/summaries/`: the client summaries per phase; `results/compare_table.md`: generated comparison.
