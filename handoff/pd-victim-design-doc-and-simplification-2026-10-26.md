@@ -2,6 +2,41 @@
 
 Written 2026-10-26.
 
+## PR #1789 simple diagram (published 2026-10-27)
+
+The user requested a simple website diagram emphasizing spillover, recall,
+FULL plus SWA, and the tpu-sync update. PR #1789 was fetched through the
+GitHub connector and its current source was read at
+`c910830c0e5962ec07f215ed1fec814e9b5dc323`. This PR now includes host-to-host
+recall and the umbrella enable switch; the publication/status statements in
+earlier sections below are historical snapshots.
+
+The existing Site's `?section=memory-map` now shows both directions together,
+with selectable spill and recall views, separate FULL/SWA arrows, the shared
+ending boundary, initial Prefill D2H and later admission H2D. An API panel
+explains host `register_read`, named-host `start_read`, native completion and
+which role serves/pulls in each direction. The complete diagram is downloadable
+as `/document/pr1789-overview.svg`. It also shows the current umbrella flag
+`SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM=1` and the unified
+`SGLANG_TPU_PD_SWA_HOST_WINDOWS` setting. Historical deep dives remain pinned
+to their original revisions and are explicitly distinguished from the new
+overview in the page and server document context.
+
+Source commit: `f4bd80789f4806d2e0bdef7d4ded24b8318efb85`.
+Saved version: `appgprj_6adee7597a9081918122a1861b6e35c6~appgver_abc001e7476881918cbd800ca59a6d37`.
+Deployment: `appgdep_6ae0ddd262288191b3ce4f8ac805fc0c`, confirmed succeeded.
+Owner-private access, D1 schema and AI configuration are preserved.
+
+TypeScript, production build, nine SQLite checks and desktop/mobile/offline
+Playwright checks passed. QA verifies saved local section questions, current
+PR context from the document tool, SVG download, flow controls, no viewport
+overflow/page errors, and self-contained offline assets without duplicate IDs.
+The exporter now regenerates the memory-map chapter as well as the five
+existing authored chapters. Local artifacts are in
+`~/pd_disagg/results/pr1789-diagram-review/`; no hosted QA records, live AI
+calls, SGLang runtime edits or benchmarks were made. The owned preview was
+stopped after QA. No new performance measurements are claimed by the diagram.
+
 ## Host-to-host prefix recall (updated 2026-10-27)
 
 The user requested a new commit on the original `pd-victim-prefix-cache`

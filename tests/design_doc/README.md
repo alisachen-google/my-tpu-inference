@@ -24,6 +24,12 @@ checkout; they do not launch TPU workloads or mutate hosted review records.
   break-even behavior, loaded sequence diagrams, new discussion sections and
   the self-contained download under an offline browser context. Also set
   `DESIGN_DOC_SITE_ROOT` to the selected Sites checkout.
+- `check_pr1789_diagram.cjs` checks the current PR overview at `memory-map`:
+  bidirectional FULL/SWA host transfers, spill/recall controls, the tpu-sync
+  host API, pinned source and enable flag, responsive overflow, SVG download,
+  section questions and authenticated document context. Its offline checks
+  cover both flow modes, embedded assets and unique SVG IDs. It uses the same
+  loopback-only environment and never creates hosted review records.
 
 Automatic OpenAI replies have not been live-tested: the hosted Site has no AI
 credentials configured. Unavailable-provider behavior preserves questions and
