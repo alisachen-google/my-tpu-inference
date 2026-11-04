@@ -7,6 +7,12 @@ Snapshot taken 2026-10-21 (heads as listed in each note). Each note has a recomm
 findings ordered by severity with ready-to-paste comment text, questions, nits, and a list of threads other
 reviewers already covered so nothing is repeated.
 
+## SGLang torchtpu PR review (added 2026-11-04)
+
+| PR | Reviewed head | Recommendation | Notes |
+| --- | --- | --- | --- |
+| [#1789 Decode DRAM as a prefill KV tier](https://github.com/sgl-project/sglang-torchtpu/pull/1789) | `c910830c0e59` | Request changes | [Review](reviews/sglang-torchtpu/PR-1789.md): five findings on source lifetime, draft sidecars, flag overrides, terminal cleanup and host reclaim; refactoring and coverage suggestions; 673 CPU tests plus 358 subtests passed. |
+
 ## Design review website and simplification branch (added 2026-10-26)
 
 [handoff/pd-victim-design-doc-and-simplification-2026-10-26.md](handoff/pd-victim-design-doc-and-simplification-2026-10-26.md)

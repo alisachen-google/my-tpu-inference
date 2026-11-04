@@ -5,6 +5,29 @@ Written 2026-10-26 against SGLang `6c60fd77b79f` and native tpu-sync
 `f2d8c3e58ea6a47a89ead8f9f4a4a81a1eab629d`. These probes live here at the owner's request; they are not part
 of the SGLang feature commit. They do not launch or access TPU model servers.
 
+## PR 1789 review boundary probes (2026-11-04)
+
+[The review](../../reviews/sglang-torchtpu/PR-1789.md) covers exact head
+`c910830c0e5962ec07f215ed1fec814e9b5dc323` and records five findings.
+`probe_pr1789_review.py` reproduces ignored Boolean overrides, incomplete
+chain reclaim, retained terminal records and load-back of unwritten draft
+sidecars. `probe_pr1789_device_source.py` reproduces device source eviction
+and reuse while the reverse native registration remains pending.
+
+```bash
+python tests/pd_victim_review/probe_pr1789_review.py \
+  --sglang-root /path/to/sglang-at-c910830c0e59
+python tests/pd_victim_review/probe_pr1789_device_source.py \
+  --sglang-root /path/to/sglang-at-c910830c0e59
+```
+
+These are observational reproduction tools for that head, not acceptance
+tests for corrected behavior. They execute real manager/cache/allocation
+code with simulated native and copy boundaries. They start no model server,
+native transfer or TPU compiler, and cannot establish hardware byte corruption.
+The existing CPU suites passed 673 tests and 358 subtests at this head;
+the probes demonstrate gaps beyond those passing tests.
+
 ## Decode DRAM → Prefill DRAM recall (2026-10-27)
 
 `test_host_prefix_recall.py` adds 22 CPU regressions against runtime
