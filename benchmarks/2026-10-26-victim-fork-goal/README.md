@@ -191,6 +191,26 @@ at the heaviest points (for example 128k recall 24 sessions 23.5% vs 30.8%, 256k
 48.2%), where the prefill's RAM has no room to land recalls. Defects found and fixed on the way, the byte-level
 transfer verification, the probe-free output check and the live edge cases are in `FIXES-2026-10-27.md`.
 
+## Write-back reproduction on the PR tree, single host (2026-11-04): `results/agentic/single_host_arms_ABE.md`
+
+The write-back copy-ahead reproduction (upstream branch `yifeixu/hicache-write-back-repro`,
+`benchmark/tpu/hicache_write_back_repro/REPRODUCE.md`) run on the PR #1789 tree on one tpu7x-8 host (v7),
+one hour of the agentic client per arm. The fixes the document's arms D and E stand for (#1586, #1612) are in
+upstream main and so in this tree, which makes "write_back with the window on" the document's arm E.
+
+| Arm | Requests | Errors | Hit % | Hit % per 10 min | Main p50 / p90 / p99 s | Eviction s (TP0) | Document |
+|---|---|---|---|---|---|---|---|
+| A write_through, window off | 5,486 | 0 | 67.5 | 68.0, 72.8, 65.9, 64.6, 66.8, 65.7 | 30.0 / 44.7 / 54.0 | 23 | 4,973 / 68.9% / 25 s |
+| B write_back, window off | 5,172 | 0 | 71.8 | 69.5, 75.7, 72.6, 76.0, 66.3, 69.3 | 33.2 / 46.7 / 57.8 | 1,886 | 4,797 / 73.1% / 1,880 s |
+| E write_back, window on | 5,775 | 0 | 69.8 | 70.0, 76.4, 67.0, 65.1, 72.0, 65.8 | 27.9 / 42.9 / 56.0 | 848 | 4,970 / 72.4% / 853 s |
+
+The document's criteria hold: E is within 5 points of B, at less than half of B's eviction time, serves more
+than 90% of B's requests, and every arm has 0 errors and no worker crashes (criterion 1, the collapse of the
+unfixed arm C, is not reproducible on a tree that carries the fix). Two start-up notes for anyone repeating
+this: the tree needs the `zstandard` package (a declared dependency our older venvs lacked) and the package's
+"direct" compile tracer needs a newer torch_tpu than the installed wheel, so the arms ran with the default
+tracer and explicit compile shapes.
+
 ## Agentic multi-turn load, 1P/1D, write policies and the DRAM spill (2026-11-04): `results/agentic/pd_1p1d_compare.md`
 
 The write-back reproduction package's client (20 sessions, up to 75k-token prompts, fixed-date template) run
