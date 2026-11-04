@@ -211,6 +211,25 @@ this: the tree needs the `zstandard` package (a declared dependency our older ve
 "direct" compile tracer needs a newer torch_tpu than the installed wheel, so the arms ran with the default
 tracer and explicit compile shapes.
 
+## Agentic multi-turn load, 2P/2D, write-back with and without the DRAM spill (2026-11-04): `results/agentic/pd_2p2d_compare.md`
+
+Two prefills (hosts a and v7) and two decodes (hosts b and a borrowed tpu7x-8), one router with random decode
+selection (no session affinity), the same client and recipe sizing as the 1P/1D arms, PR #1789 tree with all
+fixes. Hit % is computed over both prefills' TP0 `Prefill batch` lines inside the client's hour
+(`harness/hit2p.py`, since `compare.py` reads one log).
+
+| Arm | Requests | Errors | Prefill hit % | device / host / new % | hit % per 10 min | per prefill | Main p50 / p90 / p99 s |
+|---|---|---|---|---|---|---|---|
+| write_back, spill off | 7,038 | 0 | 27.3 | 9.6 / 17.6 / 72.7 | 27.2, 27.8, 25.9, 24.7, 30.9, 26.8 | 27.9 / 26.6 | 18.2 / 31.9 / 40.5 |
+| write_back + spill | 7,615 | 0 | 30.3 | 11.4 / 18.9 / 69.7 | 30.1, 31.6, 26.9, 30.1, 28.5, 34.3 | 30.5 / 30.1 | 17.8 / 27.6 / 35.0 |
+
+Correctness: no exception, no out-of-memory and no client error on any of the four engines in either arm;
+218 victims pushed and all stored (b 126, the borrowed decode 93), 199 recalls (4.8M tokens) with 0 refused
+for memory and 0 failed, under random routing where a session's next request can land on a decode that does
+not hold its prefix. Performance: 8.2% more requests in the hour, p90 latency 13% and p99 14% lower, prefill
+hit rate up 3 points and no decay across the hour (two decodes gave the spill enough room, unlike the 1P/1D
+arm). The borrowed host was released after the run (processes stopped, share unmounted, files removed).
+
 ## Agentic multi-turn load, 1P/1D, write policies and the DRAM spill (2026-11-04): `results/agentic/pd_1p1d_compare.md`
 
 The write-back reproduction package's client (20 sessions, up to 75k-token prompts, fixed-date template) run
