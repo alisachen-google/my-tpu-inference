@@ -191,6 +191,27 @@ at the heaviest points (for example 128k recall 24 sessions 23.5% vs 30.8%, 256k
 48.2%), where the prefill's RAM has no room to land recalls. Defects found and fixed on the way, the byte-level
 transfer verification, the probe-free output check and the live edge cases are in `FIXES-2026-10-27.md`.
 
+## Agentic multi-turn load, 1P/1D, write policies and the DRAM spill (2026-11-04): `results/agentic/pd_1p1d_compare.md`
+
+The write-back reproduction package's client (20 sessions, up to 75k-token prompts, fixed-date template) run
+for one hour per arm against a 1P/1D pair on the PR #1789 tree with all fixes (head 4a614b90 on the old base),
+prefill host pool 12 GB per rank so the prefill cannot hold the working set, decode host pool 40 GB per rank.
+Hit % is the prefill's own (TP0 `Prefill batch` lines), as `compare.py` computes it.
+
+| Arm | Requests | Errors | Prefill hit % | hit % per 10 min | Main p50 / p90 / p99 s | Eviction s |
+|---|---|---|---|---|---|---|
+| write_through, spill off | 3,241 | 0 | 8.8 | 9.1, 8.9, 9.0, 8.7, 8.9, 8.1 | 45.3 / 55.7 / 64.4 | 9 |
+| write_back, spill off | 3,147 | 0 | 9.1 | 9.7, 9.1, 9.6, 8.8, 9.5, 7.8 | 47.4 / 57.4 / 66.9 | 438 |
+| write_back + spill (switch on) | 3,355 | 0 | 16.7 | 24.5, 19.3, 16.5, 14.3, 12.8, 11.2 | 44.0 / 55.0 / 63.3 | 493 |
+
+With the prefill capacity-bound, the write policy alone changes nothing (about 9%). Spilling to the decode's
+DRAM roughly doubles the prefill hit rate over the hour and serves 6.6% more requests at lower latency, with
+271 recalls (6.5M tokens) and no error on either role. The gain fades across the hour because the decode's
+host pool fills: of 360 pushes the decode admitted 192 and refused 168 for lack of room (prefill side:
+192 pushed, 163 declined), so later victims were not kept. Decode-side room, or eviction of older victims to
+admit new ones, is the lever for a sustained gain. The first attempt of this arm found defect 6
+(`FIXES-2026-10-27.md`); this is the rerun on the fixed tree.
+
 ## Files
 
 - [FIXES-2026-10-27.md](FIXES-2026-10-27.md): defects found by the branch-tip validation and how each was fixed.
