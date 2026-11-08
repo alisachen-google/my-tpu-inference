@@ -1,0 +1,303 @@
+2026-11-06 14:53:34 waiting for the goal queue
+2026-11-06 15:44:47 waiting for the goal queue
+2026-11-06 19:31:45 waiting for the goal queue
+2026-11-06 19:32:48 F2 PR 1992 tree 99a2a77b89 deployed
+2026-11-06 19:32:48 sweep g1992b_on start (pd_1992_qwen_wb.json)
+2026-11-06 20:05:08 F2 sweep restarted: the prefill failed to start at 19:38 (gRPC control port 41193 still in use by the previous pair's teardown); relaunching the batch
+2026-11-06 20:05:08 waiting for the goal queue
+2026-11-06 20:06:05 F2 PR 1992 tree 99a2a77b89 deployed
+2026-11-06 20:06:05 sweep g1992b_on start (pd_1992_qwen_wb.json)
+2026-11-06 21:10:59 sweep g1992b_on end: exit=0 points=12 strict: requests=509 failed=0
+2026-11-06 21:11:01 EDGE start: prefill=200 decode=200 lb=200 prefill_exc=3 decode_exc=1
+2026-11-06 21:11:01 EDGE E1 integrity: recalled outputs must equal a recompute after a flush; probes must match throughout
+2026-11-06 21:18:03 EDGE E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 269.8, "probes": {"sent": 102, "exact": 92, "min_agree": 0, "errors": 0, "mismatch_positions": [0, 7, 9, 9, 16, 17, 18, 22, 25, 38]}, "errors": 0, "recall": {"compared": 16, "exact": 8, "min_agree": 4, "pulled_sessions": 11}}
+2026-11-06 21:18:05 EDGE E1 after: prefill=200 decode=200 lb=200 prefill_exc=3 decode_exc=1
+2026-11-06 21:18:05 EDGE E2 stress: concurrent recalls after a prefill-only flush, and client aborts mid-recall
+2026-11-06 21:21:55 EDGE E2 rc=0 {"phase": "concurrent", "status": "ok", "seconds": 146.1} {"phase": "abort", "status": "ok", "seconds": 78.3} {"health_samples": 90, "slow_probes": 0, "probe_errors": 0} 
+2026-11-06 21:21:57 EDGE E2 after: prefill=200 decode=200 lb=200 prefill_exc=3 decode_exc=1
+2026-11-06 21:21:57 EDGE E3 flush under load: flush both engines 30 s into a static run
+2026-11-06 21:23:31 EDGE E3 flush codes prefill=400 decode=400; requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=3 decode_exc=1
+2026-11-06 21:23:31 EDGE E4 decode killed while recalls are in flight, then restarted
+2026-11-06 21:25:04 EDGE E4 fill: requests=12 failed=0
+2026-11-06 21:25:40 EDGE E4 decode stopped
+2026-11-06 21:26:42 EDGE E4 during outage: prefill=200 decode=000 lb=503 prefill_exc=11 decode_exc=2
+2026-11-06 21:31:04 EDGE E4 decode restarted: 2026-11-06 21:31:04 decode /health ready after 260 s
+2026-11-06 21:31:04 EDGE E4 recall during the kill: requests=12 failed=8 first=no completion tokens
+2026-11-06 21:31:57 EDGE E4 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=11 decode_exc=2
+2026-11-06 21:31:57 EDGE E5 prefill killed while pushes are in flight, then restarted
+2026-11-06 21:34:08 EDGE E5 prefill stopped
+2026-11-06 21:34:40 EDGE E5 during outage: decode=200 prefill_exc=12 decode_exc=2
+2026-11-06 21:34:40 EDGE E5 decode flush ok (landings of the dead prefill were released)
+2026-11-06 21:40:04 EDGE E5 prefill restarted: 2026-11-06 21:40:04 LB /health ready after 0 s
+2026-11-06 21:40:56 EDGE E5 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=12 decode_exc=2
+2026-11-06 21:40:58 EDGE done: prefill=200 decode=200 lb=200 prefill_exc=12 decode_exc=2
+2026-11-06 21:40:58 F2 edges exit 0
+2026-11-06 21:47:33 g1992b_on_1 single-request integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 250.7, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 11}}
+2026-11-06 21:47:35 g1992b_on_1 after integrity: prefill=200 decode=200 lb=200 prefill_exc=12 decode_exc=2
+2026-11-06 21:50:40 g1992b_on_1 flush after the load stopped: prefill rc=0 after 0 s, decode rc=0 after 0 s
+2026-11-06 21:50:43 g1992b_on_1 mixed sizes: short requests=96 failed=0; long requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=12 decode_exc=2
+2026-11-06 21:50:45 g1992b_on_1 evidence: role=prefill started=157 stored=157 totals={'offers': 66, 'pulls': 63, 'pulled_tokens': 3697408, 'skipped_local_host': 3, 'no_memory': 0, 'over_budget': 0, 'failed': 0} role=decode received=156 granted=156 landed=153 landed_tokens=5191424 
+2026-11-06 21:56:51 g1992_mismatch_pon_doff started (prefill pd_1992_qwen_wb.json, decode pd_1992_qwen_wb_off.json): prefill=200 decode=200 lb=200
+2026-11-06 21:56:51 g1992_mismatch_pon_doff first: http 500 in 0.041292s body: {"object":"error","message":"Decode transfer failed for request rank=0 decode_req.req.rid='c21b3f7eb19743b3b7aac85a4057e8df' decode_req.req.bootstrap_room=4995606382757095110 with exception KVTransferError(bootstrap_room=4995606382757095110): SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM is on for
+2026-11-06 21:56:51 g1992_mismatch_pon_doff second: http 500 in 0.015655s body: {"object":"error","message":"Decode transfer failed for request rank=0 decode_req.req.rid='da2c30c9f31a4914892b80e3abc6a1fd' decode_req.req.bootstrap_room=6632273700938056693 with exception KVTransferError(bootstrap_room=6632273700938056693): SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM is on for
+2026-11-06 21:56:53 g1992_mismatch_pon_doff prefill log: [2026-11-06 21:56:51 TP4 EP4] RaidenKVManager rank4 room 4995606382757095110: SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM is on for this engine and off for its decode; set it to the same value on both roles | decode log: [2026-11-06 21:56:51 TP7 EP7] Decode transfer failed for request rank=7 decode_req.req.rid='c21b3f7eb19743b3b7aac85a4057e8df' decode_req.req.bootstrap_room=4995606382757095110 with exception KVTransferError(bootstrap_room=4995606382757095110): SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM is on fo
+2026-11-06 21:56:55 g1992_mismatch_pon_doff after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-06 22:02:45 g1992_mismatch_poff_don started (prefill pd_1992_qwen_wb_off.json, decode pd_1992_qwen_wb.json): prefill=200 decode=200 lb=200
+2026-11-06 22:02:45 g1992_mismatch_poff_don first: http 500 in 0.027062s body: {"object":"error","message":"Decode transfer failed for request rank=0 decode_req.req.rid='9713929847c840d2aa0f1fda5c097674' decode_req.req.bootstrap_room=7588788575531657084 with exception KVTransferError(bootstrap_room=7588788575531657084): SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM is on for
+2026-11-06 22:02:45 g1992_mismatch_poff_don second: http 500 in 0.015722s body: {"object":"error","message":"Decode transfer failed for request rank=0 decode_req.req.rid='6780fc49069648aab4832097e966980f' decode_req.req.bootstrap_room=8235192618399001510 with exception KVTransferError(bootstrap_room=8235192618399001510): SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM is on for
+2026-11-06 22:02:48 g1992_mismatch_poff_don prefill log: [2026-11-06 22:02:45 TP0 EP0] RaidenKVManager rank0 room 7588788575531657084: SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM is on for its decode and off for this engine; set it to the same value on both roles | decode log: [2026-11-06 22:02:45 TP0 EP0] Decode transfer failed for request rank=0 decode_req.req.rid='9713929847c840d2aa0f1fda5c097674' decode_req.req.bootstrap_room=7588788575531657084 with exception KVTransferError(bootstrap_room=7588788575531657084): SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM is on fo
+2026-11-06 22:02:50 g1992_mismatch_poff_don after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-06 22:03:35 sweep g1992_wt start (pd_1992_qwen_wt.json)
+2026-11-06 22:41:07 F4 restarted: the write-through prefill failed at 22:04 (TPU device nodes still held by the previous pair's teardown); cleanup.sh now waits for the release; relaunching STEPS=F4 F1
+2026-11-06 22:41:07 waiting for the goal queue
+2026-11-06 22:41:42 sweep g1992_wt start (pd_1992_qwen_wt.json)
+2026-11-06 23:08:05 F4 stopped again: prefill TPU init failed (START_SESSION) at 22:50; probing the TPU before relaunch
+2026-11-06 23:25:00 REBOOT host a: TPU driver hung at the vbar control service (START_SESSION) since 22:50; restarting tpu-runtime and vbarcontrolagent did not help
+2026-11-06 23:26:56 host a is back after 100 s:  23:26:56 up 0 min,  1 user,  load average: 1.47, 0.33, 0.11
+2026-11-06 23:26:58 host a: Created symlink /run/systemd/system/remote-fs.target.wants/rpc-statd.service → /usr/lib/systemd/system/rpc-statd.service.
+2026-11-06 23:26:58 host a: CACHEDIR.TAG
+2026-11-06 23:26:58 host a: /dev/root        96G   86G   11G  90% /
+2026-11-06 23:32:01 host a TPU probe 1: E1106 23:31:59.811698    5933 process_state.cc:794] RAW: Raising signal 15 with default behavior
+2026-11-06 23:38:05 host a TPU probe 2: E1106 23:38:03.469010    7994 process_state.cc:794] RAW: Raising signal 15 with default behavior
+2026-11-06 23:39:40 host a TPU probe 3: TPU_OK 8.0
+2026-11-06 23:39:40 relaunching goal_followup2.sh with STEPS=F4 F1 (PR 1992 tree is now the renamed head 89103d48fb; the stage deploys it first)
+2026-11-06 23:39:40 waiting for the goal queue
+2026-11-06 23:40:15 sweep g1992_wt start (pd_1992_qwen_wt.json)
+2026-11-07 00:20:20 sweep g1992_wt end: exit=0 points=6 strict: requests=265 failed=0
+2026-11-07 00:26:50 g1992_wt_1 single-request integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 248.0, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 12}}
+2026-11-07 00:26:53 g1992_wt_1 after integrity: prefill=200 decode=200 lb=200 prefill_exc=6 decode_exc=2
+2026-11-07 00:26:55 g1992_wt_1 evidence: role=prefill started=726 stored=726 totals={'offers': 142, 'pulls': 117, 'pulled_tokens': 14026240, 'skipped_local_host': 19, 'no_memory': 4, 'over_budget': 2, 'failed': 0} role=decode received=730 granted=730 landed=730 landed_tokens=21046016 
+2026-11-07 00:28:15 F1 hybrid tree f0690703c9 deployed
+2026-11-07 00:28:15 sweep g1991b_on start (pd_1991_gptoss_wb_on.json)
+2026-11-07 00:39:50 REORDER (user priority): multi-engine stages first; the hybrid run (F1) and the declined-push case follow after 2P2D (goal_tail.sh). GOAL FOLLOWUP3 DONE marker added by hand to release the 1P2D stage
+2026-11-07 00:41:22 1P2D deploy to 10.128.0.90 failed
+2026-11-07 00:42:29 1P2D relaunched: ~/sglang-main on b was a dangling symlink into the wiped tmpfs; replaced by a real checkout
+2026-11-07 00:42:50 1P2D: PR 1992 89103d48fb deployed to a, v7 and b
+2026-11-07 02:22:53 1P2D g1992b_1p2d_1 started: prefill=000 decode1=000 decode2=000 lb=000
+2026-11-07 09:08:43 FIXED heads pushed: #1992 dc585b07a9 (installer imports core_hooks), hybrid 6b3c3bb0ba; relaunching 1P2D (goal_followup4c.sh), then 2P1D/2P2D (5c/6c) with systemd-run balancers
+2026-11-07 09:09:08 1P2D: PR 1992 dc585b07a9 deployed to a, v7 and b
+2026-11-07 09:16:15 1P2D g1992b_1p2d_1 started: prefill=200 decode1=200 decode2=200 lb=200
+2026-11-07 09:16:22 1P2D extra LBs: 8081->decode1 200 8082->decode2 200
+2026-11-07 09:16:22 W1 random decode per request (LB 8080): recall 16 sessions, then static 12 docs
+2026-11-07 09:20:05 W1 recall: requests=32 failed=0; recall-phase prefix hit 53.5% over 16 requests; prefill=200 decode1=200 decode2=200 lb=200 prefill_exc=0 decode1_exc=0 decode2_exc=0
+2026-11-07 09:22:34 W1 static: requests=36 failed=0; prefill=200 decode1=200 decode2=200 lb=200 prefill_exc=0 decode1_exc=0 decode2_exc=0
+2026-11-07 09:22:38 g1992b_1p2d_1 evidence prefill: role=prefill started=147 stored=147 totals={'offers': 16, 'pulls': 14, 'pulled_tokens': 1595136, 'skipped_local_host': 1, 'no_memory': 0, 'over_budget': 1, 'failed': 0} 
+2026-11-07 09:22:38 g1992b_1p2d_1 evidence decode1: role=decode received=72 granted=72 landed=72 landed_tokens=2004992 | decode2: role=decode received=75 granted=75 landed=73 landed_tokens=2478208
+2026-11-07 09:22:38 W2 sticky decodes: 8 sessions through LB 8081 (decode1) and 8 through LB 8082 (decode2), concurrently
+2026-11-07 09:25:46 W2 decode1 sessions: requests=16 failed=0; recall-phase prefix hit 64.3% over 8 requests | decode2 sessions: requests=16 failed=0; recall-phase prefix hit 59.4% over 8 requests; prefill=200 decode1=200 decode2=200 lb=200 prefill_exc=0 decode1_exc=0 decode2_exc=0
+2026-11-07 09:25:50 g1992b_1p2d_1 evidence prefill: role=prefill started=209 stored=205 totals={'offers': 32, 'pulls': 28, 'pulled_tokens': 2590592, 'skipped_local_host': 3, 'no_memory': 0, 'over_budget': 1, 'failed': 0} 
+2026-11-07 09:25:50 g1992b_1p2d_1 evidence decode1: role=decode received=106 granted=106 landed=106 landed_tokens=2879104 | decode2: role=decode received=98 granted=98 landed=98 landed_tokens=3148032
+2026-11-07 09:25:50 W3 single-request integrity through LB 8080
+2026-11-07 09:33:00 W3 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 284.4, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 7}}; prefill=200 decode1=200 decode2=200 lb=200 prefill_exc=0 decode1_exc=0 decode2_exc=0
+2026-11-07 09:33:00 W4 decode 2 killed during a recall through LB 8080, then restarted
+2026-11-07 09:34:34 W4 fill: requests=12 failed=0
+2026-11-07 09:35:00 W4 decode 2 stopped
+2026-11-07 09:36:03 W4 during outage: prefill=200 decode1=200 decode2=000 lb=503 prefill_exc=0 decode1_exc=0 decode2_exc=0
+2026-11-07 09:36:03 W4 recall during the kill: requests=12 failed=3 first=no completion tokens
+2026-11-07 09:40:03 W4 decode 2 restarted: 2026-11-07 09:40:03 decode 2 /health ready after 240 s
+2026-11-07 09:42:03 W4 after restart: requests=16 failed=0; recall-phase prefix hit 65.8% over 8 requests; prefill=200 decode1=200 decode2=200 lb=200 prefill_exc=0 decode1_exc=0 decode2_exc=0
+2026-11-07 09:42:43 W4 flush of all three after the load stopped: rc=0 after 40 s
+2026-11-07 09:42:47 g1992b_1p2d_1 evidence prefill: role=prefill started=310 stored=303 declined=6 totals={'offers': 45, 'pulls': 41, 'pulled_tokens': 3721216, 'skipped_local_host': 3, 'no_memory': 0, 'over_budget': 1, 'failed': 0} 
+2026-11-07 09:42:47 g1992b_1p2d_1 evidence decode1: role=decode received=169 granted=169 landed=169 landed_tokens=5680000 | decode2: role=decode received=1 granted=1 landed=1 landed_tokens=106240
+2026-11-07 09:43:13 GOAL FOLLOWUP4 DONE
+2026-11-07 09:50:33 2P1D g1992b_2p1d_1 started: prefill_a=200 prefill_b=200 decode=200 lb=200
+2026-11-07 09:50:40 2P1D extra LBs: 8081->prefill a 200 8082->prefill b 200
+2026-11-07 09:50:40 X1 random prefill per request (LB 8080): recall 16 sessions, then static 12 docs
+2026-11-07 09:53:01 QUEUED (user ask: compare with no-spill, write-back): goal_baseline.sh runs the switch-off arms of 1P2D/2P1D/2P2D after 2P2D, before the hybrid run
+2026-11-07 09:53:41 X1 recall: requests=32 failed=0; recall-phase prefix hit 35.4% over 16 requests; prefill_a=200 prefill_b=200 decode=200 lb=200 prefill_a_exc=0 prefill_b_exc=0 decode_exc=0
+2026-11-07 09:55:53 X1 static: requests=36 failed=0; prefill_a=200 prefill_b=200 decode=200 lb=200 prefill_a_exc=0 prefill_b_exc=0 decode_exc=0
+2026-11-07 09:55:58 g1992b_2p1d_1 evidence prefill a: role=prefill started=69 stored=69 totals={'offers': 4, 'pulls': 2, 'pulled_tokens': 163840, 'skipped_local_host': 2, 'no_memory': 0, 'over_budget': 0, 'failed': 0} 
+2026-11-07 09:55:58 g1992b_2p1d_1 evidence prefill b: role=prefill started=49 stored=46 totals={'offers': 5, 'pulls': 5, 'pulled_tokens': 621568, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'failed': 0} 
+2026-11-07 09:55:58 g1992b_2p1d_1 evidence decode: role=decode received=113 granted=110 no_room=3 landed=110 landed_tokens=3240192 refused pulls: 0  warnings: 0 
+2026-11-07 09:55:58 X2 cross-prefill recall: 12 sessions filled through prefill a (LB 8081), returned through prefill b (LB 8082), then through a again
+2026-11-07 09:57:32 X2 fill via a: requests=12 failed=0
+2026-11-07 09:59:07 X2 recall via b: requests=12 failed=0; recall-phase prefix hit 8.3% over 12 requests
+2026-11-07 10:00:10 X2 recall via a: requests=12 failed=0; recall-phase prefix hit 57.1% over 12 requests; prefill_a=200 prefill_b=200 decode=200 lb=200 prefill_a_exc=0 prefill_b_exc=0 decode_exc=0
+2026-11-07 10:00:13 g1992b_2p1d_1 evidence prefill a: role=prefill started=92 stored=92 totals={'offers': 10, 'pulls': 5, 'pulled_tokens': 309120, 'skipped_local_host': 5, 'no_memory': 0, 'over_budget': 0, 'failed': 0} 
+2026-11-07 10:00:14 g1992b_2p1d_1 evidence prefill b: role=prefill started=51 stored=48 declined=3 totals={'offers': 6, 'pulls': 6, 'pulled_tokens': 760832, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'failed': 0} 
+2026-11-07 10:00:14 g1992b_2p1d_1 evidence decode: role=decode received=143 granted=140 no_room=3 landed=140 landed_tokens=4332672 refused pulls: 0  warnings: 0 
+2026-11-07 10:00:14 X3 single-request integrity through LB 8080
+2026-11-07 10:07:20 X3 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 281.0, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 7}}; prefill_a=200 prefill_b=200 decode=200 lb=200 prefill_a_exc=0 prefill_b_exc=0 decode_exc=0
+2026-11-07 10:07:20 X4 prefill b killed during a recall through LB 8080, then restarted
+2026-11-07 10:08:18 X4 fill: requests=12 failed=0
+2026-11-07 10:08:38 X4 prefill b stopped
+2026-11-07 10:09:40 X4 during outage: prefill_a=200 prefill_b=000 decode=200 lb=503 prefill_a_exc=0 prefill_b_exc=0 decode_exc=0
+2026-11-07 10:09:40 X4 recall during the kill: requests=12 failed=5 first=no completion tokens
+2026-11-07 10:09:40 X4 decode flush ok (landings and offers of the dead prefill released)
+2026-11-07 11:39:50 X4 prefill b restarted: 2026-11-07 11:39:50 prefill 10.128.0.90 /health NOT ready after 5400 s
+2026-11-07 11:40:18 X4 after restart: requests=16 failed=16 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; recall-phase prefix hit 0.0% over 8 requests; prefill_a=000 prefill_b=000 decode=200 lb=000 prefill_a_exc=0 prefill_b_exc=0 decode_exc=0
+2026-11-07 11:40:18 X5 decode flushed while both prefills push (static 8 docs through LB 8080, flush 30 s in)
+2026-11-07 11:45:20 X5 wipe FAILED
+2026-11-07 11:50:54 X5 decode flush under load: 200; requests requests=24 failed=24 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; flush of all three after the load stopped rc=0 after 301 s; prefill_a=000 prefill_b=000 decode=200 lb=000 prefill_a_exc=0 prefill_b_exc=0 decode_exc=0
+2026-11-07 11:50:58 g1992b_2p1d_1 evidence prefill a: role=prefill started=97 stored=97 totals={'offers': 10, 'pulls': 5, 'pulled_tokens': 309120, 'skipped_local_host': 5, 'no_memory': 0, 'over_budget': 0, 'failed': 0} 
+2026-11-07 11:50:58 g1992b_2p1d_1 evidence prefill b: role=prefill started=57 stored=54 declined=3 totals={'offers': 6, 'pulls': 6, 'pulled_tokens': 760832, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'failed': 0} 
+2026-11-07 11:50:58 g1992b_2p1d_1 evidence decode: role=decode received=154 granted=151 no_room=3 landed=151 landed_tokens=5192832 refused pulls: 0  warnings: 0 
+2026-11-07 11:51:22 GOAL FOLLOWUP5 DONE
+2026-11-07 11:52:07 2P2D: PR 1992 dc585b07a9 on a, b, v7 (from the earlier stages) and g
+2026-11-07 13:52:12 2P2D g1992b_2p2d_1 started: prefill_a=200 prefill_b=000 decode_v7=200 decode_g=200 lb=000
+2026-11-07 13:54:49 2P2D extra LBs: 8081(a,v7)=200 8082(b,g)=503 8083(a,g)=200 8084(b,v7)=503
+2026-11-07 13:54:49 Y1 random prefill and decode per request (LB 8080): recall 16 sessions, then static 12 docs
+2026-11-07 13:59:51 Y1 wipe FAILED
+2026-11-07 14:00:24 Y1 recall: requests=32 failed=32 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; recall-phase prefix hit 0.0% over 16 requests; prefill_a=000 prefill_b=000 decode_v7=200 decode_g=200 lb=000 exc: a=0 b=0 v7=0 g=0
+2026-11-07 14:00:39 Y1 static: requests=36 failed=36 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; prefill_a=000 prefill_b=000 decode_v7=200 decode_g=200 lb=000 exc: a=0 b=0 v7=0 g=0
+2026-11-07 14:00:44 g1992b_2p2d_1 evidence prefill a: 
+2026-11-07 14:00:44 g1992b_2p2d_1 evidence prefill b: role=prefill  
+2026-11-07 14:00:44 g1992b_2p2d_1 evidence decode v7: role=decode  | decode g: role=decode 
+2026-11-07 14:00:44 Y2 deterministic routes: fill 12 sessions via (a,v7); return via (b,v7); return via (a,g); return via (b,g)
+2026-11-07 14:05:45 Y2 wipe FAILED
+2026-11-07 14:05:53 Y2 fill (a,v7): requests=12 failed=12 first=HTTPError('500 Server Error: Internal Server Error for url: http://10.128.15.217:8081/generate')
+2026-11-07 14:06:00 Y2 return (b,v7) other prefill, same decode: requests=12 failed=12 first=HTTPError('500 Server Error: Internal Server Error for url: http://10.128.15.217:8084/generate'); recall-phase prefix hit 0.0% over 12 requests
+2026-11-07 14:06:07 Y2 return (a,g) same prefill, other decode: requests=12 failed=12 first=HTTPError('500 Server Error: Internal Server Error for url: http://10.128.15.217:8083/generate'); recall-phase prefix hit 0.0% over 12 requests
+2026-11-07 14:06:17 Y2 return (b,g) other prefill, other decode: requests=12 failed=12 first=HTTPError('500 Server Error: Internal Server Error for url: http://10.128.15.217:8082/generate'); recall-phase prefix hit 0.0% over 12 requests; prefill_a=000 prefill_b=000 decode_v7=200 decode_g=200 lb=000 exc: a=0 b=0 v7=0 g=0
+2026-11-07 14:06:21 g1992b_2p2d_1 evidence prefill a: 
+2026-11-07 14:06:21 g1992b_2p2d_1 evidence prefill b: role=prefill  
+2026-11-07 14:06:21 g1992b_2p2d_1 evidence decode v7: role=decode  | decode g: role=decode 
+2026-11-07 14:06:21 Y3 single-request integrity through LB 8080
+2026-11-07 14:11:23 Y3 wipe FAILED
+2026-11-07 14:12:34 Y3 rc=1 ; prefill_a=000 prefill_b=200 decode_v7=200 decode_g=200 lb=000 exc: a=0 b=0 v7=0 g=0
+2026-11-07 14:12:34 Y4 decode g killed during a recall through LB 8080, then restarted
+2026-11-07 14:17:37 Y4 wipe FAILED
+2026-11-07 14:17:44 Y4 fill: requests=12 failed=12 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge
+2026-11-07 14:18:07 Y4 decode g stopped
+2026-11-07 14:19:11 Y4 during outage: prefill_a=000 prefill_b=200 decode_v7=200 decode_g=000 lb=000 exc: a=0 b=0 v7=0 g=0
+2026-11-07 14:19:11 Y4 recall during the kill: requests=12 failed=12 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge
+2026-11-07 14:23:13 Y4 decode g restarted: 2026-11-07 14:23:13 decode 10.128.0.175 /health ready after 241 s
+2026-11-07 14:23:43 Y4 after restart: requests=16 failed=16 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; recall-phase prefix hit 0.0% over 8 requests; prefill_a=000 prefill_b=200 decode_v7=200 decode_g=200 lb=000 exc: a=0 b=0 v7=0 g=0
+2026-11-07 14:23:43 Y5 prefill b killed while pushes are in flight (fill 16 sessions through LB 8080), then restarted
+2026-11-07 14:31:18 Y5 prefill b stopped
+2026-11-07 14:31:52 Y5 during outage: prefill_a=200 prefill_b=200 decode_v7=200 decode_g=200 lb=000 exc: a=0 b=0 v7=0 g=0
+2026-11-07 14:31:52 Y5 both decodes flushable (landings of the dead prefill released)
+2026-11-07 14:31:52 Y5 prefill b restarted: 2026-11-07 14:31:52 prefill 10.128.0.90 /health ready after 0 s
+2026-11-07 14:32:22 Y5 after restart: requests=16 failed=16 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; recall-phase prefix hit 0.0% over 8 requests; prefill_a=200 prefill_b=200 decode_v7=200 decode_g=200 lb=000 exc: a=0 b=0 v7=0 g=0
+2026-11-07 14:32:22 Y6 flush of all four under load (static 8 docs through LB 8080, flush 30 s in), then once the load stopped
+2026-11-07 14:38:02 Y6 flush codes under load (a b v7 g): 400 400 200 200; requests requests=24 failed=24 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; flush of all four after the load stopped rc=0 after 306 s; prefill_a=200 prefill_b=200 decode_v7=200 decode_g=200 lb=000 exc: a=0 b=0 v7=0 g=0
+2026-11-07 14:38:07 g1992b_2p2d_1 evidence prefill a: 
+2026-11-07 14:38:07 g1992b_2p2d_1 evidence prefill b: role=prefill  
+2026-11-07 14:38:07 g1992b_2p2d_1 evidence decode v7: role=decode  | decode g: role=decode 
+2026-11-07 14:45:08 GOAL FOLLOWUP6 DONE
+2026-11-07 14:46:04 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 14:48:06 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 14:50:07 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 14:52:09 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 14:54:11 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 14:56:12 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 14:58:14 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:00:15 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:02:17 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:04:18 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:06:20 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:08:21 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:10:23 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:12:24 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:14:26 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:16:27 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:18:28 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:20:30 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:22:32 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:24:33 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:26:35 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:28:36 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:30:38 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:32:39 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:34:41 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:36:43 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 15:38:44 waiting for TPU on 10.128.15.217 (held by wyzhang_google_com )
+2026-11-07 17:26:10 BASE 1P2D (switch off) g1992b_1p2d_off_1 started: 10.128.15.217=000 10.128.15.239=200 10.128.0.90=200 lb=000
+2026-11-07 17:28:45 BASE 1P2D extra LBs not up
+2026-11-07 17:34:14 BASE 1P2D sticky: decode1 requests=16 failed=16 first=HTTPError('500 Server Error: Internal Server Error for url: http://10.128.15.217:8081/generate'); recall-phase prefix hit 0.0% over 8 requests | decode2 requests=16 failed=16 first=HTTPError('500 Server Error: Internal Server Error for url: http://10.128.15.217:8082/generate'); recall-phase prefix hit 0.0% over 8 requests
+2026-11-07 17:39:42 BASE 1P2D random: requests=32 failed=32 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; recall-phase prefix hit 0.0% over 16 requests
+2026-11-07 17:47:24 BASE 2P1D (switch off) g1992b_2p1d_off_1 started: 10.128.15.217=200 10.128.0.90=200 10.128.15.239=200 lb=200
+2026-11-07 17:49:06 BASE 2P1D fill via a: requests=12 failed=0
+2026-11-07 17:50:50 BASE 2P1D return via b (cross-prefill): requests=12 failed=0; recall-phase prefix hit 100.0% over 12 requests
+2026-11-07 17:52:11 BASE 2P1D return via a: requests=12 failed=0; recall-phase prefix hit 105.9% over 12 requests
+2026-11-07 17:54:58 BASE 2P1D random: requests=32 failed=0; recall-phase prefix hit 100.0% over 16 requests
+2026-11-07 18:02:56 BASE 2P2D (switch off) g1992b_2p2d_off_1 started: 10.128.15.217=200 10.128.0.90=200 10.128.15.239=200 10.128.0.175=200 lb=200
+2026-11-07 18:04:42 BASE 2P2D fill (a,v7): requests=12 failed=0
+2026-11-07 18:06:25 BASE 2P2D return (b,v7): requests=12 failed=0; recall-phase prefix hit 100.0% over 12 requests
+2026-11-07 18:07:47 BASE 2P2D return (a,g): requests=12 failed=0; recall-phase prefix hit 28.2% over 12 requests
+2026-11-07 18:09:04 BASE 2P2D return (b,g): requests=12 failed=0; recall-phase prefix hit 105.9% over 12 requests
+2026-11-07 18:12:12 BASE 2P2D random: requests=32 failed=0; recall-phase prefix hit 75.3% over 16 requests
+2026-11-07 18:12:49 GOAL BASELINE DONE
+2026-11-07 18:12:49 waiting for the goal queue
+2026-11-07 18:13:55 F1 hybrid tree 6b3c3bb0ba deployed
+2026-11-07 18:13:55 sweep g1991b_on start (pd_1991_gptoss_wb_on.json)
+2026-11-07 18:43:38 sweep g1991b_on end: exit=0 points=7 strict: requests=205 failed=0
+2026-11-07 18:43:39 EDGE start: prefill=200 decode=200 lb=200 prefill_exc=11 decode_exc=11
+2026-11-07 18:43:39 EDGE E1 integrity: recalled outputs must equal a recompute after a flush; probes must match throughout
+2026-11-07 18:49:29 EDGE E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 223.7, "probes": {"sent": 106, "exact": 98, "min_agree": 0, "errors": 0, "mismatch_positions": [0, 8, 25, 30, 41, 61, 61, 62]}, "errors": 0, "recall": {"compared": 16, "exact": 0, "min_agree": 2, "pulled_sessions": 14}}
+2026-11-07 18:49:32 EDGE E1 after: prefill=200 decode=200 lb=200 prefill_exc=11 decode_exc=11
+2026-11-07 18:49:32 EDGE E2 stress: concurrent recalls after a prefill-only flush, and client aborts mid-recall
+2026-11-07 18:53:03 EDGE E2 rc=0 {"phase": "concurrent", "status": "ok", "seconds": 130.7} {"phase": "abort", "status": "ok", "seconds": 75.3} {"health_samples": 84, "slow_probes": 0, "probe_errors": 0} 
+2026-11-07 18:53:06 EDGE E2 after: prefill=200 decode=200 lb=200 prefill_exc=11 decode_exc=11
+2026-11-07 18:53:06 EDGE E3 flush under load: flush both engines 30 s into a static run
+2026-11-07 18:54:26 EDGE E3 flush codes prefill=400 decode=400; requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=11 decode_exc=11
+2026-11-07 18:54:26 EDGE E4 decode killed while recalls are in flight, then restarted
+2026-11-07 18:55:43 EDGE E4 fill: requests=12 failed=0
+2026-11-07 18:56:09 EDGE E4 decode stopped
+2026-11-07 18:57:12 EDGE E4 during outage: prefill=200 decode=000 lb=503 prefill_exc=21 decode_exc=12
+2026-11-07 19:01:16 EDGE E4 decode restarted: 2026-11-07 19:01:16 decode /health ready after 243 s
+2026-11-07 19:01:16 EDGE E4 recall during the kill: requests=12 failed=9 first=no completion tokens
+2026-11-07 19:01:57 EDGE E4 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=21 decode_exc=12
+2026-11-07 19:01:57 EDGE E5 prefill killed while pushes are in flight, then restarted
+2026-11-07 19:04:38 EDGE E5 prefill stopped
+2026-11-07 19:05:10 EDGE E5 during outage: decode=200 prefill_exc=22 decode_exc=12
+2026-11-07 19:05:10 EDGE E5 decode flush ok (landings of the dead prefill were released)
+2026-11-07 19:10:11 EDGE E5 prefill restarted: 2026-11-07 19:10:11 LB /health ready after 0 s
+2026-11-07 19:10:53 EDGE E5 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=22 decode_exc=12
+2026-11-07 19:10:54 EDGE done: prefill=200 decode=200 lb=200 prefill_exc=22 decode_exc=12
+2026-11-07 19:10:54 F1 edges exit 0
+2026-11-07 19:14:08 g1991b_on_1 single-request integrity rc=1 
+2026-11-07 19:14:10 g1991b_on_1 after integrity: prefill=000 decode=200 lb=000 prefill_exc=34 decode_exc=12
+2026-11-07 19:19:11 g1991b_on_1 wipe before mixed FAILED
+2026-11-07 19:24:41 g1991b_on_1 flush after the load stopped: prefill rc=1 after 301 s, decode rc=0 after 1 s
+2026-11-07 19:24:43 g1991b_on_1 mixed sizes: short requests=96 failed=96 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; long requests=24 failed=24 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; prefill=000 decode=200 lb=000 prefill_exc=34 decode_exc=12
+2026-11-07 19:24:45 g1991b_on_1 evidence: role=prefill started=10 stored=10 totals={'offers': 4, 'pulls': 4, 'pulled_tokens': 557056, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'failed': 0} role=decode received=13 granted=13 landed=13 landed_tokens=1810432 
+2026-11-07 19:25:20 GOAL FOLLOWUP DONE
+2026-11-07 19:32:30 F5 g1992b_smalldecode_1 started (decode hicache_ratio 0.15, less than one session): prefill=200 decode=200 lb=200
+2026-11-07 19:38:05 F5 requests: requests=32 failed=0; flush after the load stopped: prefill rc=0 after 91 s, decode rc=0 after 0 s; prefill=200 decode=200 lb=200
+2026-11-07 19:38:07 F5 evidence: role=prefill started=8 declined=4 role=decode received=8 no_room=8  warnings: 0 errors: 0 refused pulls: 0  warnings: 0 errors: 0 
+2026-11-07 19:38:19 GOAL FOLLOWUP3 DONE
+2026-11-08 07:15:56 RERUN chain start: 2P2D, then 2P1D X2/X4/X5, then the 1P2D switch-off baseline
+2026-11-08 07:16:20 2P2D: PR 1992 dc585b07a9 on a, b, v7 (from the earlier stages) and g
+2026-11-08 07:18:43 waiting for the goal queue
+2026-11-08 08:09:01 waiting for the goal queue
+2026-11-08 08:09:03 hybrid diagnostic stage (FD) started on g (prefill) + v7 (decode) while the a+b slice is wedged
+2026-11-08 08:10:09 FD diagnostic hybrid tree (6b3c3bb0ba + drop-decline logging) deployed
+2026-11-08 08:15:01 slice a+b still wedged (try 1): a='E1108 08:12:27.932711 1358969 process_state.cc:794] RAW: Rai' b='E1108 08:14:59.944115  728004 process_state.cc:794] RAW: Rai'
+2026-11-08 09:45:38 slice a+b still wedged (try 7): a='E1108 09:43:04.228268 1379098 process_state.cc:794] RAW: Rai' b='E1108 09:45:36.539751  748991 process_state.cc:794] RAW: Rai'
+2026-11-08 09:50:11 g1991d_on_1 started: prefill=000 decode=200 lb=000
+2026-11-08 09:54:47 FD on g+v7 ABORTED: prefill on g never became healthy (see its log); stage stopped
+2026-11-08 09:55:39 waiting for the goal queue
+2026-11-08 09:55:41 FD relaunched on g+v7 (the diagnostic recipe had not been synced to g)
+2026-11-08 10:13:33 FD diagnostic hybrid tree (6b3c3bb0ba + drop-decline logging) deployed
+2026-11-08 10:30:40 g1991d_on_1 started: prefill=200 decode=200 lb=200
+2026-11-08 10:38:49 g1991d_on_1 single-request integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 335.3, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 14}}
+2026-11-08 10:39:03 g1991d_on_1 after integrity: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=1
+2026-11-08 10:43:01 g1991d_on_1 flush after the load stopped: prefill rc=0 after 0 s, decode rc=0 after 0 s
+2026-11-08 10:43:06 g1991d_on_1 mixed sizes: short requests=96 failed=0; long requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=1
+2026-11-08 10:43:08 g1991d_on_1 evidence: role=prefill started=128 stored=128 totals={'offers': 44, 'pulls': 44, 'pulled_tokens': 3055616, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'failed': 0} role=decode received=128 granted=128 landed=128 landed_tokens=6584448 
+2026-11-08 10:43:08 FD drop-decline diagnostics on the prefill: 0 lines
+2026-11-08 10:43:50 GOAL FOLLOWUP DONE
+2026-11-08 11:16:15 slice a+b still wedged (try 13): a='E1108 11:13:41.235237 1399335 process_state.cc:794] RAW: Rai' b='E1108 11:16:13.450351  771610 process_state.cc:794] RAW: Rai'
+2026-11-08 12:46:51 slice a+b still wedged (try 19): a='E1108 12:44:17.106167 1419265 process_state.cc:794] RAW: Rai' b='E1108 12:46:49.452669  791808 process_state.cc:794] RAW: Rai'
+2026-11-08 14:17:27 slice a+b still wedged (try 25): a='E1108 14:14:53.332923 1439121 process_state.cc:794] RAW: Rai' b='E1108 14:17:25.541015  812723 process_state.cc:794] RAW: Rai'
+2026-11-08 15:48:03 slice a+b still wedged (try 31): a='E1108 15:45:29.070607 1459480 process_state.cc:794] RAW: Rai' b='E1108 15:48:01.369681  833071 process_state.cc:794] RAW: Rai'
+2026-11-08 17:18:39 slice a+b still wedged (try 37): a='E1108 17:16:05.542363 1478641 process_state.cc:794] RAW: Rai' b='E1108 17:18:37.857986  853128 process_state.cc:794] RAW: Rai'
+2026-11-08 18:26:54 slice a+b still wedged (try 43): a='RuntimeError: failed to initialize the PjRt plugin: The TPU ' b='RuntimeError: failed to initialize the PjRt plugin: The TPU '
+2026-11-08 19:27:38 slice a+b still wedged (try 49): a='RuntimeError: failed to initialize the PjRt plugin: The TPU ' b='RuntimeError: failed to initialize the PjRt plugin: The TPU '
+2026-11-08 20:28:18 slice a+b still wedged (try 55): a='RuntimeError: failed to initialize the PjRt plugin: The TPU ' b='RuntimeError: failed to initialize the PjRt plugin: The TPU '
+2026-11-08 21:28:58 slice a+b still wedged (try 61): a='RuntimeError: failed to initialize the PjRt plugin: The TPU ' b='RuntimeError: failed to initialize the PjRt plugin: The TPU '
+2026-11-08 22:29:39 slice a+b still wedged (try 67): a='RuntimeError: failed to initialize the PjRt plugin: The TPU ' b='RuntimeError: failed to initialize the PjRt plugin: The TPU '
+2026-11-08 23:19:25 waiting for the goal queue
+2026-11-08 23:19:26 F1D: full hybrid sequence (sweep, edges, integrity, mixed) on g+v7 with drop-decline logging, to reproduce the 2026-11-07 19:14 prefill OOM
+2026-11-08 23:20:24 F1D diagnostic hybrid tree deployed on g (prefill) + v7 (decode): full sequence sweep -> edges -> integrity -> mixed
+2026-11-08 23:20:24 sweep g1991d2_on start (pd_1991_gptoss_wb_on_dbg.json)
+2026-11-08 23:22:36 amandaliang-v7x-16 workers (.42/.99) are running someone else's ray job since ~23:05; only .246 of the new hosts is usable now
+2026-11-08 23:22:54 hosts poller: busy markers (vfio holders/ray procs) 10.128.1.42=0/4/ 10.128.1.99=0/5/
+2026-11-08 23:29:56 USER approved hosts a, b, g, .246, .42, .99; slice poller stopped (master chain takes over); stale lock files of other users removed on a and b
+2026-11-08 23:30:19 sweep g1991d2_on end: exit=1 points=1 strict: requests=29 failed=1 first=no completion tokens
+2026-11-08 23:30:20 EDGE start: prefill=000 decode=200 lb=000 prefill_exc= decode_exc=0
+2026-11-08 23:30:20 EDGE E1 integrity: recalled outputs must equal a recompute after a flush; probes must match throughout
+2026-11-08 23:31:18 F1D stopped after the prefill on g died in the first sweep point (see diagnostics); F1D drop-decline diagnostics marker (manual) so the multi-engine chain can proceed
+2026-11-08 23:33:14 NEWHOSTS2 chain start: 2P1D .246+g -> v7, then 1P2D-off .246 -> g+v7
+2026-11-08 23:36:30 probes after lock-file removal: b='E1108 23:33:04.817171  958416 process_state.cc:1188] RAW: Raising 15 signal with default behavior' a='E1108 23:36:28.614726 1875986 process_state.cc:794] RAW: Raising signal 15 with default behavior'
