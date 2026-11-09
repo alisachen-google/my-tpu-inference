@@ -449,3 +449,40 @@
 2026-11-09 05:02:34 g1991d5_on_1 evidence: role=prefill started=99 stored=97 totals={'offers': 58, 'pulls': 58, 'pulled_tokens': 3469312, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'failed': 0} role=decode received=83 granted=83 landed=83 landed_tokens=5795840 
 2026-11-09 05:02:35 ACCUM drop-decline dumps on the prefill: 112; final lock-state: [2026-11-09 05:02:23 TP0 EP0] [lock-state] nodes=155 host_only=42 host_locked=48 (window=45 other=3) dev_locked=13 pending_dma=1 full_host_avail=1856/943744 swa_host_avail=749504/754496 dev_evictable=713728 pins=6 plans=0 zombies=0 offered=0 pushes=0 routes=78
 2026-11-09 05:03:11 GOAL ACCUM DONE
+2026-11-09 05:05:32 2P2D wait paused for the fix validation (goal_fix_validate.sh)
+2026-11-09 05:06:36 FIXVAL sglang-1992 72ac13d3bf on g + v7 (g1992f_integ_1): integrity -> recall 16 -> mixed
+2026-11-09 05:20:57 UNSUP sweep on 10.128.0.246 with PR 1992 72ac13d3bf: one engine per unsupported setting, switch on
+2026-11-09 05:21:31 UNSUP radix_off (prefill): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=1 port_free=yes total_s=23
+2026-11-09 05:21:54 UNSUP optimistic (prefill): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=1 port_free=yes total_s=23
+2026-11-09 05:52:20 UNSUP hicache_off (prefill): REFUSED (is not supported on this prefill engine: --enable-hierarchical-cache is required on both roles; --hicache-io-backend must be raiden (change the setting or unset SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM)) exit_after_s=2 port_free=yes total_s=1826
+2026-11-09 06:04:21 FIXVAL ABORTED: decode on v7 failed to start at 05:10 (Raiden control server could not bind port 45105, held by a leftover process of the previous run) while the launcher waited for its health; relaunching after the port is freed
+2026-11-09 06:04:38 UNSUP io_kernel (prefill): REFUSED (is not supported on this prefill engine: --hicache-io-backend must be raiden (change the setting or unset SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM)) exit_after_s=0 port_free=yes total_s=738
+2026-11-09 06:05:01 UNSUP l3_file (prefill): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=0 port_free=yes total_s=22
+2026-11-09 06:05:27 FIXVAL sglang-1992 72ac13d3bf on g + v7 (g1992f_integ_1): integrity -> recall 16 -> mixed
+2026-11-09 06:07:00 UNSUP unified_mem (prefill): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=1 port_free=yes total_s=118
+2026-11-09 06:10:50 g1992f_integ_1 started: prefill=200 decode=200 lb=200
+2026-11-09 06:17:22 UNSUP pipeline_env (prefill): SILENT  exit_after_s=n/a port_free=yes total_s=621
+2026-11-09 06:17:30 g1992f_integ_1 single-request integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 256.3, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 12}}
+2026-11-09 06:17:33 g1992f_integ_1 after integrity: prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=1 'adopted_backup_tokens': 0
+2026-11-09 06:18:00 UNSUP transfer_mooncake (prefill): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=1 port_free=yes total_s=37
+2026-11-09 06:18:23 UNSUP spec_ngram (prefill): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=1 port_free=yes total_s=22
+2026-11-09 06:21:15 g1992f_integ_1 recall 16 sessions: requests=32 failed=0; prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=1 'adopted_backup_tokens': 0
+2026-11-09 06:22:44 UNSUP sleep_idle (decode): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=1 port_free=yes total_s=260
+2026-11-09 06:23:06 UNSUP decode_no_radix (decode): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=1 port_free=yes total_s=22
+2026-11-09 06:23:29 UNSUP pp2 (prefill): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=1 port_free=yes total_s=22
+2026-11-09 06:24:17 g1992f_integ_1 mixed sizes: short requests=96 failed=0; long requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=1 'adopted_backup_tokens': 0
+2026-11-09 06:24:19 g1992f_integ_1 evidence: role=prefill started=223 stored=222 totals={'offers': 81, 'pulls': 81, 'pulled_tokens': 5053568, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'adopted_backup_tokens': 0, 'failed': 0} role=decode received=212 granted=212 landed=211 landed_tokens=6630016 
+2026-11-09 06:25:43 UNSUP dp2 (prefill): OTHER_FAILURE (/home/alisachen_google_com/sglang-main/python/sglang/kernels/ops/attention/fla/utils.py:223: UserWarning: Triton is not supported on current platform, roll back to CPU.) exit_after_s=0 port_free=yes total_s=133
+2026-11-09 06:25:43 GOAL UNSUPPORTED DONE
+2026-11-09 06:26:12 FIXVAL sglang-mvp dd9a2784f7 on g + v7 (g1991f_integ_1): integrity -> recall 16 -> mixed
+2026-11-09 06:27:51 UNSUP rerun on 10.128.0.246 with PR 1992 72ac13d3bf: one engine per unsupported setting, switch on
+2026-11-09 06:31:54 g1991f_integ_1 started: prefill=200 decode=200 lb=200
+2026-11-09 06:37:23 g1991f_integ_1 single-request integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 210.4, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 13}}
+2026-11-09 06:37:26 g1991f_integ_1 after integrity: prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 'adopted_backup_tokens': 0
+2026-11-09 06:38:53 UNSUP sleep_idle_small (decode): REFUSED (is not supported on this decode engine: --sleep-on-idle is not supported (change the setting or unset SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM)) exit_after_s=0 port_free=yes total_s=660
+2026-11-09 06:38:53 GOAL UNSUPPORTED2 DONE
+2026-11-09 06:39:58 UNSUP rerun 3 on 10.128.0.246 with PR 1992 72ac13d3bf: one engine per unsupported setting, switch on
+2026-11-09 06:40:19 g1991f_integ_1 recall 16 sessions: requests=32 failed=0; prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 'adopted_backup_tokens': 0
+2026-11-09 06:43:16 g1991f_integ_1 mixed sizes: short requests=96 failed=0; long requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 'adopted_backup_tokens': 0
+2026-11-09 06:43:18 g1991f_integ_1 evidence: role=prefill started=104 stored=103 totals={'offers': 63, 'pulls': 62, 'pulled_tokens': 4947968, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 1, 'adopted_backup_tokens': 0, 'failed': 0} role=decode received=115 granted=115 landed=115 landed_tokens=7582464 
+2026-11-09 06:43:53 GOAL FIXVAL DONE
