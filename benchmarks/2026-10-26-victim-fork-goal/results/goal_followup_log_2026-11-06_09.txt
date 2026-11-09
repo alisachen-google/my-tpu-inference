@@ -301,3 +301,46 @@
 2026-11-08 23:31:18 F1D stopped after the prefill on g died in the first sweep point (see diagnostics); F1D drop-decline diagnostics marker (manual) so the multi-engine chain can proceed
 2026-11-08 23:33:14 NEWHOSTS2 chain start: 2P1D .246+g -> v7, then 1P2D-off .246 -> g+v7
 2026-11-08 23:36:30 probes after lock-file removal: b='E1108 23:33:04.817171  958416 process_state.cc:1188] RAW: Raising 15 signal with default behavior' a='E1108 23:36:28.614726 1875986 process_state.cc:794] RAW: Raising signal 15 with default behavior'
+2026-11-09 00:09:27 2P1D on .246 ABORTED: /mnt/data was not mounted on .246 (model path not found); mounting and relaunching the chain
+2026-11-09 00:10:14 NEWHOSTS2 chain relaunched after mounting /mnt/data on .246 (nfs-common installed)
+2026-11-09 00:11:42 NEWHOSTS2 chain start: 2P1D .246+g -> v7, then 1P2D-off .246 -> g+v7
+2026-11-09 00:18:31 2P1D g1992b_2p1d_4 started: prefill_a=200 prefill_b=200 decode=200 lb=200
+2026-11-09 00:18:38 2P1D extra LBs: 8081->prefill a 200 8082->prefill b 200
+2026-11-09 00:18:38 X2 cross-prefill recall: 12 sessions filled through prefill a (LB 8081), returned through prefill b (LB 8082), then through a again
+2026-11-09 00:43:28 hosts poller: busy markers (vfio holders/ray procs) 10.128.1.42=0/0/ 10.128.1.99=0/0/
+2026-11-09 00:53:32 hosts poller: busy markers (vfio holders/ray procs) 10.128.1.42=0/4/ 10.128.1.99=0/5/
+2026-11-09 01:10:39 2P1D on .246+g->v7 ABORTED: the decode on v7 ran the hybrid tree while .246 ran PR 1992 -> prefill rejects PULL_REQ (unknown field prefix_swa_blocks), requests stall to the 1800 s client timeout; deploying one tree everywhere before each stage from now on
+2026-11-09 01:10:54 NEWHOSTS2 chain relaunched with deploy_all (one tree on .246, g, v7)
+2026-11-09 01:12:22 NEWHOSTS2 chain start: 2P1D .246+g -> v7, then 1P2D-off .246 -> g+v7
+2026-11-09 01:12:52 PR 1992 dc585b07a9 deployed to: 10.128.0.246 10.128.0.175 10.128.15.239
+2026-11-09 01:18:38 2P1D g1992b_2p1d_4 started: prefill_a=200 prefill_b=200 decode=200 lb=200
+2026-11-09 01:18:45 2P1D extra LBs: 8081->prefill a 200 8082->prefill b 200
+2026-11-09 01:18:45 X2 cross-prefill recall: 12 sessions filled through prefill a (LB 8081), returned through prefill b (LB 8082), then through a again
+2026-11-09 01:20:18 X2 fill via a: requests=16 failed=4 first=no completion tokens
+2026-11-09 01:22:00 X2 recall via b: requests=12 failed=0; recall-phase prefix hit 0.0% over 12 requests
+2026-11-09 01:22:55 X2 recall via a: requests=12 failed=0; recall-phase prefix hit 70.6% over 12 requests; prefill_a=200 prefill_b=200 decode=200 lb=200 prefill_a_exc=0 prefill_b_exc= decode_exc=0
+2026-11-09 01:22:59 g1992b_2p1d_4 evidence prefill a: role=prefill started=29 stored=29 totals={'offers': 8, 'pulls': 5, 'pulled_tokens': 170624, 'skipped_local_host': 3, 'no_memory': 0, 'over_budget': 0, 'failed': 0} 
+2026-11-09 01:22:59 g1992b_2p1d_4 evidence prefill b: role=prefill started=2 stored=2 
+2026-11-09 01:22:59 g1992b_2p1d_4 evidence decode: role=decode received=26 granted=26 landed=23 landed_tokens=1272192 refused pulls: 0  warnings: 0 
+2026-11-09 01:22:59 X4 prefill b killed during a recall through LB 8080, then restarted
+2026-11-09 01:24:03 X4 fill: requests=12 failed=0
+2026-11-09 01:24:23 X4 prefill b stopped
+2026-11-09 01:25:25 X4 during outage: prefill_a=200 prefill_b=000 decode=200 lb=503 prefill_a_exc=0 prefill_b_exc= decode_exc=0
+2026-11-09 01:25:25 X4 recall during the kill: requests=12 failed=3 first=HTTPError('500 Server Error: Internal Server Error for url: http://10.128.0.246:8080/generate')
+2026-11-09 01:25:25 X4 decode flush ok (landings and offers of the dead prefill released)
+2026-11-09 01:30:30 X4 prefill b restarted: 2026-11-09 01:30:30 prefill 10.128.0.175 /health ready after 303 s
+2026-11-09 01:32:38 X4 after restart: requests=16 failed=0; recall-phase prefix hit 37.5% over 8 requests; prefill_a=200 prefill_b=200 decode=200 lb=200 prefill_a_exc=0 prefill_b_exc= decode_exc=0
+2026-11-09 01:32:38 X5 decode flushed while both prefills push (static 8 docs through LB 8080, flush 30 s in)
+2026-11-09 01:34:12 X5 decode flush under load: 400; requests requests=24 failed=0; flush of all three after the load stopped rc=0 after 1 s; prefill_a=200 prefill_b=200 decode=200 lb=200 prefill_a_exc=0 prefill_b_exc= decode_exc=0
+2026-11-09 01:34:15 g1992b_2p1d_4 evidence prefill a: role=prefill started=94 stored=94 totals={'offers': 8, 'pulls': 5, 'pulled_tokens': 170624, 'skipped_local_host': 3, 'no_memory': 0, 'over_budget': 0, 'failed': 0} 
+2026-11-09 01:34:15 g1992b_2p1d_4 evidence prefill b: role=prefill  
+2026-11-09 01:34:15 g1992b_2p1d_4 evidence decode: role=decode received=96 granted=96 landed=96 landed_tokens=3481600 refused pulls: 0  warnings: 0 
+2026-11-09 01:34:51 GOAL 2P1D NEWHOSTS DONE
+2026-11-09 01:35:17 PR 1992 dc585b07a9 deployed to: 10.128.0.246 10.128.0.175 10.128.15.239
+2026-11-09 01:42:03 BASE 1P2D (switch off) g1992b_1p2d_off_4 started: 10.128.0.246=200 10.128.0.175=200 10.128.15.239=200 lb=200
+2026-11-09 01:46:14 BASE 1P2D sticky: decode1 requests=16 failed=0; recall-phase prefix hit 100.0% over 8 requests | decode2 requests=16 failed=0; recall-phase prefix hit 100.0% over 8 requests
+2026-11-09 01:50:44 BASE 1P2D random: requests=32 failed=0; recall-phase prefix hit 68.7% over 16 requests
+2026-11-09 01:51:18 GOAL BASELINE 1P2D NEWHOSTS DONE
+2026-11-09 01:51:18 GOAL NEWHOSTS2 DONE
+2026-11-09 01:52:42 PR 1992 dc585b07a9 deployed to: 10.128.0.246 10.128.0.175 10.128.15.239
+2026-11-09 01:53:05 PR 1992 dc585b07a9 deployed to: 10.128.0.246 10.128.0.175 10.128.15.239
