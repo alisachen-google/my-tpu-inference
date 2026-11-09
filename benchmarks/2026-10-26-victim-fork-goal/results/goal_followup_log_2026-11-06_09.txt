@@ -356,3 +356,60 @@
 2026-11-09 02:04:35 GOAL 2P1D X2B DONE
 2026-11-09 02:05:35 F1D (second attempt, fixed hook): full hybrid sequence on g + v7
 2026-11-09 02:05:35 waiting for the goal queue
+2026-11-09 02:06:38 F1D diagnostic hybrid tree deployed on g (prefill) + v7 (decode): full sequence sweep -> edges -> integrity -> mixed
+2026-11-09 02:06:38 sweep g1991d3_on start (pd_1991_gptoss_wb_on_dbg.json)
+2026-11-09 02:35:40 sweep g1991d3_on end: exit=0 points=7 strict: requests=205 failed=0
+2026-11-09 02:35:42 EDGE start: prefill=000 decode=200 lb=000 prefill_exc= decode_exc=0
+2026-11-09 02:35:42 EDGE E1 integrity: recalled outputs must equal a recompute after a flush; probes must match throughout
+2026-11-09 02:38:18 EDGE E1 rc=1 
+2026-11-09 02:38:21 EDGE E1 after: prefill=000 decode=200 lb=000 prefill_exc= decode_exc=0
+2026-11-09 02:38:21 EDGE E2 stress: concurrent recalls after a prefill-only flush, and client aborts mid-recall
+2026-11-09 02:40:57 EDGE E2 rc=0 {"phase": "concurrent", "status": "error", "seconds": 0.2} {"phase": "abort", "status": "error", "seconds": 0.0} {"health_samples": 2, "slow_probes": 0, "probe_errors": 1} 
+2026-11-09 02:40:59 EDGE E2 after: prefill=000 decode=200 lb=000 prefill_exc= decode_exc=0
+2026-11-09 02:40:59 EDGE E3 flush under load: flush both engines 30 s into a static run
+2026-11-09 02:44:02 EDGE E3 flush codes prefill=000 decode=200; requests=24 failed=24 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; prefill=000 decode=200 lb=000 prefill_exc= decode_exc=0
+2026-11-09 02:44:02 EDGE E4 decode killed while recalls are in flight, then restarted
+2026-11-09 02:46:39 EDGE E4 fill: requests=12 failed=12 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge
+2026-11-09 02:47:10 EDGE E4 decode stopped
+2026-11-09 02:48:12 EDGE E4 during outage: prefill=000 decode=000 lb=000 prefill_exc= decode_exc=1
+2026-11-09 02:52:13 EDGE E4 decode restarted: 2026-11-09 02:52:13 decode /health ready after 240 s
+2026-11-09 02:52:13 EDGE E4 recall during the kill: requests=12 failed=12 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge
+2026-11-09 02:52:21 EDGE E4 after restart, static K=4: requests=12 failed=12 first=ConnectionError(MaxRetryError('HTTPConnectionPool(host=\'10.128.15.217\', port=8080): Max retries exceeded with url: /ge; prefill=000 decode=200 lb=000 prefill_exc= decode_exc=1
+2026-11-09 02:52:21 EDGE E5 prefill killed while pushes are in flight, then restarted
+2026-11-09 02:55:42 EDGE E5 prefill stopped
+2026-11-09 02:56:14 EDGE E5 during outage: decode=200 prefill_exc= decode_exc=1
+2026-11-09 02:56:14 EDGE E5 decode flush ok (landings of the dead prefill were released)
+2026-11-09 03:10:28 F1D (second attempt) ABORTED after the sweep: edges.sh defaulted to host a (EDGE_A unset in the stage), so E1-E5 hit a dead balancer; sweep g1991d3_on (205/205, 7 points) stands. Rerunning edges+integrity+mixed on g+v7 as g1991d4_on_1 (goal_hybrid_fix.sh), then the 2P2D wait
+2026-11-09 03:16:31 g1991d4_on_1 started: prefill=200 decode=200 lb=200
+2026-11-09 03:16:31 F1D-fix (third attempt): edges -> integrity -> mixed on g (prefill) + v7 (decode), run g1991d4_on_1
+2026-11-09 03:16:33 EDGE start: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 03:16:33 EDGE E1 integrity: recalled outputs must equal a recompute after a flush; probes must match throughout
+2026-11-09 03:22:17 EDGE E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 217.1, "probes": {"sent": 103, "exact": 96, "min_agree": 0, "errors": 0, "mismatch_positions": [0, 0, 0, 8, 24, 25, 61]}, "errors": 0, "recall": {"compared": 16, "exact": 0, "min_agree": 0, "pulled_sessions": 15}}
+2026-11-09 03:22:19 EDGE E1 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 03:22:19 EDGE E2 stress: concurrent recalls after a prefill-only flush, and client aborts mid-recall
+2026-11-09 03:25:51 EDGE E2 rc=0 {"phase": "concurrent", "status": "ok", "seconds": 130.8} {"phase": "abort", "status": "ok", "seconds": 75.4} {"health_samples": 84, "slow_probes": 0, "probe_errors": 0} 
+2026-11-09 03:25:53 EDGE E2 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 03:25:53 EDGE E3 flush under load: flush both engines 30 s into a static run
+2026-11-09 03:27:12 EDGE E3 flush codes prefill=400 decode=400; requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 03:27:12 EDGE E4 decode killed while recalls are in flight, then restarted
+2026-11-09 03:28:30 EDGE E4 fill: requests=12 failed=0
+2026-11-09 03:28:56 EDGE E4 decode stopped
+2026-11-09 03:29:58 EDGE E4 during outage: prefill=200 decode=000 lb=503 prefill_exc=8 decode_exc=1
+2026-11-09 03:34:02 EDGE E4 decode restarted: 2026-11-09 03:34:02 decode /health ready after 243 s
+2026-11-09 03:34:02 EDGE E4 recall during the kill: requests=12 failed=8 first=no completion tokens
+2026-11-09 03:34:43 EDGE E4 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=8 decode_exc=1
+2026-11-09 03:34:43 EDGE E5 prefill killed while pushes are in flight, then restarted
+2026-11-09 03:37:24 EDGE E5 prefill stopped
+2026-11-09 03:37:56 EDGE E5 during outage: decode=200 prefill_exc=9 decode_exc=1
+2026-11-09 03:37:56 EDGE E5 decode flush ok (landings of the dead prefill were released)
+2026-11-09 03:42:57 EDGE E5 prefill restarted: 2026-11-09 03:42:57 LB /health ready after 0 s
+2026-11-09 03:43:38 EDGE E5 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=9 decode_exc=1
+2026-11-09 03:43:39 EDGE done: prefill=200 decode=200 lb=200 prefill_exc=9 decode_exc=1
+2026-11-09 03:43:39 F1D-fix edges exit 0
+2026-11-09 03:49:08 g1991d4_on_1 single-request integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 209.6, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 13}}
+2026-11-09 03:49:10 g1991d4_on_1 after integrity: prefill=200 decode=200 lb=200 prefill_exc=9 decode_exc=1
+2026-11-09 03:52:01 g1991d4_on_1 mixed sizes: short requests=96 failed=0; long requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=9 decode_exc=1
+2026-11-09 03:52:02 g1991d4_on_1 evidence: role=prefill started=87 stored=85 totals={'offers': 54, 'pulls': 54, 'pulled_tokens': 3321856, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'failed': 0} role=decode received=99 granted=99 landed=97 landed_tokens=5890432 
+2026-11-09 03:52:03 F1D drop-decline diagnostics on the prefill: 96 lines (run g1991d4_on_1)
+2026-11-09 03:52:39 GOAL F1D FIX DONE
+2026-11-09 03:56:21 2P2D wait paused: g+v7 reserved for the hybrid host-lock accumulation run (sweep then integrity on one engine instance, with periodic lock-state dumps); the wait resumes after it

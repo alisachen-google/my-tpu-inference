@@ -1,0 +1,14 @@
+diff --git a/sglang_tpu/disaggregation/decode_dram_offload/core_hooks.py b/sglang_tpu/disaggregation/decode_dram_offload/core_hooks.py
+index 9c9a7e0497..806a5e6a55 100644
+--- a/sglang_tpu/disaggregation/decode_dram_offload/core_hooks.py
++++ b/sglang_tpu/disaggregation/decode_dram_offload/core_hooks.py
+@@ -288,3 +288,9 @@ def install() -> None:
+     _is_installed = True
+     for owner, name, impl in _patch_targets():
+         _wrap(owner, name, impl)
++    import os
++
++    if os.environ.get("SGLANG_TPU_DEBUG_DROP_DECLINE") == "1":
++        from sglang_tpu.disaggregation.decode_dram_offload import _debug_drop_decline
++
++        _debug_drop_decline.install()
