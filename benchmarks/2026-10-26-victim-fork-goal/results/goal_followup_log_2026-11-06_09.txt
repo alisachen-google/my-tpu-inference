@@ -538,3 +538,5 @@ HYBRID TABLE | static_p128k_n8k_k16 | 40.2% -> 22.2% | 9.9 s -> 9.9 s |
 2026-11-09 08:14:06 SHARED sglang-1992 4b3de649ff on g + v7 (g1992s_shared_1): shared 8k prefix, 16 sessions one at a time, then 20 sessions at 4 concurrent, then 24 at 4
 2026-11-09 08:32:42 CI1992 run 42580323991 attempt 5 failed on a release download; re-running (try 2): http 201
 2026-11-09 08:52:44 CI1992 lint and gitleaks green; done
+2026-11-09 09:09:34 SHARED stage ABORTED: prefill on g failed to bind its Raiden control server (port 46357) at 08:19 while the launcher waited for health; relaunching
+2026-11-09 09:10:34 SHARED sglang-1992 5a6f9d1f3d on g + v7 (g1992s_shared_1): shared 8k prefix, 16 sessions one at a time, then 20 sessions at 4 concurrent, then 24 at 4
