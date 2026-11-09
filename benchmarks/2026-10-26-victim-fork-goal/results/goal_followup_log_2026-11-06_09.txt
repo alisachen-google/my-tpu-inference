@@ -542,3 +542,14 @@ HYBRID TABLE | static_p128k_n8k_k16 | 40.2% -> 22.2% | 9.9 s -> 9.9 s |
 2026-11-09 09:10:34 SHARED sglang-1992 5a6f9d1f3d on g + v7 (g1992s_shared_1): shared 8k prefix, 16 sessions one at a time, then 20 sessions at 4 concurrent, then 24 at 4
 2026-11-09 09:15:59 g1992s_shared_1 started: prefill=200 decode=200 lb=200
 2026-11-09 09:21:25 SHARED g1992s_shared_1 shared16 (16 sessions, concurrency 1): requests=32 failed=0; prefill=200 decode=200 lb=200 sched_exc=0 oom=0 drop_declined=0 dropped_no_backup=0
+2026-11-09 09:27:30 SHARED g1992s_shared_1 shared20c (20 sessions, concurrency 4): requests=40 failed=0; prefill=200 decode=200 lb=200 sched_exc=0 oom=0 drop_declined=0 dropped_no_backup=0
+2026-11-09 09:34:34 SHARED g1992s_shared_1 shared24c (24 sessions, concurrency 4): requests=48 failed=0; prefill=200 decode=200 lb=200 sched_exc=0 oom=0 drop_declined=0 dropped_no_backup=0
+2026-11-09 09:34:36 g1992s_shared_1 evidence: role=prefill  role=decode  
+2026-11-09 09:36:09 SHARED sglang-mvp b15baf6e5a on g + v7 (g1991s_shared_1): shared 8k prefix, 16 sessions one at a time, then 20 sessions at 4 concurrent, then 24 at 4
+2026-11-09 09:40:51 g1991s_shared_1 started: prefill=200 decode=200 lb=200
+2026-11-09 09:45:30 SHARED g1991s_shared_1 shared16 (16 sessions, concurrency 1): requests=32 failed=0; prefill=200 decode=200 lb=200 sched_exc=0 oom=0 drop_declined=0 dropped_no_backup=0
+2026-11-09 09:50:40 SHARED g1991s_shared_1 shared20c (20 sessions, concurrency 4): requests=40 failed=0; prefill=200 decode=200 lb=200 sched_exc=0 oom=0 drop_declined=0 dropped_no_backup=0
+2026-11-09 09:56:39 SHARED g1991s_shared_1 shared24c (24 sessions, concurrency 4): requests=48 failed=0; prefill=200 decode=200 lb=200 sched_exc=0 oom=0 drop_declined=0 dropped_no_backup=0
+2026-11-09 09:56:41 g1991s_shared_1 evidence: role=prefill  role=decode  
+2026-11-09 09:57:07 GOAL SHARED DONE
+2026-11-09 10:00:49 2P2D waits for a fourth host (a, b, .42, .99 all busy or wedged; try 1)
