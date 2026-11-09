@@ -516,3 +516,22 @@
 2026-11-09 07:35:21 EDGE E5 prefill stopped
 2026-11-09 07:35:54 EDGE E5 during outage: decode=200 prefill_exc=7 decode_exc=1
 2026-11-09 07:35:54 EDGE E5 decode flush ok (landings of the dead prefill were released)
+2026-11-09 07:40:38 EDGE E5 prefill restarted: 2026-11-09 07:40:38 LB /health ready after 0 s
+2026-11-09 07:41:18 EDGE E5 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=7 decode_exc=1
+2026-11-09 07:41:20 EDGE done: prefill=200 decode=200 lb=200 prefill_exc=7 decode_exc=1
+2026-11-09 07:41:20 HYBRID FULL edges exit 0
+2026-11-09 07:41:21 g1991f_on_1 evidence: role=prefill  totals={'offers': 138, 'pulls': 34, 'pulled_tokens': 3473280, 'skipped_local_host': 100, 'no_memory': 0, 'over_budget': 4, 'adopted_backup_tokens': 0, 'failed': 0} role=decode  
+2026-11-09 07:41:48 sweep g1991f_off start (pd_1991_gptoss_wb_off.json)
+2026-11-09 08:10:43 sweep g1991f_off end: exit=0 points=7 strict: requests=205 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+HYBRID TABLE | point | prefill hit off -> on | TTFT p50 off -> on |
+HYBRID TABLE | recall_p128k_n8k_s8 | 82.5% -> 82.6% | 2.9 s -> 3.1 s |
+HYBRID TABLE | recall_p128k_n8k_s12 | 27.3% -> 48.5% | 13.2 s -> 10.4 s |
+HYBRID TABLE | recall_p128k_n8k_s16 | 0.0% -> 70.8% | 18.0 s -> 6.8 s |
+HYBRID TABLE | static_p128k_n8k_k4 | 62.7% -> 62.7% | 4.7 s -> 4.3 s |
+HYBRID TABLE | static_p128k_n8k_k8 | 62.5% -> 54.9% | 6.1 s -> 6.4 s |
+HYBRID TABLE | static_p128k_n8k_k12 | 50.3% -> 30.0% | 6.7 s -> 9.9 s |
+HYBRID TABLE | static_p128k_n8k_k16 | 40.2% -> 22.2% | 9.9 s -> 9.9 s |
+2026-11-09 08:11:10 GOAL HYBRID FULL DONE
+2026-11-09 08:12:38 CI1992 run 42580323991 attempt 4 failed on a release download; re-running (try 1): http 201
+2026-11-09 08:12:39 CI1992 lint green (attempt 2); re-running the failed CPU shards: http 201
+2026-11-09 08:13:12 2P2D wait paused for the shared-prefix stage (goal_shared_prefix.sh)
