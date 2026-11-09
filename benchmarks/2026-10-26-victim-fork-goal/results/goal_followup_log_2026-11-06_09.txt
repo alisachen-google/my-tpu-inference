@@ -486,3 +486,33 @@
 2026-11-09 06:43:16 g1991f_integ_1 mixed sizes: short requests=96 failed=0; long requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 'adopted_backup_tokens': 0
 2026-11-09 06:43:18 g1991f_integ_1 evidence: role=prefill started=104 stored=103 totals={'offers': 63, 'pulls': 62, 'pulled_tokens': 4947968, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 1, 'adopted_backup_tokens': 0, 'failed': 0} role=decode received=115 granted=115 landed=115 landed_tokens=7582464 
 2026-11-09 06:43:53 GOAL FIXVAL DONE
+2026-11-09 06:45:45 2P2D wait paused for the hybrid on/off validation (goal_hybrid_full.sh)
+2026-11-09 06:46:33 HYBRID FULL hybrid PR dd9a2784f7 on g + v7: sweep on -> edges -> sweep off
+2026-11-09 06:46:33 sweep g1991f_on start (pd_1991_gptoss_wb_on.json)
+2026-11-09 07:07:46 UNSUP pipeline_env_decode (decode): HUNG  exit_after_s=n/a port_free=yes total_s=1667
+2026-11-09 07:07:46 GOAL UNSUPPORTED3 DONE
+2026-11-09 07:10:40 UNSUP rerun 4 (timeline) on 10.128.0.246 with PR 1992 72ac13d3bf: one engine per unsupported setting, switch on
+2026-11-09 07:14:32 sweep g1991f_on end: exit=0 points=7 strict: requests=205 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-09 07:14:33 HYBRID FULL after on-sweep: prefill=200 decode=200 lb=200 'adopted_backup_tokens': 0
+2026-11-09 07:14:35 EDGE start: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 07:14:35 EDGE E1 integrity: recalled outputs must equal a recompute after a flush; probes must match throughout
+2026-11-09 07:20:36 EDGE E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 235.3, "probes": {"sent": 109, "exact": 101, "min_agree": 0, "errors": 0, "mismatch_positions": [0, 0, 8, 8, 41, 56, 61, 96]}, "errors": 0, "recall": {"compared": 16, "exact": 1, "min_agree": 0, "pulled_sessions": 14}}
+2026-11-09 07:20:38 EDGE E1 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 07:20:38 EDGE E2 stress: concurrent recalls after a prefill-only flush, and client aborts mid-recall
+2026-11-09 07:24:10 EDGE E2 rc=0 {"phase": "concurrent", "status": "ok", "seconds": 130.8} {"phase": "abort", "status": "ok", "seconds": 75.4} {"health_samples": 84, "slow_probes": 0, "probe_errors": 0} 
+2026-11-09 07:24:11 EDGE E2 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 07:24:11 EDGE E3 flush under load: flush both engines 30 s into a static run
+2026-11-09 07:25:31 EDGE E3 flush codes prefill=400 decode=400; requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 07:25:31 EDGE E4 decode killed while recalls are in flight, then restarted
+2026-11-09 07:26:48 EDGE E4 fill: requests=12 failed=0
+2026-11-09 07:27:14 EDGE E4 decode stopped
+2026-11-09 07:28:16 EDGE E4 during outage: prefill=200 decode=000 lb=503 prefill_exc=6 decode_exc=1
+2026-11-09 07:29:52 UNSUP pipeline_env_decode2 (decode): REFUSED (is not supported on this decode engine: the Raiden pipeline transfer is not supported (SGLANG_RAIDEN_PIPELINE_TRANSFER is set) (change the setting or unset SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM)) exit_after_s=0 port_free=yes total_s=1150
+2026-11-09 07:29:52 GOAL UNSUPPORTED4 DONE
+2026-11-09 07:32:00 EDGE E4 decode restarted: 2026-11-09 07:32:00 decode /health ready after 223 s
+2026-11-09 07:32:00 EDGE E4 recall during the kill: requests=12 failed=7 first=no completion tokens
+2026-11-09 07:32:41 EDGE E4 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=6 decode_exc=1
+2026-11-09 07:32:41 EDGE E5 prefill killed while pushes are in flight, then restarted
+2026-11-09 07:35:21 EDGE E5 prefill stopped
+2026-11-09 07:35:54 EDGE E5 during outage: decode=200 prefill_exc=7 decode_exc=1
+2026-11-09 07:35:54 EDGE E5 decode flush ok (landings of the dead prefill were released)
