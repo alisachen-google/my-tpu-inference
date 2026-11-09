@@ -344,3 +344,15 @@
 2026-11-09 01:51:18 GOAL NEWHOSTS2 DONE
 2026-11-09 01:52:42 PR 1992 dc585b07a9 deployed to: 10.128.0.246 10.128.0.175 10.128.15.239
 2026-11-09 01:53:05 PR 1992 dc585b07a9 deployed to: 10.128.0.246 10.128.0.175 10.128.15.239
+2026-11-09 01:58:31 2P1D-X2b g1992b_2p1d_x2b started: prefill_a=200 prefill_b=200 decode=200 lb=200
+2026-11-09 01:58:38 X2b cross-prefill recall with host pressure: 20 sessions filled through prefill a, then 24 short requests keep a serving while it pushes, then returns through prefill b, then through a
+2026-11-09 02:01:11 X2b fill via a (20 sessions): requests=20 failed=0; decode landed=33
+2026-11-09 02:01:45 X2b keep-alive on a: requests=24 failed=0; decode landed=80
+2026-11-09 02:02:55 X2b return via b (cross-prefill): requests=20 failed=0; recall-phase prefix hit 83.8% over 20 requests; decode landed=95
+2026-11-09 02:03:57 X2b return via a: requests=20 failed=0; recall-phase prefix hit 81.3% over 20 requests; prefill_a=200 prefill_b=200 decode=200 lb=200 prefill_a_exc=0 prefill_b_exc= decode_exc=0
+2026-11-09 02:04:01 g1992b_2p1d_x2b evidence prefill a: role=prefill started=125 stored=125 totals={'offers': 19, 'pulls': 19, 'pulled_tokens': 2266112, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'failed': 0} 
+2026-11-09 02:04:01 g1992b_2p1d_x2b evidence prefill b: role=prefill started=14 stored=14 totals={'offers': 17, 'pulls': 14, 'pulled_tokens': 1924224, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 3, 'failed': 0} 
+2026-11-09 02:04:01 g1992b_2p1d_x2b evidence decode: role=decode received=141 granted=141 landed=140 landed_tokens=3461760 refused pulls: 0  warnings: 0 
+2026-11-09 02:04:35 GOAL 2P1D X2B DONE
+2026-11-09 02:05:35 F1D (second attempt, fixed hook): full hybrid sequence on g + v7
+2026-11-09 02:05:35 waiting for the goal queue
