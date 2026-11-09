@@ -575,3 +575,6 @@ HYBRID TABLE | static_p128k_n8k_k16 | 40.2% -> 22.2% | 9.9 s -> 9.9 s |
 2026-11-09 12:26:03 2P2D wait resumed
 2026-11-09 12:26:08 2P2D wait paused for the shared-prefix rerun (goal_shared_fix2.sh)
 2026-11-09 12:27:03 SHAREDFIX2 fix tree 3b6ed21d66 on g + v7 (g1992x_shared_2): shared 8k prefix 16 one-at-a-time, 20 and 24 at 4 concurrent, then 16 independent sessions
+2026-11-09 12:32:25 g1992x_shared_2 started: prefill=200 decode=200 lb=200
+2026-11-09 12:36:36 SHAREDFIX2 g1992x_shared_2 shared16 (16 sessions, concurrency 1, shared 8192): requests=32 failed=0; prefill=200 decode=200 lb=200 sched_exc=0 oom=0 drop_declined=0 pulls=16 push_stats="started=33 stored=33 ancestor_backup_tokens=589824"; recall-phase prefill-side hit 87.1% (cached 2056192 of 2361286 prompt tokens, 16 requests)
+2026-11-09 12:37:19 UNSUP rerun 5 (hybrid model, single-phase validation) on 10.128.0.246 with PR 1992 62bb5a78e1: one engine per unsupported setting, switch on
