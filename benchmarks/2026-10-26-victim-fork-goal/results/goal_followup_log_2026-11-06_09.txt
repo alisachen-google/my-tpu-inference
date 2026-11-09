@@ -584,3 +584,13 @@ HYBRID TABLE | static_p128k_n8k_k16 | 40.2% -> 22.2% | 9.9 s -> 9.9 s |
 2026-11-09 12:42:16 2P2D wait resumed
 2026-11-09 12:43:14 2P2D wait paused for the round-2 live check (goal_simplified_check2.sh)
 2026-11-09 12:44:11 SIMPL2 sglang-1992 62bb5a78e1 on g + v7 (g1992r_simpl_1): integrity -> recall 16 -> mixed
+2026-11-09 12:48:37 UNSUP hybrid_model (prefill): REFUSED (is not supported on this prefill engine: hybrid sliding-window models are not supported: only full-attention KV is offloaded, and such a model cannot resume from it without its window (change the setting or unset SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM) exit_after_s=1 port_free=yes total_s=676
+2026-11-09 12:48:37 GOAL UNSUPPORTED5 DONE
+2026-11-09 12:49:34 g1992r_simpl_1 started: prefill=200 decode=200 lb=200
+2026-11-09 12:56:21 g1992r_simpl_1 single-request integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 264.3, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 11}}
+2026-11-09 12:56:24 g1992r_simpl_1 after integrity: prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 'adopted_backup_tokens': 0
+2026-11-09 13:00:06 g1992r_simpl_1 recall 16 sessions: requests=32 failed=0; prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 'adopted_backup_tokens': 0
+2026-11-09 13:03:18 g1992r_simpl_1 mixed sizes: short requests=96 failed=0; long requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 'adopted_backup_tokens': 0
+2026-11-09 13:03:20 g1992r_simpl_1 evidence: role=prefill started=245 stored=242 totals={'offers': 79, 'pulls': 77, 'pulled_tokens': 4929920, 'skipped_local_host': 1, 'no_memory': 0, 'over_budget': 1, 'adopted_backup_tokens': 0, 'failed': 0} role=decode received=220 granted=220 landed=217 landed_tokens=6609280 
+2026-11-09 13:04:05 GOAL SIMPL2 DONE
+2026-11-09 13:05:05 2P2D wait resumed
