@@ -578,3 +578,9 @@ HYBRID TABLE | static_p128k_n8k_k16 | 40.2% -> 22.2% | 9.9 s -> 9.9 s |
 2026-11-09 12:32:25 g1992x_shared_2 started: prefill=200 decode=200 lb=200
 2026-11-09 12:36:36 SHAREDFIX2 g1992x_shared_2 shared16 (16 sessions, concurrency 1, shared 8192): requests=32 failed=0; prefill=200 decode=200 lb=200 sched_exc=0 oom=0 drop_declined=0 pulls=16 push_stats="started=33 stored=33 ancestor_backup_tokens=589824"; recall-phase prefill-side hit 87.1% (cached 2056192 of 2361286 prompt tokens, 16 requests)
 2026-11-09 12:37:19 UNSUP rerun 5 (hybrid model, single-phase validation) on 10.128.0.246 with PR 1992 62bb5a78e1: one engine per unsupported setting, switch on
+2026-11-09 12:40:36 SHAREDFIX2 g1992x_shared_2 shared16b (16 sessions, concurrency 2, shared 8192): requests=32 failed=0; prefill=200 decode=200 lb=200 sched_exc=0 oom=0 drop_declined=0 pulls=29 push_stats="started=75 stored=75 ancestor_backup_tokens=1238272"; recall-phase prefill-side hit 71.2% (cached 1681280 of 2361286 prompt tokens, 16 requests)
+2026-11-09 12:40:38 g1992x_shared_2 evidence: role=prefill started=75 stored=75 ancestor_backup_tokens=1238272 totals={'offers': 36, 'pulls': 29, 'pulled_tokens': 3184384, 'skipped_local_host': 7, 'no_memory': 0, 'over_budget': 0, 'adopted_backup_tokens': 0, 'failed': 0} role=decode received=81 granted=81 landed=81 landed_tokens=3968000 
+2026-11-09 12:41:16 GOAL SHAREDFIX2 DONE
+2026-11-09 12:42:16 2P2D wait resumed
+2026-11-09 12:43:14 2P2D wait paused for the round-2 live check (goal_simplified_check2.sh)
+2026-11-09 12:44:11 SIMPL2 sglang-1992 62bb5a78e1 on g + v7 (g1992r_simpl_1): integrity -> recall 16 -> mixed
