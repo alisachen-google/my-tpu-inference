@@ -413,3 +413,39 @@
 2026-11-09 03:52:03 F1D drop-decline diagnostics on the prefill: 96 lines (run g1991d4_on_1)
 2026-11-09 03:52:39 GOAL F1D FIX DONE
 2026-11-09 03:56:21 2P2D wait paused: g+v7 reserved for the hybrid host-lock accumulation run (sweep then integrity on one engine instance, with periodic lock-state dumps); the wait resumes after it
+2026-11-09 03:59:24 ACCUM hybrid accumulation run on g + v7 (g1991d5_on_1): sweep -> edges -> integrity -> mixed on one engine instance, lock-state lines every 60 s
+2026-11-09 03:59:24 sweep g1991d5_on start (pd_1991_gptoss_wb_on_dbg.json)
+2026-11-09 04:27:27 sweep g1991d5_on end: exit=0 points=7 strict: requests=205 failed=0
+2026-11-09 04:27:29 ACCUM after sweep: prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 lock-state: [2026-11-09 04:26:34 TP0 EP0] [lock-state] nodes=502 host_only=256 host_locked=49 (window=46 other=3) dev_locked=66 pending_dma=2 full_host_avail=1728/943744 swa_host_avail=753728/754496 dev_evictable=517696 pins=0 plans=0 zombies=0 offered=0 pushes=0 routes=190
+2026-11-09 04:27:30 EDGE start: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 04:27:30 EDGE E1 integrity: recalled outputs must equal a recompute after a flush; probes must match throughout
+2026-11-09 04:33:13 EDGE E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 217.1, "probes": {"sent": 106, "exact": 100, "min_agree": 0, "errors": 0, "mismatch_positions": [0, 2, 8, 11, 61, 62]}, "errors": 0, "recall": {"compared": 16, "exact": 1, "min_agree": 0, "pulled_sessions": 15}}
+2026-11-09 04:33:15 EDGE E1 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 04:33:15 EDGE E2 stress: concurrent recalls after a prefill-only flush, and client aborts mid-recall
+2026-11-09 04:36:47 EDGE E2 rc=0 {"phase": "concurrent", "status": "ok", "seconds": 130.7} {"phase": "abort", "status": "ok", "seconds": 75.4} {"health_samples": 84, "slow_probes": 0, "probe_errors": 0} 
+2026-11-09 04:36:49 EDGE E2 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 04:36:49 EDGE E3 flush under load: flush both engines 30 s into a static run
+2026-11-09 04:38:08 EDGE E3 flush codes prefill=400 decode=400; requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-09 04:38:08 EDGE E4 decode killed while recalls are in flight, then restarted
+2026-11-09 04:39:26 EDGE E4 fill: requests=12 failed=0
+2026-11-09 04:39:52 EDGE E4 decode stopped
+2026-11-09 04:40:54 EDGE E4 during outage: prefill=200 decode=000 lb=503 prefill_exc=6 decode_exc=1
+2026-11-09 04:44:55 EDGE E4 decode restarted: 2026-11-09 04:44:55 decode /health ready after 240 s
+2026-11-09 04:44:55 EDGE E4 recall during the kill: requests=12 failed=7 first=no completion tokens
+2026-11-09 04:45:35 EDGE E4 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=6 decode_exc=1
+2026-11-09 04:45:35 EDGE E5 prefill killed while pushes are in flight, then restarted
+2026-11-09 04:48:16 EDGE E5 prefill stopped
+2026-11-09 04:48:48 EDGE E5 during outage: decode=200 prefill_exc=7 decode_exc=1
+2026-11-09 04:48:48 EDGE E5 decode flush ok (landings of the dead prefill were released)
+2026-11-09 04:53:30 EDGE E5 prefill restarted: 2026-11-09 04:53:30 LB /health ready after 0 s
+2026-11-09 04:54:11 EDGE E5 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=7 decode_exc=1
+2026-11-09 04:54:12 EDGE done: prefill=200 decode=200 lb=200 prefill_exc=7 decode_exc=1
+2026-11-09 04:54:12 ACCUM edges exit 0
+2026-11-09 04:54:14 ACCUM after edges: prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 lock-state: [2026-11-09 04:53:22 TP0 EP0] [lock-state] nodes=0 host_only=0 host_locked=0 (window=0 other=0) dev_locked=0 pending_dma=0 full_host_avail=943744/943744 swa_host_avail=754496/754496 dev_evictable=0 pins=0 plans=0 zombies=0 offered=0 pushes=0 routes=0
+2026-11-09 04:59:43 g1991d5_on_1 single-request integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 209.8, "probes": {"sent": 0, "exact": 0, "min_agree": 128, "errors": 0, "mismatch_positions": []}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 13}}
+2026-11-09 04:59:45 g1991d5_on_1 after integrity: prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-09 04:59:46 ACCUM after integrity lock-state: [2026-11-09 04:59:23 TP0 EP0] [lock-state] nodes=414 host_only=225 host_locked=67 (window=64 other=3) dev_locked=38 pending_dma=1 full_host_avail=1920/943744 swa_host_avail=753344/754496 dev_evictable=622464 pins=0 plans=0 zombies=0 offered=0 pushes=0 routes=207
+2026-11-09 05:02:32 g1991d5_on_1 mixed sizes: short requests=96 failed=0; long requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-09 05:02:34 g1991d5_on_1 evidence: role=prefill started=99 stored=97 totals={'offers': 58, 'pulls': 58, 'pulled_tokens': 3469312, 'skipped_local_host': 0, 'no_memory': 0, 'over_budget': 0, 'failed': 0} role=decode received=83 granted=83 landed=83 landed_tokens=5795840 
+2026-11-09 05:02:35 ACCUM drop-decline dumps on the prefill: 112; final lock-state: [2026-11-09 05:02:23 TP0 EP0] [lock-state] nodes=155 host_only=42 host_locked=48 (window=45 other=3) dev_locked=13 pending_dma=1 full_host_avail=1856/943744 swa_host_avail=749504/754496 dev_evictable=713728 pins=6 plans=0 zombies=0 offered=0 pushes=0 routes=78
+2026-11-09 05:03:11 GOAL ACCUM DONE
