@@ -1,0 +1,106 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794271483.367913  222373 pjrt_api.cc:119] GetPjrtApi was found for TPU at /home/alisachen_google_com/venv/sglang/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1794271483.399904  222373 tpu_profiler_plugin.cc:804] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+I0000 00:00:1794271483.757029  222373 device_rt.cc:140] PjRt runtime initialization deferred for tpu
+Successfully renamed PrivateUse1 backend to 'tpu'. Device: device(type='tpu')
+Registered Python module for 'tpu'.
+I0000 00:00:1794271483.759425  222373 libtpu_version.cc:124] Setting libtpu version to: 0.0.47
+Device type: tpu, Device index: default
+Initializing TPU distributed runtime
+{"phase": "fill", "pos": 0, "session": 0, "prompt_tokens": 36898, "ttft_s": 1.3917921600004775, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 1, "session": 1, "prompt_tokens": 36898, "ttft_s": 2.346869072998743, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 2, "session": 2, "prompt_tokens": 36898, "ttft_s": 3.2719823610004823, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 3, "session": 3, "prompt_tokens": 36898, "ttft_s": 4.368417573999977, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 4, "session": 4, "prompt_tokens": 36898, "ttft_s": 5.2944963139998436, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 5, "session": 5, "prompt_tokens": 36898, "ttft_s": 6.387765163999575, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 6, "session": 6, "prompt_tokens": 36898, "ttft_s": 7.315218765001191, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 7, "session": 7, "prompt_tokens": 36898, "ttft_s": 8.408971366001424, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 8, "session": 8, "prompt_tokens": 36898, "ttft_s": 26.312405246000708, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 9, "session": 9, "prompt_tokens": 36898, "ttft_s": 26.32224049600154, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 10, "session": 10, "prompt_tokens": 36898, "ttft_s": 26.320617523000692, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 11, "session": 11, "prompt_tokens": 36898, "ttft_s": 26.320228147998932, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 12, "session": 12, "prompt_tokens": 36898, "ttft_s": 26.305768152999008, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 13, "session": 13, "prompt_tokens": 36898, "ttft_s": 26.301322838000488, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 14, "session": 14, "prompt_tokens": 36898, "ttft_s": 26.28606407100051, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 15, "session": 15, "prompt_tokens": 36898, "ttft_s": 26.325639214999683, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 16, "session": 16, "prompt_tokens": 36898, "ttft_s": 19.81846287799999, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 17, "session": 17, "prompt_tokens": 36898, "ttft_s": 19.845409402998484, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 18, "session": 18, "prompt_tokens": 36898, "ttft_s": 26.369484991000718, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 19, "session": 19, "prompt_tokens": 36898, "ttft_s": 26.364039080999646, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 20, "session": 20, "prompt_tokens": 36898, "ttft_s": 26.35285975699844, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 21, "session": 21, "prompt_tokens": 36898, "ttft_s": 26.357242362999386, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 22, "session": 22, "prompt_tokens": 36898, "ttft_s": 26.36180799700014, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 23, "session": 23, "prompt_tokens": 36898, "ttft_s": 26.377011307999055, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 24, "session": 24, "prompt_tokens": 36898, "ttft_s": 20.40728141999898, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 25, "session": 25, "prompt_tokens": 36898, "ttft_s": 20.389145792001727, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 26, "session": 26, "prompt_tokens": 36898, "ttft_s": 19.895848037998803, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 27, "session": 27, "prompt_tokens": 36898, "ttft_s": 20.523995680001462, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 28, "session": 28, "prompt_tokens": 36898, "ttft_s": 21.132819608001228, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 29, "session": 29, "prompt_tokens": 36898, "ttft_s": 20.934762593000414, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 30, "session": 30, "prompt_tokens": 36898, "ttft_s": 21.083286339999177, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 31, "session": 31, "prompt_tokens": 36898, "ttft_s": 20.880587102999925, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 32, "session": 32, "prompt_tokens": 36898, "ttft_s": 15.130154913000297, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 33, "session": 33, "prompt_tokens": 36898, "ttft_s": 14.942326401000173, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 34, "session": 34, "prompt_tokens": 36898, "ttft_s": 15.115363713999614, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 35, "session": 35, "prompt_tokens": 36898, "ttft_s": 20.221010457000375, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 36, "session": 36, "prompt_tokens": 36898, "ttft_s": 25.726869063999402, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 37, "session": 37, "prompt_tokens": 36898, "ttft_s": 25.784320532000493, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 38, "session": 38, "prompt_tokens": 36898, "ttft_s": 26.396717244000683, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 39, "session": 39, "prompt_tokens": 36898, "ttft_s": 26.592501802000697, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 40, "session": 40, "prompt_tokens": 36898, "ttft_s": 26.461891496001044, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 41, "session": 41, "prompt_tokens": 36898, "ttft_s": 26.58519146100116, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 42, "session": 42, "prompt_tokens": 36898, "ttft_s": 20.466877659999227, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 43, "session": 43, "prompt_tokens": 36898, "ttft_s": 20.857050763999723, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 44, "session": 44, "prompt_tokens": 36898, "ttft_s": 15.426764826999715, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 45, "session": 45, "prompt_tokens": 36898, "ttft_s": 15.891702287000953, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 46, "session": 46, "prompt_tokens": 36898, "ttft_s": 15.337970721000602, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 47, "session": 47, "prompt_tokens": 36898, "ttft_s": 15.353447776999019, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 0, "session": 0, "prompt_tokens": 41081, "ttft_s": 1.1750538930009498, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 1, "session": 1, "prompt_tokens": 41081, "ttft_s": 1.487084682999921, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 2, "session": 2, "prompt_tokens": 41081, "ttft_s": 1.629635770999812, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 3, "session": 3, "prompt_tokens": 41081, "ttft_s": 1.9660009250001167, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 5, "session": 5, "prompt_tokens": 41081, "ttft_s": 2.0948773919990344, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 4, "session": 4, "prompt_tokens": 41081, "ttft_s": 2.4088485119991674, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 6, "session": 6, "prompt_tokens": 41081, "ttft_s": 2.548931627999991, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 7, "session": 7, "prompt_tokens": 41081, "ttft_s": 2.8871275860001333, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 8, "session": 8, "prompt_tokens": 41081, "ttft_s": 1.7488233169988234, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 9, "session": 9, "prompt_tokens": 41081, "ttft_s": 1.7131149189990538, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 10, "session": 10, "prompt_tokens": 41081, "ttft_s": 1.5968620849998842, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 14, "session": 14, "prompt_tokens": 41081, "ttft_s": 2.19955176700023, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 11, "session": 11, "prompt_tokens": 41081, "ttft_s": 2.8567883350006014, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 12, "session": 12, "prompt_tokens": 41081, "ttft_s": 2.7703251619986986, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 13, "session": 13, "prompt_tokens": 41081, "ttft_s": 2.7547213039997587, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 15, "session": 15, "prompt_tokens": 41081, "ttft_s": 3.728415702998973, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 16, "session": 16, "prompt_tokens": 41081, "ttft_s": 3.5716978540003765, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 17, "session": 17, "prompt_tokens": 41081, "ttft_s": 3.337900045000424, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 18, "session": 18, "prompt_tokens": 41081, "ttft_s": 3.6076499609989696, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 19, "session": 19, "prompt_tokens": 41081, "ttft_s": 2.34760120700048, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 20, "session": 20, "prompt_tokens": 41081, "ttft_s": 2.4533981530003075, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 21, "session": 21, "prompt_tokens": 41081, "ttft_s": 2.698303578999912, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 22, "session": 22, "prompt_tokens": 41081, "ttft_s": 2.538692351999998, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 24, "session": 24, "prompt_tokens": 41081, "ttft_s": 1.386598941999182, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 23, "session": 23, "prompt_tokens": 41081, "ttft_s": 1.706422320999991, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 25, "session": 25, "prompt_tokens": 41081, "ttft_s": 1.6985221570012072, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 26, "session": 26, "prompt_tokens": 41081, "ttft_s": 1.736104722998789, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 27, "session": 27, "prompt_tokens": 41081, "ttft_s": 1.4825632849988324, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 28, "session": 28, "prompt_tokens": 41081, "ttft_s": 1.6785178830014047, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 29, "session": 29, "prompt_tokens": 41081, "ttft_s": 1.4184570319994236, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 30, "session": 30, "prompt_tokens": 41081, "ttft_s": 1.6479920920010045, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 31, "session": 31, "prompt_tokens": 41081, "ttft_s": 1.487156920000416, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 32, "session": 32, "prompt_tokens": 41081, "ttft_s": 1.4668282510010613, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 33, "session": 33, "prompt_tokens": 41081, "ttft_s": 1.4592015420003008, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 34, "session": 34, "prompt_tokens": 41081, "ttft_s": 1.4322245699986524, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 35, "session": 35, "prompt_tokens": 41081, "ttft_s": 1.4379718019990833, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 36, "session": 36, "prompt_tokens": 41081, "ttft_s": 1.4612332379983854, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 37, "session": 37, "prompt_tokens": 41081, "ttft_s": 1.4701568999989831, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 38, "session": 38, "prompt_tokens": 41081, "ttft_s": 1.5558746940005221, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 39, "session": 39, "prompt_tokens": 41081, "ttft_s": 1.4884937549995811, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 40, "session": 40, "prompt_tokens": 41081, "ttft_s": 1.5335975010002585, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 41, "session": 41, "prompt_tokens": 41081, "ttft_s": 1.4732609820002835, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 42, "session": 42, "prompt_tokens": 41081, "ttft_s": 1.5322035259996483, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 43, "session": 43, "prompt_tokens": 41081, "ttft_s": 1.517148068998722, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 44, "session": 44, "prompt_tokens": 41081, "ttft_s": 1.5090740640007425, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 45, "session": 45, "prompt_tokens": 41081, "ttft_s": 1.4965788520003116, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 46, "session": 46, "prompt_tokens": 41081, "ttft_s": 1.463008106999041, "cached_tokens": 36864, "error": null}
+{"phase": "recall", "pos": 47, "session": 47, "prompt_tokens": 41081, "ttft_s": 1.392457566000303, "cached_tokens": 36864, "error": null}
+SUMMARY {"run": "g1991z_final_4", "label": "mixed_short", "sessions": 48, "prefix": 32768, "new": 4096, "out_tokens": 16, "concurrency": 8, "seed": 21, "order": "oldest", "shared_prefix": 0, "working_set_tokens": 1771104, "fill": {"requests": 48, "errors": 0, "wall_s": 125.0, "prompt_tokens": 1771104, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 20.880587102999925, "ttft_p95": 26.461891496001044, "e2e_p50": 21.031627079999453, "e2e_p95": 26.68551532099991, "total_tok_s": 14175.0, "output_tok_s": 6.1, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, "recall": {"requests": 48, "errors": 0, "wall_s": 13.4, "prompt_tokens": 1971888, "cached_tokens": 1695744, "token_hit_rate": 0.86, "reusable_tokens": 1771104, "reuse_recovered": 0.9575, "sessions_fully_reused": 46, "ttft_p50": 1.6479920920010045, "ttft_p95": 3.5716978540003765, "e2e_p50": 1.8038084719992185, "e2e_p95": 3.7412896109999565, "total_tok_s": 147213.1, "output_tok_s": 57.3, "cached_tokens_by_tier": {"device": 0, "host": 1695744, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-11", "requests": 12, "errors": 0, "prompt_tokens": 492972, "cached_tokens": 442368, "token_hit_rate": 0.8973, "reusable_tokens": 442776, "reuse_recovered": 0.9991, "sessions_fully_reused": 12, "ttft_p50": 1.9660009250001167, "ttft_p95": 2.8567883350006014, "e2e_p50": 2.123587303000022, "e2e_p95": 3.016811683000924, "cached_tokens_by_tier": {"device": 0, "host": 442368, "storage": 0}}, {"sessions": "12-23", "requests": 12, "errors": 0, "prompt_tokens": 492972, "cached_tokens": 368640, "token_hit_rate": 0.7478, "reusable_tokens": 442776, "reuse_recovered": 0.8326, "sessions_fully_reused": 10, "ttft_p50": 2.7547213039997587, "ttft_p95": 3.6076499609989696, "e2e_p50": 2.9279960009989736, "e2e_p95": 3.7678252209989296, "cached_tokens_by_tier": {"device": 0, "host": 368640, "storage": 0}}, {"sessions": "24-35", "requests": 12, "errors": 0, "prompt_tokens": 492972, "cached_tokens": 442368, "token_hit_rate": 0.8973, "reusable_tokens": 442776, "reuse_recovered": 0.9991, "sessions_fully_reused": 12, "ttft_p50": 1.4825632849988324, "ttft_p95": 1.6985221570012072, "e2e_p50": 1.6854966890005016, "e2e_p95": 1.9024502230004146, "cached_tokens_by_tier": {"device": 0, "host": 442368, "storage": 0}}, {"sessions": "36-47", "requests": 12, "errors": 0, "prompt_tokens": 492972, "cached_tokens": 442368, "token_hit_rate": 0.8973, "reusable_tokens": 442776, "reuse_recovered": 0.9991, "sessions_fully_reused": 12, "ttft_p50": 1.4965788520003116, "ttft_p95": 1.5335975010002585, "e2e_p50": 1.6766859960007423, "e2e_p95": 1.7376657869990595, "cached_tokens_by_tier": {"device": 0, "host": 442368, "storage": 0}}]}
