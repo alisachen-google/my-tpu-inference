@@ -1,0 +1,161 @@
+{
+ "sessions": 16,
+ "prefix": 131072,
+ "new": 8192,
+ "out_tokens": 64,
+ "concurrent_phase_s": 206.4,
+ "probes": {
+  "sent": 0,
+  "exact": 0,
+  "min_agree": 128,
+  "errors": 0,
+  "mismatch_positions": []
+ },
+ "recall_vs_recompute": {
+  "compared": 16,
+  "exact": 16,
+  "min_agree": 64,
+  "pulled_sessions": 14,
+  "per_session": [
+   {
+    "session": 0,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 1,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 2,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 3,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 4,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 5,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 6,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 7,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 8,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 9,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 10,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 11,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 12,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 13,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   },
+   {
+    "session": 14,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 15,
+    "agree": 64,
+    "recall_cached": 139264,
+    "recall_details": {
+     "device": 0,
+     "host": 139264
+    }
+   }
+  ]
+ },
+ "errors": 0
+}
