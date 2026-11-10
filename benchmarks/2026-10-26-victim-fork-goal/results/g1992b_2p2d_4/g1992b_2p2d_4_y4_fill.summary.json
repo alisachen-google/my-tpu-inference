@@ -1,0 +1,35 @@
+{
+ "run": "g1992b_2p2d_4",
+ "label": "y4_fill",
+ "sessions": 12,
+ "prefix": 131072,
+ "new": 8192,
+ "out_tokens": 16,
+ "concurrency": 4,
+ "seed": 5,
+ "order": "oldest",
+ "shared_prefix": 0,
+ "working_set_tokens": 1671602,
+ "fill": {
+  "requests": 12,
+  "errors": 0,
+  "wall_s": 58.8,
+  "prompt_tokens": 1671602,
+  "cached_tokens": 0,
+  "token_hit_rate": 0.0,
+  "reusable_tokens": 0,
+  "reuse_recovered": null,
+  "sessions_fully_reused": 0,
+  "ttft_p50": 15.045631207000042,
+  "ttft_p95": 28.66350356300063,
+  "e2e_p50": 15.196146003001559,
+  "e2e_p95": 28.78691810000055,
+  "total_tok_s": 28431.9,
+  "output_tok_s": 3.3,
+  "cached_tokens_by_tier": {
+   "device": 0,
+   "host": 0,
+   "storage": 0
+  }
+ }
+}

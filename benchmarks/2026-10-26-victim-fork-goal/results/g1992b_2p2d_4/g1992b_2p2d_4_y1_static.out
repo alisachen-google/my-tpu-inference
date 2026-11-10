@@ -1,0 +1,10 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794267318.003670  120203 pjrt_api.cc:119] GetPjrtApi was found for TPU at /home/alisachen_google_com/venv/sglang/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1794267318.020386  120203 tpu_profiler_plugin.cc:804] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+I0000 00:00:1794267318.463482  120203 device_rt.cc:140] PjRt runtime initialization deferred for tpu
+Successfully renamed PrivateUse1 backend to 'tpu'. Device: device(type='tpu')
+Registered Python module for 'tpu'.
+I0000 00:00:1794267318.466670  120203 libtpu_version.cc:124] Setting libtpu version to: 0.0.47
+Device type: tpu, Device index: default
+Initializing TPU distributed runtime
+SUMMARY {"run": "g1992b_2p2d_4", "label": "y1_static", "prefixes": 12, "visits": 3, "prefix": 131072, "new": 8192, "out_tokens": 256, "concurrency": 4, "seed": 13, "unique_prefix_tokens": 1572996, "requests": 36, "errors": 0, "wall_s": 131.7, "prefill_hit_rate": 0.3659, "prefill_cached_tokens": 917504.0, "prefill_prompt_tokens": 2507385.0, "decode_reuse_rate": 0.3659, "ttft_p50": 8.580713958999695, "ttft_p95": 24.10696250500041, "repeat_ttft_p50": 8.159794573999534, "repeat_ttft_p95": 24.10696250500041, "first_ttft_p50": 15.042622758999642, "e2e_p50": 10.79646926299938, "e2e_p95": 27.42960124899946, "total_tok_s": 38157.3, "output_tok_s": 70.0}
