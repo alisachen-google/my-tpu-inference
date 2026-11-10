@@ -1,0 +1,30 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794273067.423854  285347 pjrt_api.cc:119] GetPjrtApi was found for TPU at /home/alisachen_google_com/venv/sglang/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1794273067.448606  285347 tpu_profiler_plugin.cc:804] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+I0000 00:00:1794273067.872008  285347 device_rt.cc:140] PjRt runtime initialization deferred for tpu
+Successfully renamed PrivateUse1 backend to 'tpu'. Device: device(type='tpu')
+Registered Python module for 'tpu'.
+I0000 00:00:1794273067.874755  285347 libtpu_version.cc:124] Setting libtpu version to: 0.0.47
+Device type: tpu, Device index: default
+Initializing TPU distributed runtime
+{"phase": "fill", "pos": 3, "session": 3, "prompt_tokens": 139301, "ttft_s": 7.835717840000143, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 1, "session": 1, "prompt_tokens": 139301, "ttft_s": 15.175927427000715, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 0, "session": 0, "prompt_tokens": 139301, "ttft_s": 22.483350919999793, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 2, "session": 2, "prompt_tokens": 139301, "ttft_s": 29.729128654002125, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 4, "session": 4, "prompt_tokens": 139301, "ttft_s": 28.998277963000874, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 5, "session": 5, "prompt_tokens": 139301, "ttft_s": 29.007838292000088, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 6, "session": 6, "prompt_tokens": 139301, "ttft_s": 29.04898234799839, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 7, "session": 7, "prompt_tokens": 139301, "ttft_s": 29.01962118299707, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 8, "session": 8, "prompt_tokens": 139301, "ttft_s": 29.026815656998224, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 9, "session": 9, "prompt_tokens": 139301, "ttft_s": 29.000625048000074, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 10, "session": 10, "prompt_tokens": 139302, "ttft_s": 29.023068905997206, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 11, "session": 11, "prompt_tokens": 139302, "ttft_s": 29.026146316999075, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 12, "session": 12, "prompt_tokens": 139302, "ttft_s": 29.011687744001392, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 13, "session": 13, "prompt_tokens": 139302, "ttft_s": 29.0249911969986, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 14, "session": 14, "prompt_tokens": 139302, "ttft_s": 29.028289036999922, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 15, "session": 15, "prompt_tokens": 139302, "ttft_s": 29.01764682800058, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 16, "session": 16, "prompt_tokens": 139302, "ttft_s": 29.022328805000143, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 17, "session": 17, "prompt_tokens": 139302, "ttft_s": 29.027305307998176, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 18, "session": 18, "prompt_tokens": 139302, "ttft_s": 29.03276752599777, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 19, "session": 19, "prompt_tokens": 139302, "ttft_s": 28.93575213800068, "cached_tokens": 0, "error": null}
+SUMMARY {"run": "g1992b_2p2d_press_off_1", "label": "p_fill", "sessions": 20, "prefix": 131072, "new": 8192, "out_tokens": 16, "concurrency": 4, "seed": 61, "order": "oldest", "shared_prefix": 0, "working_set_tokens": 2786030, "fill": {"requests": 20, "errors": 0, "wall_s": 146.5, "prompt_tokens": 2786030, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 29.022328805000143, "ttft_p95": 29.04898234799839, "e2e_p50": 29.167125713000132, "e2e_p95": 29.197075977997883, "total_tok_s": 19019.5, "output_tok_s": 2.2, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}

@@ -1,0 +1,30 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794272471.442706  257079 pjrt_api.cc:119] GetPjrtApi was found for TPU at /home/alisachen_google_com/venv/sglang/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1794272471.459731  257079 tpu_profiler_plugin.cc:804] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+I0000 00:00:1794272471.920121  257079 device_rt.cc:140] PjRt runtime initialization deferred for tpu
+Successfully renamed PrivateUse1 backend to 'tpu'. Device: device(type='tpu')
+Registered Python module for 'tpu'.
+I0000 00:00:1794272471.923369  257079 libtpu_version.cc:124] Setting libtpu version to: 0.0.47
+Device type: tpu, Device index: default
+Initializing TPU distributed runtime
+{"phase": "recall", "pos": 1, "session": 1, "prompt_tokens": 147580, "ttft_s": 2.9814475389975996, "cached_tokens": 139264, "error": null}
+{"phase": "recall", "pos": 2, "session": 2, "prompt_tokens": 147580, "ttft_s": 11.324415692997718, "cached_tokens": 16256, "error": null}
+{"phase": "recall", "pos": 0, "session": 0, "prompt_tokens": 147580, "ttft_s": 13.114768318002461, "cached_tokens": 139264, "error": null}
+{"phase": "recall", "pos": 3, "session": 3, "prompt_tokens": 147580, "ttft_s": 13.115419189998647, "cached_tokens": 139264, "error": null}
+{"phase": "recall", "pos": 4, "session": 4, "prompt_tokens": 147580, "ttft_s": 15.866665599001863, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 5, "session": 5, "prompt_tokens": 147580, "ttft_s": 15.486248278997664, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 6, "session": 6, "prompt_tokens": 147580, "ttft_s": 21.68927369999801, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 7, "session": 7, "prompt_tokens": 147580, "ttft_s": 29.594961102000525, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 8, "session": 8, "prompt_tokens": 147580, "ttft_s": 31.71722692899857, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 9, "session": 9, "prompt_tokens": 147580, "ttft_s": 31.72573201799969, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 10, "session": 10, "prompt_tokens": 147581, "ttft_s": 31.724385346999043, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 11, "session": 11, "prompt_tokens": 147581, "ttft_s": 31.755748082003265, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 12, "session": 12, "prompt_tokens": 147581, "ttft_s": 31.757380352999462, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 13, "session": 13, "prompt_tokens": 147581, "ttft_s": 31.759026307001477, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 14, "session": 14, "prompt_tokens": 147581, "ttft_s": 31.746645682000235, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 15, "session": 15, "prompt_tokens": 147581, "ttft_s": 31.750471260998893, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 16, "session": 16, "prompt_tokens": 147581, "ttft_s": 31.745341161000397, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 17, "session": 17, "prompt_tokens": 147581, "ttft_s": 33.25751579699863, "cached_tokens": 0, "error": null}
+{"phase": "recall", "pos": 18, "session": 18, "prompt_tokens": 147581, "ttft_s": 29.59070491500097, "cached_tokens": 63232, "error": null}
+{"phase": "recall", "pos": 19, "session": 19, "prompt_tokens": 147581, "ttft_s": 29.542682838000474, "cached_tokens": 0, "error": null}
+SUMMARY {"run": "g1992b_2p2d_press_on_1", "label": "p_ret_a_g", "sessions": 20, "prefix": 131072, "new": 8192, "out_tokens": 16, "concurrency": 4, "seed": 61, "order": "oldest", "shared_prefix": 0, "working_set_tokens": 2786030, "recall": {"requests": 20, "errors": 0, "wall_s": 136.6, "prompt_tokens": 2951610, "cached_tokens": 497280, "token_hit_rate": 0.1685, "reusable_tokens": 2786030, "reuse_recovered": 0.1785, "sessions_fully_reused": 3, "ttft_p50": 31.71722692899857, "ttft_p95": 31.759026307001477, "e2e_p50": 31.856416041999182, "e2e_p95": 31.90218574699975, "total_tok_s": 21610.0, "output_tok_s": 2.3, "cached_tokens_by_tier": {"device": 0, "host": 497280, "storage": 0}}, "recall_by_quarter": [{"sessions": "0-4", "requests": 5, "errors": 0, "prompt_tokens": 737900, "cached_tokens": 434048, "token_hit_rate": 0.5882, "reusable_tokens": 696505, "reuse_recovered": 0.6232, "sessions_fully_reused": 3, "ttft_p50": 13.114768318002461, "ttft_p95": 15.866665599001863, "e2e_p50": 13.339054817999568, "e2e_p95": 16.004713177000667, "cached_tokens_by_tier": {"device": 0, "host": 434048, "storage": 0}}, {"sessions": "5-9", "requests": 5, "errors": 0, "prompt_tokens": 737900, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 696505, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 29.594961102000525, "ttft_p95": 31.72573201799969, "e2e_p50": 29.735133035999752, "e2e_p95": 31.86144646200046, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, {"sessions": "10-14", "requests": 5, "errors": 0, "prompt_tokens": 737905, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 696510, "reuse_recovered": 0.0, "sessions_fully_reused": 0, "ttft_p50": 31.755748082003265, "ttft_p95": 31.759026307001477, "e2e_p50": 31.893789842000842, "e2e_p95": 31.90218574699975, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}, {"sessions": "15-19", "requests": 5, "errors": 0, "prompt_tokens": 737905, "cached_tokens": 63232, "token_hit_rate": 0.0857, "reusable_tokens": 696510, "reuse_recovered": 0.0908, "sessions_fully_reused": 0, "ttft_p50": 31.745341161000397, "ttft_p95": 33.25751579699863, "e2e_p50": 31.889043579998543, "e2e_p95": 33.535456364999845, "cached_tokens_by_tier": {"device": 0, "host": 63232, "storage": 0}}]}
