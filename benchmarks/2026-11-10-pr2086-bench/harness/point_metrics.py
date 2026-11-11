@@ -7,7 +7,7 @@ off), throughput (total_tok_s = (prompt + output tokens) / wall, output_tok_s, r
 p50/p95, ITL p50 = (e2e - ttft) / (completion_tokens - 1), e2e p50), and the route: per-engine request deltas, checked
 against --expect (p0d0 = prefill 0 and decode 0 served everything; any = no check).
 """
-import argparse, json, re, sys
+import argparse, json, os, re, sys
 
 
 def pct(v, p):
@@ -75,7 +75,14 @@ def main():
     itl = [(r["e2e_s"] - r["ttft_s"]) / (r["completion_tokens"] - 1) for r in ok
            if r.get("e2e_s") is not None and r.get("ttft_s") is not None and (r.get("completion_tokens") or 0) > 1]
 
+    # warm sessions: returning requests whose TTFT is under a quarter of the cold 128k prefill (COLD_TTFT_S, default 24 s)
+    # warm = TTFT under a quarter of the cold prefill time of a prompt this size (COLD_RATE_TOK_S: measured 139k tokens
+    # in 24 s on this pair, 5,800 tok/s)
     s0, s1 = load_snap(a.m0), load_snap(a.m1)
+    rate = float(os.environ.get("COLD_RATE_TOK_S", "5800"))
+    mean_prompt = (pt / len(ok)) if ok else 0
+    cold = mean_prompt / rate if rate else 0
+    warm = sum(1 for r in ok if r.get("ttft_s") is not None and cold and r["ttft_s"] < cold / 4)
     served, pc, pp = {}, 0.0, 0.0
     for eng in sorted(set(s0) | set(s1)):
         d0, d1 = s0.get(eng, {}), s1.get(eng, {})
@@ -102,6 +109,9 @@ def main():
          "rpm": round(60 * len(ok) / wall, 2) if wall else None,
          "ttft_p50": rnd(pct(ttft, .5)), "ttft_p95": rnd(pct(ttft, .95)), "itl_p50": None if not itl else round(pct(itl, .5), 4),
          "itl_p95": None if not itl else round(pct(itl, .95), 4), "e2e_p50": rnd(pct(e2e, .5)), "e2e_p95": rnd(pct(e2e, .95)),
+         "warm_sessions": warm, "warm_threshold_s": round(cold / 4, 1),
+         # prefill-side: prompt tokens the prefill had to compute per request (prompt - cached, from its own counters)
+         "recomputed_tokens_per_req": round((pp - pc) / len(rows)) if (pp and rows) else None,
          "expect": a.expect, "route_ok": route_ok, "served": served}
     with open(a.out, "a") as f:
         f.write(json.dumps(d) + "\n")

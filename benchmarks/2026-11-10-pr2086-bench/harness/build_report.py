@@ -109,12 +109,27 @@ def main():
         lab = f"{key[0]}" + ("" if key[1] in ("all", None) else f" ({key[1]})")
         rows.append((lab, r, o, deltas(eon, r.get("t0"), r.get("t1"), a.grace)))
 
-    print("**Cache**: prefill-side hit, where the prefix was found, and what the on arm recalled from decode DRAM.\n")
-    print("| Point | Requests on / off (errors) | Hit off | Hit on | Gain | Cached by tier device / host, off -> on | Recalled from decode DRAM (on) |")
+    def speed(o_, n_):
+        return "-" if not o_ or not n_ else f"{o_/n_:.1f}x"
+
+    print("**Performance gain** (what a user of the pair sees; return rows are the requests whose prefix the previous turn produced).\n")
+    print("| Point | TTFT p50 off -> on | Speedup | TTFT p95 off -> on | Speedup | E2E p50 off -> on | Wall s off -> on | Gain | Req/min off -> on | Gain | Warm returns off -> on | Prefill tokens computed per request, off -> on |")
+    print("|---|---|---|---|---|---|---|---|---|---|---|---|")
+    for lab, r, o, dl in rows:
+        print(f"| {lab} | {f(o.get('ttft_p50'))} -> {f(r['ttft_p50'])} s | {speed(o.get('ttft_p50'), r['ttft_p50'])} | "
+              f"{f(o.get('ttft_p95'))} -> {f(r['ttft_p95'])} s | {speed(o.get('ttft_p95'), r['ttft_p95'])} | "
+              f"{f(o.get('e2e_p50'))} -> {f(r['e2e_p50'])} s | {f(o.get('wall_s'))} -> {f(r['wall_s'])} | {gain(o.get('wall_s'), r['wall_s'], True)} | "
+              f"{f(o.get('rpm'), 1)} -> {f(r['rpm'], 1)} | {gain(o.get('rpm'), r['rpm'])} | "
+              f"{o.get('warm_sessions', '-')} / {o.get('requests', '-')} -> {r.get('warm_sessions', '-')} / {r['requests']} | "
+              f"{o.get('recomputed_tokens_per_req', '-'):,} -> {r.get('recomputed_tokens_per_req', '-'):,} |" if isinstance(o.get('recomputed_tokens_per_req'), int) and isinstance(r.get('recomputed_tokens_per_req'), int) else
+              f"| {lab} | {f(o.get('ttft_p50'))} -> {f(r['ttft_p50'])} s | {speed(o.get('ttft_p50'), r['ttft_p50'])} | {f(o.get('ttft_p95'))} -> {f(r['ttft_p95'])} s | {speed(o.get('ttft_p95'), r['ttft_p95'])} | {f(o.get('e2e_p50'))} -> {f(r['e2e_p50'])} s | {f(o.get('wall_s'))} -> {f(r['wall_s'])} | {gain(o.get('wall_s'), r['wall_s'], True)} | {f(o.get('rpm'), 1)} -> {f(r['rpm'], 1)} | {gain(o.get('rpm'), r['rpm'])} | {o.get('warm_sessions', '-')} / {o.get('requests', '-')} -> {r.get('warm_sessions', '-')} / {r['requests']} | - |")
+
+    print("\n**Cache (mechanism)**: prefill-side hit, client-reported cached tokens, where the prefix was found, and what the on arm recalled from decode DRAM.\n")
+    print("| Point | Requests on / off (errors) | Prefill-side hit off -> on | Gain | Client-reported hit off -> on | Cached by tier device / host, off -> on | Recalled from decode DRAM (on) |")
     print("|---|---|---|---|---|---|---|")
     for lab, r, o, dl in rows:
         req = f"{r['requests']} / {o.get('requests', '-')} ({r['errors']}/{o.get('errors', '-')})"
-        print(f"| {lab} | {req} | {pc(o.get('prefill_hit'))} | {pc(r['prefill_hit'])} | {pp(o.get('prefill_hit'), r['prefill_hit'])} | {fmt_tiers(o)} -> {fmt_tiers(r)} | {fmt_recalled(dl)} |")
+        print(f"| {lab} | {req} | {pc(o.get('prefill_hit'))} -> {pc(r['prefill_hit'])} | {pp(o.get('prefill_hit'), r['prefill_hit'])} | {pc(o.get('client_token_hit_rate'))} -> {pc(r.get('client_token_hit_rate'))} | {fmt_tiers(o)} -> {fmt_tiers(r)} | {fmt_recalled(dl)} |")
 
     print("\n**Throughput** (gain = on vs off, higher is better).\n")
     print("| Point | Total tok/s off | on | Gain | Output tok/s off | on | Gain | Req/min off | on | Gain |")
