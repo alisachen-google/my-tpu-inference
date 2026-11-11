@@ -62,20 +62,75 @@ request at a time, every output compared token for token with a recompute after 
 on `j-74143469-8c3a-4bd6-9575` (00:05-00:33Z), off `j-ae4dd88f-6893-4c7d-8796` (00:22-00:51Z). 396 of 396 requests
 completed on each arm, 0 request errors.
 
-| Point | Requests on / off (errors) | Prefill hit off -> on | Cached KV by tier, device / host, off -> on | Recalled KV from decode DRAM (on) | Total tok/s off -> on | Output tok/s off -> on | Req/min off -> on | TTFT p50 / p95 off -> on | ITL p50 off -> on | Push / landing counters (on, this point) |
-|---|---|---|---|---|---|---|---|---|---|---|
-| recall 8, fill | 8 / 8 (0/0) | 0.0% -> 0.0% | 0 / 0 -> 0 / 0 | 0 | 22328 -> 22283 | 2.6 -> 2.6 | 9.6 -> 9.6 | 23.5 / 25.8 s -> 23.5 / 25.7 s | 0.009 -> 0.010 s | none |
-| recall 8, return | 8 / 8 (0/0) | 92.3% -> 94.4% | 0.24M / 0.88M -> 0.42M / 0.70M | 0 | 132883 -> 134261 | 14.4 -> 14.6 | 54.0 -> 54.6 | 2.5 / 3.4 s -> 2.6 / 4.6 s | 0.076 -> 0.072 s | none |
-| recall 12, fill | 12 / 12 (0/0) | 0.0% -> 0.0% | 0 / 0 -> 0 / 0 | 0 | 22906 -> 22845 | 2.6 -> 2.6 | 9.9 -> 9.8 | 23.8 / 24.1 s -> 23.8 / 24.1 s | 0.010 -> 0.009 s | none |
-| recall 12, return | 12 / 12 (0/0) | 28.2% -> 37.1% | 1.17M / 0.50M -> 0.10M / 0.56M | 57,024 tok in 1 pulls + 128 SWA | 29500 -> 32656 | 3.2 -> 3.5 | 12.0 -> 13.3 | 19.3 / 24.9 s -> 18.6 / 20.7 s | 0.009 -> 0.010 s | push 9/9 stored; land 9/9; recall 1/2 offers skipped_local 1 |
-| recall 16, fill | 16 / 16 (0/0) | 0.0% -> 0.0% | 0 / 0 -> 0 / 0 | 0 | 22919 -> 22852 | 2.6 -> 2.6 | 9.9 -> 9.8 | 23.9 / 24.1 s -> 24.0 / 24.1 s | 0.010 -> 0.009 s | push 6/9 stored; land 6/6; recall 0/4 offers |
-| recall 16, return | 16 / 16 (0/0) | 0.0% -> 64.9% | 2.23M / 0.00M -> 0.14M / 1.53M | 1,531,904 tok in 11 pulls + 1,408 SWA | 22230 -> 56723 | 2.4 -> 6.1 | 9.0 -> 23.1 | 26.1 / 26.1 s -> 8.0 / 19.7 s | 0.010 -> 0.010 s | push 12/12 stored; land 12/12; recall 11/12 offers |
-| static 4 | 12 / 12 (0/0) | 62.7% -> 62.7% | 1.05M / 0.00M -> 1.05M / 0.00M | 0 | 51369 -> 51056 | 94.2 -> 93.7 | 22.1 -> 21.9 | 7.2 / 16.3 s -> 6.5 / 18.8 s | 0.009 -> 0.009 s | push 2/2 stored |
-| static 8 | 24 / 24 (0/0) | 62.3% -> 55.6% | 1.85M / 0.25M -> 1.86M / 0.00M | 0 | 52414 -> 45568 | 96.2 -> 83.6 | 22.5 -> 19.6 | 6.4 / 18.9 s -> 9.5 / 18.7 s | 0.009 -> 0.009 s | none |
-| static 12 | 36 / 36 (0/0) | 50.4% -> 32.2% | 1.80M / 1.34M -> 2.43M / 0.00M | 0 | 42076 -> 32246 | 77.2 -> 59.2 | 18.1 -> 13.9 | 7.2 / 22.0 s -> 15.1 / 22.1 s | 0.009 -> 0.009 s | push 16/16 stored; land 16/16 |
-| static 16 | 48 / 48 (0/0) | 39.8% -> 27.1% | 3.09M / 1.10M -> 3.73M / 0.00M | 0 | 35744 -> 30296 | 65.6 -> 55.6 | 15.4 -> 13.0 | 12.1 / 21.7 s -> 15.8 / 21.9 s | 0.009 -> 0.009 s | push 35/35 stored; land 35/35 |
-| mixed, long stream | 24 / 24 (0/0) | 21.9% -> 39.7% | 0.91M / 1.18M -> 1.89M / 0.00M | 1,585,152 tok in 43 pulls + 5,504 SWA | 25182 -> 22846 | 46.2 -> 41.9 | 10.8 -> 9.8 | 21.0 / 26.6 s -> 20.9 / 26.5 s | 0.010 -> 0.010 s | push 93/93 stored; land 93/93; recall 43/43 offers |
-| mixed, short stream (same window) | 96 / 96 (0/0) | 21.9% -> 39.7% | 1.22M / 0.00M -> 0.00M / 1.59M | 1,585,152 tok in 43 pulls + 5,504 SWA | 19277 -> 22807 | 7.9 -> 9.4 | 29.6 -> 35.1 | 9.2 / 26.8 s -> 5.3 / 26.7 s | 0.010 -> 0.011 s | push 93/93 stored; land 93/93; recall 43/43 offers |
+**Cache**: prefill-side hit, where the prefix was found, and what the on arm recalled from decode DRAM.
+
+| Point | Requests on / off (errors) | Hit off | Hit on | Gain | Cached by tier device / host, off -> on | Recalled from decode DRAM (on) |
+|---|---|---|---|---|---|---|
+| recall 8, fill (cold) | 8 / 8 (0/0) | 0.0% | 0.0% | +0.0 pp | 0 / 0 -> 0 / 0 | 0 |
+| recall 8, return | 8 / 8 (0/0) | 92.3% | 94.4% | +2.1 pp | 0.24M / 0.88M -> 0.42M / 0.70M | 0 |
+| recall 12, fill (cold) | 12 / 12 (0/0) | 0.0% | 0.0% | +0.0 pp | 0 / 0 -> 0 / 0 | 0 |
+| recall 12, return | 12 / 12 (0/0) | 28.2% | 37.1% | +8.9 pp | 1.17M / 0.50M -> 0.10M / 0.56M | 57,024 tok in 1 pulls + 128 SWA |
+| recall 16, fill (cold) | 16 / 16 (0/0) | 0.0% | 0.0% | +0.0 pp | 0 / 0 -> 0 / 0 | 0 |
+| recall 16, return | 16 / 16 (0/0) | 0.0% | 64.9% | +64.9 pp | 2.23M / 0.00M -> 0.14M / 1.53M | 1,531,904 tok in 11 pulls + 1,408 SWA |
+| static 4 docs | 12 / 12 (0/0) | 62.7% | 62.7% | +0.0 pp | 1.05M / 0.00M -> 1.05M / 0.00M | 0 |
+| static 8 docs | 24 / 24 (0/0) | 62.3% | 55.6% | -6.7 pp | 1.85M / 0.25M -> 1.86M / 0.00M | 0 |
+| static 12 docs | 36 / 36 (0/0) | 50.4% | 32.2% | -18.2 pp | 1.80M / 1.34M -> 2.43M / 0.00M | 0 |
+| static 16 docs | 48 / 48 (0/0) | 39.8% | 27.1% | -12.7 pp | 3.09M / 1.10M -> 3.73M / 0.00M | 0 |
+| mixed, long stream | 24 / 24 (0/0) | 21.9% | 39.7% | +17.8 pp | 0.91M / 1.18M -> 1.89M / 0.00M | 1,585,152 tok in 43 pulls + 5,504 SWA |
+| mixed, short stream | 96 / 96 (0/0) | 21.9% | 39.7% | +17.8 pp | 1.22M / 0.00M -> 0.00M / 1.59M | 1,585,152 tok in 43 pulls + 5,504 SWA |
+
+The fill rows are the cold phase: both engines are wiped before the point and every session has a new 128k prefix, so a 0% hit there is by construction on both arms; they are kept for the cold prefill's throughput and latency (whether pushes in flight slow the prefill that issues them). The mixed rows share one metrics window, so their hit and recall columns are the same block.
+
+**Throughput** (gain = on vs off, higher is better).
+
+| Point | Total tok/s off | on | Gain | Output tok/s off | on | Gain | Req/min off | on | Gain |
+|---|---|---|---|---|---|---|---|---|---|
+| recall 8, fill (cold) | 22328 | 22283 | -0% | 2.6 | 2.6 | +0% | 9.6 | 9.6 | -0% |
+| recall 8, return | 132883 | 134261 | +1% | 14.4 | 14.6 | +1% | 54.0 | 54.6 | +1% |
+| recall 12, fill (cold) | 22906 | 22845 | -0% | 2.6 | 2.6 | +0% | 9.9 | 9.8 | -0% |
+| recall 12, return | 29500 | 32656 | +11% | 3.2 | 3.5 | +9% | 12.0 | 13.3 | +11% |
+| recall 16, fill (cold) | 22919 | 22852 | -0% | 2.6 | 2.6 | +0% | 9.9 | 9.8 | -0% |
+| recall 16, return | 22230 | 56723 | +155% | 2.4 | 6.1 | +154% | 9.0 | 23.1 | +155% |
+| static 4 docs | 51369 | 51056 | -1% | 94.2 | 93.7 | -1% | 22.1 | 21.9 | -1% |
+| static 8 docs | 52414 | 45568 | -13% | 96.2 | 83.6 | -13% | 22.5 | 19.6 | -13% |
+| static 12 docs | 42076 | 32246 | -23% | 77.2 | 59.2 | -23% | 18.1 | 13.9 | -23% |
+| static 16 docs | 35744 | 30296 | -15% | 65.6 | 55.6 | -15% | 15.4 | 13.0 | -15% |
+| mixed, long stream | 25182 | 22846 | -9% | 46.2 | 41.9 | -9% | 10.8 | 9.8 | -9% |
+| mixed, short stream | 19277 | 22807 | +18% | 7.9 | 9.4 | +19% | 29.6 | 35.1 | +18% |
+
+**Latency** (gain = reduction on vs off, positive means the on arm is faster).
+
+| Point | TTFT p50 off | on | Gain | TTFT p95 off | on | Gain | ITL p50 off | on | Gain |
+|---|---|---|---|---|---|---|---|---|---|
+| recall 8, fill (cold) | 23.5 s | 23.5 s | +0% | 25.8 s | 25.7 s | +0% | 0.009 s | 0.010 s | -5% |
+| recall 8, return | 2.5 s | 2.6 s | -4% | 3.4 s | 4.6 s | -37% | 0.076 s | 0.072 s | +6% |
+| recall 12, fill (cold) | 23.8 s | 23.8 s | -0% | 24.1 s | 24.1 s | -0% | 0.010 s | 0.009 s | +5% |
+| recall 12, return | 19.3 s | 18.6 s | +4% | 24.9 s | 20.7 s | +17% | 0.009 s | 0.010 s | -5% |
+| recall 16, fill (cold) | 23.9 s | 24.0 s | -0% | 24.1 s | 24.1 s | -0% | 0.010 s | 0.009 s | +3% |
+| recall 16, return | 26.1 s | 8.0 s | +69% | 26.1 s | 19.7 s | +25% | 0.010 s | 0.010 s | -3% |
+| static 4 docs | 7.2 s | 6.5 s | +10% | 16.3 s | 18.8 s | -15% | 0.009 s | 0.009 s | +2% |
+| static 8 docs | 6.4 s | 9.5 s | -49% | 18.9 s | 18.7 s | +1% | 0.009 s | 0.009 s | +1% |
+| static 12 docs | 7.2 s | 15.1 s | -109% | 22.0 s | 22.1 s | -1% | 0.009 s | 0.009 s | +3% |
+| static 16 docs | 12.1 s | 15.8 s | -31% | 21.7 s | 21.9 s | -1% | 0.009 s | 0.009 s | +3% |
+| mixed, long stream | 21.0 s | 20.9 s | +0% | 26.6 s | 26.5 s | +1% | 0.010 s | 0.010 s | -3% |
+| mixed, short stream | 9.2 s | 5.3 s | +43% | 26.8 s | 26.7 s | +0% | 0.010 s | 0.011 s | -15% |
+
+**Offload counters on the on arm, per point** (TP0 deltas from the server logs; every push and landing is a 128k-session branch with its SWA window).
+
+| Point | Pushes stored / started | Landings landed / received | Recalls pulls / offers | Pulled tokens | SWA tokens | Failed / refused / no room |
+|---|---|---|---|---|---|---|
+| recall 8, fill (cold) | 0 / 0 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| recall 8, return | 0 / 0 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| recall 12, fill (cold) | 0 / 0 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| recall 12, return | 9 / 9 | 9 / 9 | 1 / 2 | 57,024 | 128 | 0 / 0 / 0 |
+| recall 16, fill (cold) | 6 / 9 | 6 / 6 | 0 / 4 | 0 | 0 | 0 / 0 / 0 |
+| recall 16, return | 12 / 12 | 12 / 12 | 11 / 12 | 1,531,904 | 1,408 | 0 / 0 / 0 |
+| static 4 docs | 2 / 2 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| static 8 docs | 0 / 0 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| static 12 docs | 16 / 16 | 16 / 16 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| static 16 docs | 35 / 35 | 35 / 35 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| mixed, long stream | 93 / 93 | 93 / 93 | 43 / 43 | 1,585,152 | 5,504 | 0 / 0 / 0 |
+| mixed, short stream | 93 / 93 | 93 / 93 | 43 / 43 | 1,585,152 | 5,504 | 0 / 0 / 0 |
 
 Final counters, on arm: prefill push started 204, stored 204; decode landing received 204, granted 204, landed 204
 (11,889,024 tokens); recall offers 150, pulls 71, pulled 5,271,232 tokens plus 9,088 SWA window tokens, 78 offers

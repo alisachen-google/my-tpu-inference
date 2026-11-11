@@ -91,20 +91,54 @@ def main():
     a = ap.parse_args()
     on, off = load_points(a.on), load_points(a.off)
     eon = engines(a.on)
-    print("| Point | Requests on / off (errors) | Prefill hit off -> on | Cached KV by tier, device / host, off -> on | Recalled KV from decode DRAM (on) | Total tok/s off -> on | Output tok/s off -> on | Req/min off -> on | TTFT p50 / p95 off -> on | ITL p50 off -> on | Push / landing counters (on, this point) |")
-    print("|---|---|---|---|---|---|---|---|---|---|---|")
+    def gain(o_, n_, lower_better=False):
+        """Signed improvement in percent: throughput up = +, latency down = +."""
+        if o_ is None or n_ is None or not o_:
+            return "-"
+        g = (o_ - n_) / o_ if lower_better else (n_ - o_) / o_
+        return f"{100*g:+.0f}%"
+
+    def pp(o_, n_):
+        if o_ is None or n_ is None:
+            return "-"
+        return f"{100*(n_ - o_):+.1f} pp"
+
+    rows = []
     for key, r in on.items():
-        o = off.get(key)
-        if o is None:
-            o = {}
+        o = off.get(key, {})
         lab = f"{key[0]}" + ("" if key[1] in ("all", None) else f" ({key[1]})")
+        rows.append((lab, r, o, deltas(eon, r.get("t0"), r.get("t1"), a.grace)))
+
+    print("**Cache**: prefill-side hit, where the prefix was found, and what the on arm recalled from decode DRAM.\n")
+    print("| Point | Requests on / off (errors) | Hit off | Hit on | Gain | Cached by tier device / host, off -> on | Recalled from decode DRAM (on) |")
+    print("|---|---|---|---|---|---|---|")
+    for lab, r, o, dl in rows:
         req = f"{r['requests']} / {o.get('requests', '-')} ({r['errors']}/{o.get('errors', '-')})"
-        dl = deltas(eon, r.get('t0'), r.get('t1'), a.grace)
-        print(f"| {lab} | {req} | {pc(o.get('prefill_hit'))} -> {pc(r['prefill_hit'])} | {fmt_tiers(o)} -> {fmt_tiers(r)} | {fmt_recalled(dl)} | "
-              f"{f(o.get('total_tok_s'), 0)} -> {f(r['total_tok_s'], 0)} | "
-              f"{f(o.get('output_tok_s'), 1)} -> {f(r['output_tok_s'], 1)} | {f(o.get('rpm'), 1)} -> {f(r['rpm'], 1)} | "
-              f"{f(o.get('ttft_p50'))} / {f(o.get('ttft_p95'))} s -> {f(r['ttft_p50'])} / {f(r['ttft_p95'])} s | "
-              f"{f(o.get('itl_p50'), 3)} -> {f(r['itl_p50'], 3)} s | {fmt_counters(dl)} |")
+        print(f"| {lab} | {req} | {pc(o.get('prefill_hit'))} | {pc(r['prefill_hit'])} | {pp(o.get('prefill_hit'), r['prefill_hit'])} | {fmt_tiers(o)} -> {fmt_tiers(r)} | {fmt_recalled(dl)} |")
+
+    print("\n**Throughput** (gain = on vs off, higher is better).\n")
+    print("| Point | Total tok/s off | on | Gain | Output tok/s off | on | Gain | Req/min off | on | Gain |")
+    print("|---|---|---|---|---|---|---|---|---|---|")
+    for lab, r, o, dl in rows:
+        print(f"| {lab} | {f(o.get('total_tok_s'), 0)} | {f(r['total_tok_s'], 0)} | {gain(o.get('total_tok_s'), r['total_tok_s'])} | "
+              f"{f(o.get('output_tok_s'), 1)} | {f(r['output_tok_s'], 1)} | {gain(o.get('output_tok_s'), r['output_tok_s'])} | "
+              f"{f(o.get('rpm'), 1)} | {f(r['rpm'], 1)} | {gain(o.get('rpm'), r['rpm'])} |")
+
+    print("\n**Latency** (gain = reduction on vs off, positive means the on arm is faster).\n")
+    print("| Point | TTFT p50 off | on | Gain | TTFT p95 off | on | Gain | ITL p50 off | on | Gain |")
+    print("|---|---|---|---|---|---|---|---|---|---|")
+    for lab, r, o, dl in rows:
+        print(f"| {lab} | {f(o.get('ttft_p50'))} s | {f(r['ttft_p50'])} s | {gain(o.get('ttft_p50'), r['ttft_p50'], True)} | "
+              f"{f(o.get('ttft_p95'))} s | {f(r['ttft_p95'])} s | {gain(o.get('ttft_p95'), r['ttft_p95'], True)} | "
+              f"{f(o.get('itl_p50'), 3)} s | {f(r['itl_p50'], 3)} s | {gain(o.get('itl_p50'), r['itl_p50'], True)} |")
+
+    print("\n**Offload counters on the on arm, per point** (TP0 deltas from the server logs; every push and landing is a 128k-session branch with its SWA window).\n")
+    print("| Point | Pushes stored / started | Landings landed / received | Recalls pulls / offers | Pulled tokens | SWA tokens | Failed / refused / no room |")
+    print("|---|---|---|---|---|---|---|")
+    for lab, r, o, dl in rows:
+        g = lambda k: dl.get(k, 0)
+        print(f"| {lab} | {g('push.stored')} / {g('push.started')} | {g('landing.landed')} / {g('landing.received')} | {g('recall.pulls')} / {g('recall.offers')} | "
+              f"{g('recall.pulled_tokens'):,} | {g('recall.pulled_swa_tokens'):,} | {g('recall.failed') + g('landing.failed')} / {g('push.declined')} / {g('landing.no_room')} |")
     for arm, d in (("on", a.on), ("off", a.off)):
         sl = os.path.join(d, "bench", "stage.log")
         if os.path.exists(sl):
