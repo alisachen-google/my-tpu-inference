@@ -1,0 +1,226 @@
+2026-11-11 05:39:38 STATICFIX launched (goal_static_fix.sh)
+2026-11-11 05:40:44 STATICFIX sglang-mvp 54a80863a6 on .246 + v7 (g2086a_on): static 8/12/16 then recall 12, switch on
+2026-11-11 05:40:44 sweep g2086a_on start (pd_1991_gptoss_wb_on.json)
+2026-11-11 06:02:13 sweep g2086a_on end: exit=0 points=4 strict: requests=145 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-11 06:02:13 g2086a_on static_p128k_n8k_k8 prefill_hit 0.5351 ttft50 6.309316696992028 tok_s None
+2026-11-11 06:02:13 g2086a_on static_p128k_n8k_k12 prefill_hit 0.2974 ttft50 10.101599945002818 tok_s None
+2026-11-11 06:02:13 g2086a_on static_p128k_n8k_k16 prefill_hit 0.2453 ttft50 10.097798123009852 tok_s None
+2026-11-11 06:02:13 g2086a_on recall_p128k_n8k_s12 prefill_hit 0.7078 ttft50 6.432867216994055 tok_s None
+2026-11-11 06:02:15 g2086a_on_1 evidence: 
+2026-11-11 06:03:39 STATICFIX sglang-exp 54a80863a6+exp on .246 + v7 (g2086b_on): static 8/12/16 then recall 12, switch on
+2026-11-11 06:03:39 sweep g2086b_on start (pd_1991_gptoss_wb_on.json)
+2026-11-11 06:23:19 sweep g2086b_on end: exit=0 points=4 strict: requests=145 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-11 06:23:19 g2086b_on static_p128k_n8k_k8 prefill_hit 0.6249 ttft50 6.210265942005208 tok_s None
+2026-11-11 06:23:19 g2086b_on static_p128k_n8k_k12 prefill_hit 0.5634 ttft50 4.560659385999315 tok_s None
+2026-11-11 06:23:19 g2086b_on static_p128k_n8k_k16 prefill_hit 0.5414 ttft50 6.71906891198887 tok_s None
+2026-11-11 06:23:19 g2086b_on recall_p128k_n8k_s12 prefill_hit 0.7071 ttft50 4.232523336002487 tok_s None
+2026-11-11 06:23:21 g2086b_on_1 evidence: 
+2026-11-11 06:23:49 GOAL STATICFIX DONE
+2026-11-11 06:24:48 I5 sglang-mvp 54a80863a6+exp pd_1991_gptoss_wb_on.json on .246 + v7 (i5a_wb_on): E1 on fresh engines
+2026-11-11 06:29:50 i5a_wb_on started: prefill=200 decode=200 lb=200
+2026-11-11 06:33:28 i5a_wb_on E1 rc=1 
+2026-11-11 06:33:28 i5a_wb_on E1 per-session: s0:? s1:? s2:? s3:? s4:? s5:? s6:? s7:? s8:? s9:? s10:? s11:? s12:? s13:? s14:? s15:?
+2026-11-11 06:33:32 i5a_wb_on after E1: prefill=000 decode=200 lb=000 prefill_exc=24 decode_exc=0 drop_declined=80 jit_rebuilds=0
+2026-11-11 06:33:33 i5a_wb_on evidence: 
+2026-11-11 06:34:51 I5 sglang-mvp 9f9ef914ec pd_1991_gptoss_wb_on_noca.json on .246 + v7 (i5b_wb_on_noca): E1 on fresh engines
+2026-11-11 07:02:03 I5 REPRO relaunched (head / fix / fix noca / fix wt); ~/sglang-mvp must not be edited while it runs
+2026-11-11 07:03:11 I5 sglang-head 54a80863a6 pd_1991_gptoss_wb_on.json on .246 + v7 (i5h_head_wb_on): E1 on fresh engines
+2026-11-11 07:08:13 i5h_head_wb_on started: prefill=200 decode=200 lb=200
+2026-11-11 07:14:17 i5h_head_wb_on E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 237.9, "probes": {"sent": 134, "exact": 106, "min_agree": 8, "errors": 0, "mismatch_positions": [8, 8, 8, 8, 8, 11, 11, 11, 11, 11, 25, 25, 25, 25, 25, 25, 41, 41, 41, 41, 41, 62, 62, 62, 62, 62, 91, 120]}, "errors": 0, "recall": {"compared": 16, "exact": 3, "min_agree": 2, "pulled_sessions": 15}}
+2026-11-11 07:14:17 i5h_head_wb_on E1 per-session: s0:diff@12/139264(139264h) s1:diff@13/139264(139264h) s2:diff@2/139264(139264h) s3:diff@12/139264(139264h) s4:ok/139264(0h) s5:diff@2/139264(139264h) s6:ok/139264(139264h) s7:diff@52/139264(139264h) s8:diff@34/139264(139264h) s9:ok/139264(139264h) s10:diff@26/139264(139264h) s11:diff@22/139264(139264h) s12:diff@6/139264(139264h) s13:diff@27/139264(139264h) s14:diff@22/139264(139264h) s15:diff@30/0(0h)
+2026-11-11 07:14:20 i5h_head_wb_on after E1: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0 drop_declined=40 jit_rebuilds=112
+2026-11-11 07:14:22 i5h_head_wb_on evidence: 
+2026-11-11 07:14:23 i5h_head_wb_on logs kept: 26861 37951 
+2026-11-11 07:15:52 I5 sglang-mvp 9f9ef914ec pd_1991_gptoss_wb_on.json on .246 + v7 (i5f_fix_wb_on): E1 on fresh engines
+2026-11-11 07:21:14 i5f_fix_wb_on started: prefill=200 decode=200 lb=200
+2026-11-11 07:27:14 i5f_fix_wb_on E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 234.1, "probes": {"sent": 137, "exact": 109, "min_agree": 8, "errors": 0, "mismatch_positions": [8, 8, 8, 11, 11, 11, 11, 11, 11, 25, 25, 25, 25, 25, 25, 41, 41, 41, 51, 62, 62, 62, 62, 62, 91, 91, 91, 91]}, "errors": 0, "recall": {"compared": 16, "exact": 5, "min_agree": 2, "pulled_sessions": 12}}
+2026-11-11 07:27:14 i5f_fix_wb_on E1 per-session: s0:diff@12/139264(139264h) s1:diff@13/139264(139264h) s2:diff@2/139264(139264h) s3:diff@12/139264(139264h) s4:ok/139264(139264h) s5:ok/139264(139264h) s6:ok/139264(139264h) s7:diff@52/139264(139264h) s8:diff@40/139264(139264h) s9:ok/139264(139264h) s10:diff@26/139264(139264h) s11:diff@22/114688(114688h) s12:diff@9/122880(122880h) s13:ok/139264(139264h) s14:diff@22/40960(40960h) s15:diff@30/122880(122880h)
+2026-11-11 07:27:17 i5f_fix_wb_on after E1: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0 drop_declined=56 jit_rebuilds=0
+2026-11-11 07:27:18 i5f_fix_wb_on evidence: 
+2026-11-11 07:27:20 i5f_fix_wb_on logs kept: 27144 36739 
+2026-11-11 07:28:34 I5 sglang-mvp 9f9ef914ec pd_1991_gptoss_wb_on_noca.json on .246 + v7 (i5g_fix_wb_on_noca): E1 on fresh engines
+2026-11-11 08:41:22 stress pass cut short (noca recipe was missing on the hosts; copied). GOAL I5 REPRO DONE
+2026-11-11 08:42:37 I5 sglang-head 54a80863a6 pd_1991_gptoss_wb_on.json on .246 + v7 (i5qh_head_wb_on): E1 on fresh engines
+2026-11-11 08:47:39 i5qh_head_wb_on started: prefill=200 decode=200 lb=200
+2026-11-11 08:53:41 i5qh_head_wb_on E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 236.2, "probes": {"sent": 118, "exact": 103, "min_agree": 8, "errors": 0, "mismatch_positions": [8, 8, 11, 11, 11, 25, 25, 25, 41, 41, 62, 62, 62, 91, 91]}, "errors": 0, "recall": {"compared": 16, "exact": 12, "min_agree": 0, "pulled_sessions": 15}}
+2026-11-11 08:53:41 i5qh_head_wb_on E1 per-session: s0:ok/139264(139264h) s1:ok/139264(139264h) s2:ok/139264(139264h) s3:ok/139264(139264h) s4:ok/139264(0h) s5:ok/139264(139264h) s6:diff@22/139264(139264h) s7:ok/139264(139264h) s8:ok/139264(139264h) s9:ok/139264(139264h) s10:ok/139264(139264h) s11:diff@0/139264(139264h) s12:diff@6/139264(139264h) s13:ok/139264(139264h) s14:ok/139264(139264h) s15:diff@2/0(0h)
+2026-11-11 08:53:44 i5qh_head_wb_on after E1: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0 drop_declined=40 jit_rebuilds=120
+2026-11-11 08:53:46 i5qh_head_wb_on evidence: 
+2026-11-11 08:53:48 i5qh_head_wb_on logs kept: 26262 37684 
+2026-11-11 08:55:19 I5 sglang-mvp 9f9ef914ec pd_1991_gptoss_wb_on.json on .246 + v7 (i5qf_fix_wb_on): E1 on fresh engines
+2026-11-11 09:00:21 i5qf_fix_wb_on started: prefill=200 decode=200 lb=200
+2026-11-11 09:06:25 i5qf_fix_wb_on E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 239.1, "probes": {"sent": 118, "exact": 102, "min_agree": 8, "errors": 0, "mismatch_positions": [8, 8, 11, 11, 11, 25, 25, 25, 41, 41, 62, 62, 62, 91, 91, 91]}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 13}}
+2026-11-11 09:06:25 i5qf_fix_wb_on E1 per-session: s0:ok/139264(139264h) s1:ok/139264(139264h) s2:ok/139264(139264h) s3:ok/139264(0h) s4:ok/139264(139264h) s5:ok/139264(139264h) s6:ok/139264(139264h) s7:ok/139264(139264h) s8:ok/139264(139264h) s9:ok/139264(139264h) s10:ok/139264(139264h) s11:ok/139264(139264h) s12:ok/139264(139264h) s13:ok/114688(114688h) s14:ok/73728(73728h) s15:ok/49152(49152h)
+2026-11-11 09:06:29 i5qf_fix_wb_on after E1: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0 drop_declined=64 jit_rebuilds=0
+2026-11-11 09:06:31 i5qf_fix_wb_on evidence: 
+2026-11-11 09:06:32 i5qf_fix_wb_on logs kept: 26299 36537 
+2026-11-11 09:07:53 I5 sglang-mvp 9f9ef914ec pd_1991_gptoss_wb_on_noca.json on .246 + v7 (i5qg_fix_wb_on_noca): E1 on fresh engines
+2026-11-11 09:13:38 i5qg_fix_wb_on_noca started: prefill=200 decode=200 lb=200
+2026-11-11 09:19:48 i5qg_fix_wb_on_noca E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 240.7, "probes": {"sent": 121, "exact": 107, "min_agree": 8, "errors": 0, "mismatch_positions": [8, 8, 11, 11, 11, 24, 25, 25, 25, 41, 62, 62, 62, 91]}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 13}}
+2026-11-11 09:19:48 i5qg_fix_wb_on_noca E1 per-session: s0:ok/139264(139264h) s1:ok/139264(139264h) s2:ok/139264(139264h) s3:ok/139264(139264h) s4:ok/139264(139264h) s5:ok/139264(139264h) s6:ok/139264(139264h) s7:ok/139264(139264h) s8:ok/139264(139264h) s9:ok/139264(139264h) s10:ok/139264(139264h) s11:ok/139264(139264h) s12:ok/0(0h) s13:ok/73728(73728h) s14:ok/57344(57344h) s15:ok/139264(139264h)
+2026-11-11 09:19:52 i5qg_fix_wb_on_noca after E1: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0 drop_declined=0 jit_rebuilds=0
+2026-11-11 09:19:53 i5qg_fix_wb_on_noca evidence: 
+2026-11-11 09:19:55 i5qg_fix_wb_on_noca logs kept: 26450 35437 
+2026-11-11 09:21:12 I5 sglang-mvp 9f9ef914ec pd_1991_gptoss_wt_on.json on .246 + v7 (i5qw_fix_wt_on): E1 on fresh engines
+2026-11-11 09:27:17 i5qw_fix_wt_on started: prefill=200 decode=200 lb=200
+2026-11-11 09:33:10 i5qw_fix_wt_on E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 226.3, "probes": {"sent": 118, "exact": 103, "min_agree": 8, "errors": 0, "mismatch_positions": [8, 8, 11, 11, 25, 25, 25, 41, 41, 62, 62, 62, 90, 91, 91]}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 16}}
+2026-11-11 09:33:10 i5qw_fix_wt_on E1 per-session: s0:ok/139264(139264h) s1:ok/139264(139264h) s2:ok/139264(139264h) s3:ok/139264(139264h) s4:ok/139264(139264h) s5:ok/139264(139264h) s6:ok/139264(139264h) s7:ok/139264(139264h) s8:ok/139264(139264h) s9:ok/139264(139264h) s10:ok/139264(139264h) s11:ok/139264(139264h) s12:ok/139264(139264h) s13:ok/139264(139264h) s14:ok/139264(139264h) s15:ok/139264(139264h)
+2026-11-11 09:33:13 i5qw_fix_wt_on after E1: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0 drop_declined=0 jit_rebuilds=0
+2026-11-11 09:33:15 i5qw_fix_wt_on evidence: 
+2026-11-11 09:33:16 i5qw_fix_wt_on logs kept: 26488 34366 
+2026-11-11 09:33:43 GOAL I5 QUIET DONE
+2026-11-11 09:34:42 EDGE2086 launched (goal_edge_2086.sh); do not edit ~/sglang-mvp while it runs
+2026-11-11 09:35:28 EDGE2086 PR head 83198bc912 on .246 + v7: wb on sweep+edges, wb off sweep, wt on sweep+edges, wt off sweep, stress x2 wb / x2 noca
+2026-11-11 09:35:30 sweep e2086_wb_on start (pd_1991_gptoss_wb_on.json)
+2026-11-11 10:03:28 sweep e2086_wb_on end: exit=0 points=7 strict: requests=205 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-11 10:03:29 EDGE2086 wb after on-sweep: prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-11 10:03:31 EDGE start: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-11 10:03:31 EDGE E1 integrity: recalled outputs must equal a recompute after a flush; probes must match throughout
+2026-11-11 10:09:26 EDGE E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 229.3, "probes": {"sent": 109, "exact": 102, "min_agree": 0, "errors": 0, "mismatch_positions": [0, 0, 18, 18, 37, 61, 91]}, "errors": 0, "recall": {"compared": 16, "exact": 0, "min_agree": 0, "pulled_sessions": 13}}
+2026-11-11 10:09:28 EDGE E1 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-11 10:09:28 EDGE E2 stress: concurrent recalls after a prefill-only flush, and client aborts mid-recall
+2026-11-11 10:13:00 EDGE E2 rc=0 {"phase": "concurrent", "status": "ok", "seconds": 130.5} {"phase": "abort", "status": "ok", "seconds": 75.1} {"health_samples": 84, "slow_probes": 0, "probe_errors": 0} 
+2026-11-11 10:13:02 EDGE E2 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-11 10:13:02 EDGE E3 flush under load: flush both engines 30 s into a static run
+2026-11-11 10:14:15 EDGE E3 flush codes prefill=400 decode=400; requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-11 10:14:15 EDGE E4 decode killed while recalls are in flight, then restarted
+2026-11-11 10:15:33 EDGE E4 fill: requests=12 failed=0
+2026-11-11 10:16:00 EDGE E4 decode stopped
+2026-11-11 10:17:02 EDGE E4 during outage: prefill=200 decode=000 lb=503 prefill_exc=4 decode_exc=1
+2026-11-11 10:21:27 EDGE E4 decode restarted: 2026-11-11 10:21:27 decode /health ready after 264 s
+2026-11-11 10:21:27 EDGE E4 recall during the kill: requests=12 failed=6 first=no completion tokens
+2026-11-11 10:22:09 EDGE E4 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=4 decode_exc=1
+2026-11-11 10:22:09 EDGE E5 prefill killed while pushes are in flight, then restarted
+2026-11-11 10:24:29 EDGE E5 prefill stopped
+2026-11-11 10:25:01 EDGE E5 during outage: decode=200 prefill_exc=5 decode_exc=1
+2026-11-11 10:25:01 EDGE E5 decode flush ok (landings of the dead prefill were released)
+2026-11-11 10:30:05 EDGE E5 prefill restarted: 2026-11-11 10:30:05 LB /health ready after 0 s
+2026-11-11 10:30:46 EDGE E5 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=5 decode_exc=1
+2026-11-11 10:30:47 EDGE done: prefill=200 decode=200 lb=200 prefill_exc=5 decode_exc=1
+2026-11-11 10:30:47 EDGE2086 wb edges exit 0
+2026-11-11 10:30:49 e2086_wb_on_1 evidence: 
+2026-11-11 10:31:15 sweep e2086_wb_off start (pd_1991_gptoss_wb_off.json)
+2026-11-11 11:00:28 sweep e2086_wb_off end: exit=0 points=7 strict: requests=205 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+HYBRID TABLE | point | prefill hit off -> on | TTFT p50 off -> on |
+HYBRID TABLE | recall_p128k_n8k_s8 | 84.0% -> 94.4% | 2.4 s -> 2.1 s |
+HYBRID TABLE | recall_p128k_n8k_s12 | 24.9% -> 60.1% | 14.9 s -> 6.3 s |
+HYBRID TABLE | recall_p128k_n8k_s16 | 0.0% -> 45.4% | 18.6 s -> 9.1 s |
+HYBRID TABLE | static_p128k_n8k_k4 | 62.7% -> 62.7% | 4.7 s -> 6.7 s |
+HYBRID TABLE | static_p128k_n8k_k8 | 62.5% -> 62.5% | 6.1 s -> 6.2 s |
+HYBRID TABLE | static_p128k_n8k_k12 | 51.8% -> 55.4% | 6.4 s -> 6.3 s |
+HYBRID TABLE | static_p128k_n8k_k16 | 40.7% -> 52.3% | 10.2 s -> 6.7 s |
+2026-11-11 11:00:55 sweep e2086_wt_on start (pd_1991_gptoss_wt_on.json)
+2026-11-11 11:29:02 sweep e2086_wt_on end: exit=0 points=7 strict: requests=205 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-11 11:29:03 EDGE2086 wt after on-sweep: prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-11 11:29:04 EDGE start: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-11 11:29:04 EDGE E1 integrity: recalled outputs must equal a recompute after a flush; probes must match throughout
+2026-11-11 11:36:27 EDGE E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 218.2, "probes": {"sent": 114, "exact": 106, "min_agree": 0, "errors": 0, "mismatch_positions": [0, 0, 18, 41, 56, 61, 62, 91]}, "errors": 0, "recall": {"compared": 16, "exact": 0, "min_agree": 1, "pulled_sessions": 15}}
+2026-11-11 11:36:30 EDGE E1 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-11 11:36:30 EDGE E2 stress: concurrent recalls after a prefill-only flush, and client aborts mid-recall
+2026-11-11 11:40:01 EDGE E2 rc=0 {"phase": "concurrent", "status": "ok", "seconds": 130.5} {"phase": "abort", "status": "ok", "seconds": 75.2} {"health_samples": 84, "slow_probes": 0, "probe_errors": 0} 
+2026-11-11 11:40:03 EDGE E2 after: prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-11 11:40:03 EDGE E3 flush under load: flush both engines 30 s into a static run
+2026-11-11 11:41:15 EDGE E3 flush codes prefill=400 decode=400; requests=24 failed=0; prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=0
+2026-11-11 11:41:15 EDGE E4 decode killed while recalls are in flight, then restarted
+2026-11-11 11:42:33 EDGE E4 fill: requests=12 failed=0
+2026-11-11 11:42:59 EDGE E4 decode stopped
+2026-11-11 11:44:01 EDGE E4 during outage: prefill=200 decode=000 lb=503 prefill_exc=0 decode_exc=1
+2026-11-11 11:48:25 EDGE E4 decode restarted: 2026-11-11 11:48:25 decode /health ready after 263 s
+2026-11-11 11:48:25 EDGE E4 recall during the kill: requests=12 failed=2 first=no completion tokens
+2026-11-11 11:49:06 EDGE E4 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=0 decode_exc=1
+2026-11-11 11:49:06 EDGE E5 prefill killed while pushes are in flight, then restarted
+2026-11-11 11:51:46 EDGE E5 prefill stopped
+2026-11-11 11:52:18 EDGE E5 during outage: decode=200 prefill_exc=1 decode_exc=1
+2026-11-11 11:53:48 EDGE E5 decode flush ok (landings of the dead prefill were released)
+2026-11-11 11:59:13 EDGE E5 prefill restarted: 2026-11-11 11:59:13 LB /health ready after 0 s
+2026-11-11 11:59:54 EDGE E5 after restart, static K=4: requests=12 failed=0; prefill=200 decode=200 lb=200 prefill_exc=1 decode_exc=1
+2026-11-11 11:59:55 EDGE done: prefill=200 decode=200 lb=200 prefill_exc=1 decode_exc=1
+2026-11-11 11:59:55 EDGE2086 wt edges exit 0
+2026-11-11 11:59:57 e2086_wt_on_1 evidence: 
+2026-11-11 12:00:28 sweep e2086_wt_off start (pd_1991_gptoss_wt_off.json)
+2026-11-11 12:30:58 sweep e2086_wt_off end: exit=0 points=7 strict: requests=205 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+HYBRID TABLE | point | prefill hit off -> on | TTFT p50 off -> on |
+HYBRID TABLE | recall_p128k_n8k_s8 | 24.2% -> 94.4% | 10.8 s -> 2.8 s |
+HYBRID TABLE | recall_p128k_n8k_s12 | 0.0% -> 67.9% | 18.4 s -> 3.3 s |
+HYBRID TABLE | recall_p128k_n8k_s16 | 0.0% -> 78.7% | 18.5 s -> 3.9 s |
+HYBRID TABLE | static_p128k_n8k_k4 | 62.7% -> 62.7% | 6.7 s -> 6.7 s |
+HYBRID TABLE | static_p128k_n8k_k8 | 60.5% -> 61.9% | 6.4 s -> 6.4 s |
+HYBRID TABLE | static_p128k_n8k_k12 | 35.6% -> 58.9% | 8.0 s -> 3.7 s |
+HYBRID TABLE | static_p128k_n8k_k16 | 28.2% -> 58.8% | 10.4 s -> 3.5 s |
+2026-11-11 12:36:55 e2086_stress_wb_1 started: prefill=200 decode=200 lb=200
+2026-11-11 12:43:12 STRESS e2086_stress_wb_1 rc=0 prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 drop_declined=40
+2026-11-11 12:48:46 e2086_stress_noca_1 started: prefill=200 decode=200 lb=200
+2026-11-11 12:54:51 STRESS e2086_stress_noca_1 rc=0 prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 drop_declined=0
+2026-11-11 13:00:10 e2086_stress_wb_2 started: prefill=200 decode=200 lb=200
+2026-11-11 13:06:19 STRESS e2086_stress_wb_2 rc=0 prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 drop_declined=40
+2026-11-11 13:11:53 e2086_stress_noca_1 started: prefill=200 decode=200 lb=200
+2026-11-11 13:18:10 STRESS e2086_stress_noca_1 rc=0 prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0 drop_declined=0
+2026-11-11 13:18:42 GOAL EDGE2086 DONE
+2026-11-11 13:19:25 I2107 A/B launched; do not edit ~/sglang-mvp (main 5c136df1b4) or ~/sglang-2107
+2026-11-11 13:20:23 I2107 sglang-mvp 5c136df1b4 on .246 + v7 (i2107_base): write-back, switch on: recall 8 x3, 9, 12, 16; static 12, 16
+2026-11-11 13:20:23 sweep i2107_base start (pd_1991_gptoss_wb_on.json)
+2026-11-11 13:52:47 sweep i2107_base end: exit=0 points=8 strict: requests=219 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+I2107 TABLE i2107_base recall_p128k_n8k_s8 hit 0.9437 ttft50 2.5
+I2107 TABLE i2107_base recall_p128k_n8k_s8 hit 0.9367 ttft50 2.5
+I2107 TABLE i2107_base recall_p128k_n8k_s8 hit 0.9159 ttft50 2.7
+I2107 TABLE i2107_base recall_p128k_n8k_s9 hit 0.6349 ttft50 4.7
+I2107 TABLE i2107_base recall_p128k_n8k_s12 hit 0.6284 ttft50 7.2
+I2107 TABLE i2107_base recall_p128k_n8k_s16 hit 0.5694 ttft50 7.6
+I2107 TABLE i2107_base static_p128k_n8k_k12 hit 0.56 ttft50 5.3
+I2107 TABLE i2107_base static_p128k_n8k_k16 hit 0.5268 ttft50 7.0
+2026-11-11 13:52:49 i2107_base_1 evidence: 
+2026-11-11 13:53:58 I2107 sglang-2107 48187d32a3 on .246 + v7 (i2107_fix): write-back, switch on: recall 8 x3, 9, 12, 16; static 12, 16
+2026-11-11 13:53:59 sweep i2107_fix start (pd_1991_gptoss_wb_on.json)
+2026-11-11 14:25:32 sweep i2107_fix end: exit=0 points=8 strict: requests=219 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+I2107 TABLE i2107_fix recall_p128k_n8k_s8 hit 0.9437 ttft50 2.6
+I2107 TABLE i2107_fix recall_p128k_n8k_s8 hit 0.9437 ttft50 2.9
+I2107 TABLE i2107_fix recall_p128k_n8k_s8 hit 0.8812 ttft50 2.2
+I2107 TABLE i2107_fix recall_p128k_n8k_s9 hit 0.8568 ttft50 3.3
+I2107 TABLE i2107_fix recall_p128k_n8k_s12 hit 0.5732 ttft50 8.0
+I2107 TABLE i2107_fix recall_p128k_n8k_s16 hit 0.6001 ttft50 8.3
+I2107 TABLE i2107_fix static_p128k_n8k_k12 hit 0.5632 ttft50 4.9
+I2107 TABLE i2107_fix static_p128k_n8k_k16 hit 0.5456 ttft50 6.5
+2026-11-11 14:25:33 i2107_fix_1 evidence: 
+2026-11-11 14:31:07 i2107_fix_quiet started: prefill=200 decode=200 lb=200
+2026-11-11 14:37:09 QUIET i2107_fix_quiet rc=0 "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 15} prefill=200 decode=200 lb=200 prefill_sched_exc=0 decode_sched_exc=0
+2026-11-11 14:37:35 GOAL I2107 DONE
+2026-11-11 14:39:51 I2107B sglang-mvp 5c136df1b4 pd_1991_gptoss_wb_off.json (i2107b_off): recall 8, 9, 12 three times each
+2026-11-11 14:39:51 sweep i2107b_off start (pd_1991_gptoss_wb_off.json)
+2026-11-11 16:22:36 sweep i2107b_off end: exit=0 points=23 strict: requests=691 failed=0 prefill_sched_exc=0 decode_sched_exc=0
+I2107B TABLE i2107b_off recall_p128k_n8k_s8 hit 0.8395 ttft50 2.4
+I2107B TABLE i2107b_off recall_p128k_n8k_s9 hit 0.6717 ttft50 5.2
+I2107B TABLE i2107b_off recall_p128k_n8k_s12 hit 0.2773 ttft50 12.5
+I2107B TABLE i2107b_off recall_p128k_n8k_s8 hit 0.8465 ttft50 2.4
+I2107B TABLE i2107b_off recall_p128k_n8k_s9 hit 0.6964 ttft50 2.9
+I2107B TABLE i2107b_off recall_p128k_n8k_s12 hit 0.2726 ttft50 13.2
+I2107B TABLE i2107b_off recall_p128k_n8k_s8 hit 0.8395 ttft50 2.4
+I2107B TABLE i2107b_off recall_p128k_n8k_s9 hit 0.7272 ttft50 5.2
+I2107B TABLE i2107b_off recall_p128k_n8k_s12 hit 0.2726 ttft50 13.2
+I2107B TABLE i2107b_off static_p128k_n8k_k4 hit 0.627 ttft50 6.7
+I2107B TABLE i2107b_off static_p128k_n8k_k8 hit 0.6252 ttft50 6.2
+I2107B TABLE i2107b_off static_p128k_n8k_k12 hit 0.5111 ttft50 6.6
+I2107B TABLE i2107b_off static_p128k_n8k_k16 hit 0.4024 ttft50 10.6
+I2107B TABLE i2107b_off static_p128k_n8k_k20 hit 0.3365 ttft50 10.7
+I2107B TABLE i2107b_off static_p128k_n8k_k24 hit 0.2467 ttft50 11.3
+I2107B TABLE i2107b_off static_p128k_n8k_k28 hit 0.2466 ttft50 11.1
+I2107B TABLE i2107b_off static_p256k_n16k_k2 hit 0.6273 ttft50 18.1
+I2107B TABLE i2107b_off static_p256k_n16k_k4 hit 0.6226 ttft50 28.9
+I2107B TABLE i2107b_off static_p256k_n16k_k6 hit 0.5309 ttft50 27.1
+I2107B TABLE i2107b_off static_p256k_n16k_k8 hit 0.505 ttft50 37.1
+I2107B TABLE i2107b_off static_p256k_n16k_k10 hit 0.4521 ttft50 36.4
+I2107B TABLE i2107b_off static_p256k_n16k_k12 hit 0.2615 ttft50 51.9
+I2107B TABLE i2107b_off static_p256k_n16k_k14 hit 0.2677 ttft50 46.5
+2026-11-11 16:23:32 I2107B sglang-mvp 5c136df1b4 pd_1991_gptoss_wb_on.json (i2107b_base): recall 8, 9, 12 three times each
+2026-11-11 16:23:32 sweep i2107b_base start (pd_1991_gptoss_wb_on.json)
+2026-11-11 16:55:22 sweep i2107b_base end: exit=1 points=9 strict: requests=187 failed=3 first=HTTPError('500 Server Error: Internal Server Error for url: http://10.128.0.246:8080/generate') prefill_sched_exc=24 decode_sched_exc=0
+I2107B TABLE i2107b_base recall_p128k_n8k_s8 hit 0.8812 ttft50 2.8
+I2107B TABLE i2107b_base recall_p128k_n8k_s9 hit 0.6913 ttft50 4.6
+I2107B TABLE i2107b_base recall_p128k_n8k_s12 hit 0.587 ttft50 7.5
+I2107B TABLE i2107b_base recall_p128k_n8k_s8 hit 0.8604 ttft50 2.7
+I2107B TABLE i2107b_base recall_p128k_n8k_s9 hit 0.8262 ttft50 4.0
+I2107B TABLE i2107b_base recall_p128k_n8k_s12 hit 0.6148 ttft50 6.8
+I2107B TABLE i2107b_base recall_p128k_n8k_s8 hit 0.9159 ttft50 2.7
+I2107B TABLE i2107b_base recall_p128k_n8k_s9 hit 0.826 ttft50 3.5
+I2107B TABLE i2107b_base recall_p128k_n8k_s12 hit 0.3352 ttft50 7.4
+2026-11-11 16:56:34 I2107B sglang-2107 48187d32a3 pd_1991_gptoss_wb_on.json (i2107b_fix): recall 8, 9, 12 three times each
+2026-11-11 16:56:34 sweep i2107b_fix start (pd_1991_gptoss_wb_on.json)
