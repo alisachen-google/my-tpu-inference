@@ -1,0 +1,34 @@
+{
+ "run": "g2086_transitions_write_back_off",
+ "label": "random_fill",
+ "sessions": 16,
+ "prefix": 131072,
+ "new": 8192,
+ "out_tokens": 16,
+ "concurrency": 4,
+ "seed": 5,
+ "order": "oldest",
+ "working_set_tokens": 2228768,
+ "fill": {
+  "requests": 16,
+  "errors": 0,
+  "wall_s": 61.2,
+  "prompt_tokens": 2228768,
+  "cached_tokens": 0,
+  "token_hit_rate": 0.0,
+  "reusable_tokens": 0,
+  "reuse_recovered": null,
+  "sessions_fully_reused": 0,
+  "ttft_p50": 12.286260861903429,
+  "ttft_p95": 18.533715224824846,
+  "e2e_p50": 12.436549828853458,
+  "e2e_p95": 18.664064823882654,
+  "total_tok_s": 36422.0,
+  "output_tok_s": 4.2,
+  "cached_tokens_by_tier": {
+   "device": 0,
+   "host": 0,
+   "storage": 0
+  }
+ }
+}

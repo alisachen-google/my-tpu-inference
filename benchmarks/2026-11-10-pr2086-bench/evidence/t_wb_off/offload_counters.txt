@@ -1,0 +1,29 @@
+== prefill-0 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== prefill-1 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== decode-0 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== decode-1 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  T1_p0d0_fill/fill: no counter movement
+  T1_p0d0_ka/fill: no counter movement
+  T1_p0d0_ret/recall: no counter movement
+  T2_p1d0_fill/fill: no counter movement
+  T2_p1d0_ka/fill: no counter movement
+  T2_p1d0_ret/recall: no counter movement
+  T3_p0d1_fill/fill: no counter movement
+  T3_p0d1_ka/fill: no counter movement
+  T3_p0d1_ret/recall: no counter movement
+  T4_p1d1_fill/fill: no counter movement
+  T4_p1d1_ka/fill: no counter movement
+  T4_p1d1_ret/recall: no counter movement
+  chain_fill/fill: no counter movement
+  chain_ka/fill: no counter movement
+  chain_l1_p0d0/recall: no counter movement
+  chain_l2_p1d0/recall: no counter movement
+  chain_l3_p0d1/recall: no counter movement
+  chain_l4_p1d1/recall: no counter movement
+  random_fill/fill: no counter movement
+  random_ret/recall: no counter movement

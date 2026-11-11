@@ -5,11 +5,10 @@ after PR 1992 merged). Three campaigns, each the same tree and settings with the
 roles ("on", `SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM=1`), caches flushed before every point:
 
 1. write-back 1P1D (`hicache_write_policy write_back` on both roles): done, both arms;
-2. 2P2D sticky-pair transitions, write-back: on arm done (`j-dd3f6030-3b7a-4588-a5cd`, 03:56-04:29Z after four
-   preemptions), off arm running (`j-d8cc8f42-fbc3-4d35-afff`, placed 04:29Z);
+2. 2P2D sticky-pair transitions, write-back: done, both arms (`j-dd3f6030-3b7a-4588-a5cd` on, `j-d8cc8f42-fbc3-4d35-afff` off);
 3. write-through 1P1D: done, both arms.
 
-Status 2026-11-11 04:45Z. This file is updated as the campaigns land; `ISSUES-2026-11-11.md` has every system error
+Status 2026-11-11 05:45Z: all three campaigns complete, all jobs deleted, benchmarking stopped at the user's request; `ISSUES-2026-11-11.md` has every system error
 met.
 
 ## Where it ran and why
@@ -174,7 +173,12 @@ defect); the refused subtree drops (I4) are not the cause.
   three points are therefore marked: the numbers above are reported with that flag, no request failed in them and the
   counters of the points balance.
 
-## Campaign 2: 2P2D sticky-pair transitions, write-back (queued)
+## Campaign 2: 2P2D sticky-pair transitions, write-back (done)
+
+Jobs: on `j-dd3f6030-3b7a-4588-a5cd` (03:56-04:29Z, fifth attempt after four spot preemptions), off
+`j-d8cc8f42-fbc3-4d35-afff` (04:56-05:31Z, third attempt after two). 20 points per arm, 288 requests per arm, 0 errors,
+`route_ok` true on every pinned point of both arms. Full tables (performance, cache, throughput, latency, counters,
+routing) in `results/table_transitions_write_back.md`; below the return rows.
 
 Procedure per transition (`harness/stage_transitions.sh`): wipe both prefills and both decodes; fill 12 sessions on
 (p0,d0) through the mini-lb pinned to that pair; 24 short sessions (32k+4k) through prefill 0 so write-back evicts the
@@ -182,6 +186,64 @@ filled branches from its host tier and the pushes to decode 0 happen; return the
 T1 (p0,d0), T2 (p1,d0) other prefill same decode, T3 (p0,d1) same prefill other decode, T4 (p1,d1) both switched, a
 four-leg chain (one fill, returns on (p0,d0), (p1,d0), (p0,d1), (p1,d1) in turn), and a random-routed 16-session fill
 and return. Every point records the per-engine request deltas and `route_ok`.
+
+**Performance gain** (what a user of the pair sees; return rows are the requests whose prefix the previous turn produced).
+
+| Point | TTFT p50 off -> on | Speedup | TTFT p95 off -> on | Speedup | E2E p50 off -> on | Wall s off -> on | Gain | Req/min off -> on | Gain | Warm returns off -> on | Prefill tokens computed per request, off -> on |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| T1_p0d0_ret (recall) | 26.2 -> 8.4 s | 3.1x | 26.3 -> 10.7 s | 2.5x | 26.3 -> 8.6 s | 79.9 -> 23.5 | +71% | 9.0 -> 30.6 | +240% | 0 / 12 -> 4 / 12 | 147,577 -> 31,524 |
+| T2_p1d0_ret (recall) | 25.8 -> 10.5 s | 2.5x | 26.1 -> 14.0 s | 1.9x | 25.9 -> 10.6 s | 80.3 -> 34.9 | +57% | 9.0 -> 20.6 | +130% | 0 / 12 -> 1 / 12 | 147,577 -> 54,734 |
+| T3_p0d1_ret (recall) | 26.1 -> 26.1 s | 1.0x | 26.2 -> 26.2 s | 1.0x | 26.3 -> 26.2 s | 79.8 -> 80.0 | -0% | 9.0 -> 9.0 | -0% | 0 / 12 -> 0 / 12 | 147,577 -> 147,577 |
+| T4_p1d1_ret (recall) | 25.9 -> 25.9 s | 1.0x | 26.1 -> 26.3 s | 1.0x | 26.0 -> 26.1 s | 79.0 -> 79.5 | -1% | 9.1 -> 9.1 | -1% | 0 / 12 -> 0 / 12 | 147,577 -> 147,577 |
+| chain_l1_p0d0 (recall) | 26.0 -> 8.5 s | 3.1x | 26.2 -> 8.9 s | 3.0x | 26.2 -> 8.7 s | 79.7 -> 21.7 | +73% | 9.0 -> 33.1 | +267% | 0 / 12 -> 4 / 12 | 147,577 -> 31,524 |
+| chain_l2_p1d0 (recall) | 25.9 -> 7.6 s | 3.4x | 26.2 -> 8.1 s | 3.3x | 26.1 -> 7.7 s | 79.0 -> 20.6 | +74% | 9.1 -> 35.0 | +284% | 0 / 12 -> 4 / 12 | 147,577 -> 29,460 |
+| chain_l3_p0d1 (recall) | 19.9 -> 19.8 s | 1.0x | 25.3 -> 26.6 s | 1.0x | 20.1 -> 19.9 s | 59.6 -> 60.6 | -2% | 12.1 -> 11.9 | -2% | 2 / 12 -> 0 / 12 | 105,230 -> 110,702 |
+| chain_l4_p1d1 (recall) | 20.4 -> 13.7 s | 1.5x | 25.8 -> 14.5 s | 1.8x | 20.5 -> 13.9 s | 59.4 -> 50.0 | +16% | 12.1 -> 14.4 | +19% | 2 / 12 -> 0 / 12 | 105,316 -> 88,164 |
+| random_fill (fill) | 12.3 -> 17.5 s | 0.7x | 18.5 -> 23.6 s | 0.8x | 12.4 -> 17.6 s | 61.1 -> 67.0 | -10% | 15.7 -> 14.3 | -9% | 0 / 16 -> 0 / 16 | 139,298 -> 139,298 |
+| random_ret (recall) | 7.7 -> 7.3 s | 1.1x | 19.8 -> 13.3 s | 1.5x | 7.9 -> 7.5 s | 43.2 -> 31.5 | +27% | 22.2 -> 30.5 | +37% | 4 / 16 -> 6 / 16 | 77,945 -> 69,241 |
+
+**Routing and recall per point** (expected pair from the brief; served = requests per engine on the on arm; recalled = tokens the on arm's prefills pulled from decode DRAM during the point).
+
+| Point | Expected pair | route_ok off / on | Served (on) | Prefill-side hit off -> on | TTFT p50 off -> on | Speedup | Wall s off -> on | Recalled from decode DRAM (on) |
+|---|---|---|---|---|---|---|---|---|
+| T1_p0d0_ret (recall) | p0d0 | True / True | d0:12 p0:12 | 0.0% -> 78.6% | 26.2 -> 8.4 s | 3.1x | 79.9 -> 23.5 | 1,392,640 tok in 10 pulls + 1,280 SWA |
+| T2_p1d0_ret (recall) | p1d0 | True / True | d0:12 p1:12 | 0.0% -> 62.9% | 25.8 -> 10.5 s | 2.5x | 80.3 -> 34.9 | 1,114,112 tok in 8 pulls + 1,024 SWA |
+| T3_p0d1_ret (recall) | p0d1 | True / True | d1:12 p0:12 | 0.0% -> 0.0% | 26.1 -> 26.1 s | 1.0x | 79.8 -> 80.0 | 0 |
+| T4_p1d1_ret (recall) | p1d1 | True / True | d1:12 p1:12 | 0.0% -> 0.0% | 25.9 -> 25.9 s | 1.0x | 79.0 -> 79.5 | 0 |
+| chain_l1_p0d0 (recall) | p0d0 | True / True | d0:12 p0:12 | 0.0% -> 78.6% | 26.0 -> 8.5 s | 3.1x | 79.7 -> 21.7 | 1,392,640 tok in 10 pulls + 1,280 SWA |
+| chain_l2_p1d0 (recall) | p1d0 | True / True | d0:12 p1:12 | 0.0% -> 80.0% | 25.9 -> 7.6 s | 3.4x | 79.0 -> 20.6 | 2,392,256 tok in 17 pulls + 2,176 SWA |
+| chain_l3_p0d1 (recall) | p0d1 | True / True | d1:12 p0:12 | 28.7% -> 25.0% | 19.9 -> 19.8 s | 1.0x | 59.6 -> 60.6 | 417,792 tok in 3 pulls + 384 SWA |
+| chain_l4_p1d1 (recall) | p1d1 | True / True | d1:12 p1:12 | 28.6% -> 40.3% | 20.4 -> 13.7 s | 1.5x | 59.4 -> 50.0 | 590,080 tok in 4 pulls + 512 SWA |
+| random_fill (fill) | any | None / None | d0:9 d1:7 p0:5 p1:11 | 0.0% -> 0.0% | 12.3 -> 17.5 s | 0.7x | 61.1 -> 67.0 | 0 |
+| random_ret (recall) | any | None / None | d0:7 d1:9 p0:9 p1:7 | 47.2% -> 53.1% | 7.7 -> 7.3 s | 1.1x | 43.2 -> 31.5 | 417,792 tok in 3 pulls + 384 SWA |
+
+### Reading
+
+- **Same pair (T1) and other prefill, same decode (T2) recall.** With the switch on, a return to (p0,d0) after the
+  branches were evicted from the prefill finds 78.6% of its prefix (10 of 11 offers pulled from decode 0's DRAM,
+  1.39M tokens) and its TTFT p50 falls 26.2 -> 8.4 s (3.1x), the batch clears in 23.5 s instead of 79.9 s. Returning
+  on the **other prefill** with the same decode (T2) works the same way, because the KV lives in the decode: 62.9%
+  hit (8 of 9 offers), TTFT 25.8 -> 10.5 s (2.5x). The four-leg chain confirms it: legs 1 and 2 at 78.6% and 80.0%,
+  3.1x and 3.4x.
+- **Other decode (T3, T4) is cold on both arms.** Only the decode that received a push can offer it, so a return
+  routed to decode 1 after decode 0 held the KV finds nothing: 0.0% hit, 26 s TTFT, identical to the off arm. The
+  recall is decode-affine; a router that moves a session between decodes gives the feature nothing to work with.
+  Chain legs 3 and 4 (25.0% and 40.3%) show the partial case: once sessions have been served through decode 1 once,
+  their new pushes land there and the next (p1,d1) return pulls them (4 pulls).
+- **Random routing** over 16 sessions: 53.1% hit on the return (3 pulls), TTFT p95 19.8 -> 13.3 s, batch wall
+  43.2 -> 31.5 s (+37% req/min). Its fill was slower on the on arm (17.5 vs 12.3 s TTFT p50) because the random
+  split put 11 of 16 fills on one prefill versus 10 of 16 on the off arm.
+- **Fill phases** are the same on both arms (23.7-23.8 s TTFT p50, 22.4k-23.0k tok/s), as in 1P1D: pushes in flight
+  do not slow the prefill issuing them.
+- **Client-reported hit is not a prefill saving in 2P2D.** The off arm's returns report 139,264 device-cached tokens
+  on all 12 requests while 9 of 12 have a cold 26 s TTFT: the usage field comes from the decode, which still holds
+  the branch it decoded. The prefill-side hit and the TTFT are the numbers to read; the on arm's cached-by-tier column
+  (host 1.39M on T1) is the prefill's own report after the pull.
+- **Validity.** No `Scheduler hit an exception`, `out of memory`, `malformed` or `DEADLINE_EXCEEDED` on either arm.
+  The on arm logged 40 `subtree drop declined (node locked)` lines (ISSUES I4) during the T1, T2 and chain leg 1 and 2
+  returns; those four points carry that flag, no request failed in them. Counters identical on all 8 ranks of all
+  four engines; 154 pushes stored and landed (10.2M tokens on decode 0, 2.0M on decode 1), 45 pulls of 6.3M tokens,
+  4 pulls refused as over budget (`over_budget=2` per prefill), 0 failed.
 
 ## Campaign 3: write-through, 1P1D (done)
 
