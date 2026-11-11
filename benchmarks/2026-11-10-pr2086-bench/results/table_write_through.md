@@ -20,7 +20,7 @@
 | Point | Requests on / off (errors) | Prefill-side hit off -> on | Gain | Client-reported hit off -> on | Cached by tier device / host, off -> on | Recalled from decode DRAM (on) |
 |---|---|---|---|---|---|---|
 | recall_8_fill (fill) | 8 / 8 (0/0) | 0.0% -> 0.0% | +0.0 pp | 0.0% -> 0.0% | 0 / 0 -> 0 / 0 | 0 |
-| recall_8_ret (recall) | 8 / 8 (0/0) | 34.0% -> 82.6% | +48.6 pp | 94.4% -> 82.6% | 0.88M / 0.24M -> 0.28M / 0.70M | 0 |
+| recall_8_ret (recall) | 8 / 8 (0/0) | 34.0% -> 82.6% | +48.6 pp | 94.4% -> 82.6% | 0.88M / 0.24M -> 0.28M / 0.70M | 467,520 tok in 6 pulls + 768 SWA |
 | recall_12_fill (fill) | 12 / 12 (0/0) | 0.0% -> 0.0% | +0.0 pp | 0.0% -> 0.0% | 0 / 0 -> 0 / 0 | 0 |
 | recall_12_ret (recall) | 12 / 12 (0/0) | 0.0% -> 66.0% | +66.0 pp | 94.4% -> 66.0% | 1.67M / 0.00M -> 0.06M / 1.10M | 1,047,680 tok in 10 pulls + 1,280 SWA |
 | recall_16_fill (fill) | 16 / 16 (0/0) | 0.0% -> 0.0% | +0.0 pp | 0.0% -> 0.0% | 0 / 0 -> 0 / 0 | 0 |
@@ -71,17 +71,17 @@
 | Point | Pushes stored / started | Landings landed / received | Recalls pulls / offers | Pulled tokens | SWA tokens | Failed / refused / no room |
 |---|---|---|---|---|---|---|
 | recall_8_fill (fill) | 7 / 7 | 7 / 7 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
-| recall_8_ret (recall) | 0 / 0 | 10 / 10 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
-| recall_12_fill (fill) | 68 / 69 | 69 / 69 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
-| recall_12_ret (recall) | 18 / 18 | 19 / 19 | 10 / 10 | 1,047,680 | 1,280 | 0 / 0 / 0 |
-| recall_16_fill (fill) | 138 / 138 | 133 / 135 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| recall_8_ret (recall) | 10 / 10 | 10 / 10 | 6 / 7 | 467,520 | 768 | 0 / 0 / 0 |
+| recall_12_fill (fill) | 69 / 69 | 69 / 69 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| recall_12_ret (recall) | 19 / 19 | 19 / 19 | 10 / 10 | 1,047,680 | 1,280 | 0 / 0 / 0 |
+| recall_16_fill (fill) | 137 / 137 | 137 / 137 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
 | recall_16_ret (recall) | 13 / 13 | 13 / 13 | 15 / 16 | 2,088,960 | 1,920 | 0 / 0 / 0 |
 | static_4 | 0 / 0 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
-| static_8 | 33 / 33 | 31 / 31 | 2 / 3 | 32,768 | 256 | 0 / 0 / 0 |
-| static_12 | 105 / 105 | 107 / 107 | 14 / 17 | 1,497,792 | 1,792 | 0 / 0 / 0 |
-| static_16 | 137 / 137 | 127 / 130 | 15 / 17 | 1,796,672 | 1,920 | 0 / 0 / 0 |
-| mixed_long | 321 / 321 | 298 / 299 | 37 / 39 | 1,688,384 | 4,736 | 0 / 0 / 0 |
-| mixed_short | 321 / 321 | 298 / 299 | 37 / 39 | 1,688,384 | 4,736 | 0 / 0 / 0 |
+| static_8 | 33 / 33 | 33 / 33 | 2 / 3 | 32,768 | 256 | 0 / 0 / 0 |
+| static_12 | 105 / 105 | 105 / 105 | 14 / 17 | 1,497,792 | 1,792 | 0 / 0 / 0 |
+| static_16 | 137 / 137 | 137 / 137 | 15 / 17 | 1,796,672 | 1,920 | 0 / 0 / 0 |
+| mixed_long | 321 / 321 | 321 / 321 | 37 / 39 | 1,688,384 | 4,736 | 0 / 0 / 0 |
+| mixed_short | 321 / 321 | 321 / 321 | 37 / 39 | 1,688,384 | 4,736 | 0 / 0 / 0 |
 
 integrity on: 2026-11-11 01:20:13 integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 232.9, "probes": {"sent": 89, "exact": 73, "min_agree": 7, "errors": 0, "mismatch_positions": [7, 7, 16, 16, 16, 34, 34, 49, 49, 49, 84, 84, 84, 96, 96, 96]}, "errors": 0, "recall": {"compared": 16, "exact": 16, "min_agree": 64, "pulled_sessions": 16}}
 

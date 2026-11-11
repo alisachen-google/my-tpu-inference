@@ -60,6 +60,17 @@
    "label": "recall_8_ret",
    "phase": "recall",
    "deltas": {
+    "prefill-0.push": {
+     "started": 10,
+     "stored": 10
+    },
+    "prefill-0.recall": {
+     "offers": 7,
+     "pulls": 6,
+     "pulled_tokens": 467520,
+     "pulled_swa_tokens": 768,
+     "skipped_local_host": 1
+    },
     "decode-0.landing": {
      "received": 10,
      "granted": 10,
@@ -74,7 +85,7 @@
    "deltas": {
     "prefill-0.push": {
      "started": 69,
-     "stored": 68
+     "stored": 69
     },
     "decode-0.landing": {
      "received": 69,
@@ -89,8 +100,8 @@
    "phase": "recall",
    "deltas": {
     "prefill-0.push": {
-     "started": 18,
-     "stored": 18
+     "started": 19,
+     "stored": 19
     },
     "prefill-0.recall": {
      "offers": 10,
@@ -111,13 +122,13 @@
    "phase": "fill",
    "deltas": {
     "prefill-0.push": {
-     "started": 138,
-     "stored": 138
+     "started": 137,
+     "stored": 137
     },
     "decode-0.landing": {
-     "received": 135,
-     "granted": 135,
-     "landed": 133,
+     "received": 137,
+     "granted": 137,
+     "landed": 137,
      "landed_tokens": 1949696
     }
    }
@@ -166,10 +177,10 @@
      "skipped_local_host": 1
     },
     "decode-0.landing": {
-     "received": 31,
-     "granted": 31,
-     "landed": 31,
-     "landed_tokens": 1179648
+     "received": 33,
+     "granted": 33,
+     "landed": 33,
+     "landed_tokens": 1187840
     }
    }
   },
@@ -189,10 +200,10 @@
      "skipped_local_host": 3
     },
     "decode-0.landing": {
-     "received": 107,
-     "granted": 107,
-     "landed": 107,
-     "landed_tokens": 1843200
+     "received": 105,
+     "granted": 105,
+     "landed": 105,
+     "landed_tokens": 1835008
     }
    }
   },
@@ -212,10 +223,10 @@
      "skipped_local_host": 2
     },
     "decode-0.landing": {
-     "received": 130,
-     "granted": 130,
-     "landed": 127,
-     "landed_tokens": 2400256
+     "received": 137,
+     "granted": 137,
+     "landed": 137,
+     "landed_tokens": 2457600
     }
    }
   },
@@ -235,10 +246,10 @@
      "skipped_local_host": 2
     },
     "decode-0.landing": {
-     "received": 299,
-     "granted": 299,
-     "landed": 298,
-     "landed_tokens": 3488192
+     "received": 321,
+     "granted": 321,
+     "landed": 321,
+     "landed_tokens": 3646400
     }
    }
   },
@@ -258,10 +269,10 @@
      "skipped_local_host": 2
     },
     "decode-0.landing": {
-     "received": 299,
-     "granted": 299,
-     "landed": 298,
-     "landed_tokens": 3488192
+     "received": 321,
+     "granted": 321,
+     "landed": 321,
+     "landed_tokens": 3646400
     }
    }
   }

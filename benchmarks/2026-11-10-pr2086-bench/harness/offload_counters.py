@@ -7,8 +7,8 @@ The engines log cumulative counters at most every 30 s as
   [...] [dram-offload] recall offers=.. pulls=.. pulled_tokens=.. pulled_swa_tokens=.. skipped_local_host=.. no_memory=.. over_budget=.. adopted_backup_tokens=.. failed=..  (prefill)
 (zero-valued keys are omitted). For every log: the final counters of TP0, whether every rank reports the same
 counters (B3 rank consistency), refused pulls, warnings and errors. With --points <points.jsonl> (t0/t1 per point from
-point_metrics.py), the per-point deltas of the TP0 counters: value of the line logged nearest t1 minus the line nearest t0 (the
-counters are logged every 30 s while there is activity, so each edge is known to within 15 s).
+point_metrics.py), the per-point deltas of the TP0 counters (see window(): end = first line at or after t1; start = last line at or
+before t0 for a return phase, first line at or after t0 for a point that begins with a wipe).
 
 offload_counters.py [--points points.jsonl] [--grace 45] [--json out.json] <server.log> ...
 """
@@ -49,15 +49,30 @@ def parse(path):
     return series, warn, err, refused
 
 
-def value_at(points, ts):
-    """Counters at time ts: the line logged nearest to ts (the engines log the cumulative counters every 30 s while
-    there is activity, so the nearest line is the best estimate of the value at ts; ties go to the earlier line)."""
-    best, best_d = {}, None
+def value_at(points, ts, side="before"):
+    """Counters at time ts from the cumulative lines (logged every 30 s while there is activity).
+    side="before": the last line at or before ts (nothing after ts is counted, events logged late are included);
+    side="after": the first line at or after ts (events in the <= 30 s after ts are included). Falls back to the
+    other side when none exists."""
+    before, after = {}, None
     for t, kv in points:
-        d = abs((t - ts).total_seconds())
-        if best_d is None or d < best_d:
-            best, best_d = kv, d
-    return best
+        if t <= ts:
+            before = kv
+        elif after is None:
+            after = kv
+    if side == "after":
+        return after if after is not None else before
+    return before
+
+
+def window(points, t0, t1, starts_after_wipe):
+    """Delta of the TP0 counters over a point. The end is the first line at or after t1 (the point's own late-logged
+    events are never lost). The start is the last line at or before t0 for a return phase (its recalls begin at
+    once) and the first line at or after t0 for a point that begins with a wipe (fill, static, mixed: nothing it does
+    in its first seconds can push or recall, so a burst logged there belongs to the previous point)."""
+    v0 = value_at(points, t0, "after" if starts_after_wipe else "before")
+    v1 = value_at(points, t1, "after")
+    return v0, v1
 
 
 def main():
@@ -104,7 +119,7 @@ def main():
                 for w in ("push", "recall", "landing"):
                     if (w, 0) not in series:
                         continue
-                    v0, v1 = value_at(series[(w, 0)], t0), value_at(series[(w, 0)], t1)
+                    v0, v1 = window(series[(w, 0)], t0, t1, p.get("phase") != "recall")
                     d = {k: v1.get(k, 0) - v0.get(k, 0) for k in KEYS[w] if (v1.get(k, 0) - v0.get(k, 0))}
                     if d:
                         row["deltas"][f"{name}.{w}"] = d

@@ -75,13 +75,13 @@
 | recall_12_fill (fill) | 0 / 0 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
 | recall_12_ret (recall) | 9 / 9 | 9 / 9 | 1 / 2 | 57,024 | 128 | 0 / 0 / 0 |
 | recall_16_fill (fill) | 6 / 6 | 6 / 6 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
-| recall_16_ret (recall) | 10 / 10 | 12 / 12 | 11 / 12 | 1,531,904 | 1,408 | 0 / 0 / 0 |
-| static_4 | 2 / 2 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
+| recall_16_ret (recall) | 12 / 12 | 12 / 12 | 11 / 12 | 1,531,904 | 1,408 | 0 / 0 / 0 |
+| static_4 | 0 / 0 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
 | static_8 | 0 / 0 | 0 / 0 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
 | static_12 | 16 / 16 | 16 / 16 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
 | static_16 | 35 / 35 | 35 / 35 | 0 / 0 | 0 | 0 | 0 / 0 / 0 |
-| mixed_long | 93 / 93 | 65 / 65 | 43 / 43 | 1,585,152 | 5,504 | 0 / 0 / 0 |
-| mixed_short | 93 / 93 | 65 / 65 | 43 / 43 | 1,585,152 | 5,504 | 0 / 0 / 0 |
+| mixed_long | 93 / 93 | 93 / 93 | 43 / 43 | 1,585,152 | 5,504 | 0 / 0 / 0 |
+| mixed_short | 93 / 93 | 93 / 93 | 43 / 43 | 1,585,152 | 5,504 | 0 / 0 / 0 |
 
 integrity on: 2026-11-11 00:32:18 integrity rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 244.6, "probes": {"sent": 91, "exact": 75, "min_agree": 7, "errors": 0, "mismatch_positions": [7, 7, 16, 16, 16, 34, 34, 49, 49, 49, 84, 84, 84, 96, 96, 96]}, "errors": 0, "recall": {"compared": 16, "exact": 12, "min_agree": 5, "pulled_sessions": 15}}
 

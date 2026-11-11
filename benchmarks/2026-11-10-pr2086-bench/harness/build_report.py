@@ -34,7 +34,7 @@ def engines(d):
     return out
 
 
-def deltas(eng, t0, t1, grace):
+def deltas(eng, t0, t1, grace, phase=None):
     if not t0 or not t1:
         return {}
     t0 = datetime.strptime(t0, "%Y-%m-%d %H:%M:%S"); t1 = datetime.strptime(t1, "%Y-%m-%d %H:%M:%S")
@@ -42,7 +42,7 @@ def deltas(eng, t0, t1, grace):
     for name, (series, *_rest) in eng.items():
         for w in ("push", "landing", "recall"):
             if (w, 0) in series:
-                v0, v1 = oc.value_at(series[(w, 0)], t0), oc.value_at(series[(w, 0)], t1)
+                v0, v1 = oc.window(series[(w, 0)], t0, t1, phase != "recall")
                 for k in oc.KEYS[w]:
                     dv = v1.get(k, 0) - v0.get(k, 0)
                     if dv:
@@ -107,7 +107,7 @@ def main():
     for key, r in on.items():
         o = off.get(key, {})
         lab = f"{key[0]}" + ("" if key[1] in ("all", None) else f" ({key[1]})")
-        rows.append((lab, r, o, deltas(eon, r.get("t0"), r.get("t1"), a.grace)))
+        rows.append((lab, r, o, deltas(eon, r.get("t0"), r.get("t1"), a.grace, r.get("phase"))))
 
     def speed(o_, n_):
         return "-" if not o_ or not n_ else f"{o_/n_:.1f}x"
