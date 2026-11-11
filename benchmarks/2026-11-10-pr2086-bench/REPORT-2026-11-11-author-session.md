@@ -14,7 +14,7 @@ this file; this report refers to their issue numbers.
 | Static-reuse regression under write-back | fixed in 2086 |
 | I5, recalled output differs from recompute under write-back | fixed in 2086 by the same change |
 | I7, native hash extension rebuilt on every pull | fixed in 2086 (third commit) |
-| I4, refused subtree drops under write-back | still occurs as a warning; one out-of-memory in five stress runs; open |
+| I4, refused subtree drops under write-back | cause found: the recipes' `SGLANG_HICACHE_SKIP_HOST_DUPLICATE_RECLAIM=1`; without it 3 of 3 stress runs clean |
 | Recall-8 capacity-edge loss | filed as upstream issue 2107; fix on branch `pd-dram-spill-capacity-edge` (`48187d32a3`), A/B half done, PR not opened |
 | I3, spot preemptions | cluster behaviour, nothing to fix |
 
@@ -119,6 +119,37 @@ The one out-of-memory (run `i5a_wb_on`, 06:33:22): returns were being served fro
 refused drops in one second on roots 493, 543, 577, 581, 585, then "Prefill out of memory" with 646,528 evictable
 device tokens it could not demote. Copy-ahead's host pins together with the offload's host locks are the lead: with
 copy-ahead off there is not a single refused drop. Not fixed.
+
+### Cause found (22:30 to 23:35 UTC): a harness setting
+
+Every recipe of these campaigns, mine and the agents', sets `SGLANG_HICACHE_SKIP_HOST_DUPLICATE_RECLAIM=1`. That turns
+off upstream's write-back rule that frees host copies of sessions which are also on the device when the host pool is
+under pressure. A session loaded back from host then stays on both tiers, its host copy can be neither reclaimed nor
+evicted as a host-only node, and after a few returns the host pool is duplicates plus pins: the next device eviction
+cannot back up. Same hosts, merged main `5c136df1b4`, write-back, switch on, the flag removed:
+
+| Run | Out-of-memory | Refused drops |
+|---|---|---|
+| Stress 1 | no | 0 |
+| Stress 2 | no | 0 |
+| Stress 3 | no | 0 |
+
+With the flag set the same stress logged 40 to 80 refused drops per run and ran out of memory once in five. The ladder
+without the flag, switch on (169 of 169 requests, no exception; 64 refused drops over the whole ladder, no failure):
+
+| Point | Flag set (earlier today) | Flag unset |
+|---|---|---|
+| Recall 8 | 94.4%, TTFT 2.1 s | 94.4%, 2.5 s |
+| Recall 12 | 60.1%, 6.3 s | 86.9%, 4.5 s |
+| Recall 16 | 45.4%, 9.1 s | 77.4%, 3.5 s |
+| Static 12 docs | 55.4%, 6.3 s | 60.1%, 2.0 s |
+| Static 16 docs | 52.3%, 6.7 s | 52.8%, 6.7 s |
+
+So I4 is a configuration problem of the benchmark recipes, and removing the flag also raises the write-back recall
+gains. All write-back numbers above this section were measured with the flag set and understate the feature. The
+switch-off arm has not been re-measured without the flag. Recommendation: remove the flag from every recipe, say so in
+the user guide (done, `author-session/USER-GUIDE-kv-offload-to-decode-dram.md`), and consider a start-up warning when
+the offload switch is on with the flag set.
 
 ## 5. Recall-8 capacity-edge loss (upstream issue 2107)
 
