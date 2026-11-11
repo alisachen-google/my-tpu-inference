@@ -57,6 +57,10 @@ def main():
     pt = sum(r.get("prompt_tokens") or 0 for r in ok)
     out = sum(r.get("completion_tokens") or 0 for r in ok)
     ct = sum(r.get("cached_tokens") or 0 for r in ok)
+    tiers = {"device": 0, "host": 0, "storage": 0}  # client-side cached_tokens_details: where the prefill found the prefix
+    for r in ok:
+        for k in tiers:
+            tiers[k] += (r.get("cached_tokens_details") or {}).get(k) or 0
     starts = [r["t_start"] for r in rows if r.get("t_start")]
     ends = [r["t_start"] + (r.get("e2e_s") or 0) for r in rows if r.get("t_start")]
     wall = (max(ends) - min(starts)) if starts else 0.0
@@ -93,7 +97,7 @@ def main():
          "requests": len(rows), "errors": err, "wall_s": round(wall, 1),
          "prompt_tokens": pt, "output_tokens": out, "client_cached_tokens": ct,
          "prefill_hit": None if hit is None else round(hit, 4), "prefill_cached_tokens": int(pc), "prefill_prompt_tokens": int(pp),
-         "client_token_hit_rate": round(ct / pt, 4) if pt else None,
+         "client_token_hit_rate": round(ct / pt, 4) if pt else None, "client_cached_by_tier": tiers,
          "total_tok_s": round((pt + out) / wall, 1) if wall else None, "output_tok_s": round(out / wall, 1) if wall else None,
          "rpm": round(60 * len(ok) / wall, 2) if wall else None,
          "ttft_p50": rnd(pct(ttft, .5)), "ttft_p95": rnd(pct(ttft, .95)), "itl_p50": None if not itl else round(pct(itl, .5), 4),

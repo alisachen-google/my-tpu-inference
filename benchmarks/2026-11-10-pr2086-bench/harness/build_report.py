@@ -15,7 +15,9 @@ import offload_counters as oc  # noqa: E402
 
 def load_points(d):
     pts = {}
-    p = os.path.join(d, "bench", "points.jsonl")
+    p = os.path.join(d, "bench", "points_fixed.jsonl")
+    if not os.path.exists(p):
+        p = os.path.join(d, "bench", "points.jsonl")
     if os.path.exists(p):
         for l in open(p):
             if l.startswith("{"):
@@ -54,8 +56,25 @@ def fmt_counters(a):
     parts = []
     if a.get("push.started") or a.get("push.stored"): parts.append(f"push {a.get('push.stored', 0)}/{a.get('push.started', 0)} stored")
     if a.get("landing.received"): parts.append(f"land {a.get('landing.landed', 0)}/{a.get('landing.received', 0)}" + (f" fail {a['landing.failed']}" if a.get("landing.failed") else "") + (f" no_room {a['landing.no_room']}" if a.get("landing.no_room") else ""))
-    if a.get("recall.offers") or a.get("recall.pulls"): parts.append(f"recall {a.get('recall.pulls', 0)}/{a.get('recall.offers', 0)} ({a.get('recall.pulled_tokens', 0)/1e6:.2f}M tok" + (f", {a.get('recall.pulled_swa_tokens', 0)} swa" if a.get("recall.pulled_swa_tokens") else "") + ")" + (f" fail {a['recall.failed']}" if a.get("recall.failed") else ""))
+    if a.get("recall.offers") or a.get("recall.pulls"): parts.append(f"recall {a.get('recall.pulls', 0)}/{a.get('recall.offers', 0)} offers" + (f" fail {a['recall.failed']}" if a.get("recall.failed") else "") + (f" skipped_local {a['recall.skipped_local_host']}" if a.get("recall.skipped_local_host") else ""))
     return "; ".join(parts) or "none"
+
+
+def fmt_recalled(a):
+    """Recalled KV: tokens pulled from decode DRAM into the prefill during the point, plus their SWA window tokens."""
+    if not a or not (a.get("recall.pulled_tokens") or a.get("recall.pulls")):
+        return "0"
+    s = f"{a.get('recall.pulled_tokens', 0):,} tok in {a.get('recall.pulls', 0)} pulls"
+    if a.get("recall.pulled_swa_tokens"):
+        s += f" + {a.get('recall.pulled_swa_tokens', 0):,} SWA"
+    return s
+
+
+def fmt_tiers(r):
+    t = r.get("client_cached_by_tier") or {}
+    if not t or not any(t.values()):
+        return "0 / 0"
+    return f"{t.get('device', 0)/1e6:.2f}M / {t.get('host', 0)/1e6:.2f}M"
 
 
 def f(x, nd=1, suf=""):
@@ -72,18 +91,20 @@ def main():
     a = ap.parse_args()
     on, off = load_points(a.on), load_points(a.off)
     eon = engines(a.on)
-    print("| Point | Requests on / off (errors) | Prefill hit off -> on | Total tok/s off -> on | Output tok/s off -> on | Req/min off -> on | TTFT p50 / p95 off -> on | ITL p50 off -> on | Offload counters (on arm, this point) |")
-    print("|---|---|---|---|---|---|---|---|---|")
+    print("| Point | Requests on / off (errors) | Prefill hit off -> on | Cached KV by tier, device / host, off -> on | Recalled KV from decode DRAM (on) | Total tok/s off -> on | Output tok/s off -> on | Req/min off -> on | TTFT p50 / p95 off -> on | ITL p50 off -> on | Push / landing counters (on, this point) |")
+    print("|---|---|---|---|---|---|---|---|---|---|---|")
     for key, r in on.items():
         o = off.get(key)
         if o is None:
             o = {}
         lab = f"{key[0]}" + ("" if key[1] in ("all", None) else f" ({key[1]})")
         req = f"{r['requests']} / {o.get('requests', '-')} ({r['errors']}/{o.get('errors', '-')})"
-        print(f"| {lab} | {req} | {pc(o.get('prefill_hit'))} -> {pc(r['prefill_hit'])} | {f(o.get('total_tok_s'), 0)} -> {f(r['total_tok_s'], 0)} | "
+        dl = deltas(eon, r.get('t0'), r.get('t1'), a.grace)
+        print(f"| {lab} | {req} | {pc(o.get('prefill_hit'))} -> {pc(r['prefill_hit'])} | {fmt_tiers(o)} -> {fmt_tiers(r)} | {fmt_recalled(dl)} | "
+              f"{f(o.get('total_tok_s'), 0)} -> {f(r['total_tok_s'], 0)} | "
               f"{f(o.get('output_tok_s'), 1)} -> {f(r['output_tok_s'], 1)} | {f(o.get('rpm'), 1)} -> {f(r['rpm'], 1)} | "
               f"{f(o.get('ttft_p50'))} / {f(o.get('ttft_p95'))} s -> {f(r['ttft_p50'])} / {f(r['ttft_p95'])} s | "
-              f"{f(o.get('itl_p50'), 3)} -> {f(r['itl_p50'], 3)} s | {fmt_counters(deltas(eon, r.get('t0'), r.get('t1'), a.grace))} |")
+              f"{f(o.get('itl_p50'), 3)} -> {f(r['itl_p50'], 3)} s | {fmt_counters(dl)} |")
     for arm, d in (("on", a.on), ("off", a.off)):
         sl = os.path.join(d, "bench", "stage.log")
         if os.path.exists(sl):
