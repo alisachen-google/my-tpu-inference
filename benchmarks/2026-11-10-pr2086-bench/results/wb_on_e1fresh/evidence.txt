@@ -1,0 +1,14 @@
+== prefill-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  push     TP0 final: started=24 stored=24
+  recall   TP0 final: offers=93 pulls=15 pulled_tokens=2088960 pulled_swa_tokens=1920 skipped_local_host=77
+  verdict: EQUAL across 8 ranks
+== decode-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  landing  TP0 final: received=24 granted=24 landed=24 landed_tokens=2293760
+  verdict: EQUAL across 8 ranks
+== prefill-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  push     TP0 final: started=33 stored=33
+  recall   TP0 final: offers=90 pulls=16 pulled_tokens=1966080 pulled_swa_tokens=2048 skipped_local_host=74
+  verdict: EQUAL across 8 ranks
+== decode-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  landing  TP0 final: received=33 granted=33 landed=33 landed_tokens=2940928
+  verdict: EQUAL across 8 ranks

@@ -1,0 +1,34 @@
+{
+ "run": "g2086_transitions_write_back",
+ "label": "chain_fill",
+ "sessions": 12,
+ "prefix": 131072,
+ "new": 8192,
+ "out_tokens": 16,
+ "concurrency": 4,
+ "seed": 55,
+ "order": "oldest",
+ "working_set_tokens": 1671576,
+ "fill": {
+  "requests": 12,
+  "errors": 0,
+  "wall_s": 73.1,
+  "prompt_tokens": 1671576,
+  "cached_tokens": 0,
+  "token_hit_rate": 0.0,
+  "reusable_tokens": 0,
+  "reuse_recovered": null,
+  "sessions_fully_reused": 0,
+  "ttft_p50": 23.741200325079262,
+  "ttft_p95": 24.193942901911214,
+  "e2e_p50": 23.867337204981595,
+  "e2e_p95": 24.342051740037277,
+  "total_tok_s": 22869.6,
+  "output_tok_s": 2.6,
+  "cached_tokens_by_tier": {
+   "device": 0,
+   "host": 0,
+   "storage": 0
+  }
+ }
+}

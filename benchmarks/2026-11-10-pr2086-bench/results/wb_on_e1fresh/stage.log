@@ -1,0 +1,10 @@
+2026-11-11 01:59:07 EDGES start (g2086_edges_write_back, cases E1):  p0=200 d0=200 lb=200 exceptions: prefill-0=0 decode-0=0
+2026-11-11 01:59:08 E1 integrity: recalled outputs must equal a recompute after a flush
+2026-11-11 02:04:31 E1 rc=1 
+2026-11-11 02:04:52 E1 after:  p0=000 d0=000 lb=000 exceptions: prefill-0=0 decode-0=0
+2026-11-11 02:05:53 EDGES DONE (g2086_edges_write_back):  p0=000 d0=000 lb=000 exceptions: prefill-0=0 decode-0=0
+2026-11-11 02:25:32 EDGES start (g2086_edges_write_back, cases E1):  p0=200 d0=200 lb=200 exceptions: prefill-0=0 decode-0=0
+2026-11-11 02:25:32 E1 integrity: recalled outputs must equal a recompute after a flush
+2026-11-11 02:31:56 E1 rc=0 SUMMARY {"sessions": 16, "prefix": 131072, "new": 8192, "out_tokens": 64, "concurrent_phase_s": 247.1, "probes": {"sent": 89, "exact": 73, "min_agree": 7, "errors": 0, "mismatch_positions": [7, 7, 16, 16, 16, 34, 34, 49, 49, 49, 84, 84, 84, 96, 96, 96]}, "errors": 0, "recall": {"compared": 16, "exact": 13, "min_agree": 5, "pulled_sessions": 14}}
+2026-11-11 02:31:57 E1 after:  p0=200 d0=200 lb=200 exceptions: prefill-0=0 decode-0=0
+2026-11-11 02:32:58 EDGES DONE (g2086_edges_write_back):  p0=200 d0=200 lb=200 exceptions: prefill-0=0 decode-0=0

@@ -1,0 +1,42 @@
+{
+ "engines": {
+  "prefill-0": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 0,
+   "refused_lines": 0,
+   "final": {
+    "push": {
+     "started": 33,
+     "stored": 33
+    },
+    "recall": {
+     "offers": 90,
+     "pulls": 16,
+     "pulled_tokens": 1966080,
+     "pulled_swa_tokens": 2048,
+     "skipped_local_host": 74
+    }
+   },
+   "rank_equal": true,
+   "unequal": []
+  },
+  "decode-0": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 0,
+   "refused_lines": 0,
+   "final": {
+    "landing": {
+     "received": 33,
+     "granted": 33,
+     "landed": 33,
+     "landed_tokens": 2940928
+    }
+   },
+   "rank_equal": true,
+   "unequal": []
+  }
+ },
+ "points": []
+}

@@ -1,0 +1,21 @@
+/usr/local/lib/python3.12/site-packages/torch_tpu/__init__.py:37: UserWarning: <TorchTpu/Performance/TcMalloc/> tcmalloc is not loaded; TorchTPU host performance may be degraded due to glibc ptmalloc contention. Preload libtcmalloc before starting Python (e.g. LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4), or set PYTHONWARNINGS="ignore:<TorchTpu/Performance/TcMalloc/" to suppress this warning.
+  _tcmalloc_check.check_tcmalloc()
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794362353.946591     437 pjrt_api.cc:119] GetPjrtApi was found for TPU at /usr/local/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1794362353.973533     437 tpu_profiler_plugin.cc:800] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+ref: 6 probes
+fill
+settle
+recall
+verify: flush + recompute
+Traceback (most recent call last):
+  File "/workspace/harness/victim_integrity.py", line 195, in <module>
+    main()
+  File "/workspace/harness/victim_integrity.py", line 169, in main
+    r = gen(a.lb, recall[s], a.out_tokens)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/harness/victim_integrity.py", line 35, in gen
+    r.raise_for_status()
+  File "/usr/local/lib/python3.12/site-packages/requests/models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://j-c909ba56-55e8-4b10-8eb3-router-0-0.j-c909ba56-55e8-4b10-8eb3:8100/generate

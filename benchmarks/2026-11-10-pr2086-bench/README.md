@@ -5,10 +5,11 @@ after PR 1992 merged). Three campaigns, each the same tree and settings with the
 roles ("on", `SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM=1`), caches flushed before every point:
 
 1. write-back 1P1D (`hicache_write_policy write_back` on both roles): done, both arms;
-2. 2P2D sticky-pair transitions, write-back: queued (`j-dd3f6030-3b7a-4588-a5cd` on, `j-d8cc8f42-fbc3-4d35-afff` off);
+2. 2P2D sticky-pair transitions, write-back: on arm done (`j-dd3f6030-3b7a-4588-a5cd`, 03:56-04:29Z after four
+   preemptions), off arm running (`j-d8cc8f42-fbc3-4d35-afff`, placed 04:29Z);
 3. write-through 1P1D: done, both arms.
 
-Status 2026-11-11 02:05Z. This file is updated as the campaigns land; `ISSUES-2026-11-11.md` has every system error
+Status 2026-11-11 04:45Z. This file is updated as the campaigns land; `ISSUES-2026-11-11.md` has every system error
 met.
 
 ## Where it ran and why
@@ -125,12 +126,17 @@ Final counters, on arm: prefill push started 204, stored 204; decode landing rec
 skipped because the prefill still held the branch in its own host tier, 1 over budget, 0 failed, 0 refused; push,
 landing and recall counters identical on all 8 ranks of both engines. Off arm: no offload lines, as expected.
 
-**Equivalence (integrity, run last on the same engines):** off arm 16 of 16 identical (all 16 served from the
-prefill's host tier). On arm **12 of 16**: sessions 6, 11 and 14, served from the host tier with 139,264 cached
-tokens, diverge from their recompute at tokens 5, 5 and 19; session 15, served from nowhere (0 cached tokens, a full
-recompute), diverges at token 22. The same prefill logged 96 `subtree drop declined (node locked)` lines during this
-job (none on the off arm). See ISSUES I4 and I5; a fresh-engine integrity run of the on arm
-(`j-c909ba56-55e8-4b10-8eb3`) is queued to tell a state-dependent divergence from a transfer defect.
+**Equivalence (integrity):** off arm 16 of 16 identical (all 16 served from the prefill's device cache). On arm,
+run last on the same engines, **12 of 16**: sessions 6, 11 and 14, served from the host tier with 139,264 cached
+tokens after the recall from decode DRAM, diverge from their recompute at tokens 5, 5 and 19; session 15, served from
+nowhere (0 cached tokens, a full recompute), diverges at token 22. On **fresh engines** of the on arm
+(`j-c909ba56-55e8-4b10-8eb3`, `STAGE=edges EDGES=E1`, no ladders before it, zero `subtree drop declined` lines):
+**13 of 16**, sessions 6, 9 and 11 at token 5, all three host-served after a pull; a first attempt of the same job,
+preempted after 8 verifies, had 7 of 8 with session 6 at token 5. Session 6 diverges at the same token in three
+independent runs, so this is a deterministic, prompt-specific difference between the recalled and the recomputed
+path, present only under write-back with the switch on: the write-through on arm, whose returns were also host-served
+after a pull, is 16 of 16. Details, controls and the code paths that differ in ISSUES I5 (open, reported as a PR
+defect); the refused subtree drops (I4) are not the cause.
 
 ### Reading
 
@@ -274,8 +280,10 @@ Final counters, on arm: push started 1,042, stored 1,042; landing received 1,042
 (16,885,056 tokens); recall offers 205, pulls 118, pulled 10,741,504 tokens plus 15,104 SWA window tokens, 86 offers
 skipped (branch still local), 1 over budget, 0 failed, 0 refused; counters identical on all 8 ranks of both engines.
 
-**Equivalence (integrity, run last on the same engines): 16 of 16 identical on both arms**, all 16 recalled (on arm:
-served from the host tier after the recall from decode DRAM).
+**Equivalence (integrity, run last on the same engines): 16 of 16 identical on both arms**. On arm: 15 of 16
+returns served from the prefill's host tier after the recall from decode DRAM, 1 from device; off arm: all 16 from
+device. This is the control for the write-back on arm's 13 of 16 (ISSUES I5): the pull and the host-tier serving are
+exact under write-through.
 
 ### Reading
 
@@ -300,7 +308,9 @@ served from the host tier after the recall from decode DRAM).
 ## Files
 
 - `results/<arm>/`: per-point client jsonl + summary json, `points_fixed.jsonl` (one line per point, every number of
-  the tables), `stage.log`, the integrity json.
+  the tables), `stage.log`, the integrity json. Arms: `wb_on`, `wb_off`, `wt_on`, `wt_off` (1P1D), `t_wb_on`,
+  `t_wb_off` (2P2D transitions), `wb_on_e1fresh` (the fresh-engine integrity run of the write-back on arm, with the
+  partial file of its preempted first attempt).
 - `evidence/<arm>/`: the `/metrics` snapshots around every point (`*.m0`, `*.m1`), both server logs (gzip),
   `offload_counters.txt/json` (final counters, rank check, per-point deltas), `invalidating_lines.txt`.
 - `recipes/pd1992-qwen3-30b-xpyd.jsonnet`, `harness/`: what ran.

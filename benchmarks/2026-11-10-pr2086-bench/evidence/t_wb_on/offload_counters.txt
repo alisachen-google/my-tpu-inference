@@ -1,0 +1,35 @@
+== prefill-0 ranks=8 warnings=0 errors=24 refused_lines=0
+  push     TP0 final: started=133 stored=133
+  recall   TP0 final: offers=25 pulls=23 pulled_tokens=3203072 pulled_swa_tokens=2944 over_budget=2
+  verdict: EQUAL across 8 ranks
+== prefill-1 ranks=8 warnings=0 errors=16 refused_lines=0
+  push     TP0 final: started=21 stored=21
+  recall   TP0 final: offers=25 pulls=22 pulled_tokens=3121600 pulled_swa_tokens=2816 skipped_local_host=1 over_budget=2
+  verdict: EQUAL across 8 ranks
+== decode-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  landing  TP0 final: received=138 granted=138 landed=138 landed_tokens=10196160
+  verdict: EQUAL across 8 ranks
+== decode-1 ranks=8 warnings=0 errors=0 refused_lines=0
+  landing  TP0 final: received=16 granted=16 landed=16 landed_tokens=2048768
+  verdict: EQUAL across 8 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  T1_p0d0_fill/fill: no counter movement
+  T1_p0d0_ka/fill: prefill-0 push: started=12 stored=12; decode-0 landing: received=12 granted=12 landed=12 landed_tokens=1363968
+  T1_p0d0_ret/recall: prefill-0 push: started=15 stored=15; prefill-0 recall: offers=11 pulls=10 pulled_tokens=1392640 pulled_swa_tokens=1280 over_budget=1; decode-0 landing: received=16 granted=16 landed=16 landed_tokens=737408
+  T2_p1d0_fill/fill: decode-0 landing: received=4 granted=4 landed=2 landed_tokens=278528
+  T2_p1d0_ka/fill: prefill-0 push: started=11 stored=11; decode-0 landing: received=7 granted=7 landed=9 landed_tokens=1048576
+  T2_p1d0_ret/recall: prefill-1 push: started=5 stored=5; prefill-1 recall: offers=9 pulls=8 pulled_tokens=1114112 pulled_swa_tokens=1024 over_budget=1; decode-0 landing: received=5 granted=5 landed=5 landed_tokens=41280
+  T3_p0d1_fill/fill: no counter movement
+  T3_p0d1_ka/fill: prefill-0 push: started=12 stored=12; decode-0 landing: received=12 granted=12 landed=12 landed_tokens=1363968
+  T3_p0d1_ret/recall: prefill-0 push: started=30 stored=30; decode-0 landing: received=23 granted=23 landed=23 landed_tokens=1052672; decode-1 landing: received=5 granted=5 landed=5 landed_tokens=737600
+  T4_p1d1_fill/fill: prefill-0 push: started=4 stored=2; decode-0 landing: received=4 granted=4 landed=4 landed_tokens=557056
+  T4_p1d1_ka/fill: prefill-0 push: started=7 stored=9; decode-0 landing: received=7 granted=7 landed=7 landed_tokens=770048
+  T4_p1d1_ret/recall: no counter movement
+  chain_fill/fill: prefill-0 push: started=5 stored=5
+  chain_ka/fill: prefill-0 push: started=7 stored=7; decode-0 landing: received=12 granted=12 landed=12 landed_tokens=1363968
+  chain_l1_p0d0/recall: prefill-0 push: started=18 stored=18; prefill-0 recall: offers=11 pulls=10 pulled_tokens=1392640 pulled_swa_tokens=1280 over_budget=1; decode-0 landing: received=18 granted=18 landed=18 landed_tokens=753920
+  chain_l2_p1d0/recall: prefill-0 push: started=18 stored=19; prefill-0 recall: offers=7 pulls=7 pulled_tokens=974848 pulled_swa_tokens=896; prefill-1 push: started=2 stored=2; prefill-1 recall: offers=11 pulls=10 pulled_tokens=1417408 pulled_swa_tokens=1280 over_budget=1; decode-0 landing: received=12 granted=12 landed=13 landed_tokens=307584
+  chain_l3_p0d1/recall: prefill-0 push: started=10 stored=10; prefill-1 push: started=1 stored=2; prefill-1 recall: offers=1 pulls=3 pulled_tokens=417792 pulled_swa_tokens=384; decode-0 landing: received=6 granted=6 landed=6 landed_tokens=41280; decode-1 landing: received=4 granted=4 landed=4 landed_tokens=590080
+  chain_l4_p1d1/recall: prefill-0 push: started=3 stored=3; prefill-1 push: started=5 stored=5; prefill-1 recall: offers=4 pulls=4 pulled_tokens=590080 pulled_swa_tokens=512; decode-0 landing: received=4 granted=4 landed=4; decode-1 landing: received=1 granted=1 landed=1 landed_tokens=147520
+  random_fill/fill: no counter movement
+  random_ret/recall: prefill-0 push: started=4 stored=4; prefill-0 recall: offers=3 pulls=3 pulled_tokens=417792 pulled_swa_tokens=384; prefill-1 push: started=9 stored=9; prefill-1 recall: offers=1 skipped_local_host=1; decode-0 landing: received=7 granted=7 landed=7 landed_tokens=843840; decode-1 landing: received=6 granted=6 landed=6 landed_tokens=573568
