@@ -1,0 +1,216 @@
+{
+ "engines": {
+  "prefill-0": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 96,
+   "refused_lines": 0,
+   "final": {
+    "push": {
+     "started": 204,
+     "stored": 204
+    },
+    "recall": {
+     "offers": 150,
+     "pulls": 71,
+     "pulled_tokens": 5271232,
+     "pulled_swa_tokens": 9088,
+     "skipped_local_host": 78,
+     "over_budget": 1
+    }
+   },
+   "rank_equal": true,
+   "unequal": []
+  },
+  "decode-0": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 0,
+   "refused_lines": 0,
+   "final": {
+    "landing": {
+     "received": 204,
+     "granted": 204,
+     "landed": 204,
+     "landed_tokens": 11889024
+    }
+   },
+   "rank_equal": true,
+   "unequal": []
+  }
+ },
+ "points": [
+  {
+   "label": "recall_8_fill",
+   "phase": "fill",
+   "deltas": {}
+  },
+  {
+   "label": "recall_8_ret",
+   "phase": "recall",
+   "deltas": {}
+  },
+  {
+   "label": "recall_12_fill",
+   "phase": "fill",
+   "deltas": {}
+  },
+  {
+   "label": "recall_12_ret",
+   "phase": "recall",
+   "deltas": {
+    "prefill-0.push": {
+     "started": 9,
+     "stored": 9
+    },
+    "prefill-0.recall": {
+     "offers": 2,
+     "pulls": 1,
+     "pulled_tokens": 57024,
+     "pulled_swa_tokens": 128,
+     "skipped_local_host": 1
+    },
+    "decode-0.landing": {
+     "received": 9,
+     "granted": 9,
+     "landed": 9,
+     "landed_tokens": 868608
+    }
+   }
+  },
+  {
+   "label": "recall_16_fill",
+   "phase": "fill",
+   "deltas": {
+    "prefill-0.push": {
+     "started": 9,
+     "stored": 6
+    },
+    "prefill-0.recall": {
+     "offers": 4,
+     "over_budget": 1
+    },
+    "decode-0.landing": {
+     "received": 6,
+     "granted": 6,
+     "landed": 6,
+     "landed_tokens": 835584
+    }
+   }
+  },
+  {
+   "label": "recall_16_ret",
+   "phase": "recall",
+   "deltas": {
+    "prefill-0.push": {
+     "started": 12,
+     "stored": 12
+    },
+    "prefill-0.recall": {
+     "offers": 12,
+     "pulls": 11,
+     "pulled_tokens": 1531904,
+     "pulled_swa_tokens": 1408,
+     "over_budget": 1
+    },
+    "decode-0.landing": {
+     "received": 12,
+     "granted": 12,
+     "landed": 12,
+     "landed_tokens": 885120
+    }
+   }
+  },
+  {
+   "label": "static_4",
+   "phase": "all",
+   "deltas": {
+    "prefill-0.push": {
+     "started": 2,
+     "stored": 2
+    }
+   }
+  },
+  {
+   "label": "static_8",
+   "phase": "all",
+   "deltas": {}
+  },
+  {
+   "label": "static_12",
+   "phase": "all",
+   "deltas": {
+    "prefill-0.push": {
+     "started": 16,
+     "stored": 16
+    },
+    "decode-0.landing": {
+     "received": 16,
+     "granted": 16,
+     "landed": 16,
+     "landed_tokens": 1179648
+    }
+   }
+  },
+  {
+   "label": "static_16",
+   "phase": "all",
+   "deltas": {
+    "prefill-0.push": {
+     "started": 35,
+     "stored": 35
+    },
+    "decode-0.landing": {
+     "received": 35,
+     "granted": 35,
+     "landed": 35,
+     "landed_tokens": 2236416
+    }
+   }
+  },
+  {
+   "label": "mixed_long",
+   "phase": "all",
+   "deltas": {
+    "prefill-0.push": {
+     "started": 93,
+     "stored": 93
+    },
+    "prefill-0.recall": {
+     "offers": 43,
+     "pulls": 43,
+     "pulled_tokens": 1585152,
+     "pulled_swa_tokens": 5504
+    },
+    "decode-0.landing": {
+     "received": 93,
+     "granted": 93,
+     "landed": 93,
+     "landed_tokens": 2950912
+    }
+   }
+  },
+  {
+   "label": "mixed_short",
+   "phase": "all",
+   "deltas": {
+    "prefill-0.push": {
+     "started": 93,
+     "stored": 93
+    },
+    "prefill-0.recall": {
+     "offers": 43,
+     "pulls": 43,
+     "pulled_tokens": 1585152,
+     "pulled_swa_tokens": 5504
+    },
+    "decode-0.landing": {
+     "received": 93,
+     "granted": 93,
+     "landed": 93,
+     "landed_tokens": 2950912
+    }
+   }
+  }
+ ]
+}
