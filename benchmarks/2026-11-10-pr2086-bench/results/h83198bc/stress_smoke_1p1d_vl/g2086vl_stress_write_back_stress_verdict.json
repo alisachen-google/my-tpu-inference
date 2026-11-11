@@ -1,0 +1,41 @@
+{
+ "run": "g2086vl_stress_write_back",
+ "ok": false,
+ "reasons": [
+  "cycle 1: server or router down at concurrency 3: health: ['http://j-9afb6bd7-af4a-44be-bb2b-prefill-0-0.j-9afb6bd7-af4a-44be-bb2b:30000 ReadTimeout']",
+  "cycle 2: verification batch: 0 of 21 failed (health: ['http://j-9afb6bd7-af4a-44be-bb2b-prefill-0-0.j-9afb6bd7-af4a-44be-bb2b:30000 ReadTimeout'])"
+ ],
+ "duration_s": 1405,
+ "cycles": 2,
+ "last_good_conc": [
+  2,
+  4
+ ],
+ "failed_at": [
+  3,
+  null
+ ],
+ "fail_reasons": [
+  "health: ['http://j-9afb6bd7-af4a-44be-bb2b-prefill-0-0.j-9afb6bd7-af4a-44be-bb2b:30000 ReadTimeout']",
+  null
+ ],
+ "gsm8k_baseline_acc": 1.0,
+ "gsm8k_checks": [
+  {
+   "acc": 1.0,
+   "baseline_acc": 1.0,
+   "errors": 0,
+   "compared": 50,
+   "pred_changed": 0
+  },
+  {
+   "acc": 0.98,
+   "baseline_acc": 1.0,
+   "errors": 0,
+   "compared": 50,
+   "pred_changed": 1
+  }
+ ],
+ "health_end": [],
+ "t_end": "2026-11-11 11:39:32"
+}

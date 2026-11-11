@@ -1,0 +1,8 @@
+prefill-0 sglang:generation_tokens_total 315
+prefill-0 sglang:cached_tokens_total 1415936
+prefill-0 sglang:num_requests_total 315
+prefill-0 sglang:prompt_tokens_total 9283569
+decode-0 sglang:generation_tokens_total 105405
+decode-0 sglang:cached_tokens_total 1415936
+decode-0 sglang:num_requests_total 315
+decode-0 sglang:prompt_tokens_total 9283569

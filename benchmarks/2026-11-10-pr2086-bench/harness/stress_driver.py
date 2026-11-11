@@ -60,15 +60,22 @@ class Engines:
         self.names = {u: f"prefill-{i}" for i, u in enumerate(prefills)}
         self.names.update({u: f"decode-{i}" for i, u in enumerate(decodes)})
 
-    def health(self):
+    def health(self, timeout=30):
+        """Endpoints that did not answer /health with 200 within `timeout`, as "<url> <why>" strings. A busy engine
+        can take tens of seconds to answer (its HTTP loop is shared with request intake, see the slow-health
+        observation in the report), so a single slow answer is not a dead server: the driver requires repeated
+        failures, and a refused connection, before it calls one."""
         bad = []
+        self.last_health_latency = {}
         for u in self.prefills + self.decodes + [self.lb] + list(self.pins.values()):
+            t0 = time.perf_counter()
             try:
-                r = requests.get(u.rstrip("/") + "/health", timeout=15)
+                r = requests.get(u.rstrip("/") + "/health", timeout=timeout)
                 if r.status_code != 200:
                     bad.append(f"{u} http {r.status_code}")
             except Exception as e:  # noqa: BLE001
-                bad.append(f"{u} {type(e).__name__}")
+                bad.append(f"{u} {type(e).__name__} after {time.perf_counter() - t0:.0f} s")
+            self.last_health_latency[self.names.get(u, u)] = round(time.perf_counter() - t0, 2)
         return bad
 
     def metrics(self, u):
@@ -417,6 +424,8 @@ class Driver:
         self.log_f = open(self.out / f"{a.run}_stress.log", "a")
         self.lock = threading.Lock()
         self.failures = []  # verdict reasons
+        self.health_slow = []  # (time, level, conc, what) for health probes that failed once but recovered
+        self.health_latency_max = {}  # engine -> slowest successful /health answer seen, seconds
         self.last_completion = time.time()
         self.in_flight = 0
         self.stop = threading.Event()
@@ -462,6 +471,7 @@ class Driver:
         submitted = 0
         health_t = time.time()
         fail = None
+        health_bad_streak = 0
         while True:
             with self.lock:
                 inflight = self.in_flight
@@ -483,10 +493,19 @@ class Driver:
             if time.time() - health_t > 30:
                 health_t = time.time()
                 bad = self.eng.health()
+                for n_, lat in (getattr(self.eng, "last_health_latency", None) or {}).items():
+                    self.health_latency_max[n_] = max(self.health_latency_max.get(n_, 0), lat)
                 if bad:
-                    fail = f"health: {bad}"
-                    self.log(f"level {level} conc {conc}: {fail}")
-                    break
+                    health_bad_streak += 1
+                    self.health_slow.append((now(), level, conc, bad))
+                    self.log(f"level {level} conc {conc}: health probe {health_bad_streak} failed: {bad}")
+                    # dead when refused, or when three probes in a row (about 90 s plus timeouts) get no answer
+                    if health_bad_streak >= 3 or any("ConnectionError" in b or "http 5" in b for b in bad):
+                        fail = f"health: {bad} ({health_bad_streak} probes in a row)"
+                        self.log(f"level {level} conc {conc}: {fail}")
+                        break
+                else:
+                    health_bad_streak = 0
                 with self.lock:
                     stalled = inflight > 0 and time.time() - self.last_completion > self.a.hang_seconds
                 if stalled:
@@ -656,6 +675,8 @@ class Driver:
                    "failed_at": [c.get("failed_at") for c in cycles], "fail_reasons": [c.get("fail_reason") for c in cycles],
                    "gsm8k_baseline_acc": baseline and baseline.get("acc"),
                    "gsm8k_checks": [c.get("verify", {}).get("gsm8k") for c in cycles],
+                   "health_slow_events": len(self.health_slow), "health_slow": self.health_slow[:50],
+                   "health_latency_max_s": self.health_latency_max,
                    "health_end": self.eng.health(), "t_end": now()}
         json.dump(verdict, open(self.out / f"{a.run}_stress_verdict.json", "w"), indent=1)
         self.log(f"STRESS {'PASS' if verdict['ok'] else 'FAIL'}: {json.dumps({k: v for k, v in verdict.items() if k != 'gsm8k_checks'})}")

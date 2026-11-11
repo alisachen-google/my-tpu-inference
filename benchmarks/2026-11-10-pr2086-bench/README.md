@@ -81,6 +81,25 @@ Jobs: on `j-4b873230-04db-418e-969d` (stage 08:33-09:30Z, second attempt after o
 errors. Full tables in `results/h83198bc/table_write_back.md`; head-to-head with the first head in
 `results/h83198bc/delta_write_back.md`.
 
+**Gain summary, spill-over off -> on** (prefill-side hit, total throughput, requests per minute and TTFT p50 per point; the fill rows are cold by construction, the return and static rows are where the feature acts).
+
+| Point | Prefill-side hit off -> on | Gain | Total tok/s off -> on | Gain | Req/min off -> on | Gain | TTFT p50 off -> on | Gain |
+|---|---|---|---|---|---|---|---|---|
+| recall 8, fill (cold) | 0.0% -> 0.0% | +0.0 pp | 22,360 -> 22,250 | -0% | 9.6 -> 9.6 | -1% | 23.4 -> 23.5 s | -0% |
+| recall 8, return | 93.7% -> 86.8% | -6.9 pp | 169,638 -> 88,363 | -48% | 69.0 -> 35.9 | -48% | 2.4 -> 4.3 s | -83% |
+| recall 12, fill (cold) | 0.0% -> 0.0% | +0.0 pp | 22,986 -> 22,956 | -0% | 9.9 -> 9.9 | -0% | 23.6 -> 23.7 s | -0% |
+| recall 12, return | 25.8% -> 55.5% | +29.6 pp | 27,696 -> 43,148 | +56% | 11.3 -> 17.5 | +56% | 22.0 -> 11.9 s | +46% |
+| recall 16, fill (cold) | 0.0% -> 0.0% | +0.0 pp | 22,999 -> 23,039 | +0% | 9.9 -> 9.9 | +0% | 23.7 -> 23.6 s | +0% |
+| recall 16, return | 0.3% -> 55.5% | +55.2 pp | 22,286 -> 44,879 | +101% | 9.1 -> 18.2 | +101% | 26.0 -> 9.5 s | +64% |
+| static 4 docs | 62.7% -> 62.7% | +0.0 pp | 50,767 -> 51,908 | +2% | 21.8 -> 22.3 | +2% | 10.3 -> 10.6 s | -3% |
+| static 8 docs | 62.5% -> 62.5% | +0.0 pp | 53,063 -> 52,153 | -2% | 22.8 -> 22.4 | -2% | 6.9 -> 7.2 s | -5% |
+| static 12 docs | 50.9% -> 55.3% | +4.4 pp | 42,310 -> 44,583 | +5% | 18.2 -> 19.2 | +5% | 7.5 -> 8.2 s | -8% |
+| static 16 docs | 39.5% -> 53.9% | +14.4 pp | 36,114 -> 43,477 | +20% | 15.5 -> 18.7 | +20% | 11.5 -> 7.1 s | +38% |
+| mixed, long stream | 21.9% -> 50.0% | +28.1 pp | 25,398 -> 29,232 | +15% | 10.9 -> 12.6 | +15% | 19.2 -> 17.2 s | +10% |
+| mixed, short stream | 21.9% -> 50.0% | +28.1 pp | 19,287 -> 25,312 | +31% | 29.7 -> 38.9 | +31% | 9.2 -> 4.5 s | +52% |
+
+Gains appear once the working set exceeds the prefill's HBM plus host tier (recall 12 and 16, static 16, the mixed block); nothing moves while everything fits (static 4 and 8, the cold fills); the one loss is the 8-session return at the capacity edge, discussed under Reading.
+
 **Performance gain** (what a user of the pair sees; return rows are the requests whose prefix the previous turn produced).
 
 | Point | TTFT p50 off -> on | Speedup | TTFT p95 off -> on | Speedup | E2E p50 off -> on | Wall s off -> on | Gain | Req/min off -> on | Gain | Warm returns off -> on | Prefill tokens computed per request, off -> on |

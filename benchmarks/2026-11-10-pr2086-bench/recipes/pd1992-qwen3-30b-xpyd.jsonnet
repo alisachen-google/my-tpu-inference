@@ -219,6 +219,10 @@ local softwareSetup = |||
     pip install -q --no-deps --no-build-isolation -e . 2>&1 | tail -2 || { echo "FAIL: pip install sglang-tpu tree"; exit 1; }
     export PYTHONPATH="%(tree)s/python:%(tree)s${PYTHONPATH:+:$PYTHONPATH}"
     echo "tree: $(cat %(tree)s/.sglang_rev 2>/dev/null || echo unknown) at %(tree)s"
+    # The tree is installed --no-deps over the image's packages; dependencies the tree gained after the image was
+    # built are installed here (zstandard: sglang_tpu/compilation/spmd_compiler.py, on the ViT precompile path).
+    for m in zstandard; do python3 -c "import $m" 2>/dev/null || pip install -q "$m" 2>&1 | tail -1 || { echo "FAIL: pip install $m"; exit 1; }; done
+    python3 -c "import zstandard" || { echo "FAIL: zstandard still missing"; exit 1; }
     if [ "%(hybrid)s" = true ] && ! grep -q 'hybrid_swa' "%(tree)s/sglang_tpu/disaggregation/decode_dram_offload/startup_validation.py"; then
       echo "FAIL: MODEL_PROFILE=%(profileName)s is a hybrid sliding-window model; this tree refuses hybrids (pass the PR 1991 tree as TREE_DIR)"; exit 1
     fi
@@ -360,33 +364,12 @@ local modelSetup =
   ||| % { fuse: modelFusePath }
   else 'MODEL_DIR=%s\n' % modelFusePath;
 
-// Multihost placement (sglang-raiden-pd-stress): JobSet labels every pod with jobset.sigs.k8s.io/job-key, unique
-// per child Job, i.e. per engine; matchLabelKeys/mismatchLabelKeys compare it to the incoming pod's own.
-local engineAffinity = if !multihost then {} else {
-  affinity: {
-    podAffinity: {
-      requiredDuringSchedulingIgnoredDuringExecution: [{
-        topologyKey: 'cloud.google.com/gke-nodepool',
-        labelSelector: { matchExpressions: [{ key: 'jobset.sigs.k8s.io/job-key', operator: 'Exists' }] },
-        matchLabelKeys: ['jobset.sigs.k8s.io/job-key'],
-      }],
-    },
-    podAntiAffinity: {
-      requiredDuringSchedulingIgnoredDuringExecution: [
-        {
-          topologyKey: 'kubernetes.io/hostname',
-          labelSelector: { matchExpressions: [{ key: 'jobset.sigs.k8s.io/job-key', operator: 'Exists' }] },
-          matchLabelKeys: ['jobset.sigs.k8s.io/job-key'],
-        },
-        {
-          topologyKey: 'cloud.google.com/gke-nodepool',
-          labelSelector: { matchExpressions: [{ key: 'jobset.sigs.k8s.io/job-key', operator: 'Exists' }] },
-          mismatchLabelKeys: ['jobset.sigs.k8s.io/job-key'],
-        },
-      ],
-    },
-  },
-};
+// Multihost placement: the cdk webhook gives every TPU podset `kueue.x-k8s.io/podset-required-topology:
+// cloud.google.com/gke-nodepool` with one sub-group per replica (job index), so Kueue's topology-aware scheduling
+// puts the hosts of one engine on one 2x2x2 slice by itself. A required pod (anti-)affinity on top of that (as
+// sglang-raiden-pd-stress carries) leaves the workload unassignable: TAS never reserved quota for it
+// (`couldn't assign flavors to pod set prefill`), while every admitted 2x2x2 workload on the cluster has none.
+local engineAffinity = {};
 
 // One host of an engine: libtpu forms the slice from TPU_WORKER_HOSTNAMES / TPU_WORKER_ID, sglang gets the same
 // facts as --nnodes/--node-rank/--dist-init-addr. Rank-0 binds the rendezvous on 0.0.0.0.

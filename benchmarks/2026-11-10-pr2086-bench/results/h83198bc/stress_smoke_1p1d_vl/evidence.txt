@@ -1,0 +1,14 @@
+== prefill-0-h0 ranks=8 warnings=0 errors=0 refused_lines=0
+  push     TP0 final: started=0 stored=0
+  recall   TP0 final: pulls=0
+  verdict: EQUAL across 8 ranks
+== prefill-0-h1 ranks=8 warnings=0 errors=0 refused_lines=0
+  push     TP0 final: started=185 stored=185
+  recall   TP0 final: offers=13 pulls=11 pulled_tokens=521728 skipped_local_host=2
+  verdict: EQUAL across 8 ranks
+== decode-0-h0 ranks=8 warnings=0 errors=0 refused_lines=0
+  landing  TP0 final: received=185 granted=185 landed=185 landed_tokens=5513472
+  verdict: EQUAL across 8 ranks
+== decode-0-h1 ranks=8 warnings=0 errors=0 refused_lines=0
+  landing  TP0 final: landed=0
+  verdict: EQUAL across 8 ranks

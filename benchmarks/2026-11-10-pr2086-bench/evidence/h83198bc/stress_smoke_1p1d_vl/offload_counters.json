@@ -1,0 +1,64 @@
+{
+ "engines": {
+  "prefill-0-h0": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 0,
+   "refused_lines": 0,
+   "final": {
+    "push": {},
+    "recall": {}
+   },
+   "rank_equal": true,
+   "unequal": []
+  },
+  "prefill-0-h1": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 0,
+   "refused_lines": 0,
+   "final": {
+    "push": {
+     "started": 185,
+     "stored": 185
+    },
+    "recall": {
+     "offers": 13,
+     "pulls": 11,
+     "pulled_tokens": 521728,
+     "skipped_local_host": 2
+    }
+   },
+   "rank_equal": true,
+   "unequal": []
+  },
+  "decode-0-h0": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 0,
+   "refused_lines": 0,
+   "final": {
+    "landing": {
+     "received": 185,
+     "granted": 185,
+     "landed": 185,
+     "landed_tokens": 5513472
+    }
+   },
+   "rank_equal": true,
+   "unequal": []
+  },
+  "decode-0-h1": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 0,
+   "refused_lines": 0,
+   "final": {
+    "landing": {}
+   },
+   "rank_equal": true,
+   "unequal": []
+  }
+ },
+ "points": []
+}

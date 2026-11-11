@@ -1,0 +1,30 @@
+/usr/local/lib/python3.12/site-packages/torch_tpu/__init__.py:37: UserWarning: <TorchTpu/Performance/TcMalloc/> tcmalloc is not loaded; TorchTPU host performance may be degraded due to glibc ptmalloc contention. Preload libtcmalloc before starting Python (e.g. LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4), or set PYTHONWARNINGS="ignore:<TorchTpu/Performance/TcMalloc/" to suppress this warning.
+  _tcmalloc_check.check_tcmalloc()
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794395756.729062     951 pjrt_api.cc:119] GetPjrtApi was found for TPU at /usr/local/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1794395756.768627     951 tpu_profiler_plugin.cc:800] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (263639 > 262144). Running this sequence through the model will result in indexing errors
+2026-11-11 11:16:07 stress start: duration 1200.0 s, conc 2..32 x1.5, step 180.0 s, max input 261120, max images 64, pins ['p0d0']
+2026-11-11 11:16:07 GSM8K baseline on idle engines (50 questions)
+2026-11-11 11:16:24 GSM8K baseline acc 1.0 errors 0 e2e_p50 3.651203379034996
+2026-11-11 11:16:24 cycle 1 level 1: concurrency 2 for 180 s
+2026-11-11 11:20:06 cycle 1 level 1 conc 2: 23 ok / 0 err / 0 hang, ttft p50 7.0 p95 42.3 s, hit 3.3%, gsm8k 0.75 (4), max prompt 133882 imgs 59 -> pass
+2026-11-11 11:20:06 cycle 1 level 2: concurrency 3 for 180 s
+2026-11-11 11:20:52 level 2 conc 3: health: ['http://j-9afb6bd7-af4a-44be-bb2b-prefill-0-0.j-9afb6bd7-af4a-44be-bb2b:30000 ReadTimeout']
+2026-11-11 11:21:25 cycle 1 level 2 conc 3: 7 ok / 0 err / 0 hang, ttft p50 16.3 p95 46.2 s, hit 0.9%, gsm8k 1.0 (1), max prompt 236963 imgs 60 -> FAIL
+2026-11-11 11:21:25 cycle 1: draining (in flight 0)
+2026-11-11 11:21:56 cycle 1: verification batch of 24 at concurrency 8
+2026-11-11 11:25:19 cycle 1: GSM8K gate (50 questions)
+2026-11-11 11:26:07 cycle 1: verify PASS []
+2026-11-11 11:26:07 cycle 2 level 1: concurrency 2 for 180 s
+2026-11-11 11:29:29 cycle 2 level 1 conc 2: 30 ok / 0 err / 0 hang, ttft p50 8.8 p95 19.9 s, hit 6.9%, gsm8k 1.0 (3), max prompt 261120 imgs 39 -> pass
+2026-11-11 11:29:29 cycle 2 level 2: concurrency 3 for 180 s
+2026-11-11 11:32:45 cycle 2 level 2 conc 3: 31 ok / 0 err / 0 hang, ttft p50 12.7 p95 28.8 s, hit 33.4%, gsm8k 1.0 (1), max prompt 261120 imgs 60 -> pass
+2026-11-11 11:32:45 cycle 2 level 3: concurrency 4 for 180 s
+2026-11-11 11:36:08 cycle 2 level 3 conc 4: 29 ok / 0 err / 0 hang, ttft p50 22.1 p95 48.2 s, hit 11.0%, gsm8k 1.0 (2), max prompt 261120 imgs 62 -> pass
+2026-11-11 11:36:08 cycle 2: draining (in flight 0)
+2026-11-11 11:36:39 cycle 2: verification batch of 24 at concurrency 8
+2026-11-11 11:37:58 level 902 conc 8: health: ['http://j-9afb6bd7-af4a-44be-bb2b-prefill-0-0.j-9afb6bd7-af4a-44be-bb2b:30000 ReadTimeout']
+2026-11-11 11:38:44 cycle 2: GSM8K gate (50 questions)
+2026-11-11 11:39:32 cycle 2: verify FAIL ["verification batch: 0 of 21 failed (health: ['http://j-9afb6bd7-af4a-44be-bb2b-prefill-0-0.j-9afb6bd7-af4a-44be-bb2b:30000 ReadTimeout'])"]
+2026-11-11 11:39:32 STRESS FAIL: {"run": "g2086vl_stress_write_back", "ok": false, "reasons": ["cycle 1: server or router down at concurrency 3: health: ['http://j-9afb6bd7-af4a-44be-bb2b-prefill-0-0.j-9afb6bd7-af4a-44be-bb2b:30000 ReadTimeout']", "cycle 2: verification batch: 0 of 21 failed (health: ['http://j-9afb6bd7-af4a-44be-bb2b-prefill-0-0.j-9afb6bd7-af4a-44be-bb2b:30000 ReadTimeout'])"], "duration_s": 1405, "cycles": 2, "last_good_conc": [2, 4], "failed_at": [3, null], "fail_reasons": ["health: ['http://j-9afb6bd7-af4a-44be-bb2b-prefill-0-0.j-9afb6bd7-af4a-44be-bb2b:30000 ReadTimeout']", null], "gsm8k_baseline_acc": 1.0, "health_end": [], "t_end": "2026-11-11 11:39:32"}

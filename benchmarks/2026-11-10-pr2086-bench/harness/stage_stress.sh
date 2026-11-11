@@ -30,7 +30,7 @@ rc=${PIPESTATUS[0]}
 T1=$(now); snap "$OUT/${RUN}_stress.m1"
 log "driver rc=$rc; $(hit_from_snaps $OUT/${RUN}_stress.m0 $OUT/${RUN}_stress.m1)"
 # Crash and hang evidence from the server log copies: the five invalidating patterns plus the hard failures.
-CRASH_PAT='Segmentation fault|core dumped|Watchdog timeout|watchdog_timeout|server exited rc=[1-9]|KV mismatch|checksum mismatch|UnsupportedDramOffloadConfig|CUDA error|HBM OOM|RESOURCE_EXHAUSTED'
+CRASH_PAT='Segmentation fault|core dumped|Watchdog timeout|watchdog timed out|server exited rc=[1-9]|KV mismatch|checksum mismatch|UnsupportedDramOffloadConfig|CUDA error|HBM OOM|RESOURCE_EXHAUSTED'
 crash=0; : > "$OUT/${RUN}_stress_log_scan.txt"
 for f in $SHARED/prefill-*/server.log $SHARED/decode-*/server.log; do
   [ -f "$f" ] || continue
