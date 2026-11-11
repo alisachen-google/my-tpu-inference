@@ -10,11 +10,11 @@
   recall_8_ret/recall: no counter movement
   recall_12_fill/fill: no counter movement
   recall_12_ret/recall: prefill-0 push: started=9 stored=9; prefill-0 recall: offers=2 pulls=1 pulled_tokens=57024 pulled_swa_tokens=128 skipped_local_host=1; decode-0 landing: received=9 granted=9 landed=9 landed_tokens=868608
-  recall_16_fill/fill: prefill-0 push: started=9 stored=6; prefill-0 recall: offers=4 over_budget=1; decode-0 landing: received=6 granted=6 landed=6 landed_tokens=835584
-  recall_16_ret/recall: prefill-0 push: started=12 stored=12; prefill-0 recall: offers=12 pulls=11 pulled_tokens=1531904 pulled_swa_tokens=1408 over_budget=1; decode-0 landing: received=12 granted=12 landed=12 landed_tokens=885120
+  recall_16_fill/fill: prefill-0 push: started=6 stored=6; decode-0 landing: received=6 granted=6 landed=6 landed_tokens=835584
+  recall_16_ret/recall: prefill-0 push: started=10 stored=10; prefill-0 recall: offers=12 pulls=11 pulled_tokens=1531904 pulled_swa_tokens=1408 over_budget=1; decode-0 landing: received=12 granted=12 landed=12 landed_tokens=885120
   static_4/all: prefill-0 push: started=2 stored=2
   static_8/all: no counter movement
   static_12/all: prefill-0 push: started=16 stored=16; decode-0 landing: received=16 granted=16 landed=16 landed_tokens=1179648
   static_16/all: prefill-0 push: started=35 stored=35; decode-0 landing: received=35 granted=35 landed=35 landed_tokens=2236416
-  mixed_long/all: prefill-0 push: started=93 stored=93; prefill-0 recall: offers=43 pulls=43 pulled_tokens=1585152 pulled_swa_tokens=5504; decode-0 landing: received=93 granted=93 landed=93 landed_tokens=2950912
-  mixed_short/all: prefill-0 push: started=93 stored=93; prefill-0 recall: offers=43 pulls=43 pulled_tokens=1585152 pulled_swa_tokens=5504; decode-0 landing: received=93 granted=93 landed=93 landed_tokens=2950912
+  mixed_long/all: prefill-0 push: started=93 stored=93; prefill-0 recall: offers=43 pulls=43 pulled_tokens=1585152 pulled_swa_tokens=5504; decode-0 landing: received=65 granted=65 landed=65 landed_tokens=2686976
+  mixed_short/all: prefill-0 push: started=93 stored=93; prefill-0 recall: offers=43 pulls=43 pulled_tokens=1585152 pulled_swa_tokens=5504; decode-0 landing: received=65 granted=65 landed=65 landed_tokens=2686976

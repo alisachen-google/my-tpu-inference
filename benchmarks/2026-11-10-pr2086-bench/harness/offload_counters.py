@@ -7,9 +7,8 @@ The engines log cumulative counters at most every 30 s as
   [...] [dram-offload] recall offers=.. pulls=.. pulled_tokens=.. pulled_swa_tokens=.. skipped_local_host=.. no_memory=.. over_budget=.. adopted_backup_tokens=.. failed=..  (prefill)
 (zero-valued keys are omitted). For every log: the final counters of TP0, whether every rank reports the same
 counters (B3 rank consistency), refused pulls, warnings and errors. With --points <points.jsonl> (t0/t1 per point from
-point_metrics.py), the per-point deltas of the TP0 counters: value of the last line at or before t1 + grace, minus the
-last line at or before t0 (the counters are logged on activity, so a point's end may be up to 30 s stale; the grace
-covers that).
+point_metrics.py), the per-point deltas of the TP0 counters: value of the line logged nearest t1 minus the line nearest t0 (the
+counters are logged every 30 s while there is activity, so each edge is known to within 15 s).
 
 offload_counters.py [--points points.jsonl] [--grace 45] [--json out.json] <server.log> ...
 """
@@ -51,14 +50,14 @@ def parse(path):
 
 
 def value_at(points, ts):
-    """Counters of the last line at or before ts (zeros before the first line)."""
-    cur = {}
+    """Counters at time ts: the line logged nearest to ts (the engines log the cumulative counters every 30 s while
+    there is activity, so the nearest line is the best estimate of the value at ts; ties go to the earlier line)."""
+    best, best_d = {}, None
     for t, kv in points:
-        if t <= ts:
-            cur = kv
-        else:
-            break
-    return cur
+        d = abs((t - ts).total_seconds())
+        if best_d is None or d < best_d:
+            best, best_d = kv, d
+    return best
 
 
 def main():
@@ -98,7 +97,7 @@ def main():
             p = json.loads(l)
             if not p.get("t0") or not p.get("t1"):
                 continue
-            t0 = datetime.strptime(p["t0"], "%Y-%m-%d %H:%M:%S"); t1 = datetime.strptime(p["t1"], "%Y-%m-%d %H:%M:%S") + grace
+            t0 = datetime.strptime(p["t0"], "%Y-%m-%d %H:%M:%S"); t1 = datetime.strptime(p["t1"], "%Y-%m-%d %H:%M:%S")
             row = {"label": p["label"], "phase": p.get("phase"), "deltas": {}}
             parts = []
             for name, series in engines.items():

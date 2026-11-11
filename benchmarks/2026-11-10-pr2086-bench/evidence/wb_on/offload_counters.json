@@ -83,12 +83,8 @@
    "phase": "fill",
    "deltas": {
     "prefill-0.push": {
-     "started": 9,
+     "started": 6,
      "stored": 6
-    },
-    "prefill-0.recall": {
-     "offers": 4,
-     "over_budget": 1
     },
     "decode-0.landing": {
      "received": 6,
@@ -103,8 +99,8 @@
    "phase": "recall",
    "deltas": {
     "prefill-0.push": {
-     "started": 12,
-     "stored": 12
+     "started": 10,
+     "stored": 10
     },
     "prefill-0.recall": {
      "offers": 12,
@@ -183,10 +179,10 @@
      "pulled_swa_tokens": 5504
     },
     "decode-0.landing": {
-     "received": 93,
-     "granted": 93,
-     "landed": 93,
-     "landed_tokens": 2950912
+     "received": 65,
+     "granted": 65,
+     "landed": 65,
+     "landed_tokens": 2686976
     }
    }
   },
@@ -205,10 +201,10 @@
      "pulled_swa_tokens": 5504
     },
     "decode-0.landing": {
-     "received": 93,
-     "granted": 93,
-     "landed": 93,
-     "landed_tokens": 2950912
+     "received": 65,
+     "granted": 65,
+     "landed": 65,
+     "landed_tokens": 2686976
     }
    }
   }

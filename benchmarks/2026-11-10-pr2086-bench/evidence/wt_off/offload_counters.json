@@ -1,0 +1,84 @@
+{
+ "engines": {
+  "prefill-0": {
+   "ranks": 0,
+   "warnings": 0,
+   "errors": 0,
+   "refused_lines": 0,
+   "final": {},
+   "rank_equal": true,
+   "unequal": []
+  },
+  "decode-0": {
+   "ranks": 0,
+   "warnings": 0,
+   "errors": 0,
+   "refused_lines": 0,
+   "final": {},
+   "rank_equal": true,
+   "unequal": []
+  }
+ },
+ "points": [
+  {
+   "label": "recall_8_fill",
+   "phase": "fill",
+   "deltas": {}
+  },
+  {
+   "label": "recall_8_ret",
+   "phase": "recall",
+   "deltas": {}
+  },
+  {
+   "label": "recall_12_fill",
+   "phase": "fill",
+   "deltas": {}
+  },
+  {
+   "label": "recall_12_ret",
+   "phase": "recall",
+   "deltas": {}
+  },
+  {
+   "label": "recall_16_fill",
+   "phase": "fill",
+   "deltas": {}
+  },
+  {
+   "label": "recall_16_ret",
+   "phase": "recall",
+   "deltas": {}
+  },
+  {
+   "label": "static_4",
+   "phase": "all",
+   "deltas": {}
+  },
+  {
+   "label": "static_8",
+   "phase": "all",
+   "deltas": {}
+  },
+  {
+   "label": "static_12",
+   "phase": "all",
+   "deltas": {}
+  },
+  {
+   "label": "static_16",
+   "phase": "all",
+   "deltas": {}
+  },
+  {
+   "label": "mixed_long",
+   "phase": "all",
+   "deltas": {}
+  },
+  {
+   "label": "mixed_short",
+   "phase": "all",
+   "deltas": {}
+  }
+ ]
+}

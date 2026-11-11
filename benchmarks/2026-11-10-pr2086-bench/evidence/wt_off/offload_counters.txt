@@ -1,0 +1,17 @@
+== prefill-0 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== decode-0 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  recall_8_fill/fill: no counter movement
+  recall_8_ret/recall: no counter movement
+  recall_12_fill/fill: no counter movement
+  recall_12_ret/recall: no counter movement
+  recall_16_fill/fill: no counter movement
+  recall_16_ret/recall: no counter movement
+  static_4/all: no counter movement
+  static_8/all: no counter movement
+  static_12/all: no counter movement
+  static_16/all: no counter movement
+  mixed_long/all: no counter movement
+  mixed_short/all: no counter movement

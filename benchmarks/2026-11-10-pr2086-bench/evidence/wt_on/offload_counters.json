@@ -45,15 +45,8 @@
    "phase": "fill",
    "deltas": {
     "prefill-0.push": {
-     "started": 11,
-     "stored": 11
-    },
-    "prefill-0.recall": {
-     "offers": 4,
-     "pulls": 1,
-     "pulled_tokens": 8256,
-     "pulled_swa_tokens": 128,
-     "skipped_local_host": 1
+     "started": 7,
+     "stored": 7
     },
     "decode-0.landing": {
      "received": 7,
@@ -67,17 +60,6 @@
    "label": "recall_8_ret",
    "phase": "recall",
    "deltas": {
-    "prefill-0.push": {
-     "started": 10,
-     "stored": 10
-    },
-    "prefill-0.recall": {
-     "offers": 7,
-     "pulls": 6,
-     "pulled_tokens": 467520,
-     "pulled_swa_tokens": 768,
-     "skipped_local_host": 1
-    },
     "decode-0.landing": {
      "received": 10,
      "granted": 10,
@@ -91,20 +73,14 @@
    "phase": "fill",
    "deltas": {
     "prefill-0.push": {
-     "started": 75,
-     "stored": 75
-    },
-    "prefill-0.recall": {
-     "offers": 3,
-     "pulls": 5,
-     "pulled_tokens": 459264,
-     "pulled_swa_tokens": 640
+     "started": 69,
+     "stored": 68
     },
     "decode-0.landing": {
-     "received": 94,
-     "granted": 94,
-     "landed": 94,
-     "landed_tokens": 1498496
+     "received": 69,
+     "granted": 69,
+     "landed": 69,
+     "landed_tokens": 974848
     }
    }
   },
@@ -113,8 +89,8 @@
    "phase": "recall",
    "deltas": {
     "prefill-0.push": {
-     "started": 19,
-     "stored": 19
+     "started": 18,
+     "stored": 18
     },
     "prefill-0.recall": {
      "offers": 10,
@@ -139,10 +115,10 @@
      "stored": 138
     },
     "decode-0.landing": {
-     "received": 141,
-     "granted": 141,
-     "landed": 141,
-     "landed_tokens": 2253632
+     "received": 135,
+     "granted": 135,
+     "landed": 133,
+     "landed_tokens": 1949696
     }
    }
   },
@@ -172,19 +148,7 @@
   {
    "label": "static_4",
    "phase": "all",
-   "deltas": {
-    "prefill-0.push": {
-     "started": 13,
-     "stored": 13
-    },
-    "prefill-0.recall": {
-     "offers": 16,
-     "pulls": 15,
-     "pulled_tokens": 2088960,
-     "pulled_swa_tokens": 1920,
-     "over_budget": 1
-    }
-   }
+   "deltas": {}
   },
   {
    "label": "static_8",
@@ -202,10 +166,10 @@
      "skipped_local_host": 1
     },
     "decode-0.landing": {
-     "received": 33,
-     "granted": 33,
-     "landed": 33,
-     "landed_tokens": 1187840
+     "received": 31,
+     "granted": 31,
+     "landed": 31,
+     "landed_tokens": 1179648
     }
    }
   },
@@ -237,21 +201,21 @@
    "phase": "all",
    "deltas": {
     "prefill-0.push": {
-     "started": 154,
-     "stored": 158
+     "started": 137,
+     "stored": 137
     },
     "prefill-0.recall": {
-     "offers": 29,
-     "pulls": 26,
-     "pulled_tokens": 3163392,
-     "pulled_swa_tokens": 3328,
-     "skipped_local_host": 4
+     "offers": 17,
+     "pulls": 15,
+     "pulled_tokens": 1796672,
+     "pulled_swa_tokens": 1920,
+     "skipped_local_host": 2
     },
     "decode-0.landing": {
-     "received": 137,
-     "granted": 137,
-     "landed": 137,
-     "landed_tokens": 2457600
+     "received": 130,
+     "granted": 130,
+     "landed": 127,
+     "landed_tokens": 2400256
     }
    }
   },
@@ -271,10 +235,10 @@
      "skipped_local_host": 2
     },
     "decode-0.landing": {
-     "received": 328,
-     "granted": 328,
-     "landed": 331,
-     "landed_tokens": 3703744
+     "received": 299,
+     "granted": 299,
+     "landed": 298,
+     "landed_tokens": 3488192
     }
    }
   },
@@ -294,10 +258,10 @@
      "skipped_local_host": 2
     },
     "decode-0.landing": {
-     "received": 328,
-     "granted": 328,
-     "landed": 331,
-     "landed_tokens": 3703744
+     "received": 299,
+     "granted": 299,
+     "landed": 298,
+     "landed_tokens": 3488192
     }
    }
   }

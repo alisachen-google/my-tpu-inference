@@ -37,7 +37,7 @@ def engines(d):
 def deltas(eng, t0, t1, grace):
     if not t0 or not t1:
         return {}
-    t0 = datetime.strptime(t0, "%Y-%m-%d %H:%M:%S"); t1 = datetime.strptime(t1, "%Y-%m-%d %H:%M:%S") + timedelta(seconds=grace)
+    t0 = datetime.strptime(t0, "%Y-%m-%d %H:%M:%S"); t1 = datetime.strptime(t1, "%Y-%m-%d %H:%M:%S")
     agg = {}
     for name, (series, *_rest) in eng.items():
         for w in ("push", "landing", "recall"):
