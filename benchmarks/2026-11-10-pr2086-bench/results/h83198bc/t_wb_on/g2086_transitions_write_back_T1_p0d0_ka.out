@@ -1,0 +1,30 @@
+/usr/local/lib/python3.12/site-packages/torch_tpu/__init__.py:37: UserWarning: <TorchTpu/Performance/TcMalloc/> tcmalloc is not loaded; TorchTPU host performance may be degraded due to glibc ptmalloc contention. Preload libtcmalloc before starting Python (e.g. LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4), or set PYTHONWARNINGS="ignore:<TorchTpu/Performance/TcMalloc/" to suppress this warning.
+  _tcmalloc_check.check_tcmalloc()
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794385974.539748     304 pjrt_api.cc:119] GetPjrtApi was found for TPU at /usr/local/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1794385974.568940     304 tpu_profiler_plugin.cc:800] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+{"phase": "fill", "pos": 3, "session": 3, "prompt_tokens": 36898, "ttft_s": 1.525502482894808, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 1, "session": 1, "prompt_tokens": 36898, "ttft_s": 2.638813968980685, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 0, "session": 0, "prompt_tokens": 36898, "ttft_s": 3.6161574190482497, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 2, "session": 2, "prompt_tokens": 36898, "ttft_s": 4.704050354892388, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 4, "session": 4, "prompt_tokens": 36898, "ttft_s": 5.622812157962471, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 6, "session": 6, "prompt_tokens": 36898, "ttft_s": 6.700726153096184, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 5, "session": 5, "prompt_tokens": 36898, "ttft_s": 7.666662383126095, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 7, "session": 7, "prompt_tokens": 36898, "ttft_s": 8.732653360115364, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 8, "session": 8, "prompt_tokens": 36898, "ttft_s": 7.807816347805783, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 9, "session": 9, "prompt_tokens": 36898, "ttft_s": 7.679206382948905, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 10, "session": 10, "prompt_tokens": 36898, "ttft_s": 7.84200915787369, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 11, "session": 11, "prompt_tokens": 36898, "ttft_s": 7.824319998035207, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 12, "session": 12, "prompt_tokens": 36898, "ttft_s": 7.848204456968233, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 13, "session": 13, "prompt_tokens": 36898, "ttft_s": 7.915293225087225, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 14, "session": 14, "prompt_tokens": 36898, "ttft_s": 7.858866676921025, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 15, "session": 15, "prompt_tokens": 36898, "ttft_s": 7.928102223901078, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 16, "session": 16, "prompt_tokens": 36898, "ttft_s": 6.9367022949736565, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 17, "session": 17, "prompt_tokens": 36898, "ttft_s": 7.8891086059156805, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 18, "session": 18, "prompt_tokens": 36898, "ttft_s": 7.8994765060488135, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 19, "session": 19, "prompt_tokens": 36898, "ttft_s": 7.892290405929089, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 20, "session": 20, "prompt_tokens": 36898, "ttft_s": 7.914418506901711, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 21, "session": 21, "prompt_tokens": 36898, "ttft_s": 7.828509309096262, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 22, "session": 22, "prompt_tokens": 36898, "ttft_s": 7.948702474823222, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 23, "session": 23, "prompt_tokens": 36898, "ttft_s": 7.697727432008833, "cached_tokens": 0, "error": null}
+SUMMARY {"run": "g2086_transitions_write_back", "label": "T1_p0d0_ka", "sessions": 24, "prefix": 32768, "new": 4096, "out_tokens": 16, "concurrency": 8, "seed": 62, "order": "oldest", "working_set_tokens": 885552, "fill": {"requests": 24, "errors": 0, "wall_s": 25.4, "prompt_tokens": 885552, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 7.828509309096262, "ttft_p95": 7.948702474823222, "e2e_p50": 7.998775063082576, "e2e_p95": 8.149059627903625, "total_tok_s": 34879.4, "output_tok_s": 15.1, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}

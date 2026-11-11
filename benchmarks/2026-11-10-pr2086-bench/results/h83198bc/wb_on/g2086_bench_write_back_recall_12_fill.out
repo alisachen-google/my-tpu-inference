@@ -1,0 +1,18 @@
+/usr/local/lib/python3.12/site-packages/torch_tpu/__init__.py:37: UserWarning: <TorchTpu/Performance/TcMalloc/> tcmalloc is not loaded; TorchTPU host performance may be degraded due to glibc ptmalloc contention. Preload libtcmalloc before starting Python (e.g. LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4), or set PYTHONWARNINGS="ignore:<TorchTpu/Performance/TcMalloc/" to suppress this warning.
+  _tcmalloc_check.check_tcmalloc()
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794387976.854322     896 pjrt_api.cc:119] GetPjrtApi was found for TPU at /usr/local/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1794387976.884476     896 tpu_profiler_plugin.cc:800] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+{"phase": "fill", "pos": 0, "session": 0, "prompt_tokens": 139298, "ttft_s": 6.735466985031962, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 1, "session": 1, "prompt_tokens": 139298, "ttft_s": 12.708563928026706, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 2, "session": 2, "prompt_tokens": 139298, "ttft_s": 18.661139365984127, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 3, "session": 3, "prompt_tokens": 139298, "ttft_s": 24.598096918081865, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 4, "session": 4, "prompt_tokens": 139298, "ttft_s": 23.65281020384282, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 5, "session": 5, "prompt_tokens": 139298, "ttft_s": 23.38555600005202, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 6, "session": 6, "prompt_tokens": 139298, "ttft_s": 23.676350311143324, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 7, "session": 7, "prompt_tokens": 139298, "ttft_s": 23.7492816131562, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 8, "session": 8, "prompt_tokens": 139298, "ttft_s": 23.79241572204046, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 9, "session": 9, "prompt_tokens": 139298, "ttft_s": 24.028752102982253, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 10, "session": 10, "prompt_tokens": 139298, "ttft_s": 23.856099804863334, "cached_tokens": 0, "error": null}
+{"phase": "fill", "pos": 11, "session": 11, "prompt_tokens": 139298, "ttft_s": 23.63871877384372, "cached_tokens": 0, "error": null}
+SUMMARY {"run": "g2086_bench_write_back", "label": "recall_12_fill", "sessions": 12, "prefix": 131072, "new": 8192, "out_tokens": 16, "concurrency": 4, "seed": 5, "order": "oldest", "working_set_tokens": 1671576, "fill": {"requests": 12, "errors": 0, "wall_s": 73.0, "prompt_tokens": 1671576, "cached_tokens": 0, "token_hit_rate": 0.0, "reusable_tokens": 0, "reuse_recovered": null, "sessions_fully_reused": 0, "ttft_p50": 23.676350311143324, "ttft_p95": 24.028752102982253, "e2e_p50": 23.812273262999952, "e2e_p95": 24.16174428211525, "total_tok_s": 22900.9, "output_tok_s": 2.6, "cached_tokens_by_tier": {"device": 0, "host": 0, "storage": 0}}}

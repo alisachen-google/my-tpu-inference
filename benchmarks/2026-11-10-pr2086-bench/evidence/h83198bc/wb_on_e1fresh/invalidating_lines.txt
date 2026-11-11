@@ -1,0 +1,8 @@
+[2026-11-11 09:12:48 TP1 EP1] write_back: backup failed under host memory pressure but subtree drop declined (node locked); root node 598 stays device-resident until host space frees
+[2026-11-11 09:12:48 TP5 EP5] write_back: backup failed under host memory pressure but subtree drop declined (node locked); root node 598 stays device-resident until host space frees
+[2026-11-11 09:12:48 TP2 EP2] write_back: backup failed under host memory pressure but subtree drop declined (node locked); root node 598 stays device-resident until host space frees
+[2026-11-11 09:12:48 TP3 EP3] write_back: backup failed under host memory pressure but subtree drop declined (node locked); root node 598 stays device-resident until host space frees
+[2026-11-11 09:12:48 TP7 EP7] write_back: backup failed under host memory pressure but subtree drop declined (node locked); root node 598 stays device-resident until host space frees
+[2026-11-11 09:12:48 TP6 EP6] write_back: backup failed under host memory pressure but subtree drop declined (node locked); root node 598 stays device-resident until host space frees
+[2026-11-11 09:12:48 TP4 EP4] write_back: backup failed under host memory pressure but subtree drop declined (node locked); root node 598 stays device-resident until host space frees
+[2026-11-11 09:12:48 TP0 EP0] write_back: backup failed under host memory pressure but subtree drop declined (node locked); root node 598 stays device-resident until host space frees

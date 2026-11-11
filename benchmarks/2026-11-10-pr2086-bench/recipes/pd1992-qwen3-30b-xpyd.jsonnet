@@ -40,10 +40,17 @@ local accelerator = cdk.var('ACCELERATOR', 'tpu7x');
 // CDK rejects nodeAffinity on kubernetes.io/hostname and on cloud.google.com/gke-spot (Kueue must stay free to place
 // the job on any idle slice), so a spot preemption mid-stage is handled by job_manager's retry (up to 30), which
 // replays the JobSet from the stored snapshot.
+// 2x2x1 is one 4-chip host per engine (tp8); 2x2x2 is two hosts per engine (tp16, one pod per host, rank-0 serving),
+// placed as sglang-raiden-pd-stress does: the pods of one engine on one nodepool (slice), one per host, no other
+// engine on that slice.
 local topology = cdk.var('TOPOLOGY', '2x2x1');
+local hostsByTopology = { '2x2x1': 1, '2x2x2': 2 };
+assert std.objectHas(hostsByTopology, topology) : 'TOPOLOGY must be 2x2x1 or 2x2x2';
+local hostsPerServer = hostsByTopology[topology];
+local multihost = hostsPerServer > 1;
+local distPort = 29500;
 local chips = cdk.numVar('CHIPS', 4);
-local tp = cdk.numVar('TP', 8);
-local ep = cdk.numVar('EP', 8);
+local tp = cdk.numVar('TP', 8 * hostsPerServer);
 
 // --- Software ----------------------------------------------------------------------
 local image = cdk.var('IMAGE', 'us-central1-docker.pkg.dev/cloud-tpu-inference-test/junyanxu-vllm-tpu/sglang-torchtpu:20261103');
@@ -70,6 +77,9 @@ local profiles = {
     decodeEnv: {},
     runPrefix: 'g1992b',
     hybrid: false,
+    multimodal: false,
+    ep: null,
+    kvCacheDtype: 'fp8_e4m3',
   },
   'gpt-oss-120b': {
     model: 'gpt/gpt-oss-120b',
@@ -83,11 +93,35 @@ local profiles = {
     decodeEnv: { SGLANG_TPU_FUSED_MOE_SC_GATHER: '0' },
     runPrefix: 'g2086',
     hybrid: true,
+    multimodal: false,
+    ep: null,
+    kvCacheDtype: 'fp8_e4m3',
+  },
+  // Qwen3-VL-8B-Instruct: dense, full attention, 256k context, images; the settings of the single-node
+  // sglang-torchtpu-qwen3-vl-8b-v7x-8-8k-1k recipe (page 128, ~400 tokens per image through --mm-process-config)
+  // with the context opened to the model's 262144. Text and image stress of the offload (STAGE=stress).
+  'qwen3-vl-8b': {
+    model: 'Qwen/Qwen3-VL-8B-Instruct',
+    served: 'qwen3-vl-8b',
+    pageSize: 128,
+    contextLen: 262144,
+    reasoningParser: '',
+    prefillEnv: {},
+    decodeEnv: {},
+    runPrefix: 'g2086vl',
+    hybrid: false,
+    multimodal: true,
+    ep: 1,
+    kvCacheDtype: 'auto',
   },
 };
 local profileName = cdk.var('MODEL_PROFILE', 'qwen3-30b');
 assert std.objectHas(profiles, profileName) : 'MODEL_PROFILE must be one of %s' % std.join(', ', std.objectFields(profiles));
 local profile = profiles[profileName];
+local ep = cdk.numVar('EP', if profile.ep == null then tp else profile.ep);
+local kvCacheDtype = cdk.var('KV_CACHE_DTYPE', profile.kvCacheDtype);
+// Per-image token budget of a multimodal profile: pixels/784 tokens, 313600 is ~400 tokens (the single-node recipes).
+local mmMaxPixels = cdk.numVar('MM_MAX_PIXELS', 313600);
 local modelBucket = cdk.var('MODEL_BUCKET', 'junyanxu-benchmark-models');
 local modelSubdir = cdk.var('MODEL', profile.model);
 local servedName = cdk.var('SERVED_MODEL_NAME', profile.served);
@@ -99,6 +133,13 @@ local writePolicy = cdk.var('WRITE_POLICY', 'write_back');
 local contextLen = cdk.numVar('CONTEXT_LEN', profile.contextLen);
 local maxTotalTokens = cdk.numVar('MAX_TOTAL_TOKENS', 786432);
 local maxRunning = cdk.numVar('MAX_RUNNING_REQUESTS', 4);
+// Decode batch buckets to precompile; a stress run at high concurrency needs the larger ones (and
+// TORCH_COMPILE_MAX_BS at least the largest) or batches above 4 run uncompiled.
+local tpuCompileBs = cdk.var('TPU_COMPILE_BS', '1 2 4');
+local torchCompileMaxBs = cdk.numVar('TORCH_COMPILE_MAX_BS', 4);
+// The prefill ships a request's prefix-cache hit to the decode as soon as it is scheduled (upstream's default on
+// TPU); EARLY_SEND=false turns it off.
+local earlySend = cdk.boolVar('EARLY_SEND', true);
 local chunkedPrefill = cdk.numVar('CHUNKED_PREFILL', 8192);
 local memFraction = cdk.var('MEM_FRACTION', '0.45');
 local pageSize = cdk.numVar('PAGE_SIZE', profile.pageSize);
@@ -122,6 +163,7 @@ local extraEnv = {
 // The script is HARNESS_DIR/stage_<STAGE>.sh (2p2d is kept as an alias of layout).
 // bench: the PR 2086 1P1D campaign (recall + static ladders, mixed sizes, integrity; WRITE_POLICY picks the arm's
 // policy); transitions: the PR 2086 2P2D sticky-pair transitions (T1-T4, four-leg chain, random).
+// stress: the long mixed-load stress (ramp to failure, drain, verify, GSM8K quality gate) of stage_stress.sh, any layout.
 local stage = cdk.var('STAGE', 'layout');
 local runPrefix = cdk.var('RUN_PREFIX', profile.runPrefix);
 local layout = '%dp%dd' % [numPrefill, numDecode];
@@ -224,16 +266,16 @@ local serverFlags(mode) =
     flag('ep-size', ep),
     flag('attention-backend', attentionBackend),
     flag('page-size', pageSize),
-    flag('kv-cache-dtype', 'fp8_e4m3'),
+    flag('kv-cache-dtype', kvCacheDtype),
     flag('context-length', contextLen),
     flag('max-total-tokens', maxTotalTokens),
     flag('max-running-requests', maxRunning),
     flag('chunked-prefill-size', chunkedPrefill),
     flag('max-prefill-tokens', chunkedPrefill),
     flag('tpu-compile-tokens', '512 1024 2048 4096 8192'),
-    flag('tpu-compile-bs', '1 2 4'),
+    flag('tpu-compile-bs', tpuCompileBs),
     flag('enable-torch-compile'),
-    flag('torch-compile-max-bs', 4),
+    flag('torch-compile-max-bs', torchCompileMaxBs),
     flag('mem-fraction-static', memFraction),
     flag('sampling-backend', 'pytorch'),
     flag('skip-server-warmup'),
@@ -250,6 +292,15 @@ local serverFlags(mode) =
     flag('hicache-ratio', if mode == 'prefill' then prefillHicacheRatio else decodeHicacheRatio),
   ]
   + (if reasoningParser == '' then [] else [flag('reasoning-parser', reasoningParser)])
+  + (if profile.multimodal then
+       [flag('trust-remote-code'), "--mm-process-config '%s'" % std.manifestJsonMinified({ image: { min_pixels: 65536, max_pixels: mmMaxPixels } })]
+     else [])
+  // Multihost: every host runs the server; rank-0 binds the rendezvous, the others dial it.
+  + (if multihost then [
+       flag('nnodes', hostsPerServer),
+       flag('node-rank', '"$HOST_INDEX"'),
+       flag('dist-init-addr', '"$DIST_INIT_ADDR"'),
+     ] else [])
   + (if mode == 'prefill' then [flag('disaggregation-bootstrap-port', bootstrapPort)] else [])
   + (if mode == 'decode' then [flag('disaggregation-decode-enable-radix-cache')] else [])
   + (local extra = if mode == 'prefill' then extraPrefillArgs else extraDecodeArgs;
@@ -292,7 +343,8 @@ local engineEnv = {
   TPU_RAIDEN_DECODE_PAYLOAD_READ_TIMEOUT_S: '60',
   TPU_RAIDEN_DECODE_ACK_WRITE_TIMEOUT_S: '60',
   TPU_RAIDEN_DECODE_PAYLOAD_WRITE_TIMEOUT_S: '60',
-} + (if switchOn then { SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM: '1' } else {});
+} + (if switchOn then { SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM: '1' } else {})
+  + { SGLANG_DISAGG_PREFILL_EARLY_SEND_CACHED_PREFIX: if earlySend then '1' else '0' };
 
 local modelSetup =
   if localCopy then |||
@@ -308,10 +360,61 @@ local modelSetup =
   ||| % { fuse: modelFusePath }
   else 'MODEL_DIR=%s\n' % modelFusePath;
 
+// Multihost placement (sglang-raiden-pd-stress): JobSet labels every pod with jobset.sigs.k8s.io/job-key, unique
+// per child Job, i.e. per engine; matchLabelKeys/mismatchLabelKeys compare it to the incoming pod's own.
+local engineAffinity = if !multihost then {} else {
+  affinity: {
+    podAffinity: {
+      requiredDuringSchedulingIgnoredDuringExecution: [{
+        topologyKey: 'cloud.google.com/gke-nodepool',
+        labelSelector: { matchExpressions: [{ key: 'jobset.sigs.k8s.io/job-key', operator: 'Exists' }] },
+        matchLabelKeys: ['jobset.sigs.k8s.io/job-key'],
+      }],
+    },
+    podAntiAffinity: {
+      requiredDuringSchedulingIgnoredDuringExecution: [
+        {
+          topologyKey: 'kubernetes.io/hostname',
+          labelSelector: { matchExpressions: [{ key: 'jobset.sigs.k8s.io/job-key', operator: 'Exists' }] },
+          matchLabelKeys: ['jobset.sigs.k8s.io/job-key'],
+        },
+        {
+          topologyKey: 'cloud.google.com/gke-nodepool',
+          labelSelector: { matchExpressions: [{ key: 'jobset.sigs.k8s.io/job-key', operator: 'Exists' }] },
+          mismatchLabelKeys: ['jobset.sigs.k8s.io/job-key'],
+        },
+      ],
+    },
+  },
+};
+
+// One host of an engine: libtpu forms the slice from TPU_WORKER_HOSTNAMES / TPU_WORKER_ID, sglang gets the same
+// facts as --nnodes/--node-rank/--dist-init-addr. Rank-0 binds the rendezvous on 0.0.0.0.
+local hostSetup(mode) =
+  if !multihost then 'HOST_INDEX=0\n'
+  else |||
+    HOST_INDEX=${JOB_COMPLETION_INDEX:?Indexed Job expected}
+    RANK0=%(rank0)s
+    export TPU_WORKER_ID=$HOST_INDEX TPU_NODE_ID=$HOST_INDEX
+    export TPU_WORKER_HOSTNAMES=%(hostnames)s
+    if [ "$HOST_INDEX" = 0 ]; then DIST_INIT_ADDR=0.0.0.0:%(port)d; else DIST_INIT_ADDR=$RANK0:%(port)d; fi
+    echo "multihost: host $HOST_INDEX of %(hosts)d, rendezvous $DIST_INIT_ADDR, workers $TPU_WORKER_HOSTNAMES"
+  ||| % {
+    rank0: '${JS_NAME}-%s-${JOBSET_JOB_INDEX}-0.${JS_NAME}.${POD_NAMESPACE}.svc.cluster.local' % mode,
+    hostnames: std.join(',', [
+      '${JS_NAME}-%s-${JOBSET_JOB_INDEX}-%d.${JS_NAME}.${POD_NAMESPACE}.svc.cluster.local' % [mode, h]
+      for h in std.range(0, hostsPerServer - 1)
+    ]),
+    port: distPort,
+    hosts: hostsPerServer,
+  };
+
 local serverJob(mode, replicas) = withGcsfuse(cdk.job(
   name=mode,
   replicas=replicas,
-  podSpec=cdk.tpuNodeSelector(accelerator, topology),
+  parallelism=hostsPerServer,
+  completions=hostsPerServer,
+  podSpec=cdk.tpuNodeSelector(accelerator, topology) + engineAffinity,
   volumes=[{ name: 'dshm', emptyDir: { medium: 'Memory' } }] + gcsVolumes,
   containers=[cdk.container(
     'sglang-' + mode,
@@ -321,7 +424,8 @@ local serverJob(mode, replicas) = withGcsfuse(cdk.job(
       echo "role=%(mode)s JOBSET_JOB_INDEX=$JOBSET_JOB_INDEX HOSTNAME=$HOSTNAME $(date -u)"
       unset TPU_VISIBLE_CHIPS || true
       for v in $(compgen -e | grep '^MEGASCALE'); do unset "$v"; done
-      LOG_DIR=%(shared)s/%(mode)s-${JOBSET_JOB_INDEX}
+      %(hostSetup)s
+      LOG_DIR=%(shared)s/%(mode)s-${JOBSET_JOB_INDEX}%(hostSuffix)s
       mkdir -p "$LOG_DIR"
       %(software)s
       %(modelSetup)s
@@ -333,7 +437,7 @@ local serverJob(mode, replicas) = withGcsfuse(cdk.job(
       # A host whose previous tenant's TPU session has not cleared yet fails libtpu init with START_SESSION
       # failed (the teardown race, bare-metal issue I1); that is worth one retry before giving the host up.
       for attempt in 1 2 3; do
-        echo "Starting SGLang %(mode)s server ${JOBSET_JOB_INDEX} (attempt $attempt) $(date -u)"
+        echo "Starting SGLang %(mode)s server ${JOBSET_JOB_INDEX} host ${HOST_INDEX} (attempt $attempt) $(date -u)"
         python3 -m sglang.launch_server \
           %(flags)s \
           2>&1 | tee -a /tmp/server.log
@@ -350,12 +454,15 @@ local serverJob(mode, replicas) = withGcsfuse(cdk.job(
     ||| % {
       mode: mode,
       shared: shared,
+      hostSetup: std.rstripChars(hostSetup(mode), '\n'),
+      hostSuffix: if multihost then '-h${HOST_INDEX}' else '',
       software: std.rstripChars(softwareSetup, '\n'),
       modelSetup: std.rstripChars(modelSetup, '\n'),
       flags: std.join(' \\\n  ', serverFlags(mode)),
     },
     env=commonEnv + cdk.megascaleOff + engineEnv + {
       JOBSET_JOB_INDEX: { valueFrom: { fieldRef: { fieldPath: "metadata.labels['jobset.sigs.k8s.io/job-index']" } } },
+      POD_NAMESPACE: { valueFrom: { fieldRef: { fieldPath: 'metadata.namespace' } } },
     } + extraEnv[mode],
     resources=cdk.tpuResources(chips, cpu='32', memory='900Gi'),
     volumeMounts=[{ name: 'dshm', mountPath: '/dev/shm' }] + gcsMounts,
@@ -430,6 +537,7 @@ local benchJob = withGcsfuse(cdk.job(
       export OUT=%(shared)s/bench SHARED=%(shared)s RUN=%(run)s
       export LB=%(lb)s PREFILL_URLS="%(prefillUrls)s" DECODE_URLS="%(decodeUrls)s" LAYOUT=%(layout)s
       export MODEL_PROFILE=%(profileName)s HYBRID=%(hybrid)s PAGE_SIZE=%(pageSize)d WRITE_POLICY=%(writePolicy)s SWITCH=%(switch)s
+      export MULTIMODAL=%(multimodal)s SERVED_MODEL=%(served)s CONTEXT_LEN=%(contextLen)d TP=%(tp)d MAX_RUNNING=%(maxRunning)d HOSTS_PER_ENGINE=%(hosts)d
       lb_pin() { echo "http://%(routerHost)s:$((8100 + 10 * $1 + $2))"; }
       export -f lb_pin
       export PYTHONPATH="$HARNESS${PYTHONPATH:+:$PYTHONPATH}"
@@ -461,6 +569,12 @@ local benchJob = withGcsfuse(cdk.job(
       pageSize: pageSize,
       writePolicy: writePolicy,
       switch: switchOn,
+      multimodal: profile.multimodal,
+      served: servedName,
+      contextLen: contextLen,
+      tp: tp,
+      maxRunning: maxRunning,
+      hosts: hostsPerServer,
       stageEnv: std.join('\n', ['export %s=%s' % [k, std.escapeStringBash(stageEnv[k])] for k in std.objectFields(stageEnv)]),
       hold: holdSeconds,
       waits: std.rstripChars(std.join('', [cdk.waitForHttp(lbUrl + '/health', waitTimeout)] + [

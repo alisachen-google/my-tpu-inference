@@ -1,0 +1,16 @@
+prefill-0 sglang:generation_tokens_total 245
+prefill-0 sglang:cached_tokens_total 1094976
+prefill-0 sglang:num_requests_total 245
+prefill-0 sglang:prompt_tokens_total 22320192
+prefill-1 sglang:generation_tokens_total 63
+prefill-1 sglang:cached_tokens_total 1047424
+prefill-1 sglang:num_requests_total 63
+prefill-1 sglang:prompt_tokens_total 9222840
+decode-0 sglang:generation_tokens_total 3936
+decode-0 sglang:cached_tokens_total 8035584
+decode-0 sglang:num_requests_total 246
+decode-0 sglang:prompt_tokens_total 22459490
+decode-1 sglang:generation_tokens_total 992
+decode-1 sglang:cached_tokens_total 2863936
+decode-1 sglang:num_requests_total 62
+decode-1 sglang:prompt_tokens_total 9083542
