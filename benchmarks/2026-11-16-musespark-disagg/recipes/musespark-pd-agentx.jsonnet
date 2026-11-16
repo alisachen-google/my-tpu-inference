@@ -95,9 +95,9 @@ local modelVolume = {
   ephemeral: {
     volumeClaimTemplate: {
       spec: {
-        storageClassName: 'premium-rwo',
+        storageClassName: cdk.var('MODEL_STORAGE_CLASS', 'premium-rwo'),
         accessModes: ['ReadWriteOnce'],
-        resources: { requests: { storage: '1024Gi' } },
+        resources: { requests: { storage: cdk.var('MODEL_STORAGE_SIZE', '1024Gi') } },
       },
     },
   },
