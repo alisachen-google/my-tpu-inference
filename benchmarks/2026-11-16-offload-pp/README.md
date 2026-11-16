@@ -52,3 +52,42 @@ of those is a prerequisite for a meaningful live run, so no cluster time was spe
 3. Wire the ledger into `event_loop_pp_disagg_prefill` / `_decode` next to the existing consensus sends.
 4. Recall (cast, settle, outcome vote at the pop), then push, then validation and README, each with its tests.
 5. The live matrix of the design's section 7 on single-host and multi-host pipelines, then the draft PR.
+
+## Update 2026-11-16 (later): option B2 started, with one changed assumption
+
+Decision from the coordinator: build option B2 (stage-layout store on the decode). Before building it the code was
+checked for what a switch-on decode does with a landed branch. Result, in the design's Revision 2026-11-16d: the
+decode **does** load pushed branches into its own HBM. Its request match counts them (`_match_prefix_and_lock`,
+`l2_host_hit_length`), it promises them to the prefill as `decode_prefix_len`, the recall offer is triggered by that
+match (`_send_kv_metadata` hook), and `_process_hicache_local_restores` loads them. Under B2 that cannot work, so
+for the pipeline pairing the branches live in a separate index, the recall is triggered by a match in that index,
+and the decode receives the whole prompt over the wire on a recall turn. The tensor-parallel pairing is unchanged.
+
+Second finding: the pinned tpu-sync wheel does not ship the host-only extension (`_tpu_raiden_host`), so
+`KVCacheManager.create_host_only_for_testing` cannot be used. The store's pools must be ordinary managers built over
+placeholder device tensors shaped like one page of a prefill stage, using only their host blocks. Whether that works
+is unproven; the probe `test/manual/tpu/probe_stage_layout_host_store.py` on the branch tests it on one host
+(source device, source host, store host, source host, source device, compare). It has not run: the workstream 2 jobs
+still hold the cluster.
+
+Code on `pd-dram-offload-pp` (fork), all torch-free and passing on this VM (49 tests):
+
+| Commit | Module | What |
+|---|---|---|
+| d4c6764a | `stage_votes.py` | ring votes across pipeline stages |
+| 4745864d | `stage_layout_store.py` | the decode's index: shared page paths, a window per pushed length, LRU eviction, pins, equal page ids on every rank; sizing and stage-to-rank placement |
+| 26461392 | `decode_stage_branches.py` | decode receiver and offerer over the index; `StagePoolSet` builds one pool per hosted stage at the first push |
+
+Placement rule: prefill stage `s` is hosted by decode rank `s mod decode_tp`. Stage zero also sends the branch's
+tokens to every decode rank. Every pool on every rank has the same page count, so one page id names a page in all
+stage pools and the ranks only agree on the index.
+
+Not done: the raiden channel messages for stage pushes and pulls, the placeholder pool builder, the hook dispatch,
+the whole prefill side (per-stage push and recall under ring votes), startup validation, README, CI registration,
+the draft PR and every live run.
+
+Hazard found for the prefill side: a vote cast in one micro-batch slot settles a full loop later, and the tree keeps
+changing in between. A pick made at cast time (the leaf to push, the local prefix of a recall) can be evicted before
+the verdict. The workers cannot be converted by replacing each blocking reduce with a delayed one; each call site
+needs a rule for what is held between cast and settle, and locks taken before agreement would make evictions differ
+between stages.
