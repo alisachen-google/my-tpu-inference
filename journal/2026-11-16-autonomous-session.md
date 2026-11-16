@@ -40,6 +40,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 
 | Job | Purpose | State |
 |---|---|---|
+| j-1584d23c-35db-47b2-ac31 | ws2 flag-set recall 8/9 x5, stamp kept | submitted 09:2x-09:5xZ |
 
 ## Decisions taken without the user (to review)
 
