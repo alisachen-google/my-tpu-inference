@@ -39,6 +39,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:09 | 2 | Flag-SET reproduction (5 repeats per arm, same engines): recall 8 hit stamp kept 94.4/92.3/94.4/94.4/94.4 vs stamp removed 93.0/94.4/94.4/90.2/94.4; recall 9 kept 80.8/74.6/74.6/74.6/74.0 (mean 75.7) vs removed 76.4/77.7/79.5/69.7/83.9 (mean 77.4). Refused drops 160 vs 40. No difference beyond run-to-run spread; removing the stamp does not remove the occasional partial return (90.2 with the fix). Jobs j-1584d23c-35db-47b2-ac31 and j-8a19ba03-aaad-484f-893d collected and deleted. |
 | 10:10 | 2 | Wrote the fallback upstream change on branch offload-warn-skip-host-dup-reclaim (off main): start-up warning when SGLANG_HICACHE_SKIP_HOST_DUPLICATE_RECLAIM=1 with write_back and the offload switch on, 3 unit tests, README note. Unit job j-ff95da0a-ac33-4b97-8b7d (pending 1 h, never placed) deleted and replaced by j-95df0a31-0751-4de4-8c88, which runs the offload unit tests of both the fix tree and the warning tree. |
 | 10:17 | 1 | Engine wired on fork branch pd-dram-offload-pp (00188807). Prefill stages vote through the pipeline's own ready/failed bootstrap lists (marked entries, no new ring message): stage_agreement.py, stage_prefill_workers.py (torch-free decisions), stage_prefill_ops.py (thin torch glue). Decode offer rides the pipeline request's consumer JSON. Startup now accepts a pipeline prefill at tp 1 and a decode with the pipeline transfer; a pipeline decode stays refused. 62 torch-free tests pass on this VM; nothing torch-bound has run anywhere yet. |
+| 10:20 | 1 | Submitted j-0fef6998-a7d1-4974-9077 (tree f5e3a98c, image anvil-jax0112-97afaea9, 4 chips): all test_decode_dram_offload_*.py plus test_raiden_host_transfer, then the stage-layout host store probe. Queued behind workstreams 2 and 3 on the coordinator's instruction. |
 
 ## Bugs and defects found (running list)
 
@@ -61,6 +62,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-ff95da0a-ac33-4b97-8b7d | ws2 unit tests | submitted 09:2x-09:5xZ |
 | j-95df0a31-0751-4de4-8c88 | ws2 unit tests (fix tree + warning tree) | submitted 10:2xZ; replaces j-ff95da0a-ac33-4b97-8b7d (deleted) |
 | j-bf9d3225-5ae0-4867-8f77 | ws2 final ladder x3, fix (resubmit) | submitted 10:15Z |
+| j-0fef6998-a7d1-4974-9077 | ws1 unit tests on the image candidate for main + B2 byte-path probe | submitted 10:2xZ |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
