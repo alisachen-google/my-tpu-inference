@@ -1,0 +1,32 @@
+[2026-11-16 13:08:33 PP0] [dram-offload] stage push_started=1
+[2026-11-16 13:08:33 PP1] [dram-offload] stage push_started=1
+[2026-11-16 13:08:33 PP2] [dram-offload] stage push_started=1
+[2026-11-16 13:08:33 PP3] [dram-offload] stage push_started=1
+[2026-11-16 13:08:33 PP4] [dram-offload] stage push_started=1
+[2026-11-16 13:08:33 PP5] [dram-offload] stage push_started=1
+[2026-11-16 13:08:33 PP6] [dram-offload] stage push_started=1
+[2026-11-16 13:08:33 PP7] [dram-offload] stage push_started=1
+[2026-11-16 13:09:03 PP0] [dram-offload] stage push_started=24 push_stored=24 recall_offers=17 recall_pulls=17 recall_pulled_pages=425
+[2026-11-16 13:09:03 PP3] [dram-offload] stage push_started=24 push_stored=24 recall_offers=17 recall_pulls=17 recall_pulled_pages=425
+[2026-11-16 13:09:03 PP2] [dram-offload] stage push_started=24 push_stored=24 recall_offers=17 recall_pulls=17 recall_pulled_pages=425
+[2026-11-16 13:09:03 PP1] [dram-offload] stage push_started=24 push_stored=24 recall_offers=17 recall_pulls=17 recall_pulled_pages=425
+[2026-11-16 13:09:03 PP6] [dram-offload] stage push_started=24 push_stored=24 recall_offers=17 recall_pulls=17 recall_pulled_pages=425
+[2026-11-16 13:09:03 PP5] [dram-offload] stage push_started=24 push_stored=24 recall_offers=17 recall_pulls=17 recall_pulled_pages=425
+[2026-11-16 13:09:03 PP4] [dram-offload] stage push_started=24 push_stored=24 recall_offers=17 recall_pulls=17 recall_pulled_pages=425
+[2026-11-16 13:09:03 PP7] [dram-offload] stage push_started=24 push_stored=24 recall_offers=17 recall_pulls=17 recall_pulled_pages=425
+[2026-11-16 13:09:33 PP0] [dram-offload] stage push_started=24 push_stored=24 recall_offers=57 recall_pulls=34 recall_pulled_pages=850 recall_held=23
+[2026-11-16 13:09:33 PP3] [dram-offload] stage push_started=24 push_stored=24 recall_offers=57 recall_pulls=34 recall_pulled_pages=850 recall_held=23
+[2026-11-16 13:09:33 PP2] [dram-offload] stage push_started=24 push_stored=24 recall_offers=57 recall_pulls=34 recall_pulled_pages=850 recall_held=23
+[2026-11-16 13:09:33 PP1] [dram-offload] stage push_started=24 push_stored=24 recall_offers=57 recall_pulls=34 recall_pulled_pages=850 recall_held=23
+[2026-11-16 13:09:33 PP4] [dram-offload] stage push_started=24 push_stored=24 recall_offers=57 recall_pulls=34 recall_pulled_pages=850 recall_held=23
+[2026-11-16 13:09:33 PP6] [dram-offload] stage push_started=24 push_stored=24 recall_offers=57 recall_pulls=34 recall_pulled_pages=850 recall_held=23
+[2026-11-16 13:09:33 PP5] [dram-offload] stage push_started=24 push_stored=24 recall_offers=57 recall_pulls=34 recall_pulled_pages=850 recall_held=23
+[2026-11-16 13:09:33 PP7] [dram-offload] stage push_started=24 push_stored=24 recall_offers=57 recall_pulls=34 recall_pulled_pages=850 recall_held=23
+[2026-11-16 13:10:03 PP0] [dram-offload] stage push_started=24 push_stored=24 push_stale=4 recall_offers=120 recall_pulls=93 recall_pulled_pages=2325 recall_held=27
+[2026-11-16 13:10:03 PP3] [dram-offload] stage push_started=24 push_stored=24 push_stale=4 recall_offers=120 recall_pulls=93 recall_pulled_pages=2325 recall_held=27
+[2026-11-16 13:10:03 PP1] [dram-offload] stage push_started=24 push_stored=24 push_stale=4 recall_offers=120 recall_pulls=93 recall_pulled_pages=2325 recall_held=27
+[2026-11-16 13:10:03 PP2] [dram-offload] stage push_started=24 push_stored=24 push_stale=4 recall_offers=120 recall_pulls=93 recall_pulled_pages=2325 recall_held=27
+[2026-11-16 13:10:03 PP4] [dram-offload] stage push_started=24 push_stored=24 push_stale=4 recall_offers=120 recall_pulls=93 recall_pulled_pages=2325 recall_held=27
+[2026-11-16 13:10:03 PP6] [dram-offload] stage push_started=24 push_stored=24 push_stale=4 recall_offers=120 recall_pulls=93 recall_pulled_pages=2325 recall_held=27
+[2026-11-16 13:10:03 PP5] [dram-offload] stage push_started=24 push_stored=24 push_stale=4 recall_offers=120 recall_pulls=93 recall_pulled_pages=2325 recall_held=27
+[2026-11-16 13:10:03 PP7] [dram-offload] stage push_started=24 push_stored=24 push_stale=4 recall_offers=120 recall_pulls=93 recall_pulled_pages=2325 recall_held=27

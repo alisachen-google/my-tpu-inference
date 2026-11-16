@@ -1,0 +1,48 @@
+[2026-11-16 13:08:33 TP11 EP11] [dram-offload] stage landing received=1
+[2026-11-16 13:08:33 TP10 EP10] [dram-offload] stage landing received=1
+[2026-11-16 13:08:33 TP12 EP12] [dram-offload] stage landing received=1
+[2026-11-16 13:08:33 TP9 EP9] [dram-offload] stage landing received=1
+[2026-11-16 13:08:33 TP14 EP14] [dram-offload] stage landing received=1
+[2026-11-16 13:08:33 TP8 EP8] [dram-offload] stage landing received=1
+[2026-11-16 13:08:33 TP13 EP13] [dram-offload] stage landing received=1
+[2026-11-16 13:08:33 TP15 EP15] [dram-offload] stage landing received=1
+[2026-11-16 13:08:34 TP15 EP15] [dram-offload] stage store ready on rank 15: stages [15], 2730 pages (786432 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 13:08:34 TP14 EP14] [dram-offload] stage store ready on rank 14: stages [14], 2730 pages (786432 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 13:08:34 TP13 EP13] [dram-offload] stage store ready on rank 13: stages [13], 2730 pages (786432 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 13:08:34 TP12 EP12] [dram-offload] stage store ready on rank 12: stages [12], 2730 pages (786432 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 13:08:34 TP11 EP11] [dram-offload] stage store ready on rank 11: stages [11], 2730 pages (786432 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 13:08:34 TP10 EP10] [dram-offload] stage store ready on rank 10: stages [10], 2730 pages (786432 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 13:08:34 TP8 EP8] [dram-offload] stage store ready on rank 8: stages [8], 2730 pages (786432 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 13:08:34 TP9 EP9] [dram-offload] stage store ready on rank 9: stages [9], 2730 pages (786432 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 13:09:03 TP12 EP12] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:03 TP11 EP11] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:03 TP13 EP13] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:03 TP14 EP14] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:03 TP10 EP10] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:03 TP15 EP15] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:03 TP9 EP9] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:03 TP8 EP8] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:34 TP11 EP11] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:34 TP10 EP10] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:34 TP9 EP9] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:34 TP8 EP8] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:34 TP12 EP12] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:34 TP14 EP14] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:34 TP13 EP13] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:09:34 TP15 EP15] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730 used_pages=600
+[2026-11-16 13:10:04 TP13 EP13] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:04 TP14 EP14] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:04 TP12 EP12] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:04 TP11 EP11] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:04 TP15 EP15] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:04 TP10 EP10] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:04 TP9 EP9] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:04 TP8 EP8] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:34 TP13 EP13] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:34 TP12 EP12] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:34 TP14 EP14] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:34 TP11 EP11] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:34 TP15 EP15] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:34 TP10 EP10] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:34 TP9 EP9] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
+[2026-11-16 13:10:34 TP8 EP8] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=2730
