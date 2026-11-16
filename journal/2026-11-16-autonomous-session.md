@@ -44,6 +44,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-8a19ba03-aaad-484f-893d | ws2 flag-set recall 8/9 x5, stamp removed | submitted 09:2x-09:5xZ |
 | j-405f0892-b1ea-4887-a83b | ws2 final ladder x3, baseline 83198bc | submitted 09:2x-09:5xZ |
 | j-af31fde6-c6c9-4fda-9bf4 | ws2 final ladder x3, fix | submitted 09:2x-09:5xZ |
+| j-ff95da0a-ac33-4b97-8b7d | ws2 unit tests | submitted 09:2x-09:5xZ |
 
 ## Decisions taken without the user (to review)
 
