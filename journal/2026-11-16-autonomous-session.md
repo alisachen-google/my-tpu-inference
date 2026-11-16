@@ -60,6 +60,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 12:12 | 1 | Muse job j-fb9d30af-5544-4846-b28d had not started (server pods Pending 12 min on occupied nodes); replaced by j-0eb12ed9-feb2-4dc4-babd on the current tree (check with burst controls). |
 | 12:13 | 2 | Final ladder A/B, flag unset, 3 repeats per arm on fresh engines (baseline PR head j-405f0892-b1ea-4887-a83b vs stamp removed j-bf9d3225-5ae0-4867-8f77): recall 8 94.4 x3 both; recall 9 94.4 x3 both; recall 12 mean 78.4 vs 78.6; recall 16 74.9/81.8/82.9 (mean 79.9) vs 62.1/67.9/63.1 (mean 64.4), TTFT p50 5.6 vs 9.4 s, throughput -35%; static and mixed level; integrity 16/16 both; refused drops 96 vs 0. Removing the stamp REGRESSES recall 16 in every run and gains nothing elsewhere: the fix PR is not opened. |
 | 12:13 | 2 | ALL WORKSTREAM 2 JOBS ARE DELETED (12:2xZ): the cluster is free for workstream 1. Remaining ws2 work is write-up, draft PR (start-up warning) and the issue comment; no more cluster use planned. |
+| 12:15 | 2 | Opened DRAFT PR sgl-project/sglang-torchtpu#2206 (start-up warning + README note for SGLANG_HICACHE_SKIP_HOST_DUPLICATE_RECLAIM with write_back and the offload on; unit tests pass on CPU venv) and commented on issue 2107 with the repeated-run tables (issuecomment-6916116013): stamp stays, loss needs the flag. Results in benchmarks/2026-11-16-issue2107-fix/README.md. Workstream 2 complete. |
 
 ## Bugs and defects found (running list)
 
