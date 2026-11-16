@@ -1,6 +1,6 @@
 # Workstream 1: KV offload to decode DRAM with a pipeline-parallel prefill
 
-Design walkthrough, 2026-11-16. Written against `sgl-project/sglang-torchtpu` main at `82e2b973`, which contains
+Design walkthrough, 2026-11-16 (multi-host pipelines added the same day, section 4.7). Written against `sgl-project/sglang-torchtpu` main at `82e2b973`, which contains
 the feature as merged: [PR 1992](https://github.com/sgl-project/sglang-torchtpu/pull/1992) (offload of cold prefill
 KV to decode DRAM, commit `3dabdc26`) and [PR 2086](https://github.com/sgl-project/sglang-torchtpu/pull/2086)
 (hybrid sliding-window models, commit `5c136df1`). Status: proposal, nothing implemented. File and function names are the real ones in that tree;
@@ -191,6 +191,37 @@ takes the whole window on every stage or nothing.
   `_EARLY_CLOSE`) concern the request's own KV hand-off and are independent of the offload. First version:
   allowed, tested in the matrix below; refuse any that the tests break.
 
+### 4.7 Multi-host pipelines (requirement added 2026-11-16)
+
+The pipeline must also be supported when its stages span several hosts (`--nnodes` above 1, for example 16 stages over
+the two hosts of a 2x2x2 slice, or 2 stages of TP8 each on its own host), and when the decode is a multi-host engine.
+Sections 4.2 to 4.5 were written so that nothing in them assumes one host; this section lists what multi-host adds.
+
+What already holds across hosts, from the tree:
+
+- **Peers are addressed per rank, not per host.** Every rank registers its own `rank_ip` and `rank_port` at bootstrap,
+  and the offload channel sends to those (`dram_offload_channel.py`). A stage on another host is just another address.
+- **Ports and budgets are already per node.** The Raiden control port is `base + 6 * node_worker_rank`, where the node
+  worker rank counts the ranks resident on that node including pipeline replicas (`host_pool.node_worker_rank`,
+  `ranks_per_node(..., pp_size)`), and `SGLANG_RAIDEN_HOST_POOL_GB` is a per-node budget split over them.
+- **The stage hand-off is slice-wide.** The lockstep wave and the buffered hand-off run over ICI between the devices
+  of the slice, whichever host they sit on.
+- **Two-host engines with the offload work today** at TP16 on both roles (the 3-hour stress run in
+  `benchmarks/2026-11-10-pr2086-bench/STRESS-2026-11-11.md`), so cross-host rank agreement and host-to-host reads
+  between multi-host engines are exercised; only the pipeline dimension is new.
+
+What multi-host adds to the design:
+
+| Topic | Requirement |
+|---|---|
+| Decision relay (4.2) | The down-relay and the up-votes travel on the CPU process group, which crosses hosts over TCP. The delay `D` must cover the slowest hop, so it is derived from the pipeline depth in micro-batches, never from wall time, and a stage that reaches an effective number without the record waits for it (a blocking receive on that tag) instead of guessing. |
+| Host memory is per host | Each host has its own RAM and its own HiCache host pools. A reservation vote (4.4) is therefore per stage and can differ between hosts; the all-or-nothing rule already covers it. Host pressure for the pusher (4.3) is evaluated on stage 0's host; a stage on a fuller host votes "decline" and the push is retired as declined on every stage. Add the per-host free room to the periodic `[dram-offload]` line so an uneven pipeline is visible. |
+| Sizing | Size each host's pools from that host's budget: its stages' layers times the tokens kept, plus the Raiden staging share, plus in-flight load. The stress run measured up to 250 GB of load-proportional growth on the second host of a two-host engine (ISSUES I10); the pipeline version must report RSS per host in its validation. |
+| Fan-in and fan-out (Phase B) | A decode rank reads its head slice from every stage, so a push opens stages x decode-ranks host reads across hosts, and a recall the reverse. Bound them with one in-flight budget per engine (today `MAX_INFLIGHT = 4` pushes) expressed in sessions, and let the decode's rank 0 plan each push as one unit, as the regular pipeline transfer does. |
+| A multi-host decode | Phase A pairs stage with stage wherever they sit. In Phase B the decode's ranks may sit on several hosts; each lands its slice in its own host pool, and "stored" still requires every rank of every decode host. |
+| Failure | Losing any host of an engine loses the engine, as today. What must hold: the surviving peer engine fails or declines its in-flight pushes and recalls within the Raiden deadline, releases its pins, and is flushable. Set the socket timeouts on every host. A decision record that never arrives (a dead stage) must surface as the engine's existing distributed timeout, not as a silent stall. |
+| Start-up validation | Refuse layouts where a stage's ranks straddle hosts in a way the pipeline itself refuses (`pp_stage_chips.py`), and include the host count and the per-host stage list in the layout fingerprint of 4.6 so that mismatched pairs fail by name. |
+
 ## 5. What does not change
 
 - The switch, the two HiCache write policies, the decode keeping pushed branches only, back-pressure by decline.
@@ -209,7 +240,8 @@ takes the whole window on every stage or nothing.
 | 5 | Lift the two refusals conditionally; add the new ones of 4.6 | `startup_validation.py`, `sglang_tpu/README.md` | A |
 | 6 | Host-to-host strided reads between a stage page and a rank page (push and recall directions) | `raiden/dram_offload_channel.py`, `radix_host_ops.py`, tpu-sync | B |
 | 7 | Decode-side planning of one push over all source stages and one recall offer over all decode ranks | `decode_dram_victim_receiver.py`, `decode_dram_prefix_offerer.py` | B |
-| 8 | Write-back copy-ahead is off under PP, so evictions back up synchronously; measure, and port the copy-ahead to the decision relay only if the stall shows | `hicache_write_back_copy_ahead.py` | after B |
+| 8 | Multi-host: per-host free room and RSS in the counters, layout fingerprint with hosts, blocking receive for a late decision record, per-engine in-flight budget | `rank_lockstep.py`, `dram_offload_channel.py`, `startup_validation.py` | A and B |
+| 9 | Write-back copy-ahead is off under PP, so evictions back up synchronously; measure, and port the copy-ahead to the decision relay only if the stall shows | `hicache_write_back_copy_ahead.py` | after B |
 
 ## 7. Validation plan
 
@@ -227,8 +259,11 @@ On hardware, reusing the harness of the PR 2086 report (`benchmarks/2026-11-10-p
 | Fault cases: decode declines (full DRAM), a stage's allocation fails, a transfer times out, the decode vanishes | All or nothing | No failed request, no stage holding a partial prefix, engines idle afterwards |
 | Stress stage (`stage_stress.sh`) at a fixed concurrency below saturation, 3 hours | No drift, no leak | Drain, verification batch, GSM8K gate and leak check pass each cycle |
 
-Hardware: Phase A needs two pipelines of the same layout; Phase B a pipeline prefill and a TP decode. On the CDK
-cluster a `--pp-size 2 --tp-size 8` prefill is one 2x2x2 slice (two hosts), which is the smallest useful case.
+Hardware: Phase A needs two pipelines of the same layout; Phase B a pipeline prefill and a TP decode. Single-host:
+`--pp-size 8 --tp-size 1` on one 2x2x1 host. Multi-host, the required case: `--pp-size 2 --tp-size 8` or
+`--pp-size 16 --tp-size 1` on one 2x2x2 slice (two hosts), then a 2x2x4 slice (four hosts) for a longer pipeline;
+every test of the table above runs on both a single-host and a multi-host pipeline, plus one extra fault case:
+kill one host of the pipeline mid-push and mid-recall and check the peer engine settles and is flushable.
 
 ## 8. Open questions
 
