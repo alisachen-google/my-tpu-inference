@@ -6,6 +6,49 @@ KV to decode DRAM, commit `3dabdc26`) and [PR 2086](https://github.com/sgl-proje
 (hybrid sliding-window models, commit `5c136df1`). Status: design verified against the code and revised (see Revision 2026-11-16b); the first building block is implemented on branch `pd-dram-offload-pp` of the fork (`d4c6764a`), nothing is wired into the engines. File and function names are the real ones in that tree;
 statements marked **to verify** are things I inferred from reading and have not run.
 
+## Revision 2026-11-16d: the decode does load pushed branches into its own HBM; option B2 changes the recall trigger
+
+Checked on upstream main (82e2b973) before building option B2. Option B2 assumed that pushed pages are storage only
+on the decode. That is false for the tensor-parallel pairing that exists today.
+
+**What the decode does with a landed branch today**
+
+1. `decode_dram_victim_receiver._insert_host_only_branch` calls `radix_host_ops.insert_host_prefix`, which inserts
+   the pages into the decode's own radix tree (`tree_core.insert_host`) and its own HiCache host pool
+   (`anchor_host_pool`). A landed branch is an ordinary host-backed path of the decode prefix cache.
+2. When a request arrives, `DecodePreallocQueue._match_prefix_and_lock` (`python/sglang/srt/disaggregation/decode.py`)
+   matches it against that tree. `DecodeHiCacheTransferMixin._build_decode_prefix_match`
+   (`decode_hicache_mixin.py`) takes `l2_host_hit_length = result.host_hit_length`, and
+   `DecodePrefixMatch.decode_prefix_len` is device hit plus host hit plus storage hit.
+3. The decode sends `decode_prefix_len` to the prefill in the transfer metadata. The offload hook
+   `dram_offload_hooks._send_kv_metadata` offers the pages for recall only when `decode_prefix_len >= page_size`. So
+   **the recall is triggered by the decode's own prefix match**.
+4. The prefill sets `req.start_send_idx = decode_prefix_len` (`prefill.py` `_num_pages_to_send`) and does not send
+   those pages. The decode fills them itself: `_process_hicache_local_restores` loads the host pages
+   `[l1_prefix_len, decode_prefix_len)` into its HBM (a HiCache load-back) before the request runs.
+
+So on a recall turn the same pushed pages serve twice: the prefill reads them host to host into its DRAM, and the
+decode loads them from its DRAM into its HBM instead of receiving them over the wire. Only inserts are switched off
+on a switch-on decode (`_decode_add` sets `skip_radix_cache_insert`); matching and restoring stay on. The earlier
+note that "the decode does not serve its own requests from pushed branches" was wrong; the equal hit counts only
+show that the client reports the prefill's hit.
+
+**Can it be disabled for stage-layout pools? Yes, at a stated cost.**
+
+A pool that holds a prefill stage's block layout cannot be loaded into a tensor-parallel decode rank's HBM, so for
+this pairing the decode must not count those branches as its own prefix:
+
+- Stage-layout branches live in a separate index on the decode, outside `tree_cache`. The request match in step 2
+  never sees them, `decode_prefix_len` stays what the decode really holds in its own layout (zero on a switch-on
+  decode), and the prefill sends the whole prompt KV through the normal pipeline transfer.
+- The recall trigger in step 3 moves: the hook matches the request against the stage-layout index and offers on
+  that match, independent of `decode_prefix_len`.
+- Cost: on a recall turn the decode receives the recalled prefix over the wire instead of loading it from its own
+  DRAM. This is the same transfer every non-recall turn already pays on a switch-on decode, which never caches its
+  own requests. What the offload exists for, the prefill not recomputing the branch, is kept. No number measured so
+  far covers this pairing, and the tensor-parallel pairing keeps today's behaviour, so nothing measured is lost.
+- The decode-side saving could come back later only with a layout conversion on the decode, which is option B1.
+
 ## Revision 2026-11-16c: the target is now Phase B (Muse Spark), and its byte path is the blocker
 
 The feature has to apply to the Muse Spark disaggregated point: a pipeline prefill (`--pp-size 8 --tp-size 1`, one
