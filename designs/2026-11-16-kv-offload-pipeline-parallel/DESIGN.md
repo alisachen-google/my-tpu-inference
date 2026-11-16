@@ -1,7 +1,9 @@
 # Workstream 1: KV offload to decode DRAM with a pipeline-parallel prefill
 
-Design walkthrough, 2026-11-16. Written against `sgl-project/sglang-torchtpu` main at `82e2b973` (PR 1992 and
-PR 2086 merged). Status: proposal, nothing implemented. File and function names are the real ones in that tree;
+Design walkthrough, 2026-11-16. Written against `sgl-project/sglang-torchtpu` main at `82e2b973`, which contains
+the feature as merged: [PR 1992](https://github.com/sgl-project/sglang-torchtpu/pull/1992) (offload of cold prefill
+KV to decode DRAM, commit `3dabdc26`) and [PR 2086](https://github.com/sgl-project/sglang-torchtpu/pull/2086)
+(hybrid sliding-window models, commit `5c136df1`). Status: proposal, nothing implemented. File and function names are the real ones in that tree;
 statements marked **to verify** are things I inferred from reading and have not run.
 
 ## 1. The goal in one paragraph
