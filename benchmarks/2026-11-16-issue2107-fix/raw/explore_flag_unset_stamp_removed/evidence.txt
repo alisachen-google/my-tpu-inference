@@ -1,0 +1,20 @@
+== prefill-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  push     TP0 final: started=10 stored=10
+  recall   TP0 final: pulls=0
+  verdict: EQUAL across 8 ranks
+== decode-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  landing  TP0 final: received=6 granted=6 landed=6 landed_tokens=852096
+  verdict: EQUAL across 8 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  recall_8_fill/fill: no counter movement
+  recall_8_ret/recall: no counter movement
+  recall_8_fill_r2/fill: no counter movement
+  recall_8_ret_r2/recall: prefill-0 push: started=3 stored=3; decode-0 landing: received=3 granted=3 landed=3 landed_tokens=417792
+  recall_8_fill_r3/fill: no counter movement
+  recall_8_ret_r3/recall: prefill-0 push: started=1 stored=1; decode-0 landing: received=1 granted=1 landed=1 landed_tokens=147520
+  recall_8_fill_r4/fill: no counter movement
+  recall_8_ret_r4/recall: prefill-0 push: started=1 stored=1; decode-0 landing: received=1 granted=1 landed=1 landed_tokens=147520
+  recall_8_fill_r5/fill: no counter movement
+  recall_8_ret_r5/recall: prefill-0 push: started=1 stored=1; decode-0 landing: received=1 granted=1 landed=1 landed_tokens=139264
+  recall_8_fill_r6/fill: no counter movement
+  recall_8_ret_r6/recall: prefill-0 push: started=4 stored=4

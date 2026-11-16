@@ -1,0 +1,260 @@
+diff --git a/sglang_tpu/disaggregation/decode_dram_offload/prefill_dram_victim_pusher.py b/sglang_tpu/disaggregation/decode_dram_offload/prefill_dram_victim_pusher.py
+index abfef4a6..43306a41 100644
+--- a/sglang_tpu/disaggregation/decode_dram_offload/prefill_dram_victim_pusher.py
++++ b/sglang_tpu/disaggregation/decode_dram_offload/prefill_dram_victim_pusher.py
+@@ -5,8 +5,11 @@ bootstrap commit, which decode serves the session. When its host pool runs low
+ it takes the tracked host-backed session with the oldest path end, host-locks
+ it and offers its host pages (VICTIM_PUSH), with the window pages that end
+ where they end on a hybrid sliding-window model. The decode pulls them into
+-its host pages, inserts the session and answers (VICTIM_ACK). On a stored
+-session the prefill makes its own copy the next eviction victim.
++its host pages, inserts the session and answers (VICTIM_ACK). A stored session
++keeps its place in the prefill's eviction orders: the pusher takes the coldest
++sessions, so LRU evicts them first while they stay cold, and one that is used
++again before that (its request can be queued while its push is in flight) is
++served from this engine's own copy.
+ """
+ 
+ from __future__ import annotations
+@@ -29,7 +32,6 @@ from sglang_tpu.disaggregation.decode_dram_offload.radix_host_ops import (
+     is_live_host_backed_leaf,
+     leaf_of,
+     lock_host_path,
+-    mark_next_victim,
+     path_tokens,
+     unlock_host_path,
+     window_host_pages,
+@@ -54,9 +56,6 @@ _ACK_TIMEOUT_S = 60.0
+ # Arbitrary: often enough to follow a sweep, rare enough to stay quiet.
+ _LOG_INTERVAL_S = 30.0
+ 
+-# Victim paths take access stamps counting up from here, so they stay older
+-# than any live node (the tree's counter starts at 0) yet never tie.
+-_VICTIM_STAMP_BASE = -1.0e15
+ 
+ 
+ def log_offload_stats(stats: Dict[str, int], what: str, last: List[float]) -> None:
+@@ -118,7 +117,6 @@ class PrefillDramVictimPusher:
+         # Path length last pushed, or found unpushable, per session.
+         self._pushed_len = weakref.WeakKeyDictionary()
+         self._next_seq = 1
+-        self._victim_stamp = _VICTIM_STAMP_BASE
+         self.stats = dict.fromkeys(("started", "stored", "declined"), 0)
+         self._last_log = [0.0]
+ 
+@@ -211,19 +209,13 @@ class PrefillDramVictimPusher:
+         for push, (settled, ok) in zip(pushes, agreed):
+             if settled:
+                 self.stats["stored" if ok else "declined"] += 1
+-                self._finish_push(push, stored=bool(ok))
++                self._finish_push(push)
+ 
+-    def _finish_push(self, push: _PushInFlight, *, stored: bool) -> None:
++    def _finish_push(self, push: _PushInFlight) -> None:
+         self._channel.forget_host_reads(push.read_ids)
+         del self._pushes[push.seq]
+         unlock_host_path(self._cache, push.locks)
+         self._channel.forget_victim(push.seq)
+-        if stored:
+-            # The decode holds the session now: its path here goes first in
+-            # every eviction order.
+-            self._victim_stamp = mark_next_victim(
+-                self._cache, push.leaf.id, self._victim_stamp
+-            )
+ 
+     def _start_push_if_agreed(self, *, serving: bool) -> None:
+         """Start a push in a step where every rank serves requests, is under
+diff --git a/sglang_tpu/disaggregation/decode_dram_offload/radix_host_ops.py b/sglang_tpu/disaggregation/decode_dram_offload/radix_host_ops.py
+index 27db4d41..3c5a6726 100644
+--- a/sglang_tpu/disaggregation/decode_dram_offload/radix_host_ops.py
++++ b/sglang_tpu/disaggregation/decode_dram_offload/radix_host_ops.py
+@@ -8,7 +8,6 @@ from __future__ import annotations
+ 
+ from array import array
+ from collections import defaultdict
+-from itertools import takewhile
+ from typing import Any, Dict, Iterator, List, Optional, Tuple
+ 
+ import torch
+@@ -359,32 +358,6 @@ def is_live_host_backed_leaf(cache: Any, node: Any) -> Optional[bool]:
+     return not node.children and node.component_data[_FULL].host_value is not None
+ 
+ 
+-def mark_next_victim(cache: Any, anchor_id: Any, stamp: float) -> float:
+-    """Make the path of ``anchor_id`` (its subtree and single-child ancestors)
+-    the oldest in every eviction order, each node with a unique stamp counting
+-    up from ``stamp`` since heap ties pop in per-rank set order; returns the
+-    last stamp used."""
+-    core = cache.tree_core
+-    anchor = core.node_by_id(anchor_id)
+-    nodes = []
+-    stack = [anchor]
+-    while stack:
+-        node = stack.pop()
+-        nodes.append(node)
+-        stack.extend(node.children.values())
+-    nodes.extend(
+-        takewhile(lambda n: len(n.children) == 1, _path_to_root(cache, anchor.parent))
+-    )
+-    lrus = [*core.lru_lists.values(), *core.host_lru_lists.values()]
+-    for node in nodes:
+-        stamp += 1.0
+-        node.last_access_time = stamp
+-        for lru in lrus:
+-            if lru.in_list(node):
+-                lru.reset_node_lru(node)
+-    return stamp
+-
+-
+ def host_backed_prefix(cache: Any, key: RadixKey, num_tokens: int, page_size: int):
+     """The longest prefix of ``key``, up to ``num_tokens``, whose FULL KV is a
+     contiguous, completed host copy: (its last node, its length in tokens, its
+diff --git a/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_push.py b/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_push.py
+index b0ce6575..5646a16d 100644
+--- a/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_push.py
++++ b/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_push.py
+@@ -2,13 +2,12 @@
+ 
+ The prefill offers the host-backed session with the oldest path end to the
+ decode that served it, registers its pinned host pages for a native host pull,
+-and makes its own copy the next eviction victim once the transfer landed.
++and leaves its own copy in its LRU place once the transfer landed.
+ The decode inserts the session as a host-only node. Real
+ full-attention unified trees with a fake raiden controller and host transfer;
+ the raiden manager is a fake.
+ """
+ 
+-import heapq
+ import unittest
+ from types import SimpleNamespace
+ from unittest.mock import MagicMock, patch
+@@ -47,45 +46,29 @@ register_cpu_ci(est_time=10, suite="base-a-test-cpu")
+ 
+ 
+ class TestPrefillPusher(PrefillPusherFixture, CustomTestCase):
+-    def test_stored_victim_path_evicts_in_the_same_order_on_every_rank(self):
+-        """A stored victim's path must take unique access stamps, each older
+-        than every live node. Stamping the whole path with one value tied the
+-        eviction heap, whose ties pop in set-iteration (per-rank memory) order,
+-        so TP ranks evicted different nodes after the first stored push."""
+-        c = list(range(300, 308))
+-        insert_tokens(self.cache, self.allocator, c[:4])  # a two-node path
+-        insert_tokens(self.cache, self.allocator, c)
+-        leaf = root_node(self.cache, c[0])
+-        while leaf.children:
+-            leaf = next(iter(leaf.children.values()))
+-        radix_host_ops.mark_next_victim(self.cache, leaf.id, -1.0e15)
+-        tree_core = self.cache.tree_core
+-        victims, node = [], leaf
+-        while node is not tree_core.root_node:
+-            victims.append(node)
+-            node = node.parent
+-        self.assertGreaterEqual(len(victims), 2)
+-        live, stack = [], list(tree_core.root_node.children.values())
+-        while stack:
+-            node = stack.pop()
+-            stack.extend(node.children.values())
+-            if node not in victims:
+-                live.append(node)
+-        self.assertTrue(live)
+-        stamps = [node.last_access_time for node in victims]
+-        self.assertEqual(len(set(stamps)), len(stamps), "victim nodes tie")
+-        self.assertLess(max(stamps), min(node.last_access_time for node in live))
+-        # The eviction heap pops the same nodes whichever order a rank's leaf
+-        # set yields them in.
+-        entries = [(node.last_access_time, node) for node in victims + live]
+-        orders = []
+-        for candidates in (entries, entries[::-1]):
+-            heap = list(candidates)
+-            heapq.heapify(heap)
+-            orders.append([heapq.heappop(heap)[1].id for _ in range(len(heap))])
+-        self.assertEqual(orders[0], orders[1])
+-
+-    def test_host_source_stays_pinned_until_native_sent_then_is_next_victim(self):
++    def _path_stamps(self, first_token):
++        """The access stamps of a session's path, read without touching it."""
++        stamps, node = [], root_node(self.cache, first_token)
++        while True:
++            stamps.append(node.last_access_time)
++            if not node.children:
++                return stamps
++            node = next(iter(node.children.values()))
++
++    def _in_tree(self, first_token) -> bool:
++        return any(
++            c.key.token_ids[0] == first_token
++            for c in self.cache.tree_core.root_node.children.values()
++        )
++
++    def _store(self, sent):
++        """The decode stored the push and the native read reported."""
++        self.replies[sent["seq"]] = True
++        self.host.transfer.complete("sent")
++        self.pusher.advance(serving=True)
++        self.assertEqual(self.pusher.stats["stored"], 1)
++
++    def test_host_source_stays_pinned_until_native_sent(self):
+         sent = self.offer_once()
+         self.assertEqual(sent["decode"], ("10.0.0.1", 5001))
+         self.assertEqual(sent["tokens"], self.a)
+@@ -94,15 +77,44 @@ class TestPrefillPusher(PrefillPusherFixture, CustomTestCase):
+         # The decode stored the push; the native registration has not reported.
+         self.replies[sent["seq"]] = True
+         self.pusher.advance(serving=True)
+-        self.cache.evict_host(8, FULL)
+-        self.assertEqual(host_hit(self.cache, self.a), 8)
++        self.cache.evict_host(16, FULL)
++        self.assertTrue(self._in_tree(self.a[0]))  # pinned: only b could go
+         self.assertEqual(self.pusher.stats["stored"], 0)
+         self.host.transfer.complete("sent")
+         self.pusher.advance(serving=True)
+         self.assertEqual(self.pusher.stats["stored"], 1)
+         self.mgr.forget_victim.assert_called_once_with(sent["seq"])
+         self.cache.evict_host(8, FULL)
+-        self.assertEqual(host_hit(self.cache, self.a), 0)
++        self.assertFalse(self._in_tree(self.a[0]))
++
++    def test_stored_push_leaves_the_session_in_its_lru_place(self):
++        """A stored push changes no access stamp: the prefill's copy is evicted
++        when LRU reaches it, not ahead of sessions that were used before it
++        (the pusher used to stamp it as the oldest in every eviction order)."""
++        before = self._path_stamps(self.a[0]), self._path_stamps(self.b[0])
++        self._store(self.offer_once())
++        self.assertEqual(
++            (self._path_stamps(self.a[0]), self._path_stamps(self.b[0])), before
++        )
++
++    def test_stored_session_that_stays_cold_is_still_evicted_first(self):
++        """The pusher takes the coldest session, so LRU evicts the pushed
++        copy first while nothing uses it."""
++        sent = self.offer_once()
++        self.assertEqual(sent["tokens"], self.a)
++        self._store(sent)
++        self.cache.evict_host(8, FULL)
++        self.assertFalse(self._in_tree(self.a[0]))
++        self.assertTrue(self._in_tree(self.b[0]))
++
++    def test_declined_push_leaves_the_session_in_its_lru_place(self):
++        before = self._path_stamps(self.a[0])
++        sent = self.offer_once()
++        self.replies[sent["seq"]] = False
++        self.host.transfer.complete("failed")
++        self.pusher.advance(serving=True)
++        self.assertEqual(self.pusher.stats["declined"], 1)
++        self.assertEqual(self._path_stamps(self.a[0]), before)
+ 
+     def test_no_push_starts_unless_the_engine_serves_requests(self):
+         """An engine left alone settles the pushes in flight and starts no new
+diff --git a/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_recall.py b/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_recall.py
+index 4ef474d7..5c387d1f 100644
+--- a/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_recall.py
++++ b/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_recall.py
+@@ -606,7 +606,7 @@ class TestPushThenRecallBetweenTwoEngines(CustomTestCase):
+         self.assertEqual(host_hit(p.cache, session), 16)
+ 
+         # Push: the prefill offers the pages, the decode reads and inserts
+-        # them, and its answer makes the prefill's copy the next victim.
++        # them; the prefill's copy stays until host eviction takes it.
+         self._prefill_step(prefill, [])
+         self._deliver(p, d)
+         for _ in range(decode_dram_victim_receiver._CADENCE):

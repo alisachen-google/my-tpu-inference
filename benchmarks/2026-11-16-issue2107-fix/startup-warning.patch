@@ -1,0 +1,116 @@
+diff --git a/sglang_tpu/README.md b/sglang_tpu/README.md
+index 3b24c421..f80cc394 100644
+--- a/sglang_tpu/README.md
++++ b/sglang_tpu/README.md
+@@ -130,6 +130,13 @@ roles:
+ SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM=1
+ ```
+ 
++Leave `SGLANG_HICACHE_SKIP_HOST_DUPLICATE_RECLAIM` unset under `write_back`.
++With it set to 1, host copies of sessions loaded back to the device are never
++reclaimed: the host pool fills with duplicates, device evictions are refused
++under host pressure (`backup failed under host memory pressure but subtree
++drop declined`) and returning sessions lose prefix hits. An engine started
++that way logs a warning.
++
+ Unsupported settings are refused, never run without the offload. An engine
+ stops at start, naming the setting, with: a GDN/Mamba model, the unified KV
+ pool, pipeline parallelism (`--pp-size` above 1) or the Raiden pipeline
+diff --git a/sglang_tpu/disaggregation/decode_dram_offload/startup_validation.py b/sglang_tpu/disaggregation/decode_dram_offload/startup_validation.py
+index fd21b20d..377b802c 100644
+--- a/sglang_tpu/disaggregation/decode_dram_offload/startup_validation.py
++++ b/sglang_tpu/disaggregation/decode_dram_offload/startup_validation.py
+@@ -11,11 +11,16 @@ engines disagree fails its requests instead (the raiden channel,
+ from __future__ import annotations
+ 
+ import inspect
+-from typing import Any, List
++import logging
++from typing import Any, List, Optional
+ 
++from sglang.srt.environ import envs as core_envs
+ from sglang_tpu.envs import envs as tpu_envs
+ 
++logger = logging.getLogger(__name__)
++
+ _SWITCH = tpu_envs.SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM
++_SKIP_RECLAIM = core_envs.SGLANG_HICACHE_SKIP_HOST_DUPLICATE_RECLAIM
+ 
+ 
+ class UnsupportedDramOffloadConfig(ValueError):
+@@ -160,6 +165,26 @@ def _problems(*, role: str, scheduler: Any) -> List[str]:
+     return problems
+ 
+ 
++def host_duplicate_reclaim_warning() -> Optional[str]:
++    """Why this engine's host pool will fill up under ``write_back``: core's
++    reclaim of host copies the device also holds is turned off. A session
++    loaded back from host RAM then keeps both copies, the host pool becomes
++    duplicates plus the offload's pins, device evictions cannot back their
++    victims up ("backup failed under host memory pressure but subtree drop
++    declined") and returning sessions lose hits. Supported, so a warning."""
++    from sglang.srt.runtime_context import get_memory
++
++    if get_memory().hicache_write_policy != "write_back" or not _SKIP_RECLAIM.get():
++        return None
++    return (
++        f"{_SKIP_RECLAIM.name}=1 with --hicache-write-policy write_back and "
++        f"{_SWITCH.name}=1: host copies of sessions loaded back to the device "
++        "are never reclaimed, so the host pool fills with duplicates, device "
++        "evictions are refused under host pressure and prefix hits drop; "
++        f"unset {_SKIP_RECLAIM.name}"
++    )
++
++
+ def validate_engine_args(*, role: str, scheduler: Any) -> None:
+     """Raise UnsupportedDramOffloadConfig for a setting the offload does not
+     support. ``role`` is "prefill" or "decode". Called before the transfer
+@@ -173,3 +198,6 @@ def validate_engine_args(*, role: str, scheduler: Any) -> None:
+             + "; ".join(problems)
+             + f" (change the setting or unset {_SWITCH.name})"
+         )
++    warning = host_duplicate_reclaim_warning()
++    if warning:
++        logger.warning("%s", warning)
+diff --git a/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_validate.py b/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_validate.py
+index 6e9710d3..40bb4ea6 100644
+--- a/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_validate.py
++++ b/test/registered/unit/hardware_backend/tpu/test_decode_dram_offload_validate.py
+@@ -155,6 +155,37 @@ class TestTpuSyncHostApi(CustomTestCase):
+             },
+         )
+ 
++    def test_skipping_host_duplicate_reclaim_under_write_back_warns_at_start(self):
++        """The engine starts, but says that its host pool will fill up: with
++        core's reclaim of host duplicates off, write-back keeps both copies
++        of every session it loads back."""
++        flag = startup_validation._SKIP_RECLAIM
++        for role in ("prefill", "decode"):
++            with self.subTest(role=role), flag.override(True):
++                with self.assertLogs(startup_validation.logger, "WARNING") as logs:
++                    validate_engine_as(supported_engine(), role=role)
++                self.assertEqual(len(logs.output), 1)
++                self.assertIn(flag.name, logs.output[0])
++                self.assertIn("write_back", logs.output[0])
++
++    def test_no_reclaim_warning_under_write_through_or_with_the_default(self):
++        flag = startup_validation._SKIP_RECLAIM
++        quiet = (("write_through", True), ("write_back", False))
++        for policy, skip in quiet:
++            with self.subTest(policy=policy, skip=skip), flag.override(skip):
++                engine = supported_engine()
++                engine.memory.hicache_write_policy = policy
++                with self.assertNoLogs(startup_validation.logger, "WARNING"):
++                    validate_engine_as(engine, role="prefill")
++
++    def test_refused_engine_is_refused_before_any_warning(self):
++        with startup_validation._SKIP_RECLAIM.override(True):
++            with self.assertNoLogs(startup_validation.logger, "WARNING"):
++                with self.assertRaises(startup_validation.UnsupportedDramOffloadConfig):
++                    validate_engine_as(
++                        _broken("scheduler.server_args.pp_size", 2), role="prefill"
++                    )
++
+     def test_probe_names_exactly_the_host_parameters_a_build_lacks(self):
+         class Current:
+             def register_read(self, req_id, uuid, blocks, source="device"): ...

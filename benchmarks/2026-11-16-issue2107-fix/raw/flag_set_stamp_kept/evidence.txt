@@ -1,0 +1,28 @@
+== prefill-0 ranks=8 warnings=0 errors=160 refused_lines=0
+  push     TP0 final: started=57 stored=57
+  recall   TP0 final: offers=8 pulls=7 pulled_tokens=91264 pulled_swa_tokens=896 skipped_local_host=1
+  verdict: EQUAL across 8 ranks
+== decode-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  landing  TP0 final: received=55 granted=55 landed=51 landed_tokens=4489344
+  verdict: EQUAL across 8 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  recall_8_fill/fill: no counter movement
+  recall_8_ret/recall: no counter movement
+  recall_9_fill/fill: no counter movement
+  recall_9_ret/recall: prefill-0 push: started=6 stored=6; prefill-0 recall: offers=1 skipped_local_host=1; decode-0 landing: received=6 granted=6 landed=6 landed_tokens=704256
+  recall_8_fill_r2/fill: no counter movement
+  recall_8_ret_r2/recall: prefill-0 push: started=2 stored=2; decode-0 landing: received=2 granted=2 landed=2 landed_tokens=253888
+  recall_9_fill_r2/fill: no counter movement
+  recall_9_ret_r2/recall: prefill-0 push: started=12 stored=12; prefill-0 recall: offers=2 pulls=2 pulled_tokens=24960 pulled_swa_tokens=256; decode-0 landing: received=12 granted=12 landed=12 landed_tokens=868608
+  recall_8_fill_r3/fill: no counter movement
+  recall_8_ret_r3/recall: no counter movement
+  recall_9_fill_r3/fill: no counter movement
+  recall_9_ret_r3/recall: prefill-0 push: started=12 stored=12; prefill-0 recall: offers=2 pulls=2 pulled_tokens=24960 pulled_swa_tokens=256; decode-0 landing: received=12 granted=12 landed=12 landed_tokens=868608
+  recall_8_fill_r4/fill: no counter movement
+  recall_8_ret_r4/recall: prefill-0 push: started=1 stored=1; decode-0 landing: received=1 granted=1 landed=1 landed_tokens=147520
+  recall_9_fill_r4/fill: no counter movement
+  recall_9_ret_r4/recall: prefill-0 push: started=12 stored=12; prefill-0 recall: offers=2 pulls=2 pulled_tokens=24960 pulled_swa_tokens=256; decode-0 landing: received=12 granted=12 landed=12 landed_tokens=868608
+  recall_8_fill_r5/fill: no counter movement
+  recall_8_ret_r5/recall: prefill-0 push: started=3 stored=3; decode-0 landing: received=3 granted=3 landed=3 landed_tokens=434304
+  recall_9_fill_r5/fill: no counter movement
+  recall_9_ret_r5/recall: prefill-0 push: started=9 stored=9; prefill-0 recall: offers=1 pulls=1 pulled_tokens=16384 pulled_swa_tokens=128; decode-0 landing: received=7 granted=7 landed=3 landed_tokens=343552
