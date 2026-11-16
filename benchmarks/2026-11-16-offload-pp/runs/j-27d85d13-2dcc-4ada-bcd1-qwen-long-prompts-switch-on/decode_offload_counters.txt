@@ -1,0 +1,80 @@
+[2026-11-16 14:46:54 TP1 EP1] [dram-offload] stage landing received=1
+[2026-11-16 14:46:54 TP0 EP0] [dram-offload] stage landing received=1
+[2026-11-16 14:46:54 TP2 EP2] [dram-offload] stage landing received=1
+[2026-11-16 14:46:54 TP6 EP6] [dram-offload] stage landing received=1
+[2026-11-16 14:46:54 TP7 EP7] [dram-offload] stage landing received=1
+[2026-11-16 14:46:54 TP3 EP3] [dram-offload] stage landing received=1
+[2026-11-16 14:46:54 TP4 EP4] [dram-offload] stage landing received=1
+[2026-11-16 14:46:54 TP5 EP5] [dram-offload] stage landing received=1
+[2026-11-16 14:46:55 TP0 EP0] [dram-offload] stage store ready on rank 0: stages [0], 5461 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 14:46:55 TP6 EP6] [dram-offload] stage store ready on rank 6: stages [6], 5461 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 14:46:55 TP3 EP3] [dram-offload] stage store ready on rank 3: stages [3], 5461 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 14:46:55 TP1 EP1] [dram-offload] stage store ready on rank 1: stages [1], 5461 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 14:46:55 TP2 EP2] [dram-offload] stage store ready on rank 2: stages [2], 5461 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 14:46:55 TP7 EP7] [dram-offload] stage store ready on rank 7: stages [7], 5461 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 14:46:55 TP5 EP5] [dram-offload] stage store ready on rank 5: stages [5], 5461 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 14:46:55 TP4 EP4] [dram-offload] stage store ready on rank 4: stages [4], 5461 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 14:47:24 TP3 EP3] [dram-offload] stage landing received=12 granted=9 held=2 dropped=1 landed=9 landed_pages=1722 reused_pages=152 pages=5461 used_pages=1722
+[2026-11-16 14:47:24 TP2 EP2] [dram-offload] stage landing received=12 granted=9 held=2 dropped=1 landed=9 landed_pages=1722 reused_pages=152 pages=5461 used_pages=1722
+[2026-11-16 14:47:24 TP1 EP1] [dram-offload] stage landing received=12 granted=9 held=2 dropped=1 landed=9 landed_pages=1722 reused_pages=152 pages=5461 used_pages=1722
+[2026-11-16 14:47:24 TP4 EP4] [dram-offload] stage landing received=12 granted=9 held=2 dropped=1 landed=9 landed_pages=1722 reused_pages=152 pages=5461 used_pages=1722
+[2026-11-16 14:47:24 TP0 EP0] [dram-offload] stage landing received=12 granted=9 held=2 dropped=1 landed=9 landed_pages=1722 reused_pages=152 pages=5461 used_pages=1722
+[2026-11-16 14:47:24 TP5 EP5] [dram-offload] stage landing received=12 granted=9 held=2 dropped=1 landed=9 landed_pages=1722 reused_pages=152 pages=5461 used_pages=1722
+[2026-11-16 14:47:24 TP6 EP6] [dram-offload] stage landing received=13 granted=9 held=2 dropped=2 landed=9 landed_pages=1722 reused_pages=152 pages=5461 used_pages=1722
+[2026-11-16 14:47:24 TP7 EP7] [dram-offload] stage landing received=13 granted=9 held=2 dropped=2 landed=9 landed_pages=1722 reused_pages=152 pages=5461 used_pages=1722
+[2026-11-16 14:47:54 TP6 EP6] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:47:54 TP1 EP1] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:47:54 TP0 EP0] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:47:54 TP7 EP7] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:47:54 TP5 EP5] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:47:54 TP2 EP2] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:47:54 TP3 EP3] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:47:54 TP4 EP4] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:24 TP2 EP2] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:24 TP0 EP0] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:24 TP4 EP4] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:24 TP3 EP3] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:24 TP1 EP1] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:24 TP6 EP6] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:24 TP5 EP5] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:24 TP7 EP7] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:54 TP4 EP4] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:54 TP3 EP3] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:54 TP2 EP2] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:54 TP0 EP0] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:54 TP6 EP6] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:54 TP5 EP5] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:54 TP7 EP7] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:48:54 TP1 EP1] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:49:24 TP3 EP3] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:49:24 TP6 EP6] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:49:24 TP2 EP2] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:49:24 TP4 EP4] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:49:24 TP5 EP5] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:49:24 TP0 EP0] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:49:24 TP1 EP1] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:49:24 TP7 EP7] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461 used_pages=1928
+[2026-11-16 14:49:54 TP6 EP6] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461
+[2026-11-16 14:49:54 TP7 EP7] [dram-offload] stage landing received=16 granted=11 held=3 dropped=2 landed=11 landed_pages=1928 reused_pages=320 pages=5461
+[2026-11-16 14:49:54 TP2 EP2] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461
+[2026-11-16 14:49:54 TP0 EP0] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461
+[2026-11-16 14:49:54 TP4 EP4] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461
+[2026-11-16 14:49:54 TP5 EP5] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461
+[2026-11-16 14:49:54 TP1 EP1] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461
+[2026-11-16 14:49:54 TP3 EP3] [dram-offload] stage landing received=15 granted=11 held=3 dropped=1 landed=11 landed_pages=1928 reused_pages=320 pages=5461
+[2026-11-16 14:50:24 TP0 EP0] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:24 TP6 EP6] [dram-offload] stage landing received=18 granted=13 held=3 dropped=2 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:24 TP7 EP7] [dram-offload] stage landing received=18 granted=13 held=3 dropped=2 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:24 TP4 EP4] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:24 TP3 EP3] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:24 TP5 EP5] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:24 TP1 EP1] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:24 TP2 EP2] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:54 TP0 EP0] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:54 TP7 EP7] [dram-offload] stage landing received=18 granted=13 held=3 dropped=2 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:54 TP3 EP3] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:54 TP4 EP4] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:54 TP5 EP5] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:54 TP6 EP6] [dram-offload] stage landing received=18 granted=13 held=3 dropped=2 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:54 TP2 EP2] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
+[2026-11-16 14:50:54 TP1 EP1] [dram-offload] stage landing received=17 granted=13 held=3 dropped=1 landed=13 landed_pages=2328 reused_pages=320 pages=5461 used_pages=400
