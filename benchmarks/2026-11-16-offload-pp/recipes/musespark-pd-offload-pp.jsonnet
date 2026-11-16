@@ -316,7 +316,8 @@ local checkScript = agentx.fill(
     WAIT: deadlineSeconds - 1800,
     SESSIONS: sessions,
     TOKENS: promptTokens,
-    EXPECT: if switchOn then '--expect-offload' else '',
+    // CHECK_EXTRA: more arguments for the check, e.g. '--fillers 40'.
+    EXPECT: (if switchOn then '--expect-offload' else '') + ' ' + cdk.var('CHECK_EXTRA', ''),
   }
 );
 
