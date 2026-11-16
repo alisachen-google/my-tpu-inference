@@ -55,6 +55,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-405f0892-b1ea-4887-a83b | ws2 final ladder x3, baseline 83198bc | submitted 09:2x-09:5xZ |
 | j-af31fde6-c6c9-4fda-9bf4 | ws2 final ladder x3, fix | submitted 09:2x-09:5xZ |
 | j-ff95da0a-ac33-4b97-8b7d | ws2 unit tests | submitted 09:2x-09:5xZ |
+| j-95df0a31-0751-4de4-8c88 | ws2 unit tests (fix tree + warning tree) | submitted 10:2xZ; replaces j-ff95da0a-ac33-4b97-8b7d (deleted) |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
