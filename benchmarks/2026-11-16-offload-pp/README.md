@@ -166,6 +166,16 @@ speculative acceptance figure was collected, so "a recalled prefix drafts as wel
 byte level only. Removing the gate is a small change in `startup_validation.py`, `pd_decode_swa_hicache.py` and
 `dram_offload_hooks.py`; it is left for a decision.
 
-### Still on the cluster
+Decision (coordinator, 19:25Z): the gate stays. Status line: DFLASH is opt-in, byte-verified live on the Muse nightly
+config in one run; the gate is left in pending answer-level and acceptance evidence. Removing it is the user's call.
 
-Nothing.
+### Still on the cluster (as of 19:35Z)
+
+Three Muse runs, nightly config unchanged (DFLASH on), same 20 sessions, each ends by itself (6 h deadline). Read
+`STAGE_OFFLOAD_CHECK` in each bench container (fields `turns`, `warm_turns`, `accept_length`, `seconds`), then delete.
+
+| Job | What | Use |
+|---|---|---|
+| `j-3fb296ed-17c7-4bdd-8762` | offload on, draft opt-in | recalled second turns: cached length, answer digest, accept length, time |
+| `j-2e39db5f-b6fd-4fd5-8ed0` | offload off, equal settings | timing and accept-length pair |
+| `j-0adaa33e-78f4-497e-9302` | offload off, prefill host ratio 12 | same sessions resumed from the prefill's own host tier; compare turn by turn with the recalled ones at equal cached length |
