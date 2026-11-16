@@ -1,0 +1,14 @@
+[2026-11-16 16:21:27 TP0] [hybrid-SWA] aligning swa_max_total_num_tokens 242176 -> 241664 (SWA page count must be a multiple of 8 for correct torch.compile decode on TPU)
+[2026-11-16 16:21:27 TP0] Full KV Cache is allocated. dtype: torch.bfloat16, #tokens: 617600, K size: 4.71 GB, V size: 4.71 GB
+[2026-11-16 16:21:27 TP0] SWA KV Cache is allocated. dtype: torch.bfloat16, #tokens: 241664, K size: 5.30 GB, V size: 5.30 GB
+[2026-11-16 16:21:27 TP0] Memory pool end. avail mem=7.59 GB
+[2026-11-16 16:21:27 TP0] KV Cache is allocated. dtype: torch.bfloat16, #tokens: 617600, K size: 0.74 GB, V size: 0.74 GB
+[2026-11-16 16:21:27 TP0] Memory pool end. avail mem=6.12 GB
+[2026-11-16 16:32:38 TP0] max_total_num_tokens=617600, chunked_prefill_size=4096, max_prefill_tokens=4096, max_running_requests=32, context_len=262144, available_gpu_mem=5.75 GB
+[2026-11-16 16:32:47] The server is fired up and ready to roll!
+[2026-11-16 16:51:59 TP0] Decode batch, #running-req: 1, #full token: 0, full token usage: 0.00, #swa token: 0, swa token usage: 0.00, accept len: 1.02, accept rate: 0.00, pre-allocated usage: 0.00, #prealloc-req: 0, #transfer-req: 0, #retracted-req: 0, cuda graph: False, gen throughput (token/s): 0.04, #queue-req: 0
+[2026-11-16 17:02:41] INFO:     10.36.45.155:35330 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+[2026-11-16 17:02:41] INFO:     10.36.45.155:35318 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+[2026-11-16 17:02:42] INFO:     10.36.45.155:35350 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+[2026-11-16 17:02:42] INFO:     10.36.45.155:35334 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+[2026-11-16 17:02:42] INFO:     10.36.45.155:35364 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request

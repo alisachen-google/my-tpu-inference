@@ -247,6 +247,7 @@ local serverJob = cdk.job(
   ttlSeconds=900,
   podSpec=cdk.tpuNodeSelector(accelerator, nodeTopology)
           + { nodeSelector+: { 'cloud.google.com/gke-accelerator-count': std.toString(chips) } }
+          // No nodepool pin: cdk rejects a gke-nodepool nodeSelector, so spot placement cannot be avoided.
           + { initContainers: [fetchContainer] },
   volumes=[
     modelVolume,
