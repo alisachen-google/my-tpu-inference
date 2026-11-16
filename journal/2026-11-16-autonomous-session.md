@@ -28,6 +28,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:06 | all | Session start. ADC valid. Cluster: workstream 2 has 5 jobs (2 collected-pending, 1 running, 1 retrying, 1 unit-test pending). Scratch disk 7.9 GB free, /home 221 MB free. |
 | 10:07 | 2 | Fix for issue 2107 written on branch fix-2107-push-victim-order off upstream main (worktree sglang-2107): the stamp that made a stored push the next eviction victim is removed (pusher + radix_host_ops.mark_next_victim), 7 unit tests added/reworked in test_decode_dram_offload_push.py. Not yet pushed anywhere. |
 | 10:07 | 2 | Exploratory A/B, flag SGLANG_HICACHE_SKIP_HOST_DUPLICATE_RECLAIM UNSET, recall 8 x6 per arm (j-e96c13bb-b0bb-40b6-af38 stamp kept, j-b5734399-ac26-442e-b74c stamp removed): 94.4% hit in 6/6 runs on BOTH arms, 0 refused drops; the recall-8 loss does not reproduce without the flag. Both jobs collected and deleted. |
+| 10:07 | 2 | Submitted: flag-SET reproduction pair recall 8,9 x5 (j-1584d23c-35db-47b2-ac31 stamp kept, j-8a19ba03-aaad-484f-893d stamp removed); final ladder runs flag unset, recall 8/9/12/16 + static 4-16 x3 + mixed + integrity (baseline j-405f0892-b1ea-4887-a83b, fix j-af31fde6-c6c9-4fda-9bf4); unit tests j-ff95da0a-ac33-4b97-8b7d. |
 
 ## Bugs and defects found (running list)
 
