@@ -6,6 +6,41 @@ KV to decode DRAM, commit `3dabdc26`) and [PR 2086](https://github.com/sgl-proje
 (hybrid sliding-window models, commit `5c136df1`). Status: design verified against the code and revised (see Revision 2026-11-16b); the first building block is implemented on branch `pd-dram-offload-pp` of the fork (`d4c6764a`), nothing is wired into the engines. File and function names are the real ones in that tree;
 statements marked **to verify** are things I inferred from reading and have not run.
 
+## Revision 2026-11-16e: what was built (draft PR 2202)
+
+Draft PR: https://github.com/sgl-project/sglang-torchtpu/pull/2202, fork branch `pd-dram-offload-pp`.
+
+**Modules** (all under `sglang_tpu/disaggregation/decode_dram_offload/` unless noted)
+
+| Module | Torch | Role |
+|---|---|---|
+| `stage_layout_store.py` | no | Decode index of pushed branches: shared page paths, a window per pushed length, LRU eviction, pins, sizing, stage-to-rank placement. Same page ids on every decode rank. |
+| `decode_stage_branches.py` | no | Decode receiver and offerer over the index; `StagePoolSet` builds one pool per hosted stage at the first push. Uses the blocking rank lockstep (the decode is tensor-parallel). |
+| `stage_agreement.py` | no | Marked entries in the pipeline's ready and failed bootstrap lists: unanimous and any-of votes across stages, no new ring message. |
+| `stage_prefill_workers.py` | no | Push and recall decisions of one stage, applied by every stage in the same slot. |
+| `stage_prefill_ops.py` | yes | What those decisions do to the tree, the host pools and the wire. Thin. |
+| `stage_pool_builder.py` | yes | Host pool in a stage's layout over one-page placeholder tensors. |
+| `raiden/dram_offload_channel.py`, `raiden/serde.py`, `raiden/pool_transfer.py` | yes | Stage fields on VICTIM_PUSH and PREFIX_PULL, stage reads and pulls, the offer in the pipeline request. |
+| `dram_offload_hooks.py`, `startup_validation.py` | yes | Dispatch and the changed refusals. |
+
+**Design assumptions that changed while building**
+
+1. Revision b planned a new vote payload on the ring (a ledger of integer rows). Replaced: the stages vote through the
+   lists the ring already carries. `Scheduler.get_rids` is wrapped to add each stage's marked entries, the upstream
+   fold (intersection of ready, union of failed) gives unanimity and any-of for free, and
+   `process_bootstrapped_queue` is wrapped to pass the marks on. The ledger module was removed.
+2. Revision d: the decode does use landed pages today. In this pairing it does not; recall is matched in the stage
+   index and the decode receives the whole prompt.
+3. Votes carry only local facts that cannot revert; tree-dependent choices are made when the verdict is applied; no
+   lock before a verdict. This replaces "convert each blocking reduce into cast and settle".
+4. Speculative decoding is accepted in this pairing (whole blocks with draft tensors go back to their stage).
+5. `create_host_only_for_testing` is unusable with the pinned wheel; pools are built over placeholder tensors.
+6. Attention DP on the prefill (upstream's `agentic.py` PP2 x TP4 shape) is not handled; the nightly PP8 tp1 shape is.
+
+**Live validation target**: Muse Spark Open, nightly entry `test_tpu_muse_spark_pd_singlehost_pp8_dflash.py` with its
+config `pd_singlehost_pp8_prefix_cache_kv_offload_dflash.py`; recipe `musespark-pd-offload-pp-alisachen`; scripted
+check `test/manual/tpu/pd_stage_offload_check.py`.
+
 ## Revision 2026-11-16d: the decode does load pushed branches into its own HBM; option B2 changes the recall trigger
 
 Checked on upstream main (82e2b973) before building option B2. Option B2 assumed that pushed pages are storage only
