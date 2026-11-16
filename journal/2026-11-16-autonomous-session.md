@@ -33,6 +33,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 
 | Time | Where | Bug | State |
 |---|---|---|---|
+| 10:07 | 2 | Upstream main (82e2b973) does not start on image sglang-torchtpu:20261103 (ImportError jax._src.tpu_info; main needs JAX 0.11.2 since #2082). Jobs j-c1efeeef-0fcc-4952-a2e5, j-8552b9ec-94a4-4542-92af failed at engine start and were deleted. Offload code is byte-identical between main and PR head 83198bc, so live validation runs on 83198bc + patch. | worked around |
 
 ## Jobs left on the cluster (update at every change)
 
