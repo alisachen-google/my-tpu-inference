@@ -49,6 +49,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:45 | 3 | Both image checks failed without running: admitted at 10:11, the pods never started (no node placed them), and my 30-minute active deadline, which counts from admission, ended them at 10:41 with no log. Deleted both. Resubmitted the `muse-disagg` check with a 3 h deadline (the other image is covered by workstream 1's unit job `j-0fef6998-a7d1-4974-9077`). |
 | 10:47 | 1 | Submitted j-413cdada-1b3e-4f6d-884b (tree 6a34fc03, image anvil-jax0112-97afaea9, 8 chips): Qwen3-30B 1P1D, prefill --pp-size 8 --tp-size 1 --ep-size 1, decode tp8 with the pipeline transfer, offload on, small pools (16,384 tokens, prefill host ratio 2), harness stage offloadcheck running test/manual/tpu/pd_stage_offload_check.py. A cheap proof of the wiring under a real pipeline loop before the Muse run. Whether Qwen3-30B serves at pp8 tp1 is itself unknown. |
 | 11:01 | 1 | j-413cdada-1b3e-4f6d-884b: Qwen3-30B serves at pp8 tp1 on the anvil-jax0112 image with upstream main, both engines started with the offload on (decode: stage-layout extension attached; prefill: 8 stages, 257 host pages each), start-up about 2 min after pod start. First request hit the bug above. Job deleted. Resubmitted as j-767cc815-240c-4663-a0cc with the fix. |
+| 11:02 | 1 | j-0fef6998-a7d1-4974-9077 never ran: first placement unschedulable for 13 min, the retry sat SchedulingGated on node gke-tpu-d716ab26-bwhb for 7 min. Deleted it and resubmitted as j-9d176863-957f-4c12-90d6 with the current tree and the full test list. |
 
 ## Bugs and defects found (running list)
 
@@ -79,6 +80,8 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-413cdada-1b3e-4f6d-884b | ws1 small-model check: Qwen3-30B pp8 prefill to tp8 decode, offload on, scripted push/recall check | submitted 10:47Z |
 | j-413cdada-1b3e-4f6d-884b | ws1 small-model check, first attempt | failed on a ws1 bug, deleted 11:0xZ |
 | j-767cc815-240c-4663-a0cc | ws1 small-model check, second attempt (queue fix) | submitted 11:0xZ |
+| j-0fef6998-a7d1-4974-9077 | ws1 unit + probe, first submission | never started, deleted 11:0xZ |
+| j-9d176863-957f-4c12-90d6 | ws1 unit tests + B2 byte-path probe (resubmission) | submitted 11:0xZ |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
