@@ -31,7 +31,7 @@ local gcsCkptRoot = cdk.var('GCS_CKPT_ROOT', 'gs://cloud-devkit/ckpt/hf');
 local modelRoot = '/models';
 
 // --- Server config -------------------------------------------------------------
-local serverConfigModule = cdk.var('SERVER_CONFIG_MODULE', 'benchmark.tpu.recipe.configs.muse_spark.agentic');
+local serverConfigModule = cdk.var('SERVER_CONFIG_MODULE', 'benchmark.tpu.recipe.configs.muse_spark.pd_singlehost_pp8_prefix_cache_kv_offload_dflash');
 // JSON objects merged over the module's server_args / runtime_env, e.g. {"max_total_tokens":524288}.
 local serverArgsOverrides = cdk.var('SERVER_ARGS_OVERRIDES', '{}');
 // Per-role overrides, merged after the common ones.
@@ -144,28 +144,38 @@ local serverScript = agentx.fill(
 
     if [ "${JOB_COMPLETION_INDEX:?}" = 0 ]; then ROLE=prefill; else ROLE=decode; fi
     export ROLE
+    export MUSE_SPARK_MODEL="$MODEL_ROOT/$MODEL_NAME" MUSE_SPARK_DRAFT_MODEL="$MODEL_ROOT/$DRAFT_MODEL_NAME"
     python3 - > /tmp/muse_config.json <<'PY' || exit 1
-    import json, os
-    from benchmark.tpu.recipe.configs.muse_spark import agentic
+    import importlib, json, os
 
+    # The maintained P/D config on main (the nightly PP8 prefill + TP8 decode pair). agentic.get_config's
+    # prefill/decode modes do not pass main's own argument validation (j-de37ff1a-9c08-446c-9cea).
+    module = importlib.import_module(os.environ["SERVER_CONFIG_MODULE"])
     role = os.environ["ROLE"]
-    cfg = agentic.get_config(int(os.environ["SERVER_CONCURRENCY"]), mode=role)
-    root = os.environ["MODEL_ROOT"]
+    cfg = json.loads(json.dumps(module.PREFILL_CONFIG if role == "prefill" else module.DECODE_CONFIG))
     args = cfg["server_args"]
-    args.update(
-        model_path=f"{root}/{os.environ['MODEL_NAME']}",
-        served_model_name=os.environ["MODEL_NAME"],
-        speculative_draft_model_path=f"{root}/{os.environ['DRAFT_MODEL_NAME']}-swa",
-        context_length=int(os.environ["CONTEXT_LEN"]),
-        port=int(os.environ["ENGINE_PORT"]),
-    )
+    args["port"] = int(os.environ["ENGINE_PORT"])
     if role == "prefill":
         args["disaggregation_bootstrap_port"] = int(os.environ["BOOTSTRAP_PORT"])
+    # AgentX serving shape over the nightly probe shape: long context, no 8K token cap, the dashboard
+    # point's window share, one running slot per client.
+    args["context_length"] = int(os.environ["CONTEXT_LEN"])
+    args["max_running_requests"] = int(os.environ["SERVER_CONCURRENCY"])
+    args["max_total_tokens"] = None
+    args["swa_full_tokens_ratio"] = 0.0625
     args.update(json.loads(os.environ["SERVER_ARGS_OVERRIDES"]))
     args.update(json.loads(os.environ["PREFILL_ARGS" if role == "prefill" else "DECODE_ARGS"]))
-    cfg["runtime_env"].update(json.loads(os.environ["RUNTIME_ENV_OVERRIDES"]))
-    cfg["runtime_env"].update(json.loads(os.environ["PREFILL_ENV" if role == "prefill" else "DECODE_ENV"]))
-    agentic._write_swa_draft(agentic.Path(root))
+    # A null override removes the argument.
+    for key in [k for k, v in args.items() if v is None]:
+        del args[key]
+    env = cfg["runtime_env"]
+    # One engine on this host; the router is started below.
+    for key in ("LB_PORT", "HEALTH_TIMEOUT", "FORCE_SINGLE_HOST"):
+        env.pop(key, None)
+    env["SGLANG_LAUNCHER_RANK"] = "0"
+    env.update(json.loads(os.environ["RUNTIME_ENV_OVERRIDES"]))
+    env.update(json.loads(os.environ["PREFILL_ENV" if role == "prefill" else "DECODE_ENV"]))
+    cfg["group"] = {"hosts": 1}
     print(json.dumps(cfg, indent=1))
     PY
     cat /tmp/muse_config.json
@@ -367,7 +377,7 @@ local benchJob = agentx.benchJob(
     // Asserted by validate_required_agentic_server_metrics in images after 2026-09-19. A TPU
     // host has no GPU power monitor, so power stays best-effort; no PP or prefill CP here.
     REQUIRE_POWER: '0',
-    PP_SIZE: '1',
+    PP_SIZE: '8',
     PCP_SIZE: '1',
   },
   replayRewrites=[agentx.fill(sglangScrape, { SPEC_STEPS: specDraftTokens })] + durationRewrites,
