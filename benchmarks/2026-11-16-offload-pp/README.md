@@ -142,19 +142,30 @@ prompt up to where the 2,048-token sliding window starts. No long-prompt or Agen
 - The standalone on-device probe and a cluster unit-test job never got a node; unit tests run on this VM
   (`/mnt/disks/scratch/alisachen/tmp/ut.sh`).
 
-### DFLASH (added 2026-11-16 18:20Z)
+### DFLASH (2026-11-16 19:15Z)
 
 Design: DESIGN.md Revision 2026-11-16f. Implemented behind `SGLANG_PD_OFFLOAD_ALLOW_DRAFT=1` (fork commit `ee32d752`):
-each stage moves its HiCache draft sidecar pools at the page ids of the pools they follow. Unit tests pass on the VM
-(stage_branches 20, stage_pair 13, validate 12; all older offload tests green). The refusal stays the default until
-the live run below passes the byte check and the answer check.
+each stage moves its HiCache draft sidecar pools at the page ids of the pools they follow.
+
+Live, `j-b351f388-1542-4f20-ac94` (deleted, evidence in `runs/`): Muse Spark Open, nightly PP8 config unchanged
+(DFLASH on), offload on, opt-in on both roles, byte check on, 20 sessions.
+
+| | Result |
+|---|---|
+| Job, check, tracebacks | Succeeded, exit 0, none |
+| Start-up | 2,494 s |
+| Which stage has the sidecar | the last one (PP7): 5 tensors, 2.50 MiB a page; decode rank 7 built the matching 640-page pool |
+| Pushes stored, every stage | 61 of 61 |
+| Recalls / full pages pulled | 26 / 376 |
+| Byte check, stages 0 to 6 | 680 pages verified each (376 full + 304 window), 0 mismatched |
+| Byte check, stage 7 | 1,056 verified (the same plus 376 draft sidecar pages), 0 mismatched |
+
+The opt-in gate is still in place. The byte check passed with the sidecar pages included. The answer check reported no
+failure but compared nothing on Muse (no second turn resumed at the warm reference's cached length), and no
+speculative acceptance figure was collected, so "a recalled prefix drafts as well as a local one" is shown at the
+byte level only. Removing the gate is a small change in `startup_validation.py`, `pd_decode_swa_hicache.py` and
+`dram_offload_hooks.py`; it is left for a decision.
 
 ### Still on the cluster
 
-`j-b351f388-1542-4f20-ac94`: Muse Spark Open, nightly PP8 config unchanged (DFLASH on), offload on, draft opt-in, byte
-check on, 20 sessions, 6 h deadline. Read `STAGE_OFFLOAD_CHECK` in the bench container and `verified_pages` /
-`mismatched_pages` in the prefill's `[dram-offload] stage` lines, then delete it. If it passes, the opt-in gate is to be
-removed in a final commit; if not, the refusal stays.
-
-The Muse host-tier control (offload off, 60 sessions) was submitted twice (`j-cc8e0e61-17a1-4752-b48e`,
-`j-4df970f8-a455-4027-985a`) and never started (a server pod Pending until the 1 h deadline); dropped.
+Nothing.
