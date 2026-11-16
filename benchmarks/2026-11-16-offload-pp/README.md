@@ -26,6 +26,16 @@ Code: branch `pd-dram-offload-pp` of `alisachen-google/sglang-torchtpu`, worktre
   every stage applies the same verdict in the same iteration; the verdict is the minimum over stages and arrives one
   round later; one stage without host room withholds a recall for all; a stage that has not seen an offer drops the key.
 
+## Update 2026-11-16 (later): target changed to Phase B, blocked on the byte path
+
+The feature must serve the Muse Spark point (pipeline prefill, tensor-parallel decode). The pinned tpu-sync's host
+reads move whole blocks only, so a stage block cannot be mapped onto a decode rank's block; see the design's
+Revision 2026-11-16c for the evidence, three options (B1 tpu-sync spans, B2 foreign-layout store on the decode, B3
+rejected) and the Muse Spark prerequisites (speculative decoding and draft KV first). No job was submitted: the
+workstream 2 validation held the cluster, and no live run can answer the byte-path question. Decision needed from
+the user: B1 (ask the tpu-sync owners) or B2 (build the decode-side store, after confirming the decode never loads
+pushed pages).
+
 ## Why it stopped here
 
 The remaining work is the two-phase rewrite of the four offload workers (about fifteen agreement call sites), the

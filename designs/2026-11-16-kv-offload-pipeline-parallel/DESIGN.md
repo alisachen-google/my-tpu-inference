@@ -6,6 +6,57 @@ KV to decode DRAM, commit `3dabdc26`) and [PR 2086](https://github.com/sgl-proje
 (hybrid sliding-window models, commit `5c136df1`). Status: design verified against the code and revised (see Revision 2026-11-16b); the first building block is implemented on branch `pd-dram-offload-pp` of the fork (`d4c6764a`), nothing is wired into the engines. File and function names are the real ones in that tree;
 statements marked **to verify** are things I inferred from reading and have not run.
 
+## Revision 2026-11-16c: the target is now Phase B (Muse Spark), and its byte path is the blocker
+
+The feature has to apply to the Muse Spark disaggregated point: a pipeline prefill (`--pp-size 8 --tp-size 1`, one
+host) feeding a tensor-parallel decode (`--tp-size 8`, `SGLANG_RAIDEN_PIPELINE_TRANSFER=1`), hybrid sliding-window
+model, DFlash on both roles, `write_through` HiCache over Raiden, decode radix cache on, page 256, fp8 KV. That is
+Phase B of section 4.1. Phase A (matching pipelines) becomes optional.
+
+**Byte path, checked in the pinned tpu-sync (`tpu-sync-torch 0.0.1.dev20261112081648`, Python sources of the wheel).**
+The offload moves pages with the host-pool manager's `register_read(req_id, uuid, block_ids, source="host")` and
+`start_read(..., remote_block_ids, local_block_ids, destination="host")` (`tpu_sync/api/torch/kv_cache_manager.py`).
+These move **whole host blocks** between two managers whose blocks have the same layout: no offset, size or stride
+argument exists, and a host-pool manager (`host_blocks_to_allocate`) takes no pool manifest. Strided, per-layer spans
+exist only on the pool-reshard path the regular pipeline transfer uses (`ReshardClient.register_request_blocks(...,
+pool_spans)`, `coordinate_transfer`), which works on registered device pools with host staging; nothing in the Python
+API registers a HiCache host pool there. A prefill stage's host block (its layers x all heads) and a decode rank's
+host block (all layers x its head slice) differ in both dimensions, so **Phase B cannot be built on the installed
+host-read API as it is.** Whether the native pool-reshard path can read from and land in host pools is not visible
+from Python and needs the tpu-sync owners.
+
+Three ways forward, in order of preference:
+
+| Option | What it needs | Cost |
+|---|---|---|
+| B1. Spans on host reads | tpu-sync: `start_read` / `register_read` for `"host"` accept per-block byte spans (source offset, size, stride, destination offset), or host pools become registrable pools of the reshard path | A tpu-sync change; sglang side is then the mapping of section 4.5 |
+| B2. Foreign-layout store on the decode | No tpu-sync change. The decode keeps pushed branches in a separate host-only pool whose blocks have the **prefill stage's** layout (one pool per source stage), fed and drained by whole-block host reads; one decode rank per source stage owns that stage's pool. The pushed pages are storage only | The decode cannot load such pages into its own HBM. That appears to be already the case with the switch on (the on arm's client-reported hit equals the prefill-side hit, i.e. the decode does not serve its own requests from pushed branches), but it must be confirmed in `disaggregation/decode.py` before building on it; the decode's radix tree, host pressure accounting and SWA window pool need a second pool family |
+| B3. Common-granule pools | Split both roles' host tiers into stage x head-slice sub-pools so every read is a whole block | Restructures the HiCache host pool on both roles; rejected |
+
+**Control side for Phase B.** The prefill uses the stage votes of Revision 2026-11-16b. The decode is tensor
+parallel and keeps today's attention-TP lockstep unchanged. A push is S shares (one per stage) that the decode
+acknowledges once; with B2 each share lands on one decode rank, so "stored" is an agreement of the decode ranks
+that own a pool, which the existing lockstep already expresses.
+
+**Prerequisites for Muse Spark beyond the pipeline** (from the configuration in `server_args.json` of the baseline
+job and the tree; none implemented):
+
+1. Speculative decoding is refused by the offload (`startup_validation.py`). With DFlash the draft model has its own
+   KV; the regular pipeline transfer carries draft pools (`pool_spans.py`, `is_draft_pool`, `pdhid.*`), the offload
+   moves full-attention KV and the SWA window only. A recalled prefix would have no draft KV. Either the offload
+   moves the draft pages as a third page set (the decode's host tier already holds draft KV next to the full KV,
+   `pd_decode_swa_hicache.py`), or the prefill reseeds the draft KV for a recalled prefix (under PP the draft lives on
+   the last stage only, `hooks/pipeline_parallel.py`). The second is a recompute on one stage and defeats part of
+   the recall.
+2. The Raiden pipeline transfer on the decode is refused by name; lifting it is part of Phase B.
+3. Hybrid sliding-window under PP: every stage moves the window pages of its own SWA layers (section 4.5).
+4. `SGLANG_TPU_USE_BLOCK_MAJOR_KV`, megakernel and the DFlash experimental worker settings of the Muse recipe have
+   never run with the offload; each needs a start-up check and a live run.
+5. Page size 256 and `write_through`: supported by the offload today, no change expected.
+
+**Image for upstream main.** Main pins `jax==0.11.2`; the serving image `sglang-torchtpu:20261103` predates it. The
+tag `junyanxu-vllm-tpu/sglang-torchtpu:anvil-jax0112-97afaea9` (pushed 2026-11-14) is the candidate; not tested.
+
 ## Revision 2026-11-16b: what the code check changed
 
 The "to verify" items were checked against upstream main `82e2b973` (`managers/scheduler_pp_mixin.py`,
