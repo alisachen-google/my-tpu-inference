@@ -16,9 +16,24 @@ Three campaigns, each the same tree and settings with the switch unset ("off") a
 2. 2P2D sticky-pair transitions, write-back;
 3. write-through 1P1D.
 
-Status 2026-11-11 10:00Z: all three campaigns complete on head `83198bc912`, both arms, all jobs deleted; a long
-mixed-load stress stage (2P2D, two-host TP16 engines, text and images) is queued and will be reported separately.
-`ISSUES-2026-11-11.md` has every system error met and the status of each on the new head.
+Status 2026-11-16: all three campaigns complete on head `83198bc912`, both arms; the mixed-load stress stage ran for
+3 hours on 1P1D with two-host TP16 engines (Qwen3-VL-8B, text and images, 1..261k tokens, 1..64 images) and is
+reported in `STRESS-2026-11-11.md`; all jobs deleted. `ISSUES-2026-11-11.md` has every system error met, the status
+of each on the new head, and the stress findings I9-I12.
+
+## Stress test in one paragraph
+
+Three ramp cycles in 3 hours, 1,841 requests, 1,832 completed, 0 hangs, 0 crashes; after every ramp the engines
+drained within 76 s, a 24-request verification batch passed, the GSM8K gate stayed at 95-97 against a 96 baseline,
+and no KV was left after a flush. The single two-host prefill saturates from about 6 concurrent requests (TTFT p50
+32 s at 6, 121 s at 32, 218 s at 48); the ramps ended at 72 because the saturated prefill stopped answering
+`/health` within 30 s, and in one cycle at 48 on error rate. The one correctness-grade finding: at concurrency 48,
+9 requests came back HTTP 200 with zero output tokens because the prefill-to-decode KV transfer hit its 60 s deadline
+on a saturated decode (I9). The first attempt at this run was OOM-killed on a decode host at concurrency 48 with the
+3.5 decode host-pool ratio; at 2.0 the same ramp completes, and the host RSS growth under load (up to 250 GB, released
+on drain) lands on the second host of each engine (I10). The 2P2D TP16 layout could not be scheduled (four two-host
+slices at once) and the single-host 2P2D fallback was spot-preempted seven times; its partial ramp (clean to
+concurrency 14) is kept. Details, tables and recommendations in `STRESS-2026-11-11.md`.
 
 ## Head 83198bc912 in one paragraph
 
@@ -805,6 +820,9 @@ exact under write-through.
   each campaign on the two heads side by side.
 - `evidence/h83198bc/<arm>/` and `evidence/<arm>/`: the `/metrics` snapshots around every point (`*.m0`, `*.m1`), the
   server logs (gzip), `offload_counters.txt/json` (final counters, rank check, per-point deltas), `invalidating_lines.txt`.
+- `results/h83198bc/stress_1p1d_tp16_vl_3h/` (the 3-hour stress run: every request, level and cycle, the verdict, the
+  GSM8K checks, `report_tables.md`), `results/h83198bc/stress_2p2d_tp8_vl_partial/` and
+  `results/h83198bc/stress_smoke_1p1d_vl/`, with their `evidence/h83198bc/...` (server logs, `mem_kubectl_top.log`).
 - `recipes/pd1992-qwen3-30b-xpyd.jsonnet`, `harness/`: what ran (the recipe now also carries the two-host TP16 topology,
   the Qwen3-VL-8B profile and the `stress` stage of the stress test; those did not change the campaign runs, whose
   rendered JobSets differ from the first head's only by the explicit early-send env, which is upstream's default).

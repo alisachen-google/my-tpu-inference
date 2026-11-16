@@ -1,0 +1,67 @@
+{
+ "engines": {
+  "prefill-0-h0": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 515,
+   "refused_lines": 0,
+   "final": {
+    "push": {},
+    "recall": {}
+   },
+   "rank_equal": true,
+   "unequal": []
+  },
+  "prefill-0-h1": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 524,
+   "refused_lines": 0,
+   "final": {
+    "push": {
+     "started": 3836,
+     "stored": 3805,
+     "declined": 31
+    },
+    "recall": {
+     "offers": 32,
+     "pulls": 30,
+     "pulled_tokens": 1745280,
+     "skipped_local_host": 2
+    }
+   },
+   "rank_equal": true,
+   "unequal": []
+  },
+  "decode-0-h0": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 65,
+   "refused_lines": 0,
+   "final": {
+    "landing": {}
+   },
+   "rank_equal": true,
+   "unequal": []
+  },
+  "decode-0-h1": {
+   "ranks": 8,
+   "warnings": 0,
+   "errors": 66,
+   "refused_lines": 0,
+   "final": {
+    "landing": {
+     "received": 3836,
+     "granted": 3823,
+     "no_room": 13,
+     "landed": 3819,
+     "landed_tokens": 89000192,
+     "failed": 4
+    }
+   },
+   "rank_equal": true,
+   "unequal": []
+  }
+ },
+ "points": []
+}

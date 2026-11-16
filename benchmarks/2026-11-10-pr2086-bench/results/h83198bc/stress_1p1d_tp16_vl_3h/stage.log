@@ -1,0 +1,4 @@
+2026-11-11 18:15:42 STRESS start (g2086vl_stress_write_back, profile qwen3-vl-8b, multimodal true, tp 16, hosts/engine 2, policy write_back, switch true, layout 1p1d):  p0=200 d0=200 lb=200 exceptions: prefill-0-h0=0 prefill-0-h1=0 decode-0-h0=0 decode-0-h1=0
+2026-11-11 18:15:42 pins: p0d0=http://j-cee50ceb-f5ed-44f4-80f9-router-0-0.j-cee50ceb-f5ed-44f4-80f9:8100
+2026-11-11 21:23:24 driver rc=1; prefill-side hit 3.7% (cached 4275584 of 115362052 prompt tokens)
+2026-11-11 21:23:58 STRESS DONE (g2086vl_stress_write_back): driver rc=1, invalidating/crash lines=1104,  p0=200 d0=200 lb=200 exceptions: prefill-0-h0=515 prefill-0-h1=524 decode-0-h0=65 decode-0-h1=66

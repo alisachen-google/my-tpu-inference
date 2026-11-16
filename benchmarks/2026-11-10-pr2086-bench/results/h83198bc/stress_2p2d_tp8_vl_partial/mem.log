@@ -1,0 +1,12 @@
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-bench-0-0-vqbsv bench 171m 2354Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-bench-0-0-vqbsv gke-gcsfuse-sidecar 2m 47Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-decode-0-0-5825b gke-gcsfuse-sidecar 1m 292Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-decode-0-0-5825b sglang-decode 17487m 656093Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-decode-1-0-vtg8q gke-gcsfuse-sidecar 4m 324Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-decode-1-0-vtg8q sglang-decode 19989m 655265Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-prefill-0-0-znrgb gke-gcsfuse-sidecar 1m 236Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-prefill-0-0-znrgb sglang-prefill 9047m 446346Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-prefill-1-0-22qwr gke-gcsfuse-sidecar 2m 248Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-prefill-1-0-22qwr sglang-prefill 9384m 450598Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-router-0-0-6rkz5 gke-gcsfuse-sidecar 1m 29Mi
+2026-11-11T16:13:10Z j-45ed2717-35b7-42ec-950e-router-0-0-6rkz5 sglang-router 118m 2593Mi

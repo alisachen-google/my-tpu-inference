@@ -1,0 +1,188 @@
+{
+ "run": "g2086vl_stress_write_back",
+ "ok": false,
+ "reasons": [
+  "cycle 1: server or router down at concurrency 72: health: ['http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s'] (3 probes in a row)",
+  "cycle 2: server or router down at concurrency 72: health: ['http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s'] (3 probes in a row)"
+ ],
+ "duration_s": 11240,
+ "cycles": 3,
+ "last_good_conc": [
+  48,
+  48,
+  32
+ ],
+ "failed_at": [
+  72,
+  72,
+  48
+ ],
+ "fail_reasons": [
+  "health: ['http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s'] (3 probes in a row)",
+  "health: ['http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s'] (3 probes in a row)",
+  "error rate 0.109"
+ ],
+ "gsm8k_baseline_acc": 0.96,
+ "gsm8k_checks": [
+  {
+   "acc": 0.95,
+   "baseline_acc": 0.96,
+   "errors": 0,
+   "compared": 100,
+   "pred_changed": 3
+  },
+  {
+   "acc": 0.96,
+   "baseline_acc": 0.96,
+   "errors": 0,
+   "compared": 100,
+   "pred_changed": 2
+  },
+  {
+   "acc": 0.97,
+   "baseline_acc": 0.96,
+   "errors": 0,
+   "compared": 100,
+   "pred_changed": 2
+  }
+ ],
+ "health_slow_events": 15,
+ "health_slow": [
+  [
+   "2026-11-11 18:57:03",
+   8,
+   32,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s",
+    "http://j-cee50ceb-f5ed-44f4-80f9-decode-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 19:03:18",
+   9,
+   48,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s",
+    "http://j-cee50ceb-f5ed-44f4-80f9-decode-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 19:11:33",
+   10,
+   72,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s",
+    "http://j-cee50ceb-f5ed-44f4-80f9-decode-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 19:12:33",
+   10,
+   72,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s",
+    "http://j-cee50ceb-f5ed-44f4-80f9-decode-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 19:13:16",
+   10,
+   72,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 19:49:46",
+   6,
+   14,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 19:55:24",
+   7,
+   21,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 20:08:08",
+   9,
+   48,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s",
+    "http://j-cee50ceb-f5ed-44f4-80f9-decode-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 20:15:34",
+   10,
+   72,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s",
+    "http://j-cee50ceb-f5ed-44f4-80f9-decode-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 20:16:06",
+   10,
+   72,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-decode-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 20:17:00",
+   10,
+   72,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 21:04:41",
+   8,
+   32,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s",
+    "http://j-cee50ceb-f5ed-44f4-80f9-decode-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 21:11:16",
+   9,
+   48,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s",
+    "http://j-cee50ceb-f5ed-44f4-80f9-decode-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 21:12:33",
+   9,
+   48,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ],
+  [
+   "2026-11-11 21:15:00",
+   9,
+   48,
+   [
+    "http://j-cee50ceb-f5ed-44f4-80f9-prefill-0-0.j-cee50ceb-f5ed-44f4-80f9:30000 ReadTimeout after 30 s"
+   ]
+  ]
+ ],
+ "health_latency_max_s": {
+  "prefill-0": 30.09,
+  "decode-0": 30.04,
+  "http://j-cee50ceb-f5ed-44f4-80f9-router-0-0.j-cee50ceb-f5ed-44f4-80f9:8080": 0.12,
+  "http://j-cee50ceb-f5ed-44f4-80f9-router-0-0.j-cee50ceb-f5ed-44f4-80f9:8100": 0.08
+ },
+ "health_end": [],
+ "t_end": "2026-11-11 21:23:17"
+}

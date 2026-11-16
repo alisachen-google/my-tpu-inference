@@ -1,0 +1,14 @@
+== prefill-0-h0 ranks=8 warnings=0 errors=234 refused_lines=0
+  push     TP0 final: started=0 stored=0
+  recall   TP0 final: pulls=0
+  verdict: EQUAL across 8 ranks
+== prefill-0-h1 ranks=8 warnings=0 errors=232 refused_lines=0
+  push     TP0 final: started=760 stored=744 declined=12
+  recall   TP0 final: offers=36 pulls=31 pulled_tokens=1465216 skipped_local_host=5
+  verdict: EQUAL across 8 ranks
+== decode-0-h0 ranks=8 warnings=0 errors=28 refused_lines=0
+  landing  TP0 final: landed=0
+  verdict: EQUAL across 8 ranks
+== decode-0-h1 ranks=8 warnings=0 errors=24 refused_lines=0
+  landing  TP0 final: received=741 granted=737 no_room=4 landed=736 landed_tokens=15565184
+  verdict: EQUAL across 8 ranks

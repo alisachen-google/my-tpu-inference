@@ -419,9 +419,11 @@ class Driver:
     def __init__(self, a, engines, workload):
         self.a, self.eng, self.wl = a, engines, workload
         self.out = Path(a.out)
-        self.req_f = open(self.out / f"{a.run}_stress_requests.jsonl", "a")
-        self.lvl_f = open(self.out / f"{a.run}_stress_levels.jsonl", "a")
-        self.log_f = open(self.out / f"{a.run}_stress.log", "a")
+        # $OUT is a gcsfuse mount in the job: a file reaches the bucket only when it is closed, so every record is
+        # appended with its own open/close (a killed driver then loses at most one line, not the whole run).
+        self.req_path = self.out / f"{a.run}_stress_requests.jsonl"
+        self.lvl_path = self.out / f"{a.run}_stress_levels.jsonl"
+        self.log_path = self.out / f"{a.run}_stress.log"
         self.lock = threading.Lock()
         self.failures = []  # verdict reasons
         self.health_slow = []  # (time, level, conc, what) for health probes that failed once but recovered
@@ -434,7 +436,8 @@ class Driver:
     def log(self, msg):
         line = f"{now()} {msg}"
         print(line, flush=True)
-        self.log_f.write(line + "\n"); self.log_f.flush()
+        with open(self.log_path, "a") as f:
+            f.write(line + "\n")
 
     def record(self, req, res, level, cycle):
         ok, why = judge(req, res)
@@ -445,8 +448,8 @@ class Driver:
                "completion_tokens": res.get("completion_tokens"), "cached_tokens": res.get("cached_tokens"),
                "cached_tokens_details": res.get("cached_tokens_details"), "status": res.get("status"), "hang": res.get("hang"),
                "correct": res.get("correct")}
-        with self.lock:
-            self.req_f.write(json.dumps(rec) + "\n"); self.req_f.flush()
+        with self.lock, open(self.req_path, "a") as f:
+            f.write(json.dumps(rec) + "\n")
         return rec
 
     def one(self, req, level, cycle, sink):
@@ -631,7 +634,8 @@ class Driver:
                 st.update(cycle=cycle, level=level, conc=conc, hold_s=round(time.time() - t0, 1), submitted=submitted, fail=fail, t=now())
                 snap = self.eng.snapshot()
                 st["engines"] = {n: {k.split(":")[1]: v for k, v in m.items() if k in GAUGES} for n, m in snap.items()}
-                self.lvl_f.write(json.dumps(st) + "\n"); self.lvl_f.flush()
+                with open(self.lvl_path, "a") as f:
+                    f.write(json.dumps(st) + "\n")
                 cyc["levels"].append({k: st[k] for k in ("level", "conc", "requests", "errors", "hangs", "error_rate", "ttft_p50", "ttft_p95", "e2e_p95", "client_hit", "gsm8k_acc", "max_prompt_tokens", "max_images", "fail")})
                 failed = fail is not None or st["error_rate"] > a.fail_error_rate or st["hangs"] > 0 \
                     or (st["ttft_p50"] is not None and st["ttft_p50"] > a.ttft_sat_seconds)

@@ -1,0 +1,22 @@
+/usr/local/lib/python3.12/site-packages/torch_tpu/__init__.py:37: UserWarning: <TorchTpu/Performance/TcMalloc/> tcmalloc is not loaded; TorchTPU host performance may be degraded due to glibc ptmalloc contention. Preload libtcmalloc before starting Python (e.g. LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4), or set PYTHONWARNINGS="ignore:<TorchTpu/Performance/TcMalloc/" to suppress this warning.
+  _tcmalloc_check.check_tcmalloc()
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794411350.865518    1037 pjrt_api.cc:119] GetPjrtApi was found for TPU at /usr/local/lib/python3.12/site-packages/libtpu/libtpu.so
+I0000 00:00:1794411350.893619    1037 tpu_profiler_plugin.cc:800] PyTorch PrivateUse1ProfilerRegistry not found. Native TPU profiling will be disabled (this is expected on PyTorch < 2.12).
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (263639 > 262144). Running this sequence through the model will result in indexing errors
+2026-11-11 15:35:58 stress start: duration 10800.0 s, conc 2..256 x1.5, step 300.0 s, max input 261120, max images 64, pins ['p0d0', 'p0d1', 'p1d0', 'p1d1']
+2026-11-11 15:35:58 GSM8K baseline on idle engines (100 questions)
+2026-11-11 15:36:17 GSM8K baseline acc 0.96 errors 0 e2e_p50 2.29943087301217
+2026-11-11 15:36:17 cycle 1 level 1: concurrency 2 for 300 s
+2026-11-11 15:41:25 cycle 1 level 1 conc 2: 73 ok / 0 err / 0 hang, ttft p50 1.2 p95 12.6 s, hit 15.8%, gsm8k 0.6666666666666666 (6), max prompt 261120 imgs 52 -> pass
+2026-11-11 15:41:25 cycle 1 level 2: concurrency 3 for 300 s
+2026-11-11 15:46:35 cycle 1 level 2 conc 3: 90 ok / 0 err / 0 hang, ttft p50 2.7 p95 18.1 s, hit 17.3%, gsm8k 1.0 (8), max prompt 261120 imgs 64 -> pass
+2026-11-11 15:46:35 cycle 1 level 3: concurrency 4 for 300 s
+2026-11-11 15:51:54 cycle 1 level 3 conc 4: 134 ok / 0 err / 0 hang, ttft p50 2.1 p95 17.1 s, hit 12.0%, gsm8k 1.0 (13), max prompt 261120 imgs 63 -> pass
+2026-11-11 15:51:54 cycle 1 level 4: concurrency 6 for 300 s
+2026-11-11 15:57:12 cycle 1 level 4 conc 6: 134 ok / 0 err / 0 hang, ttft p50 5.1 p95 23.3 s, hit 8.6%, gsm8k 1.0 (8), max prompt 261120 imgs 64 -> pass
+2026-11-11 15:57:12 cycle 1 level 5: concurrency 9 for 300 s
+2026-11-11 16:02:36 cycle 1 level 5 conc 9: 197 ok / 0 err / 0 hang, ttft p50 4.3 p95 24.5 s, hit 13.2%, gsm8k 1.0 (9), max prompt 261120 imgs 64 -> pass
+2026-11-11 16:02:36 cycle 1 level 6: concurrency 14 for 300 s
+2026-11-11 16:08:03 cycle 1 level 6 conc 14: 209 ok / 0 err / 0 hang, ttft p50 14.7 p95 31.5 s, hit 6.5%, gsm8k 1.0 (14), max prompt 261120 imgs 64 -> pass
+2026-11-11 16:08:03 cycle 1 level 7: concurrency 21 for 300 s
