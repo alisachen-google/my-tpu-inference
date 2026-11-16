@@ -91,6 +91,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-e10e5edf-9c6e-46a1-8496 | ws1 small-model check, third attempt | failed on the image's old tpu-sync, deleted 11:4xZ |
 | j-41f7fb37-7247-4c60-a7ff | ws1 small-model check, fourth attempt (bf16 KV, pinned tpu-sync) | submitted 11:4xZ |
 | j-160b9e9c-f350-4126-b74c | ws1 Muse Spark Open, nightly PP8 prefill + TP8 decode, offload on, scripted check; ends by itself (6 h deadline). Result line STAGE_OFFLOAD_CHECK in the bench container log; delete after collecting | submitted 11:46Z |
+| j-bf9d3225-5ae0-4867-8f77 | ws2 final ladder x3, fix | Succeeded, collected, DELETED 11:5xZ |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
