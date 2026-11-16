@@ -1,0 +1,128 @@
+[2026-11-16 15:39:03 PP0] [dram-offload] stage push_started=1
+[2026-11-16 15:39:04 PP1] [dram-offload] stage push_started=1
+[2026-11-16 15:39:04 PP2] [dram-offload] stage push_started=1
+[2026-11-16 15:39:04 PP3] [dram-offload] stage push_started=1
+[2026-11-16 15:39:04 PP4] [dram-offload] stage push_started=1
+[2026-11-16 15:39:04 PP5] [dram-offload] stage push_started=1
+[2026-11-16 15:39:04 PP6] [dram-offload] stage push_started=1
+[2026-11-16 15:39:04 PP7] [dram-offload] stage push_started=1
+[2026-11-16 15:39:33 PP0] [dram-offload] stage push_started=4
+[2026-11-16 15:39:34 PP1] [dram-offload] stage push_started=4
+[2026-11-16 15:39:34 PP2] [dram-offload] stage push_started=4
+[2026-11-16 15:39:34 PP3] [dram-offload] stage push_started=4
+[2026-11-16 15:39:34 PP4] [dram-offload] stage push_started=4
+[2026-11-16 15:39:34 PP5] [dram-offload] stage push_started=4
+[2026-11-16 15:39:34 PP6] [dram-offload] stage push_started=4
+[2026-11-16 15:39:34 PP7] [dram-offload] stage push_started=4
+[2026-11-16 15:40:03 PP0] [dram-offload] stage push_started=4
+[2026-11-16 15:40:04 PP1] [dram-offload] stage push_started=4
+[2026-11-16 15:40:04 PP2] [dram-offload] stage push_started=4
+[2026-11-16 15:40:04 PP3] [dram-offload] stage push_started=4
+[2026-11-16 15:40:04 PP4] [dram-offload] stage push_started=4
+[2026-11-16 15:40:04 PP5] [dram-offload] stage push_started=4
+[2026-11-16 15:40:04 PP6] [dram-offload] stage push_started=4
+[2026-11-16 15:40:04 PP7] [dram-offload] stage push_started=4
+[2026-11-16 15:40:33 PP0] [dram-offload] stage push_started=4
+[2026-11-16 15:40:34 PP1] [dram-offload] stage push_started=4
+[2026-11-16 15:40:34 PP2] [dram-offload] stage push_started=4
+[2026-11-16 15:40:34 PP3] [dram-offload] stage push_started=4
+[2026-11-16 15:40:34 PP4] [dram-offload] stage push_started=4
+[2026-11-16 15:40:34 PP5] [dram-offload] stage push_started=4
+[2026-11-16 15:40:34 PP6] [dram-offload] stage push_started=4
+[2026-11-16 15:40:34 PP7] [dram-offload] stage push_started=4
+[2026-11-16 15:41:03 PP0] Raiden host transfer victim:7ee9c382b1800d81:1 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:03 PP0] Raiden host transfer victim:7ee9c382b1800d81:1:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:03 PP1] Raiden host transfer victim:7ee9c382b1800d81:1 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:03 PP1] Raiden host transfer victim:7ee9c382b1800d81:1:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:03 PP0] [dram-offload] stage push_started=4
+[2026-11-16 15:41:04 PP2] Raiden host transfer victim:7ee9c382b1800d81:1 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP2] Raiden host transfer victim:7ee9c382b1800d81:1:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP1] [dram-offload] stage push_started=4
+[2026-11-16 15:41:04 PP3] Raiden host transfer victim:7ee9c382b1800d81:1 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP3] Raiden host transfer victim:7ee9c382b1800d81:1:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP2] [dram-offload] stage push_started=4
+[2026-11-16 15:41:04 PP4] Raiden host transfer victim:7ee9c382b1800d81:1 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP4] Raiden host transfer victim:7ee9c382b1800d81:1:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP3] [dram-offload] stage push_started=4
+[2026-11-16 15:41:04 PP5] Raiden host transfer victim:7ee9c382b1800d81:1 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP5] Raiden host transfer victim:7ee9c382b1800d81:1:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP4] [dram-offload] stage push_started=4
+[2026-11-16 15:41:04 PP5] [dram-offload] stage push_started=4
+[2026-11-16 15:41:04 PP6] Raiden host transfer victim:7ee9c382b1800d81:1 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP6] Raiden host transfer victim:7ee9c382b1800d81:1:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP7] Raiden host transfer victim:7ee9c382b1800d81:1 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP7] Raiden host transfer victim:7ee9c382b1800d81:1:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP6] [dram-offload] stage push_started=4
+[2026-11-16 15:41:04 PP7] [dram-offload] stage push_started=4 push_declined=1
+[2026-11-16 15:41:04 PP0] Raiden host transfer victim:7ee9c382b1800d81:2 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP0] Raiden host transfer victim:7ee9c382b1800d81:2:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP1] Raiden host transfer victim:7ee9c382b1800d81:2 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP1] Raiden host transfer victim:7ee9c382b1800d81:2:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP2] Raiden host transfer victim:7ee9c382b1800d81:2 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:04 PP2] Raiden host transfer victim:7ee9c382b1800d81:2:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP3] Raiden host transfer victim:7ee9c382b1800d81:2 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP3] Raiden host transfer victim:7ee9c382b1800d81:2:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP4] Raiden host transfer victim:7ee9c382b1800d81:2 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP4] Raiden host transfer victim:7ee9c382b1800d81:2:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP5] Raiden host transfer victim:7ee9c382b1800d81:2 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP5] Raiden host transfer victim:7ee9c382b1800d81:2:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP6] Raiden host transfer victim:7ee9c382b1800d81:2 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP6] Raiden host transfer victim:7ee9c382b1800d81:2:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP7] Raiden host transfer victim:7ee9c382b1800d81:2 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP7] Raiden host transfer victim:7ee9c382b1800d81:2:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP0] Raiden host transfer victim:7ee9c382b1800d81:3 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP0] Raiden host transfer victim:7ee9c382b1800d81:3:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP1] Raiden host transfer victim:7ee9c382b1800d81:3 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP1] Raiden host transfer victim:7ee9c382b1800d81:3:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP2] Raiden host transfer victim:7ee9c382b1800d81:3 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP2] Raiden host transfer victim:7ee9c382b1800d81:3:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP3] Raiden host transfer victim:7ee9c382b1800d81:3 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP3] Raiden host transfer victim:7ee9c382b1800d81:3:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP4] Raiden host transfer victim:7ee9c382b1800d81:3 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:05 PP4] Raiden host transfer victim:7ee9c382b1800d81:3:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP5] Raiden host transfer victim:7ee9c382b1800d81:3 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP5] Raiden host transfer victim:7ee9c382b1800d81:3:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP6] Raiden host transfer victim:7ee9c382b1800d81:3 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP6] Raiden host transfer victim:7ee9c382b1800d81:3:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP7] Raiden host transfer victim:7ee9c382b1800d81:3 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP7] Raiden host transfer victim:7ee9c382b1800d81:3:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP0] Raiden host transfer victim:7ee9c382b1800d81:4 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP0] Raiden host transfer victim:7ee9c382b1800d81:4:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP1] Raiden host transfer victim:7ee9c382b1800d81:4 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP1] Raiden host transfer victim:7ee9c382b1800d81:4:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP2] Raiden host transfer victim:7ee9c382b1800d81:4 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP2] Raiden host transfer victim:7ee9c382b1800d81:4:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP3] Raiden host transfer victim:7ee9c382b1800d81:4 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP3] Raiden host transfer victim:7ee9c382b1800d81:4:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP4] Raiden host transfer victim:7ee9c382b1800d81:4 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP4] Raiden host transfer victim:7ee9c382b1800d81:4:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP5] Raiden host transfer victim:7ee9c382b1800d81:4 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:06 PP5] Raiden host transfer victim:7ee9c382b1800d81:4:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:07 PP6] Raiden host transfer victim:7ee9c382b1800d81:4 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:07 PP6] Raiden host transfer victim:7ee9c382b1800d81:4:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:07 PP7] Raiden host transfer victim:7ee9c382b1800d81:4 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:07 PP7] Raiden host transfer victim:7ee9c382b1800d81:4:swa failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 15:41:33 PP0] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:41:34 PP1] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:41:34 PP2] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:41:34 PP3] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:41:34 PP4] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:41:34 PP5] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:41:34 PP6] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:41:34 PP7] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:03 PP0] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:04 PP1] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:04 PP2] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:04 PP3] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:04 PP4] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:04 PP5] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:04 PP6] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:04 PP7] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:33 PP0] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:34 PP1] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:34 PP2] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:34 PP3] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:34 PP4] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:34 PP5] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:34 PP6] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
+[2026-11-16 15:42:34 PP7] [dram-offload] stage push_started=15 push_stored=7 push_declined=4 push_stale=16 recall_offers=2 recall_pulls=2 recall_pulled_pages=48 verified_pages=52
