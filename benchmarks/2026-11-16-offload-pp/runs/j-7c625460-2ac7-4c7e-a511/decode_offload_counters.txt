@@ -1,0 +1,48 @@
+[2026-11-16 12:04:31 TP3 EP3] Raiden KV transfer ready: 48 tensors, 129 host pages, 3.00 MiB per page
+[2026-11-16 12:04:31 TP2 EP2] Raiden KV transfer ready: 48 tensors, 129 host pages, 3.00 MiB per page
+[2026-11-16 12:04:31 TP6 EP6] Raiden KV transfer ready: 48 tensors, 129 host pages, 3.00 MiB per page
+[2026-11-16 12:04:31 TP0 EP0] Raiden KV transfer ready: 48 tensors, 129 host pages, 3.00 MiB per page
+[2026-11-16 12:04:31 TP5 EP5] Raiden KV transfer ready: 48 tensors, 129 host pages, 3.00 MiB per page
+[2026-11-16 12:04:31 TP4 EP4] Raiden KV transfer ready: 48 tensors, 129 host pages, 3.00 MiB per page
+[2026-11-16 12:04:31 TP7 EP7] Raiden KV transfer ready: 48 tensors, 129 host pages, 3.00 MiB per page
+[2026-11-16 12:04:31 TP1 EP1] Raiden KV transfer ready: 48 tensors, 129 host pages, 3.00 MiB per page
+[2026-11-16 12:09:08 TP2 EP2] [dram-offload] stage landing received=1
+[2026-11-16 12:09:08 TP1 EP1] [dram-offload] stage landing received=1
+[2026-11-16 12:09:08 TP0 EP0] [dram-offload] stage landing received=1
+[2026-11-16 12:09:08 TP3 EP3] [dram-offload] stage landing received=1
+[2026-11-16 12:09:08 TP5 EP5] [dram-offload] stage landing received=1
+[2026-11-16 12:09:08 TP7 EP7] [dram-offload] stage landing received=1
+[2026-11-16 12:09:08 TP4 EP4] [dram-offload] stage landing received=1
+[2026-11-16 12:09:08 TP6 EP6] [dram-offload] stage landing received=1
+[2026-11-16 12:09:08 TP4 EP4] Raiden KV transfer ready: 6 tensors, 1365 host pages, 1.50 MiB per page
+[2026-11-16 12:09:08 TP7 EP7] Raiden KV transfer ready: 6 tensors, 1365 host pages, 1.50 MiB per page
+[2026-11-16 12:09:08 TP0 EP0] Raiden KV transfer ready: 6 tensors, 1365 host pages, 1.50 MiB per page
+[2026-11-16 12:09:08 TP3 EP3] Raiden KV transfer ready: 6 tensors, 1365 host pages, 1.50 MiB per page
+[2026-11-16 12:09:08 TP1 EP1] Raiden KV transfer ready: 6 tensors, 1365 host pages, 1.50 MiB per page
+[2026-11-16 12:09:08 TP6 EP6] Raiden KV transfer ready: 6 tensors, 1365 host pages, 1.50 MiB per page
+[2026-11-16 12:09:08 TP5 EP5] Raiden KV transfer ready: 6 tensors, 1365 host pages, 1.50 MiB per page
+[2026-11-16 12:09:08 TP2 EP2] Raiden KV transfer ready: 6 tensors, 1365 host pages, 1.50 MiB per page
+[2026-11-16 12:09:08 TP0 EP0] [dram-offload] stage store ready on rank 0: stages [0], 1365 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 12:09:08 TP7 EP7] [dram-offload] stage store ready on rank 7: stages [7], 1365 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 12:09:08 TP6 EP6] [dram-offload] stage store ready on rank 6: stages [6], 1365 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 12:09:08 TP5 EP5] [dram-offload] stage store ready on rank 5: stages [5], 1365 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 12:09:08 TP2 EP2] [dram-offload] stage store ready on rank 2: stages [2], 1365 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 12:09:08 TP3 EP3] [dram-offload] stage store ready on rank 3: stages [3], 1365 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 12:09:08 TP1 EP1] [dram-offload] stage store ready on rank 1: stages [1], 1365 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 12:09:08 TP4 EP4] [dram-offload] stage store ready on rank 4: stages [4], 1365 pages (1572864 bytes each on the largest rank), 0 windows of 0 pages
+[2026-11-16 12:09:38 TP6 EP6] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:09:38 TP1 EP1] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:09:38 TP7 EP7] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:09:38 TP0 EP0] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:09:38 TP5 EP5] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:09:38 TP2 EP2] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:09:38 TP3 EP3] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:09:38 TP4 EP4] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:10:08 TP0 EP0] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:10:08 TP1 EP1] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:10:08 TP7 EP7] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:10:08 TP2 EP2] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:10:08 TP3 EP3] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:10:08 TP5 EP5] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:10:08 TP4 EP4] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600
+[2026-11-16 12:10:08 TP6 EP6] [dram-offload] stage landing received=24 granted=24 landed=24 landed_pages=600 pages=1365 used_pages=600

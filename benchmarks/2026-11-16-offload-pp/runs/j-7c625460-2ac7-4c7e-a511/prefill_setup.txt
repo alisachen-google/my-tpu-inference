@@ -1,0 +1,15 @@
+I0000 00:00:1794830567.445590     126 libtpu_version.cc:63] Setting libtpu version to: 0.0.50
+I0000 00:00:1794830637.536616     222 libtpu_version.cc:63] Setting libtpu version to: 0.0.50
+[2026-11-16 12:04:18] [TPU] Registered torch_tpu ATen fallbacks: count_nonzero.dim_IntList, masked_scatter_, logaddexp, upsample_bicubic2d
+[2026-11-16 12:04:18] [TPU] libtpu premapped host staging pool: 4.00 GiB (TPU_PREMAPPED_BUFFER_SIZE=4294967296); raise it if KV-offload H2D OOMs.
+[2026-11-16 12:07:33 PP0] Raiden KV transfer ready: 6 tensors, 257 host pages, 1.50 MiB per page
+[2026-11-16 12:07:33 PP1] Raiden KV transfer ready: 6 tensors, 257 host pages, 1.50 MiB per page
+[2026-11-16 12:07:33 PP2] Raiden KV transfer ready: 6 tensors, 257 host pages, 1.50 MiB per page
+[2026-11-16 12:07:33 PP3] Raiden KV transfer ready: 6 tensors, 257 host pages, 1.50 MiB per page
+[2026-11-16 12:07:33 PP4] Raiden KV transfer ready: 6 tensors, 257 host pages, 1.50 MiB per page
+[2026-11-16 12:07:33 PP5] Raiden KV transfer ready: 6 tensors, 257 host pages, 1.50 MiB per page
+[2026-11-16 12:07:33 PP6] Raiden KV transfer ready: 6 tensors, 257 host pages, 1.50 MiB per page
+[2026-11-16 12:07:33 PP7] Raiden KV transfer ready: 6 tensors, 257 host pages, 1.50 MiB per page
+libtpu                             0.0.50
+torch_tpu                          0.2.1.dev20261028201649
+tpu_sync_torch                     0.0.1.dev20261112081648

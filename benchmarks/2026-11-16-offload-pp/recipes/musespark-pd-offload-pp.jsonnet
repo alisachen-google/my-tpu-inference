@@ -143,6 +143,8 @@ local serverScript = agentx.fill(
     SGLANG_BUILD_RUST_EXTS=none pip install --no-deps --no-build-isolation -e "@CODE@/python" || exit 1
     python3 -c "import zstandard" 2>/dev/null || pip install -q zstandard || exit 1
     if [ -n "${TPU_SYNC_WHEEL:-}" ]; then pip install --no-deps "@CODE@/$TPU_SYNC_WHEEL" || exit 1; fi
+    if [ -n "${TPU_SYNC_VERSION:-}" ]; then pip install -q --no-deps --pre "tpu-sync-torch==$TPU_SYNC_VERSION" || exit 1; fi
+    pip list 2>/dev/null | grep -iE '^(torch|torch[-_]tpu|tpu[-_]sync[-_]torch|libtpu|jax) '
     export PYTHONPATH="@CODE@/sgl-model-gateway/bindings/python/src:@CODE@/python${PYTHONPATH:+:$PYTHONPATH}"
     python3 -c "import sglang_tpu,sys; sys.exit(0 if sglang_tpu.__file__.startswith('@CODE@') else 1)" \
       || { echo "sglang_tpu resolved outside the staged tree"; exit 1; }
@@ -216,6 +218,8 @@ local serverEnv =
     PREFILL_ENV: prefillEnv,
     DECODE_ENV: decodeEnv,
     TPU_SYNC_WHEEL: tpuSyncWheel,
+    // The tree's pin; the pipeline transfer to a tensor-parallel decode needs >= 0.0.1.dev20261110081704.
+    TPU_SYNC_VERSION: cdk.var('TPU_SYNC_VERSION', '0.0.1.dev20261112081648'),
     OFFLOAD_SWITCH: if switchOn then '1' else '0',
     STAGE_STORE_GB: stageStoreGb,
     SERVER_CONFIG_MODULE: serverConfigModule,
