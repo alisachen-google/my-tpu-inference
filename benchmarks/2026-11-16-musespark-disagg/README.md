@@ -1,8 +1,29 @@
-# Workstream 3: Muse Spark P/D on TPU7x vs GPU (AgentX), baseline extraction 2026-11-16
+# Muse Spark P/D on TPU7x vs GPU (AgentX): findings so far
 
-Source: dash `d-19d6aedd-af5d-481d-9929` ("[Muse Spark] AgentX Disagg", 14 sheets, 45 jobs). `extract.py` pulls every
-job's result and submit command through `cdk job desc`; raw data in `dash_data.json`. Cost uses the dash's own prices
-per chip-hour: TPU7x 1.21, GB300 2.31, VR200 3.61. Nothing has been run yet in this workstream.
+Last updated 2026-11-16. Source: dash `d-19d6aedd-af5d-481d-9929` ("[Muse Spark] AgentX Disagg", 14 sheets, 45 jobs).
+`extract.py` pulls every job's result and submit command through `cdk job desc` (the dash has no CLI export); raw data
+in `dash_data.json`. Cost uses the dash's own prices per chip-hour: TPU7x 1.21, GB300 2.31, VR200 3.61.
+**No tuning run has been made yet; everything here is from existing jobs, their logs, and code reading.**
+
+## Summary of findings
+
+1. **Only one TPU disaggregated point exists** (`j-ec9464b2-4aaf-46fe-af8a`, concurrency 32, 8 chips): 18.3k tokens/s
+   per chip, 54.5 M tokens per dollar, 64 tokens/s p90 interactivity, 12.8 s p90 TTFT.
+2. **It is behind on both axes the dash compares.** Per dollar it is below the aggregated TPU server (86.9 at
+   concurrency 22), GB300 (77.1 at 32) and VR200 aggregated (84.8 at 48). On interactivity it is far below the GPU
+   disaggregated points (463 to 971 tokens/s p90), which give up cost to get there (12.9 to 34.5 M tokens per dollar).
+3. **The first-token time is a fixed per-request cost, not prefill compute.** 41% of end-to-end time is before the
+   first token. TTFT is 4.3 s at the median even when fewer than 1,000 tokens are new, and prompts are 97% cached.
+   The split between prefill queueing, pipeline depth and KV transfer is not measured: the decode's logs for that
+   job are truncated in storage.
+4. **Decode speed per stream is not the outlier.** 105 tokens/s per stream at 32 concurrent, close to the aggregated
+   TPU server at 22 concurrent (109 p90).
+5. **Config in one line:** PP8 pipeline prefill (megakernel off) on one host, TP8 decode on the other, DFlash draft,
+   write-through HiCache over Raiden, 32 running requests per role, none of the pipeline's early-transfer modes on.
+6. **PR 2183 (megakernel SP prefill) is a prefill compute gain** (2.57x on a 5-layer slice per the author), not a
+   fix for the fixed first-token cost, and it has no serving weight loader yet. Notes in
+   `MEGAKERNEL-ARCHITECTURE-NOTES.md`.
+7. **The KV offload to decode DRAM cannot be applied to this point yet** (section "Applying the KV offload" below).
 
 ## Data points
 
@@ -81,3 +102,29 @@ not measured yet.
    the prefill (`SGLANG_RAIDEN_PIPELINE_EARLY_PARTS`, `_STAGE_PARTS`, `_EARLY_CLOSE`, all off in this run), early
    send of the cached prefix, decode-side prefix reuse so a 97%-cached prompt does not move again, prefill batch
    admission (`prefill_decode_interval`, `pp_async_batch_depth`), and the megakernel on the decode role.
+
+## Applying the KV offload to decode DRAM to this point (task 4): prerequisites
+
+The offload (`SGLANG_ENABLE_PREFILL_KV_OFFLOAD_TO_DECODE_DRAM=1`) refuses this configuration today for four reasons,
+found by reading the tree and the pinned tpu-sync wheel:
+
+| Blocker | Detail | State |
+|---|---|---|
+| Pipeline prefill | `--pp-size` above 1 is refused; cross-stage agreement is needed | Design and first module in workstream 1 (`designs/2026-11-16-kv-offload-pipeline-parallel/`, `benchmarks/2026-11-16-offload-pp/`) |
+| Page layout mismatch | A pipeline stage's host block holds its layers x all heads; a TP decode rank's holds all layers x its head slice. tpu-sync's host-to-host read moves whole blocks only | Option chosen for now: the decode stores pushed branches in the stage's layout in host-only pools; alternative is a tpu-sync change |
+| Speculative decoding | DFlash runs on both roles; a recalled prefix would have no draft KV | Not started; documented follow-up |
+| Untested combination | Megakernel, block-major KV and the DFlash worker settings of this recipe have never run with the offload | Needs a live check once the above exist |
+
+Expectation to test, not a result: prompts here are already 97% served from the prefill's own cache, so the offload
+can only help with what falls out of the prefill's memory as concurrency grows. The A/B (switch off vs on at the
+tuned config, across a concurrency sweep) will show whether that is material.
+
+## Status and next steps
+
+| Step | State |
+|---|---|
+| Extract the dash and explain the config | Done (this file) |
+| Rerun the point with complete engine logs to split TTFT | Not started: the recipe is not in the shared recipes repo and mounts its owner's NFS checkout; cluster priority is held by another validation |
+| Concurrency sweep 8 to 48 | Not started |
+| Hand-off tuning (early transfer modes, prefix reuse on the decode, admission) | Not started |
+| Apply the KV offload (task 4) | Blocked on the four prerequisites above |
