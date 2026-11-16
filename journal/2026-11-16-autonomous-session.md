@@ -51,6 +51,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 11:01 | 1 | j-413cdada-1b3e-4f6d-884b: Qwen3-30B serves at pp8 tp1 on the anvil-jax0112 image with upstream main, both engines started with the offload on (decode: stage-layout extension attached; prefill: 8 stages, 257 host pages each), start-up about 2 min after pod start. First request hit the bug above. Job deleted. Resubmitted as j-767cc815-240c-4663-a0cc with the fix. |
 | 11:02 | 1 | j-0fef6998-a7d1-4974-9077 never ran: first placement unschedulable for 13 min, the retry sat SchedulingGated on node gke-tpu-d716ab26-bwhb for 7 min. Deleted it and resubmitted as j-9d176863-957f-4c12-90d6 with the current tree and the full test list. |
 | 11:12 | 1 | j-767cc815-240c-4663-a0cc: both engines up, the fixed hook path ran without an exception, but the first request failed with 'Raiden pipeline registration failed: Partial FP8 head pack'. Not an offload defect: upstream's pp-to-tp pipeline transfer needs an even KV head count per decode rank with fp8 KV, which Qwen3-30B at tp8 does not have (the nightly Muse config uses bf16 KV for the same reason). Deleted; resubmitted as j-e10e5edf-9c6e-46a1-8496 with KV_CACHE_DTYPE=bfloat16. |
+| 11:42 | 1 | j-e10e5edf-9c6e-46a1-8496 (bf16 KV): first request failed in the native pipeline transfer (decode: 'Incoming push rejected ... OUT_OF_RANGE: Chunk out of bounds'). Cause: the anvil-jax0112 image ships tpu_sync_torch 0.0.1.dev20261103081657 and upstream main pins 0.0.1.dev20261112081648 (floor 20261110 for the strided spans a tensor-parallel consumer of a pipeline prefill needs). Not an offload defect. Deleted; resubmitted as j-??? with TPU_SYNC_VERSION set; the Muse recipe now installs the pinned tpu-sync too. Any workstream that runs a pipeline prefill on this image needs the same. |
 
 ## Bugs and defects found (running list)
 
@@ -63,6 +64,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:35 | ws1 branch, pool_transfer.py pipeline request hooks | Read mgr.dram_offload_channel directly; two upstream tests in test_raiden_pipeline.py use managers without that attribute and failed | fixed in 1effe708 (getattr); found by the local CPU run |
 | 10:45 | harness (mine) | An active deadline shorter than the placement wait kills a job that never ran: the deadline counts from Kueue admission, not from pod start | Use deadlines of hours for anything on a busy pool |
 | 11:01 | ws1 branch, dram_offload_hooks._pipeline_prefill_extension | Captured scheduler.disagg_prefill_bootstrap_queue at attach time, when it is still None (the extension is attached while the queue is built); the prefill crashed on its first vote with AttributeError and the engine exited (rc 137). Found live in j-413cdada-1b3e-4f6d-884b within 10 s of the first request | fixed (queue read when asked; the pair test now attaches before the queue exists) |
+| 11:42 | image sglang-torchtpu:anvil-jax0112-97afaea9 | Ships tpu_sync_torch 0.0.1.dev20261103081657; upstream main needs 0.0.1.dev20261112081648. A pp-to-tp pipeline transfer fails every request with 'Chunk out of bounds' | worked around by pip-installing the pinned version at pod start |
 
 ## Jobs left on the cluster (update at every change)
 | `j-a6eabbfd-d6ba-4121-b2b0`, `j-d4dd1ecb-65c5-42e6-8f43` | image checks | failed unplaced, deleted 10:45 |
@@ -85,6 +87,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-9d176863-957f-4c12-90d6 | ws1 unit tests + B2 byte-path probe (resubmission) | submitted 11:0xZ |
 | j-767cc815-240c-4663-a0cc | ws1 small-model check, second attempt | failed on fp8 head packing of the pipeline transfer, deleted 11:1xZ |
 | j-e10e5edf-9c6e-46a1-8496 | ws1 small-model check, third attempt (bf16 KV) | submitted 11:1xZ |
+| j-e10e5edf-9c6e-46a1-8496 | ws1 small-model check, third attempt | failed on the image's old tpu-sync, deleted 11:4xZ |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
