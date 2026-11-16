@@ -144,5 +144,6 @@ prompt up to where the 2,048-token sliding window starts. No long-prompt or Agen
 
 ### Still on the cluster
 
-`j-4df970f8-a455-4027-985a`: Muse, offload off, 60 sessions, a side control (does Muse's own host tier resume like its
-device tier). It ends by itself (6 h deadline) and should be deleted after reading its check line.
+Nothing. The Muse host-tier control (offload off, 60 sessions) was submitted twice (`j-cc8e0e61-17a1-4752-b48e`,
+`j-4df970f8-a455-4027-985a`); both times a server pod stayed Pending until the 1 h pending deadline. It was a side
+question (does Muse's own host tier resume like its device tier) and has not been answered.

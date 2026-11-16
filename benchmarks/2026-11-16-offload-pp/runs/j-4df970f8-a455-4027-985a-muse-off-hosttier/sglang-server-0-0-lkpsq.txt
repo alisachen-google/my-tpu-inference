@@ -1,0 +1,1 @@
+Error reading logs from GCS: failed to open object reader for jobs/j-4df970f8-a455-4027-985a/logs/j-4df970f8-a455-4027-985a-sglang-server-0/j-4df970f8-a455-4027-985a-sglang-server-0-0-lkpsq/sglang-server.log: storage: object doesn't exist.
