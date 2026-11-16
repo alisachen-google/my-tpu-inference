@@ -1,0 +1,16 @@
+[2026-11-16 14:59:37 PP2] Raiden KV transfer ready: 2 tensors, 193 host pages, 2.00 MiB per page
+[2026-11-16 14:59:37 PP3] Raiden KV transfer ready: 2 tensors, 193 host pages, 2.00 MiB per page
+[2026-11-16 14:59:37 PP5] Raiden KV transfer ready: 2 tensors, 193 host pages, 2.00 MiB per page
+[2026-11-16 14:59:37 PP0] Raiden KV transfer ready: 2 tensors, 193 host pages, 2.00 MiB per page
+[2026-11-16 14:59:37 PP4] Raiden KV transfer ready: 2 tensors, 193 host pages, 2.00 MiB per page
+[2026-11-16 14:59:37 PP6] Raiden KV transfer ready: 2 tensors, 193 host pages, 2.00 MiB per page
+[2026-11-16 14:59:37 PP1] Raiden KV transfer ready: 2 tensors, 193 host pages, 2.00 MiB per page
+[2026-11-16 14:59:37 PP7] Raiden KV transfer ready: 2 tensors, 193 host pages, 2.00 MiB per page
+[2026-11-16 14:59:37 PP0] Raiden KV transfer ready: 5 tensors, 1057 host pages, 5.00 MiB per page
+[2026-11-16 14:59:37 PP4] Raiden KV transfer ready: 6 tensors, 1057 host pages, 6.00 MiB per page
+[2026-11-16 14:59:38 PP1] Raiden KV transfer ready: 6 tensors, 1057 host pages, 6.00 MiB per page
+[2026-11-16 14:59:38 PP5] Raiden KV transfer ready: 6 tensors, 1057 host pages, 6.00 MiB per page
+[2026-11-16 14:59:38 PP2] Raiden KV transfer ready: 6 tensors, 1057 host pages, 6.00 MiB per page
+[2026-11-16 14:59:38 PP3] Raiden KV transfer ready: 6 tensors, 1057 host pages, 6.00 MiB per page
+[2026-11-16 14:59:38 PP6] Raiden KV transfer ready: 6 tensors, 1057 host pages, 6.00 MiB per page
+[2026-11-16 14:59:38 PP7] Raiden KV transfer ready: 5 tensors, 1057 host pages, 5.00 MiB per page
