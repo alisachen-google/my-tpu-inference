@@ -92,9 +92,11 @@ the verdict. The workers cannot be converted by replacing each blocking reduce w
 needs a rule for what is held between cast and settle, and locks taken before agreement would make evictions differ
 between stages.
 
+> Workstream 1 commit ids: PR 2202 was rewritten into 9 commits at 2026-11-16 about 19:50Z (head `04e89a10`, same tree as the old head `62d7dcb2`). Where an old id is cited it now reads "new id (old id before the history rewrite)". Older workstream 1 ids without a mapping (for example `b2244a8a`, `cab47428`, `1effe708`) exist only on the local branch `pr2202-before-squash` in `/mnt/disks/scratch/alisachen/sglang-pp-offload`.
+
 ## Result as of 2026-11-16 17:15Z
 
-Draft PR: https://github.com/sgl-project/sglang-torchtpu/pull/2202 (fork branch `pd-dram-offload-pp`, head `f3a5199a`).
+Draft PR: https://github.com/sgl-project/sglang-torchtpu/pull/2202 (fork branch `pd-dram-offload-pp`, head `04e89a10` after the history rewrite; `f3a5199a` at the time of this table).
 Everything below ran on the shared CDK cluster, image `sglang-torchtpu:anvil-jax0112-97afaea9` plus the tree's pinned
 tpu-sync `0.0.1.dev20261112081648` and `libibverbs1`, tree staged with `--map-dir`. Evidence per job is in `runs/`
 (check output and the engines' `[dram-offload]` counters). All jobs are deleted except the one named at the end.
@@ -144,7 +146,7 @@ prompt up to where the 2,048-token sliding window starts. No long-prompt or Agen
 
 ### DFLASH (2026-11-16 19:15Z)
 
-Design: DESIGN.md Revision 2026-11-16f. Implemented behind `SGLANG_PD_OFFLOAD_ALLOW_DRAFT=1` (fork commit `ee32d752`):
+Design: DESIGN.md Revision 2026-11-16f. Implemented behind `SGLANG_PD_OFFLOAD_ALLOW_DRAFT=1` (fork commit `1f6d7c29 (ee32d752 before the history rewrite)`):
 each stage moves its HiCache draft sidecar pools at the page ids of the pools they follow.
 
 Live, `j-b351f388-1542-4f20-ac94` (deleted, evidence in `runs/`): Muse Spark Open, nightly PP8 config unchanged
