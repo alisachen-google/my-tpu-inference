@@ -1,0 +1,60 @@
+15:12:38.838 INFO     All results received, initiating shutdown (system_controller.py:864)
+15:12:38.842 NOTICE   Phase warmup (warmup) sending complete | sent=31, completed=1, in_flight=30 | sessions: sent=27, completed=0 (runner.py:1039)
+15:12:38.842 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.842 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.842 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.842 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.842 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.842 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.843 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.843 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.843 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.843 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.842 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.844 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.844 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.845 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.845 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.845 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.845 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.845 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.845 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.846 INFO     BranchOrchestrator stats: spawned=0 completed=0 errored=0 suspended=0 resumed=0 parents_failed_due_to_child_error=0 joins_suppressed=0 delayed=0 (branch_orchestrator.py:1782)
+15:12:38.846 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.843 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.847 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.847 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.848 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.850 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.853 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.859 INFO     Session-tree slots for phase warmup: peak_open=26 (target concurrency 32); released 26 still-open at teardown; late_events=0 (runner.py:551)
+15:12:38.860 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:38.861 NOTICE   All credits completed (phase_orchestrator.py:245)
+15:12:38.861 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
+15:12:39.340 WARNING  Service dataset_manager process (pid: 2515) still alive after bus shutdown grace; killing (SIGKILL / TerminateProcess — children ignore SIGTERM) (multiprocess_service_manager.py:277)
+15:12:39.417 WARNING  Service worker process (pid: 2543) still alive after bus shutdown grace; killing (SIGKILL / TerminateProcess — children ignore SIGTERM) (multiprocess_service_manager.py:277)
+
+╭─ AIPerf System Exit Errors ──────────────────────────────────────────────────╮
+│ • Service: timing_manager                                                    │
+│    Operation: Profiling                                                      │
+│    Error: ProfileAborted                                                     │
+│    Reason: A root AgentX warmup request failed, so profiling was not         │
+│            started. Check the preceding request error and                    │
+│            inference server logs.                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Log File: 
+/cdk-outputs/outputs/j-21b78d1c-6df4-4e97-9e4a-bench-0/j-21b78d1c-6df4-4e97-9e4a
+-bench-0-0-b6mkf/bench/conc_32/aiperf_artifacts/logs/aiperf.log
+
+ERROR: /cdk-outputs/outputs/j-21b78d1c-6df4-4e97-9e4a-bench-0/j-21b78d1c-6df4-4e97-9e4a-bench-0-0-b6mkf/bench/conc_32/aiperf_artifacts/profile_export.jsonl not found
+SGLANG c32: verify=0 gen=0 prompt=0 cached=0
+WARNING: sweep c32 exited with 1
+trace-end-event: name=warmup-c32 ts=1794841963.191465579 pid=bench tid=bench
+trace-end-event: name=benchmark-agentx-c32 ts=1794841963.231870018 pid=bench tid=bench
+RESULT c32: mean_ttft_ms=None total_token_throughput=None tok/s kv_cache_hit_rate=None
+WARNING: c32 is missing a headline metric (ttft/throughput above); check /cdk-outputs/outputs/j-21b78d1c-6df4-4e97-9e4a-bench-0/j-21b78d1c-6df4-4e97-9e4a-bench-0-0-b6mkf/bench/conc_32/benchmark.log
+Publishing c32 to CDK (exit=1): {"conc":32,"max_concurrency":32}
+2026/11/16 15:12:44 [DB] Successfully appended result for Job j-21b78d1c-6df4-4e97-9e4a
+Appended to result for Job j-21b78d1c-6df4-4e97-9e4a in MongoDB
+Completed concurrency level: 32
+AgentX sweeps completed (overall_exit=1).
