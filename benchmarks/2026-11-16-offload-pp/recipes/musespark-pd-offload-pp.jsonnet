@@ -102,9 +102,10 @@ local modelVolume = {
   ephemeral: {
     volumeClaimTemplate: {
       spec: {
-        storageClassName: 'premium-rwo',
+        // premium-rwo counts against the region's SSD_TOTAL_GB quota, which was exhausted on 2026-11-16.
+        storageClassName: cdk.var('MODEL_STORAGE_CLASS', 'premium-rwo'),
         accessModes: ['ReadWriteOnce'],
-        resources: { requests: { storage: '1024Gi' } },
+        resources: { requests: { storage: cdk.var('MODEL_STORAGE_SIZE', '1024Gi') } },
       },
     },
   },
