@@ -94,6 +94,8 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 17:09 | 1 | Draft PR 2202 description rewritten with the full live matrix (three models incl. Muse Spark draft-off, multi-host), the byte-check results, the off vs on timings, the five defects the live runs found, and what is not run. Still a draft, no reviewers. |
 | 18:09 | 1 | Muse host-tier control j-4df970f8-a455-4027-985a failed like its predecessor: the decode pod was up at 17:23Z but the prefill pod stayed Pending and the job hit the 1 h pending deadline at 18:08Z (capacity; no engine fault). Deleted and not resubmitted: it is a side question now that the byte check shows recalled pages equal pushed pages. Workstream 1 has no job left on the cluster. |
 | 18:10 | 1 | New task from the coordinator: DFLASH support for the pipeline pairing. Design note written first as Revision 2026-11-16f in DESIGN.md: a draft sidecar is one more pool kind of a stage at the page ids of its source pool; decode adds a pool per sidecar with the source's page count; push, partial push, recall and eviction follow the source ids; behind opt-in SGLANG_PD_OFFLOAD_ALLOW_DRAFT until a live Muse run with the draft on passes. |
+| 18:19 | 1 | DFLASH support implemented behind an opt-in (fork branch commit ee32d752): wire fields for a stage's draft sidecars, channel pool selection by (window, draft), decode pool set keyed by (stage, window, draft) with a sidecar sized like the pool it follows, landing and recall reads at the source's page ids, byte check extended to sidecar pages, both refusals lifted only with SGLANG_PD_OFFLOAD_ALLOW_DRAFT=1 in the pipeline pairing. Unit tests on the VM: stage_branches 20 (4 new), stage_pair 13 (3 new), validate 12 (1 new); all offload tests, test_raiden_pipeline 69 and test_pd_decode_swa_hicache 42 pass. Not yet run on device. |
+| 18:19 | 1 | Submitted the live run: j-b351f388-1542-4f20-ac94, Muse Spark Open, nightly PP8 config unchanged (DFLASH on), offload on, SGLANG_PD_OFFLOAD_ALLOW_DRAFT=1 on both roles, byte check on, 20 sessions, hyperdisk-balanced 700Gi, 6 h deadline. |
 
 ## Bugs and defects found (running list)
 
@@ -201,6 +203,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-cc8e0e61-17a1-4752-b48e | ws1 Muse host-tier control | never started (capacity), deleted 17:1xZ |
 | j-4df970f8-a455-4027-985a | ws1 Muse host-tier control, offload OFF, 60 sessions, 6 h deadline; side question only; delete after collecting | submitted 17:1xZ |
 | j-4df970f8-a455-4027-985a | ws1 Muse host-tier control, second submission | never started (prefill pod Pending 1 h), deleted 18:1xZ; not resubmitted |
+| j-b351f388-1542-4f20-ac94 | ws1 Muse Spark Open with DFLASH ON, offload on, draft opt-in, byte check on; STAGE_OFFLOAD_CHECK in the bench container; verified_pages / mismatched_pages in the prefill's [dram-offload] stage lines; 6 h deadline; delete after collecting | submitted 18:2xZ |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
