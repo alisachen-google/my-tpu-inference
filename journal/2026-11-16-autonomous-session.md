@@ -111,6 +111,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-0eb12ed9-feb2-4dc4-babd | ws1 Muse Spark Open run, offload on, 20 sessions, self-checking, 6 h deadline; STAGE_OFFLOAD_CHECK in the bench container, [dram-offload] counters in both engines; delete after collecting | submitted 12:1xZ |
 | j-a8c3a35f-9174-44f0-99f8 | ws1 small-model control, switch OFF, burst controls | submitted 12:1xZ |
 | j-0aefbbd3-81fa-4a08-ab5b | ws1 small-model check, switch ON, burst controls | submitted 12:1xZ |
+| j-405f0892-b1ea-4887-a83b | ws2 final ladder x3, baseline | Succeeded, collected, DELETED 12:2xZ |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
