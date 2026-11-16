@@ -1,0 +1,13 @@
+2026-11-16 16:31:47 OFFLOADCHECK start:  p0=200 d0=200 lb=200 exceptions: prefill-0=0 decode-0=0
+Traceback (most recent call last):
+ConnectionRefusedError: [Errno 111] Connection refused
+Traceback (most recent call last):
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='j-02219a9d-db9e-4078-be4e-prefill-0-0.j-02219a9d-db9e-4078-be4e', port=30000): Failed to establish a new connection: [Errno 111] Connection refused
+Traceback (most recent call last):
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='j-02219a9d-db9e-4078-be4e-prefill-0-0.j-02219a9d-db9e-4078-be4e', port=30000): Max retries exceeded with url: /flush_cache (Caused by NewConnectionError("HTTPConnection(host='j-02219a9d-db9e-4078-be4e-prefill-0-0.j-02219a9d-db9e-4078-be4e', port=30000): Failed to establish a new connection: [Errno 111] Connection refused"))
+Traceback (most recent call last):
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='j-02219a9d-db9e-4078-be4e-prefill-0-0.j-02219a9d-db9e-4078-be4e', port=30000): Max retries exceeded with url: /flush_cache (Caused by NewConnectionError("HTTPConnection(host='j-02219a9d-db9e-4078-be4e-prefill-0-0.j-02219a9d-db9e-4078-be4e', port=30000): Failed to establish a new connection: [Errno 111] Connection refused"))
+2026-11-16 16:33:58 OFFLOADCHECK rc=1
+2026-11-16 16:35:13 OFFLOADCHECK after:  p0=000 d0=000 lb=200 exceptions: prefill-0=0 decode-0=0
+2026-11-16 16:35:14 OFFLOADCHECK DONE
+stage offloadcheck rc=1 Mon Nov 16 16:35:14 UTC 2026
