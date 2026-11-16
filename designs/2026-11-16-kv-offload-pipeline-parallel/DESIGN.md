@@ -3,8 +3,51 @@
 Design walkthrough, 2026-11-16 (multi-host pipelines added the same day, section 4.7). Written against `sgl-project/sglang-torchtpu` main at `82e2b973`, which contains
 the feature as merged: [PR 1992](https://github.com/sgl-project/sglang-torchtpu/pull/1992) (offload of cold prefill
 KV to decode DRAM, commit `3dabdc26`) and [PR 2086](https://github.com/sgl-project/sglang-torchtpu/pull/2086)
-(hybrid sliding-window models, commit `5c136df1`). Status: proposal, nothing implemented. File and function names are the real ones in that tree;
+(hybrid sliding-window models, commit `5c136df1`). Status: design verified against the code and revised (see Revision 2026-11-16b); the first building block is implemented on branch `pd-dram-offload-pp` of the fork (`d4c6764a`), nothing is wired into the engines. File and function names are the real ones in that tree;
 statements marked **to verify** are things I inferred from reading and have not run.
+
+## Revision 2026-11-16b: what the code check changed
+
+The "to verify" items were checked against upstream main `82e2b973` (`managers/scheduler_pp_mixin.py`,
+`disaggregation/prefill.py`, `decode_dram_offload/dram_offload_hooks.py`). Three design points change; sections 4.2
+to 4.4 below are superseded where they conflict with this revision.
+
+1. **The pipeline already has the agreement mechanism; reuse it instead of "stage 0 decides".** Every stage runs its
+   own loop over `pp_loop_size = pp_size + pp_async_batch_depth` micro-batch slots, synchronized by blocking receives
+   from the previous stage. For bootstrap and release it already does this: in a slot each stage folds its local
+   view into what the previous stage sent (good rids intersect, bad rids unite) and passes it on
+   (`_pp_pd_get_bootstrapped_ids`, `_pp_pd_send_control`); the last stage's fold is the consensus, which travels the
+   ring (`_pp_pd_send_consensus_to_next_stage`, tag `_PP_PD_CONSENSUS_TAG`) and is applied by every stage when its
+   loop reaches the next slot (`process_bootstrapped_queue`). So the rule is: **every stage votes, the last stage's
+   fold is the verdict, every stage applies it in the same later slot.** No stage decides alone and no vote flows
+   backwards. The delay is one trip of the ring, fixed by the loop, for both the lockstep wave and the buffered
+   hand-off. Implemented as `decode_dram_offload/stage_votes.py` (fold, per-slot ledger) with a simulated-ring test.
+2. **The bootstrap queue lives on every stage, and a request already leaves it only by consensus.** Each stage has
+   its own `disagg_prefill_bootstrap_queue`; `pop_bootstrapped` is called on every stage with the consensus rids, and
+   the offload's hook (`_pop_bootstrapped`) wraps exactly that method. A stage whose recall is not settled keeps its
+   room in Bootstrapping, so it does not vote "good" and the request waits on every stage. The "hold the request
+   until the last stage committed" step of 4.4 therefore needs no new protocol. What is still new is the
+   all-or-nothing outcome: whether every stage's read succeeded has to be a stage vote, applied at the pop, because
+   "bad" in the existing consensus fails the request and a failed recall must only fall back to computing.
+3. **The existing workers are synchronous; under a pipeline they become two-phase.** Pusher, puller, receiver and
+   offerer call `RankLockstep.reduce` about fifteen times and act on the result in the same step. With stage votes
+   the result arrives one ring trip later, so each call site becomes "cast now, act when the verdict settles", with
+   the state in between kept per key (push sequence number, bootstrap room). This is the bulk of the work and the
+   main risk: every site needs its own answer to "what if the request left, the read failed, or the engine was
+   flushed while the vote was in flight". Keeping one code path for TP-only and PP means the TP-only lockstep is
+   expressed as the same two phases with a zero-length ring; that has to be shown not to change TP-only behaviour.
+
+Also confirmed: the decode's pipeline loop has the same consensus points for prealloc, retract and transfer
+(`_pp_pd_get_prealloc_ids`, `decode_transfer_status`), so the decode side can use the same ledger. Not confirmed by
+code reading alone: that a pipeline decode runs with `--disaggregation-decode-enable-radix-cache` and HiCache at all
+(no refusal found, no test found); Phase A depends on it and it needs a live check before anything else is built on
+it. Upstream main no longer runs on the 2026-11-03 serving image, so every on-cluster test of this work first needs an
+image that runs main.
+
+Revised order of work: (a) live check that a matching pipeline pair serves with decode radix cache and HiCache,
+switch off; (b) wire the ledger into both pipeline loops next to the existing consensus sends; (c) recall as cast
+and settle, with the outcome vote at the pop; (d) push; (e) startup validation and the layout fingerprint; (f) the
+unit and live matrix of section 7.
 
 ## 1. The goal in one paragraph
 
