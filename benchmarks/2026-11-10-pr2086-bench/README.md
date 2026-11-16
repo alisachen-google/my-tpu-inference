@@ -27,9 +27,8 @@ Three ramp cycles in 3 hours, 1,841 requests, 1,832 completed, 0 hangs, 0 crashe
 drained within 76 s, a 24-request verification batch passed, the GSM8K gate stayed at 95-97 against a 96 baseline,
 and no KV was left after a flush. The single two-host prefill saturates from about 6 concurrent requests (TTFT p50
 32 s at 6, 121 s at 32, 218 s at 48); the ramps ended at 72 because the saturated prefill stopped answering
-`/health` within 30 s, and in one cycle at 48 on error rate. The one correctness-grade finding: at concurrency 48,
-9 requests came back HTTP 200 with zero output tokens because the prefill-to-decode KV transfer hit its 60 s deadline
-on a saturated decode (I9). The first attempt at this run was OOM-killed on a decode host at concurrency 48 with the
+`/health` within 30 s, and in one cycle at 48 on error rate. At concurrency 48, 9 requests were aborted by the engines because the prefill-to-decode KV transfer hit its 60 s deadline
+on the saturated decode (I9; first reported as silent empty answers, corrected: the abort is delivered in-band). The first attempt at this run was OOM-killed on a decode host at concurrency 48 with the
 3.5 decode host-pool ratio; at 2.0 the same ramp completes, and the host RSS growth under load (up to 250 GB, released
 on drain) lands on the second host of each engine (I10). The 2P2D TP16 layout could not be scheduled (four two-host
 slices at once) and the single-host 2P2D fallback was spot-preempted seven times; its partial ramp (clean to

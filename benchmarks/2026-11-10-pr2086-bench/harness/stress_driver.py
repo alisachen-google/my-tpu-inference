@@ -367,8 +367,12 @@ def send(req, timeout, ttft_timeout):
                     out_ids.extend(chunk.get("output_ids") or [])
                     text_parts.append(chunk.get("text") or "")
                 else:
+                    if chunk.get("error"):
+                        res["server_error"] = json.dumps(chunk["error"])[:300]
                     for c in chunk.get("choices") or []:
                         text_parts.append((c.get("delta") or {}).get("content") or "")
+                        if c.get("finish_reason"):
+                            res["finish_reason"] = c["finish_reason"]
                     if chunk.get("usage"):
                         last = chunk
         res["e2e_s"] = time.perf_counter() - t0
@@ -400,6 +404,14 @@ def judge(req, res):
     answer; an abort passed when the first token came."""
     if res.get("error"):
         return False, res["error"]
+    # An engine that fails a request after the stream opened (a KV transfer that timed out, an abort) reports it
+    # in-band: /generate ends with finish_reason {"type": "abort", "status_code": 5xx, "message": ...}, the chat
+    # endpoint with an error object. That is a failed request the server reported, not lost output.
+    fr = res.get("finish_reason")
+    if isinstance(fr, dict) and fr.get("type") == "abort":
+        return False, f"server abort {fr.get('status_code')}: {str(fr.get('message'))[:160]}"
+    if fr == "abort" or res.get("server_error"):
+        return False, f"server abort: {res.get('server_error') or fr}"
     if res.get("aborted"):
         return True, "aborted after first token"
     if req["kind"] == "gsm8k":
@@ -447,6 +459,7 @@ class Driver:
                "turn": req.get("turn", 1), "ok": ok, "why": why, "ttft_s": res.get("ttft_s"), "e2e_s": res.get("e2e_s"),
                "completion_tokens": res.get("completion_tokens"), "cached_tokens": res.get("cached_tokens"),
                "cached_tokens_details": res.get("cached_tokens_details"), "status": res.get("status"), "hang": res.get("hang"),
+               "finish_reason": res.get("finish_reason"),
                "correct": res.get("correct")}
         with self.lock, open(self.req_path, "a") as f:
             f.write(json.dumps(rec) + "\n")
