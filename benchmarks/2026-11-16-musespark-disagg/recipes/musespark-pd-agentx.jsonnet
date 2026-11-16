@@ -53,7 +53,7 @@ local runtimeEnvOverrides = cdk.var('RUNTIME_ENV_OVERRIDES', '{"SGLANG_TPU_HOST_
 local specDraftTokens = cdk.numVar('SPEC_DRAFT_TOKENS', 7);
 // InferenceX replays Muse on the full (uncapped) trace with the model's 1M context; the 256k
 // variant has ~5x shorter prompts and is not comparable to its GPU curves.
-local contextLen = cdk.numVar('CONTEXT_LEN', 1048576);
+local contextLen = cdk.numVar('CONTEXT_LEN', 262144);
 local traceLoader = cdk.var('TRACE_LOADER', 'semianalysis_cc_traces_weka_062126');
 
 // --- TPU shape ---------------------------------------------------------------
@@ -137,6 +137,10 @@ local serverScript = agentx.fill(
     python3 -c "import zstandard" 2>/dev/null || pip install -q zstandard || exit 1
     if [ -n "${TPU_SYNC_WHEEL:-}" ]; then pip install --no-deps "@CODE@/$TPU_SYNC_WHEEL" || exit 1; fi
     if [ -n "${TPU_SYNC_VERSION:-}" ]; then pip install -q --no-deps --pre "tpu-sync-torch==$TPU_SYNC_VERSION" || exit 1; fi
+    # tpu-sync >= dev20261029's torch extension links libibverbs.so.1, which this image lacks.
+    if ! ldconfig -p | grep -q 'libibverbs.so.1'; then
+      (apt-get update -qq && apt-get install -y -qq --no-install-recommends libibverbs1) > /tmp/apt.log 2>&1 || { tail -5 /tmp/apt.log; echo "FAIL: apt-get libibverbs1"; exit 1; }
+    fi
     export PYTHONPATH="@CODE@/sgl-model-gateway/bindings/python/src:@CODE@/python${PYTHONPATH:+:$PYTHONPATH}"
     python3 -c "import sglang_tpu,sys; sys.exit(0 if sglang_tpu.__file__.startswith('@CODE@') else 1)" \
       || { echo "sglang_tpu resolved outside the staged tree"; exit 1; }
