@@ -91,3 +91,58 @@ changing in between. A pick made at cast time (the leaf to push, the local prefi
 the verdict. The workers cannot be converted by replacing each blocking reduce with a delayed one; each call site
 needs a rule for what is held between cast and settle, and locks taken before agreement would make evictions differ
 between stages.
+
+## Result as of 2026-11-16 17:15Z
+
+Draft PR: https://github.com/sgl-project/sglang-torchtpu/pull/2202 (fork branch `pd-dram-offload-pp`, head `f3a5199a`).
+Everything below ran on the shared CDK cluster, image `sglang-torchtpu:anvil-jax0112-97afaea9` plus the tree's pinned
+tpu-sync `0.0.1.dev20261112081648` and `libibverbs1`, tree staged with `--map-dir`. Evidence per job is in `runs/`
+(check output and the engines' `[dram-offload]` counters). All jobs are deleted except the one named at the end.
+
+### Live matrix (offload on)
+
+| Model and shape | Job | Pushes stored | Recalls / pages | Failed, tracebacks | Second turns from cache |
+|---|---|---|---|---|---|
+| Qwen3-30B, prefill pp8 tp1, decode tp8 | `j-7c625460-2ac7-4c7e-a511`, `j-0aefbbd3-81fa-4a08-ab5b` | 24 of 24 | 47 / 1,175 and 93 / 2,325 | 0 | 24 of 24 |
+| Qwen3-30B, prefill pp16 over two hosts, decode tp16 over two hosts | `j-c79f10b7-e1f8-43a0-bd67` | 24 of 24 on all 16 stages | 93 / 2,325 | 0 | 24 of 24 |
+| gpt-oss-120b (hybrid), prefill pp8 tp1, decode tp8 | `j-9933628c-7e68-4c7a-bdc3` | 33 of 33, with windows | 100 / 5,560 | 0 | 24 of 24 |
+| Muse Spark Open, nightly PP8 + TP8 config, draft off | `j-7f22262c-0199-4230-9653` | 66 of 66, with windows | 47 / 580 | 0 | 20 of 20 |
+
+### Integrity
+
+| Check | Job | Result |
+|---|---|---|
+| Byte check on Muse Spark (each stage hashes pushed and recalled host pages) | `j-7f22262c-0199-4230-9653` | 1,116 pages verified on each of 8 stages, 0 mismatched |
+| Byte check on gpt-oss-120b | `j-02219a9d-db9e-4078-be4e` | 5,800 verified, 0 mismatched |
+| Recalled answer against the answer resumed from the prefill's own cache, gpt-oss | `j-9933628c-7e68-4c7a-bdc3` | 48 of 48 identical |
+| Recalled answer against the cold answer, Qwen3-30B | `j-7c625460-2ac7-4c7e-a511`, `j-0aefbbd3-81fa-4a08-ab5b` | 72 of 72 identical |
+
+On the hybrid models a cold answer is not a valid reference: resuming from any cached prefix changes some greedy
+answers with the offload off as well (gpt-oss: 10 of 24; control `j-f83c694c-d85c-4d76-adb2`). Concurrent bursts change
+some answers on every model, off and on (control `j-a8c3a35f-9174-44f0-99f8`).
+
+### Performance, off against on (time for the sequential second turns)
+
+| Case | Off | On | Jobs |
+|---|---|---|---|
+| Qwen3-30B, 24 prompts of 3.3k tokens | 13.2 s | 14.8 s | `j-a8c3a35f-9174-44f0-99f8`, `j-0aefbbd3-81fa-4a08-ab5b` |
+| Qwen3-30B, 10 prompts of 28.5k tokens (8 recalled) | 17.8 s | 16.4 s | `j-9e468308-a2ad-4770-89e8`, `j-27d85d13-2dcc-4ada-bcd1` |
+| Muse Spark Open, 20 prompts of 3.5k tokens | 37.4 s | 35.4 s | `j-465c8fec-db0b-4abd-bb9b`, `j-90f6c45b-04c6-4461-a92a` |
+
+A recall costs two to three pipeline loops before its request leaves bootstrap. On Muse a second turn reuses only the
+prompt up to where the 2,048-token sliding window starts. No long-prompt or AgentX measurement on Muse yet.
+
+### Not done
+
+- Speculative decoding. The nightly Muse config runs DFLASH; the offload refuses it because the draft KV of a cached
+  prefix is in HiCache's draft sidecar pool, which is not moved. It needs one more pool kind per stage on the decode.
+  The Muse runs here turned the draft off, a deviation from the nightly config.
+- Attention DP on the prefill (upstream's `agentic.py` PP2 x TP4 shape), a stress run, an agentic trace.
+- In the long-prompt run 5 of 38 recalls were given up before any read; the cause is not confirmed.
+- The standalone on-device probe and a cluster unit-test job never got a node; unit tests run on this VM
+  (`/mnt/disks/scratch/alisachen/tmp/ut.sh`).
+
+### Still on the cluster
+
+`j-4df970f8-a455-4027-985a`: Muse, offload off, 60 sessions, a side control (does Muse's own host tier resume like its
+device tier). It ends by itself (6 h deadline) and should be deleted after reading its check line.
