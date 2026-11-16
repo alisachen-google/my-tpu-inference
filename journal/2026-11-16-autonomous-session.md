@@ -55,6 +55,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 11:44 | 1 | Submitted the Muse Spark run j-160b9e9c-f350-4126-b74c now (tree cab47428, image anvil-jax0112-97afaea9 plus pinned tpu-sync, recipe musespark-pd-offload-pp-alisachen, switch on, 8 chips, active deadline 6 h, self-checking). The unit + probe job j-9d176863-957f-4c12-90d6 has been pinned to a full node for 18 min (second time) and the small-model check is on its fourth attempt, so the gate was not met; submitted anyway because the Muse start-up is hours and a job submitted now runs without credentials. If the small-model check finds an offload bug, this job is deleted and resubmitted with the fix. |
 | 11:59 | 1 | j-41f7fb37-7247-4c60-a7ff (Qwen3-30B pp8 to tp8, bf16 KV, pinned tpu-sync): the pair served all requests with no exception; the stages agreed and started 4 pushes (push_started=4 on all 8 stages); the decode built its stage pools (1,365 pages, 6 tensors, 1.50 MiB per page, same as the prefill stage's) and granted 4 landings, but every landing failed to start: 'StartRead ... host transfers require num_slots == 0 and no dynamic host staging'. No branch stored, no recall. The cached second turns in the check's output came from the prefill's own host tier (12 sessions fit in it), so the check's pass criterion was too weak as well. |
 | 11:59 | 1 | Deleted j-41f7fb37-7247-4c60-a7ff and the first Muse job j-160b9e9c-f350-4126-b74c (11 min old, old tree). Resubmitted on tree c594adbd: small-model check j-7c625460-2ac7-4c7e-a511, Muse run j-fb9d30af-5544-4846-b28d (SESSIONS=20). |
+| 12:07 | 1 | Deleted j-9d176863-957f-4c12-90d6: 42 min Pending on a node without free chips or memory, never started. The unit tests run on this VM and the live small-model check exercises the stage pools' byte path for real, so the job is no longer needed. The on-device probe has therefore never run. |
 
 ## Bugs and defects found (running list)
 
@@ -100,6 +101,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-160b9e9c-f350-4126-b74c | ws1 Muse run, first submission | superseded, deleted 12:0xZ |
 | j-7c625460-2ac7-4c7e-a511 | ws1 small-model check, fifth attempt (stage pool fix) | submitted 12:0xZ |
 | j-fb9d30af-5544-4846-b28d | ws1 Muse Spark Open run, offload on, 20 sessions, self-checking, 6 h deadline; result line STAGE_OFFLOAD_CHECK in the bench container; counters in [dram-offload] lines of both engines; delete after collecting | submitted 12:0xZ |
+| j-9d176863-957f-4c12-90d6 | ws1 unit + probe, resubmission | never started, deleted 12:0xZ |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
