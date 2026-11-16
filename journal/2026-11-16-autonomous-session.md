@@ -46,6 +46,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:35 | 1 | 1effe708: end-to-end unit test of a 2-stage pipeline prefill against a tensor-parallel decode through the real hooks (push, recall, failed recall, declined push) passes locally; upstream test_raiden_pipeline.py 69 pass. Startup now accepts speculative decoding in the pipeline pairing only (whole host blocks, draft tensors included, return to the stage they came from; the decode never reads a pushed page). Found the nightly Muse entry: test/registered/tpu/e2e/test_tpu_muse_spark_pd_singlehost_pp8_dflash.py with config pd_singlehost_pp8_prefix_cache_kv_offload_dflash.py (PP8 tp1 prefill, TP8 decode, DFLASH, write_through), the same shape this design supports. |
 | 10:43 | 1 | Draft PR opened: https://github.com/sgl-project/sglang-torchtpu/pull/2202 (branch pd-dram-offload-pp at 0d9563ac, draft, no reviewers requested by me). Body states what ran (CPU only: 71 new tests in 5 files, plus validate 11, push 40, recall 34, host transfer 9, upstream pipeline 69) and what did not (any TPU run, the probe, a live pair, CI). |
 | 10:43 | 1 | Recipe musespark-pd-offload-pp-alisachen created (copy of workstream 3's recipe, theirs untouched): nightly config module pd_singlehost_pp8_prefix_cache_kv_offload_dflash, offload switch, decode HiCache and radix cache, check pod running test/manual/tpu/pd_stage_offload_check.py, active deadline 6 h on both jobs. Renders. Waiting for the unit + probe job before submitting. |
+| 10:45 | 3 | Both image checks failed without running: admitted at 10:11, the pods never started (no node placed them), and my 30-minute active deadline, which counts from admission, ended them at 10:41 with no log. Deleted both. Resubmitted the `muse-disagg` check with a 3 h deadline (the other image is covered by workstream 1's unit job `j-0fef6998-a7d1-4974-9077`). |
 
 ## Bugs and defects found (running list)
 
@@ -56,9 +57,10 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:17 | tpu-sync pinned wheel 0.0.1.dev20261112081648 | KVCacheManager.create_host_only_for_testing imports _tpu_raiden_host, which the wheel does not ship | worked around with placeholder-tensor pools; unverified on device |
 | 10:17 | sglang_tpu/raiden_transfer.py host_control_port_candidates | The deterministic host-pool control port is derived from the TP rank only, so the 8 stages of a single-host pipeline prefill (all TP rank 0) ask for the same port; later stages fall back to two get_free_port tries | open; not fixed in this branch; watch for 'host pool control port is taken' in the first live run |
 | 10:35 | ws1 branch, pool_transfer.py pipeline request hooks | Read mgr.dram_offload_channel directly; two upstream tests in test_raiden_pipeline.py use managers without that attribute and failed | fixed in 1effe708 (getattr); found by the local CPU run |
+| 10:45 | harness (mine) | An active deadline shorter than the placement wait kills a job that never ran: the deadline counts from Kueue admission, not from pod start | Use deadlines of hours for anything on a busy pool |
 
 ## Jobs left on the cluster (update at every change)
-| `j-a6eabbfd-d6ba-4121-b2b0`, `j-d4dd1ecb-65c5-42e6-8f43` | image checks, 30 min deadline each, self-terminating | submitted 10:30 |
+| `j-a6eabbfd-d6ba-4121-b2b0`, `j-d4dd1ecb-65c5-42e6-8f43` | image checks | failed unplaced, deleted 10:45 |
 
 | Job | Purpose | State |
 |---|---|---|
