@@ -48,6 +48,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:43 | 1 | Recipe musespark-pd-offload-pp-alisachen created (copy of workstream 3's recipe, theirs untouched): nightly config module pd_singlehost_pp8_prefix_cache_kv_offload_dflash, offload switch, decode HiCache and radix cache, check pod running test/manual/tpu/pd_stage_offload_check.py, active deadline 6 h on both jobs. Renders. Waiting for the unit + probe job before submitting. |
 | 10:45 | 3 | Both image checks failed without running: admitted at 10:11, the pods never started (no node placed them), and my 30-minute active deadline, which counts from admission, ended them at 10:41 with no log. Deleted both. Resubmitted the `muse-disagg` check with a 3 h deadline (the other image is covered by workstream 1's unit job `j-0fef6998-a7d1-4974-9077`). |
 | 10:47 | 1 | Submitted j-413cdada-1b3e-4f6d-884b (tree 6a34fc03, image anvil-jax0112-97afaea9, 8 chips): Qwen3-30B 1P1D, prefill --pp-size 8 --tp-size 1 --ep-size 1, decode tp8 with the pipeline transfer, offload on, small pools (16,384 tokens, prefill host ratio 2), harness stage offloadcheck running test/manual/tpu/pd_stage_offload_check.py. A cheap proof of the wiring under a real pipeline loop before the Muse run. Whether Qwen3-30B serves at pp8 tp1 is itself unknown. |
+| 11:01 | 1 | j-413cdada-1b3e-4f6d-884b: Qwen3-30B serves at pp8 tp1 on the anvil-jax0112 image with upstream main, both engines started with the offload on (decode: stage-layout extension attached; prefill: 8 stages, 257 host pages each), start-up about 2 min after pod start. First request hit the bug above. Job deleted. Resubmitted as j-767cc815-240c-4663-a0cc with the fix. |
 
 ## Bugs and defects found (running list)
 
@@ -59,6 +60,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:17 | sglang_tpu/raiden_transfer.py host_control_port_candidates | The deterministic host-pool control port is derived from the TP rank only, so the 8 stages of a single-host pipeline prefill (all TP rank 0) ask for the same port; later stages fall back to two get_free_port tries | open; not fixed in this branch; watch for 'host pool control port is taken' in the first live run |
 | 10:35 | ws1 branch, pool_transfer.py pipeline request hooks | Read mgr.dram_offload_channel directly; two upstream tests in test_raiden_pipeline.py use managers without that attribute and failed | fixed in 1effe708 (getattr); found by the local CPU run |
 | 10:45 | harness (mine) | An active deadline shorter than the placement wait kills a job that never ran: the deadline counts from Kueue admission, not from pod start | Use deadlines of hours for anything on a busy pool |
+| 11:01 | ws1 branch, dram_offload_hooks._pipeline_prefill_extension | Captured scheduler.disagg_prefill_bootstrap_queue at attach time, when it is still None (the extension is attached while the queue is built); the prefill crashed on its first vote with AttributeError and the engine exited (rc 137). Found live in j-413cdada-1b3e-4f6d-884b within 10 s of the first request | fixed (queue read when asked; the pair test now attaches before the queue exists) |
 
 ## Jobs left on the cluster (update at every change)
 | `j-a6eabbfd-d6ba-4121-b2b0`, `j-d4dd1ecb-65c5-42e6-8f43` | image checks | failed unplaced, deleted 10:45 |
@@ -75,6 +77,8 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-0fef6998-a7d1-4974-9077 | ws1 unit tests on the image candidate for main + B2 byte-path probe | submitted 10:2xZ |
 | j-95df0a31-0751-4de4-8c88 | ws2 unit tests | DELETED 10:3xZ (tests ran locally instead) |
 | j-413cdada-1b3e-4f6d-884b | ws1 small-model check: Qwen3-30B pp8 prefill to tp8 decode, offload on, scripted push/recall check | submitted 10:47Z |
+| j-413cdada-1b3e-4f6d-884b | ws1 small-model check, first attempt | failed on a ws1 bug, deleted 11:0xZ |
+| j-767cc815-240c-4663-a0cc | ws1 small-model check, second attempt (queue fix) | submitted 11:0xZ |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
