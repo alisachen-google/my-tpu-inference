@@ -47,6 +47,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:43 | 1 | Draft PR opened: https://github.com/sgl-project/sglang-torchtpu/pull/2202 (branch pd-dram-offload-pp at 0d9563ac, draft, no reviewers requested by me). Body states what ran (CPU only: 71 new tests in 5 files, plus validate 11, push 40, recall 34, host transfer 9, upstream pipeline 69) and what did not (any TPU run, the probe, a live pair, CI). |
 | 10:43 | 1 | Recipe musespark-pd-offload-pp-alisachen created (copy of workstream 3's recipe, theirs untouched): nightly config module pd_singlehost_pp8_prefix_cache_kv_offload_dflash, offload switch, decode HiCache and radix cache, check pod running test/manual/tpu/pd_stage_offload_check.py, active deadline 6 h on both jobs. Renders. Waiting for the unit + probe job before submitting. |
 | 10:45 | 3 | Both image checks failed without running: admitted at 10:11, the pods never started (no node placed them), and my 30-minute active deadline, which counts from admission, ended them at 10:41 with no log. Deleted both. Resubmitted the `muse-disagg` check with a 3 h deadline (the other image is covered by workstream 1's unit job `j-0fef6998-a7d1-4974-9077`). |
+| 10:47 | 1 | Submitted j-413cdada-1b3e-4f6d-884b (tree 6a34fc03, image anvil-jax0112-97afaea9, 8 chips): Qwen3-30B 1P1D, prefill --pp-size 8 --tp-size 1 --ep-size 1, decode tp8 with the pipeline transfer, offload on, small pools (16,384 tokens, prefill host ratio 2), harness stage offloadcheck running test/manual/tpu/pd_stage_offload_check.py. A cheap proof of the wiring under a real pipeline loop before the Muse run. Whether Qwen3-30B serves at pp8 tp1 is itself unknown. |
 
 ## Bugs and defects found (running list)
 
@@ -73,6 +74,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-bf9d3225-5ae0-4867-8f77 | ws2 final ladder x3, fix (resubmit) | submitted 10:15Z |
 | j-0fef6998-a7d1-4974-9077 | ws1 unit tests on the image candidate for main + B2 byte-path probe | submitted 10:2xZ |
 | j-95df0a31-0751-4de4-8c88 | ws2 unit tests | DELETED 10:3xZ (tests ran locally instead) |
+| j-413cdada-1b3e-4f6d-884b | ws1 small-model check: Qwen3-30B pp8 prefill to tp8 decode, offload on, scripted push/recall check | submitted 10:47Z |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
