@@ -22,6 +22,9 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 4 | Apply 1 to the tuned point of 3 | blocked on 1 and 3; prerequisites in the workstream 3 README |
 
 ## Log
+| 10:25 | 3 | Wrote my own Muse Spark P/D recipe `musespark-pd-agentx-alisachen` (derived from the owner's single-host recipe and the stored JobSet of `j-ec9464b2-4aaf-46fe-af8a`): two 2x2x1 hosts, prefill + router on pod 0, decode on pod 1, tree via `--map-dir`, per-role JSON overrides (`PREFILL_ARGS`, `DECODE_ARGS`, `PREFILL_ENV`, `DECODE_ENV`) so tuning needs no code change. Renders. Copy in `benchmarks/2026-11-16-musespark-disagg/recipes/`. Not run yet. |
+| 10:27 | 3 | Finding: upstream main's `agentic.py` differs from the dashboard point: prefill is PP2 x TP4 with DP attention (the dash job ran PP8 x TP1 from a private checkout), decode uses the megakernel, and the concurrency-32 patch sets `max_running_requests` 6 (dash job: 32). A rerun on main is therefore a different configuration, not a reproduction. |
+| 10:30 | 3 | Submitted two 30-minute image checks (does upstream main import and do the offload validation tests run): `j-a6eabbfd-d6ba-4121-b2b0` (image `muse-disagg`), `j-d4dd1ecb-65c5-42e6-8f43` (image `anvil-jax0112-97afaea9`). Needed by workstreams 1 and 3 before any run on main. |
 
 | Time | Workstream | Action / finding |
 |---|---|---|
@@ -42,6 +45,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 10:07 | 2 | Upstream main (82e2b973) does not start on image sglang-torchtpu:20261103 (ImportError jax._src.tpu_info; main needs JAX 0.11.2 since #2082). Jobs j-c1efeeef-0fcc-4952-a2e5, j-8552b9ec-94a4-4542-92af failed at engine start and were deleted. Offload code is byte-identical between main and PR head 83198bc, so live validation runs on 83198bc + patch. | worked around |
 
 ## Jobs left on the cluster (update at every change)
+| `j-a6eabbfd-d6ba-4121-b2b0`, `j-d4dd1ecb-65c5-42e6-8f43` | image checks, 30 min deadline each, self-terminating | submitted 10:30 |
 
 | Job | Purpose | State |
 |---|---|---|
@@ -52,6 +56,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-ff95da0a-ac33-4b97-8b7d | ws2 unit tests | submitted 09:2x-09:5xZ |
 
 ## Decisions taken without the user (to review)
+| 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
 
 | Time | Decision | Why |
 |---|---|---|
