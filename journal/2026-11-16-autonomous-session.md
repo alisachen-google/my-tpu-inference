@@ -21,6 +21,26 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 3 | Muse Spark disaggregated perf toward GPU | `benchmarks/2026-11-16-musespark-disagg/` |
 | 4 | Apply 1 to the tuned point of 3 | blocked on 1 and 3; prerequisites in the workstream 3 README |
 
+## Where things stand (19:30Z)
+
+Read this first; the tables below are the full record.
+
+| Workstream | Outcome | Where |
+|---|---|---|
+| 1. Offload behind a pipeline-parallel prefill | Implemented, draft PR https://github.com/sgl-project/sglang-torchtpu/pull/2202 (draft, no reviewers). Live passes with the offload on: Qwen3-30B pp8 to tp8; Qwen3-30B pp16 over two hosts to tp16 over two hosts; gpt-oss-120b hybrid; Muse Spark Open nightly config with the draft off; Muse Spark Open nightly config unchanged (DFLASH on) behind an opt-in. Byte check: every recalled page equals the pushed page (Muse 1,116 per stage draft off; 680 per stage plus 376 draft pages with DFLASH; gpt-oss 5,800). Gain is small where measured: Muse 37.4 s to 35.4 s for 20 second turns of 3.5k tokens; Qwen 17.8 s to 16.4 s at 28.5k tokens; slower at 3.3k tokens. | `benchmarks/2026-11-16-offload-pp/README.md`, `designs/2026-11-16-kv-offload-pipeline-parallel/DESIGN.md` revisions d, e, f |
+| 2. Issue 2107 | Candidate eviction-order fix rejected on a live A/B (recall 16 hit 79.9% to 64.4% in 3 of 3 runs, no gain elsewhere). The recall 8 loss needs `SGLANG_HICACHE_SKIP_HOST_DUPLICATE_RECLAIM=1`. Draft PR https://github.com/sgl-project/sglang-torchtpu/pull/2206 adds a start-up warning; comment posted on the issue. | `benchmarks/2026-11-16-issue2107-fix/` |
+| 3. Muse Spark P/D toward GPU | Own recipe `musespark-pd-agentx-alisachen` starts Muse P/D on upstream main and serves the AgentX warm-up (attempt 6). No measured number yet. Five findings on the way, in the Log rows marked 3. | `benchmarks/2026-11-16-musespark-disagg/` |
+| Task 4 | Not started as a measurement: it needs workstream 3's tuned point. Its prerequisite, DFLASH with the offload, now exists behind an opt-in. | |
+
+**Decisions waiting for the user**
+
+1. Remove the DFLASH opt-in gate (`SGLANG_PD_OFFLOAD_ALLOW_DRAFT=1`) or keep it. Evidence so far: one live Muse run, byte check clean including draft pages; no answer-level comparison and no acceptance figure yet (three runs queued for that).
+2. Issue 2107: accept "warning only" as the outcome, or ask for a different fix. The requested 5-run validation was cut to 3 per arm because the fix regressed every time.
+3. Upstream defects found and not filed: `agentic.get_config` prefill/decode modes fail main's own argument validation; a hybrid model's answer resumed from any cached prefix differs from the cold answer on gpt-oss-120b (10 of 24), with the offload off too; issue 2201's fix PR is still owed.
+4. Workstream 3 cannot keep a job off spot nodes (cdk rejects nodepool pins); six spot losses today cost a 35-minute start-up each.
+
+**Not done:** attention DP on the prefill; a stress run of the pipeline pairing; long prompts or AgentX on Muse with the offload; cause of 5 given-up recalls in the Qwen long-prompt run; 2P2D TP16 stress; 6-hour soak; write-back re-measure without the reclaim flag; any workstream 3 tuning.
+
 ## Log
 | 10:25 | 3 | Wrote my own Muse Spark P/D recipe `musespark-pd-agentx-alisachen` (derived from the owner's single-host recipe and the stored JobSet of `j-ec9464b2-4aaf-46fe-af8a`): two 2x2x1 hosts, prefill + router on pod 0, decode on pod 1, tree via `--map-dir`, per-role JSON overrides (`PREFILL_ARGS`, `DECODE_ARGS`, `PREFILL_ENV`, `DECODE_ENV`) so tuning needs no code change. Renders. Copy in `benchmarks/2026-11-16-musespark-disagg/recipes/`. Not run yet. |
 | 10:27 | 3 | Finding: upstream main's `agentic.py` differs from the dashboard point: prefill is PP2 x TP4 with DP attention (the dash job ran PP8 x TP1 from a private checkout), decode uses the megakernel, and the concurrency-32 patch sets `max_running_requests` 6 (dash job: 32). A rerun on main is therefore a different configuration, not a reproduction. |
