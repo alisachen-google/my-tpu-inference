@@ -67,6 +67,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 12:26 | 1 | Muse job j-0eb12ed9-feb2-4dc4-babd deleted (disk quota); resubmitted as j-4cf62e16-6e89-4506-8d85 with MODEL_STORAGE_CLASS=hyperdisk-balanced MODEL_STORAGE_SIZE=700Gi. |
 | 12:40 | 3 | Regional quota `SSD_TOTAL_GB` (us-central1) is exhausted, so 1 TB `premium-rwo` weight disks are never created and Muse pods stay Pending (found by workstream 1). My recipe now takes `MODEL_STORAGE_CLASS` / `MODEL_STORAGE_SIZE`; a workstream 3 run waits for workstream 1's Muse run `j-4cf62e16-6e89-4506-8d85` to show which disk class attaches. |
 | 12:27 | 1 | Draft PR 2202 description updated with the live results (two switch-on runs, one switch-off, the perf note, the burst finding, what is not run). No private repository, job id or hostname in it. |
+| 12:28 | 1 | Muse job j-4cf62e16-6e89-4506-8d85 started at 12:27Z: both 700Gi hyperdisk-balanced weight disks bound, server pods in their init containers (weight copy). While it loads, two more small checks submitted on the same tree: j-c79f10b7-e1f8-43a0-bd67 multi-host pipeline (Qwen3-30B, prefill --pp-size 16 over two 2x2x1 hosts, decode tp16 over two hosts, 16 chips) and j-35063671-82ce-4d4a-9730 hybrid sliding-window model (gpt-oss-120b, prefill pp8 tp1, decode tp8, 8 chips). Whether either model serves in that shape is unknown. |
 
 ## Bugs and defects found (running list)
 
@@ -126,6 +127,8 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-0aefbbd3-81fa-4a08-ab5b | ws1 small-model check, switch on, second pass | done, evidence saved, deleted 12:2xZ |
 | j-0eb12ed9-feb2-4dc4-babd | ws1 Muse run, third submission | never started (SSD quota), deleted 12:3xZ |
 | j-4cf62e16-6e89-4506-8d85 | ws1 Muse Spark Open run on hyperdisk-balanced weight disks, offload on, 20 sessions, self-checking, 6 h deadline; STAGE_OFFLOAD_CHECK in the bench container, [dram-offload] counters in both engines; delete after collecting | submitted 12:3xZ |
+| j-c79f10b7-e1f8-43a0-bd67 | ws1 multi-host check: Qwen3-30B pp16 prefill on 2 hosts to tp16 decode on 2 hosts, offload on | submitted 12:2xZ |
+| j-35063671-82ce-4d4a-9730 | ws1 hybrid model check: gpt-oss-120b pp8 prefill to tp8 decode, offload on | submitted 12:2xZ |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
