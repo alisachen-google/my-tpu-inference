@@ -44,6 +44,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | Time | Where | Bug | State |
 |---|---|---|---|
 | 10:07 | 2 | Upstream main (82e2b973) does not start on image sglang-torchtpu:20261103 (ImportError jax._src.tpu_info; main needs JAX 0.11.2 since #2082). Jobs j-c1efeeef-0fcc-4952-a2e5, j-8552b9ec-94a4-4542-92af failed at engine start and were deleted. Offload code is byte-identical between main and PR head 83198bc, so live validation runs on 83198bc + patch. | worked around |
+| 10:11 | 2 | Harness: after a spot preemption replayed the JobSet of j-af31fde6-c6c9-4fda-9bf4 mid-ladder, the bench pod restarted before the decode had reloaded; wipe() gave up after 5 min of flush retries and the stage exited 1, failing the job (bench has no restart). flush_one now retries for 25 min. Job deleted, resubmitted as j-bf9d3225-5ae0-4867-8f77. | fixed in harness |
 
 ## Jobs left on the cluster (update at every change)
 | `j-a6eabbfd-d6ba-4121-b2b0`, `j-d4dd1ecb-65c5-42e6-8f43` | image checks, 30 min deadline each, self-terminating | submitted 10:30 |
