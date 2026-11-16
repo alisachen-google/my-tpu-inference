@@ -128,3 +128,47 @@ tuned config, across a concurrency sweep) will show whether that is material.
 | Concurrency sweep 8 to 48 | Not started |
 | Hand-off tuning (early transfer modes, prefix reuse on the decode, admission) | Not started |
 | Apply the KV offload (task 4) | Blocked on the four prerequisites above |
+
+## First run on upstream main with our own recipe (2026-11-16)
+
+Job `j-58c2ef95-db91-41d6-9bb1` (deleted; evidence in `evidence/j-58c2ef95-db91-41d6-9bb1/`). Recipe `recipes/musespark-pd-agentx.jsonnet`, upstream main 82e2b973, image `anvil-jax0112-97afaea9` plus tpu-sync 20261112 and libibverbs1, two tpu7x 2x2x1 hosts (8 chips), nightly P/D config module (`pd_singlehost_pp8_prefix_cache_kv_offload_dflash`: PP8 TP1 prefill, TP8 decode, DFLASH, write_through, bf16 KV), with context 524,288, 32 running requests, window share 0.0625, pool share 0.93 prefill and 0.92 decode, auto-truncate on. AgentX replay at concurrency 32.
+
+**This is not a valid data point.** The warm-up completed (354 requests, 0 errors, 70 minutes). The measured phase was cancelled by the client after 304 s because 5 of 46 requests failed (10.9%, limit 10%). The figures below cover 41 successful requests in that 5-minute window and are a diagnosis, not a benchmark.
+
+| Metric | This run (partial) | Dashboard point `j-ec9464b2-4aaf-46fe-af8a` |
+|---|---|---|
+| Total tokens/s per chip | 799 | 18,326 |
+| TTFT mean / median / p90 | 72.9 s / 68.9 s / 137.4 s | p50 5.2 s |
+| Interactivity, median (tok/s) | 276 | p90 64 |
+| TPOT mean | 3.28 ms | |
+| Mean input / output tokens | 46,726 / 617 | |
+
+**Why it is 23 times slower: both engines run out of KV room in bf16.**
+
+| Observation (engine logs) | Value |
+|---|---|
+| Prefill prefix-cache hit, measured phase | 14.5% of prompt tokens (warm-up 2.3%); the trace's theoretical hit rate is 79.5% |
+| Prefill device pool / host pool (full attention) | 349,696 / 1,049,216 tokens; one session's prompt is 47k on average and up to 524k |
+| Prefill input rate | p50 3.6k tokens/s, p90 7.3k |
+| Decode full-attention pool | 613,504 tokens, 75 to 94% used with 1 running request and 6 to 9 waiting on transfer |
+| Transfer failures | 89 on decode rank 0 (`Raiden transfer failed on another attention TP/CP rank`), each aborting the prefill side (`Aborted by decode-side abort notification`) |
+| Prompts truncated | 55 on the prefill, 35 on the decode (limits 349,690 and 524,282 tokens) |
+| Draft acceptance on decode | accept length 3.1 to 3.4 |
+
+So the prefill recomputes almost every prompt because its two cache tiers cannot hold 32 sessions, and the decode admits about one request at a time because one long prompt fills most of its pool. Decode speed itself is fine (3.3 ms per token).
+
+**What the dashboard point had that upstream main does not, as far as this run shows:** fp8 KV on both engines (half the bytes per token; main's PP8 to TP8 pipeline transfer needs bf16 because the DFLASH draft gives each decode rank one KV head), a larger effective cache, and a private checkout. Reproducing it on main needs fp8 KV through the pipeline transfer first.
+
+**What it took to get main to serve this trace at all** (each cost one job):
+
+| Attempt | Failure | Change |
+|---|---|---|
+| `j-de37ff1a-9c08-446c-9cea` | `agentic.get_config(32, mode=prefill/decode)` fails main's own argument validation (PP2 x TP4 refused; hierarchical cache with radix cache disabled) | use the nightly P/D config module |
+| `j-a0d4c170-ea71-469c-b750` | attention kernel compile, `RESOURCE_EXHAUSTED ... space=smem` 512 bytes over 1 MiB, at context 1,048,576 | lower the context |
+| `j-21b78d1c-6df4-4e97-9e4a` | prefill 400: prompts of 165k to 237k tokens over a 147,584-token pool (pool share 0.85) | pool share 0.90 / 0.92 |
+| `j-1b685d34-699f-4733-b0b2` | request-level context check at 262,144 | context 524,288, pool share 0.93, auto-truncate |
+| `j-58c2ef95-db91-41d6-9bb1` | served; measured phase cancelled on the error rate | see above |
+
+Start-up is about 35 minutes (the 32-request batch shapes compile on the prefill). Spot nodes were lost six times across these attempts; cdk rejects a nodepool pin.
+
+**Next steps, in order:** (1) make fp8 KV work through the PP8 to TP8 pipeline transfer with DFLASH on main, or get the dashboard owner's tree; (2) rerun this recipe with fp8 and the dashboard's pool shares; (3) only then tune (interval, early parts, chunk size) and apply the offload (Task 4), whose value is exactly the prefill cache capacity this run lacks.

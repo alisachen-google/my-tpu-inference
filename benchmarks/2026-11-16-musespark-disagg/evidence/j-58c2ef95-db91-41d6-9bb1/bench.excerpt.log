@@ -1,0 +1,52 @@
+19:26:35.154 INFO     Phase warmup progress | returned=348/354 | sent=354 | in_flight=6 | errors=0 | elapsed=3991.5s (runner.py:1254)
+19:27:05.162 INFO     Phase warmup progress | returned=348/354 | sent=354 | in_flight=6 | errors=0 | elapsed=4021.5s (runner.py:1254)
+19:27:35.172 INFO     Phase warmup progress | returned=350/354 | sent=354 | in_flight=4 | errors=0 | elapsed=4051.5s (runner.py:1254)
+19:28:05.184 INFO     Phase warmup progress | returned=353/354 | sent=354 | in_flight=1 | errors=0 | elapsed=4081.5s (runner.py:1254)
+19:28:35.195 INFO     Phase warmup progress | returned=353/354 | sent=354 | in_flight=1 | errors=0 | elapsed=4111.5s (runner.py:1254)
+19:29:05.205 INFO     Phase warmup progress | returned=353/354 | sent=354 | in_flight=1 | errors=0 | elapsed=4141.6s (runner.py:1254)
+19:29:35.212 INFO     Phase warmup progress | returned=353/354 | sent=354 | in_flight=1 | errors=0 | elapsed=4171.6s (runner.py:1254)
+19:30:05.224 INFO     Phase warmup progress | returned=353/354 | sent=354 | in_flight=1 | errors=0 | elapsed=4201.6s (runner.py:1254)
+19:30:23.240 INFO     All accelerated-warmup wire requests returned; preserving paused DAG work for profiling handoff. (runner.py:989)
+19:30:23.243 NOTICE   Phase warmup (warmup) complete | completed=354, cancelled=0, errors=0 | sessions: completed=11, cancelled=0 | elapsed=4219.59s (runner.py:1162)
+19:30:23.246 INFO     Global system-idle cap summary: limit=10s, jumps=0, skipped=0.000s (agentic_replay.py:956)
+19:30:23.254 INFO     WARMUP cache pressure handoff: persisted 65 live streams (agentic_replay.py:972)
+19:30:23.255 INFO     BranchOrchestrator stats: spawned=47 completed=10 errored=0 suspended=7 resumed=1 parents_failed_due_to_child_error=0 joins_suppressed=0 delayed=0 (branch_orchestrator.py:1782)
+19:30:23.256 INFO     Session-tree slots for phase warmup: peak_open=32 (target concurrency 32); released 28 still-open at teardown; late_events=0 (runner.py:551)
+19:30:23.566 INFO     Replay interval barriers active: 98827 requests, 61136 gated turns, join-widths={1: 51527, 2: 6771, 3: 1804, 4: 492, 5: 149, 6: 80, 7: 62, 8: 89, 9: 74, 10: 52, 11: 21, 12: 11, 13: 2, 14: 2} (replay_dependencies.py:231)
+19:30:23.567 INFO     PROFILING setup: 32 trajectory lanes; recycle draws roots from the dataset sampler (agentic_replay.py:429)
+19:30:23.568 INFO     PROFILING: 4 rootless + 6 gated-parent lanes of 32 dispatch no root credit at start and hold a lane credit instead (so they still count toward concurrency); rootless lanes recycle into a fresh root once their background subagents drain (agentic_replay.py:435)
+19:30:23.569 NOTICE   Phase profiling (profiling) started | phase_index=0 | profiling_index=0 | target: 3600.0s duration (runner.py:593)
+19:30:23.579 INFO     Waiting for event 'profiling phase sending' with timeout of 3599.990195271s (runner.py:1220)
+19:30:23.579 INFO     Credit phase start: profiling (records_manager.py:998)
+19:30:23.581 INFO     PROFILING execute: resuming 32 trajectory sessions (spread; first-request spread 69244.3s) (agentic_replay.py:1328)
+19:37:03.718 INFO       osl     p50=     239  p75=      631  p90=    1,111  p99=    6,488  (tokens) (records_manager.py:1345)
+19:37:03.718 INFO       tot     in=1,915,748  out=25,296 (records_manager.py:1345)
+19:37:03.719 INFO       trace  theoretical_prefix_cache_hit=90.5% (records_manager.py:1345)
+19:37:09.636 WARNING  --failed-request-threshold exceeded: 5/46 = 0.109 > 0.100 (grace floor 32). Broadcasting ProfileCancelCommand to terminate the run. (records_manager.py:727)
+19:37:09.638 WARNING  Received profile cancel command: {"message_type":"command","service_id":"records_manager","command":"profile_cancel","command_id":"c05dfa36-5f08-4a8c-8a79-708251371b0f","reason":"failed_request_threshold","reason_detail":"5/46 profiling requests failed (10.9%), exceeding the --failed-request-threshold limit of 10.0%. Check inference server logs."} (records_manager.py:1135)
+19:37:09.639 INFO     Processing records results... (records_manager.py:2083)
+19:37:09.644 WARNING  Received profile cancel command: {"message_type":"command","service_id":"records_manager","command":"profile_cancel","command_id":"c05dfa36-5f08-4a8c-8a79-708251371b0f","reason":"failed_request_threshold","reason_detail":"5/46 profiling requests failed (10.9%), exceeding the --failed-request-threshold limit of 10.0%. Check inference server logs."} (manager.py:271)
+19:37:09.644 WARNING  Cancelling phase orchestrator (phase_orchestrator.py:322)
+19:37:09.646 INFO     Sent cancellation requests for 40 in-flight credits across 23 workers (sticky_router.py:489)
+19:37:09.647 INFO     Phase orchestrator cancelled (manager.py:274)
+19:37:09.647 WARNING  Run aborted (failed_request_threshold): 5/46 profiling requests failed (10.9%), exceeding the --failed-request-threshold limit of 10.0%. Check inference server logs. Will exit non-zero. (system_controller.py:467)
+19:37:10.887 INFO     All results received, initiating shutdown (system_controller.py:864)
+19:37:10.910 NOTICE   Phase profiling (profiling) sending complete | sent=86, completed=46, in_flight=0 | sessions: sent=28, completed=0 (runner.py:1039)
+19:37:10.911 INFO     BranchOrchestrator stats: spawned=44 completed=6 errored=0 suspended=8 resumed=1 parents_failed_due_to_child_error=0 joins_suppressed=6 delayed=5 (branch_orchestrator.py:1782)
+19:37:10.914 WARNING  BranchOrchestrator leaked state at cleanup: 1 active_joins, 0 future_joins, 20 tracked children, 3 parents with descendants (branch_orchestrator.py:1799)
+======================================================================
+Saved plots to /cdk-outputs/outputs/j-58c2ef95-db91-41d6-9bb1-bench-0/j-58c2ef95-db91-41d6-9bb1-bench-0-0-vr9mv/bench/conc_32/workload_distribution_plots.png
+ERROR: aiperf request error rate exceeded the benchmark limit: 5/46 = 10.870% > 10.000%
+ERROR: agentic trace replay exited with code 1 after writing available results
+SGLANG c32: verify=0 gen=0 prompt=0 cached=0
+WARNING: sweep c32 exited with 1
+trace-end-event: name=steady-eval-c32 ts=1794857883.700218711 pid=bench tid=bench
+trace-end-event: name=benchmark-agentx-c32 ts=1794857883.703435591 pid=bench tid=bench
+=== [Phase Log] Warmup: duration=4054.5s (67.6min), requests=87.0 ===
+=== [Phase Log] Steady profiling: duration=303.8s (5.1min) ===
+RESULT c32: mean_ttft_ms=72911.46 total_token_throughput=6390.03573 tok/s kv_cache_hit_rate=None
+Publishing c32 to CDK (exit=1): {"conc":32,"num_requests_total":400,"num_requests_successful":41,"tp":8,"ep":1,"records_dropped_total":359,"records_error_dropped":272,"mean_ttft_ms":72911.46,"mean_tpot_ms":3.28,"mean_itl_ms":3.28,"mean_e2el_ms":75518.47,"mean_interactivity_tok_s":305.15255,"mean_qps":0.13378,"median_ttft_ms":68879.97,"median_tpot_ms":3.62,"median_itl_ms":3.62,"median_e2el_ms":70147.87,"median_interactivity_tok_s":275.98268,"median_qps":0.0,"p90_ttft_ms":137425.6,"p90_tpot_ms":5.57,"p90_itl_ms":5.57,"p90_e2el_ms":138950.2,"p90_interactivity_tok_s":179.42054,"p90_qps":1,"p95_ttft_ms":141715.48,"p95_tpot_ms":6.09,"p95_itl_ms":6.09,"p95_e2el_ms":152991.53,"p95_interactivity_tok_s":164.14787,"p95_qps":1,"mean_e2e_norm_interactivity_tok_s":2.91964,"median_e2e_norm_interactivity_tok_s":3.37524,"p75_e2e_norm_interactivity_tok_s":2.05334,"p90_e2e_norm_interactivity_tok_s":1.27798,"p95_e2e_norm_interactivity_tok_s":1.01925,"input_throughput":6306.75975,"output_throughput":83.27598,"total_token_throughput":6390.03573,"benchmark_duration_s":303.76106,"request_throughput":0.13378,"mean_input_tokens":46725.56098,"mean_output_tokens":616.97561,"theoretical_cache_hit_rate":0.79515,"num_chips":8,"token_throughput_per_chip":798.7545,"output_throughput_per_chip":10.4095,"interactivity":276.2431,"max_concurrency":32}
+2026/11/16 19:38:04 [DB] Successfully appended result for Job j-58c2ef95-db91-41d6-9bb1
+Appended to result for Job j-58c2ef95-db91-41d6-9bb1 in MongoDB
+Completed concurrency level: 32
+AgentX sweeps completed (overall_exit=1).
