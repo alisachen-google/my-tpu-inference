@@ -6,6 +6,57 @@ KV to decode DRAM, commit `3dabdc26`) and [PR 2086](https://github.com/sgl-proje
 (hybrid sliding-window models, commit `5c136df1`). Status: design verified against the code and revised (see Revision 2026-11-16b); the first building block is implemented on branch `pd-dram-offload-pp` of the fork (`d4c6764a`), nothing is wired into the engines. File and function names are the real ones in that tree;
 statements marked **to verify** are things I inferred from reading and have not run.
 
+## Revision 2026-11-16f: speculative decoding (DFLASH) in the pipeline pairing
+
+The nightly Muse Spark config runs DFLASH on both roles, and the offload refuses speculative decoding. This note is
+the design for lifting that in the pipeline pairing only. It stays behind an opt-in until a live Muse run with the
+draft on passes the byte check and the warm-reference check.
+
+**What the sidecar pool is.** With a draft, HiCache keeps the draft model's KV of a cached prefix in a *sidecar* host
+pool (`hybrid_pool_assembler.build_hicache_draft_sidecars`). A sidecar has its own host pool and its own native
+manager, but no page allocator of its own: `SidecarPoolSpec(pool_name, indices_from_pool)` says its pages are
+addressed by the host page ids of a source pool. `PoolName.DRAFT` follows the full-attention pool (`KV`),
+`PoolName.DRAFT_SWA` follows the sliding-window pool (`SWA`). When a target page is backed up to host page `i`, the
+draft KV of the same tokens is backed up to page `i` of the sidecar; a load-back reads both from the same id.
+
+**Why the offload refused it.** Push and recall move the full and window pools only. A recalled branch lands in host
+pages of the prefill whose sidecar pages were never written, and the next load-back would hand the draft model those
+bytes. `pd_decode_swa_hicache._validate_full_only_host_cache_config` refuses the combination by name for that reason.
+
+**Which stage owns it.** Each pipeline stage builds its own sidecars for the draft layers it runs
+(`build_full_draft_pools` returns nothing for a stage whose draft pool has no layer). So the set of pools is per
+stage: always full, the window pool on a hybrid model, and on a stage that runs draft layers the draft and draft
+window sidecars. The stage tells the decode which it has in its push.
+
+**Design: a sidecar is one more pool kind of the stage, at the same page ids.**
+
+- The decode already keeps, per stage, one pool per kind (full, window), all with the same page count, and one page
+  id names a page in all of them. A sidecar adds a pool of the same count as its source: the draft pool as many pages
+  as the full pool, the draft window pool as many as the window pool. The index does not change: it hands out one
+  full id and one window id as before, and each sidecar uses the id of its source.
+- Push: a stage registers the same host page ids on its sidecar managers, under the same transfer UUID, and its
+  share of the push names the sidecars' control addresses and layouts. The decode rank that hosts the stage reads the
+  sidecar pages into the same local ids it reads the source pages into.
+- Partial push: the decode reads only the pages it does not hold yet (`first_new_page` on). The same slice applies to
+  the draft pool, and the draft window is read exactly when the window is. A branch is stored only if every read of
+  every kind succeeded on every rank; otherwise all its new pages are given back, as today.
+- Recall: a stage's PREFIX_PULL makes the hosting rank register the same page ids on the sidecar pools too, and the
+  READY reply names them. The stage reads each sidecar into the host page ids its landing pages have, since those are
+  the ids the sidecar is addressed by. The recall succeeds only if every kind's read did. Nothing is allocated for a
+  sidecar on the prefill: the landing's ids are its ids.
+- Restoring draft KV: nothing new. After the insert the prefill's host node points at the landing pages; HiCache's
+  own load-back reads the target from the full pool and the draft from the sidecar at the same ids.
+- Eviction on the decode: freeing a page id frees it in every kind at once, because no kind has its own allocator.
+  The budget is what changes: a page costs the bytes of the full page plus the draft page on the stages that have
+  one, and a window page likewise, summed over the stages a rank hosts and taken from the largest rank.
+- Byte check: the draft and draft window pages are hashed and compared like the others, under their own kind.
+
+**What is deliberately not handled:** the packed draft mode (draft KV inside the target's pool, which already
+travels with the target pages) is not a sidecar and needs nothing; the draft indexer sidecar of DSA models
+(`DRAFT_INDEXER`) is not moved and keeps the refusal; the tensor-parallel pairing keeps the refusal.
+
+**Opt-in.** `SGLANG_PD_OFFLOAD_ALLOW_DRAFT=1` on both roles lifts the two refusals for the pipeline pairing.
+
 ## Revision 2026-11-16e: what was built (draft PR 2202)
 
 Draft PR: https://github.com/sgl-project/sglang-torchtpu/pull/2202, fork branch `pd-dram-offload-pp`.
