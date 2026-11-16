@@ -93,6 +93,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 17:08 | 1 | Muse host-tier control j-cc8e0e61-17a1-4752-b48e never started (admitted, then Pending 1 h on capacity, failed by the pending deadline). Deleted and resubmitted as j-4df970f8-a455-4027-985a; with the byte check result it is now only a side question (does Muse's own host tier resume like its device tier). |
 | 17:09 | 1 | Draft PR 2202 description rewritten with the full live matrix (three models incl. Muse Spark draft-off, multi-host), the byte-check results, the off vs on timings, the five defects the live runs found, and what is not run. Still a draft, no reviewers. |
 | 18:09 | 1 | Muse host-tier control j-4df970f8-a455-4027-985a failed like its predecessor: the decode pod was up at 17:23Z but the prefill pod stayed Pending and the job hit the 1 h pending deadline at 18:08Z (capacity; no engine fault). Deleted and not resubmitted: it is a side question now that the byte check shows recalled pages equal pushed pages. Workstream 1 has no job left on the cluster. |
+| 18:10 | 1 | New task from the coordinator: DFLASH support for the pipeline pairing. Design note written first as Revision 2026-11-16f in DESIGN.md: a draft sidecar is one more pool kind of a stage at the page ids of its source pool; decode adds a pool per sidecar with the source's page count; push, partial push, recall and eviction follow the source ids; behind opt-in SGLANG_PD_OFFLOAD_ALLOW_DRAFT until a live Muse run with the draft on passes. |
 
 ## Bugs and defects found (running list)
 
