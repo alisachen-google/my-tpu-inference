@@ -1,0 +1,72 @@
+[2026-11-16 14:43:51 TP3 EP3] [dram-offload] stage landing received=1
+[2026-11-16 14:43:51 TP2 EP2] [dram-offload] stage landing received=1
+[2026-11-16 14:43:51 TP4 EP4] [dram-offload] stage landing received=1
+[2026-11-16 14:43:51 TP1 EP1] [dram-offload] stage landing received=1
+[2026-11-16 14:43:51 TP0 EP0] [dram-offload] stage landing received=1
+[2026-11-16 14:43:51 TP5 EP5] [dram-offload] stage landing received=1
+[2026-11-16 14:43:51 TP6 EP6] [dram-offload] stage landing received=1
+[2026-11-16 14:43:51 TP7 EP7] [dram-offload] stage landing received=1
+[2026-11-16 14:43:52 TP7 EP7] [dram-offload] stage store ready on rank 7: stages [7], 2184 pages (786432 bytes each on the largest rank), 273 windows of 2 pages
+[2026-11-16 14:43:52 TP5 EP5] [dram-offload] stage store ready on rank 5: stages [5], 2184 pages (786432 bytes each on the largest rank), 273 windows of 2 pages
+[2026-11-16 14:43:52 TP6 EP6] [dram-offload] stage store ready on rank 6: stages [6], 2184 pages (786432 bytes each on the largest rank), 273 windows of 2 pages
+[2026-11-16 14:43:52 TP0 EP0] [dram-offload] stage store ready on rank 0: stages [0], 2184 pages (786432 bytes each on the largest rank), 273 windows of 2 pages
+[2026-11-16 14:43:52 TP4 EP4] [dram-offload] stage store ready on rank 4: stages [4], 2184 pages (786432 bytes each on the largest rank), 273 windows of 2 pages
+[2026-11-16 14:43:52 TP2 EP2] [dram-offload] stage store ready on rank 2: stages [2], 2184 pages (786432 bytes each on the largest rank), 273 windows of 2 pages
+[2026-11-16 14:43:52 TP3 EP3] [dram-offload] stage store ready on rank 3: stages [3], 2184 pages (786432 bytes each on the largest rank), 273 windows of 2 pages
+[2026-11-16 14:43:52 TP1 EP1] [dram-offload] stage store ready on rank 1: stages [1], 2184 pages (786432 bytes each on the largest rank), 273 windows of 2 pages
+[2026-11-16 14:44:21 TP1 EP1] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:21 TP0 EP0] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:21 TP2 EP2] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:21 TP5 EP5] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:21 TP4 EP4] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:21 TP7 EP7] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:21 TP3 EP3] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:21 TP6 EP6] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:52 TP1 EP1] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:52 TP2 EP2] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:52 TP0 EP0] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:52 TP7 EP7] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:52 TP6 EP6] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:52 TP4 EP4] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:52 TP3 EP3] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:44:52 TP5 EP5] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:22 TP2 EP2] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:22 TP0 EP0] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:22 TP1 EP1] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:22 TP7 EP7] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:22 TP3 EP3] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:22 TP4 EP4] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:22 TP6 EP6] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:22 TP5 EP5] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:52 TP7 EP7] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:52 TP0 EP0] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:52 TP6 EP6] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:52 TP4 EP4] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:52 TP1 EP1] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:52 TP2 EP2] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:52 TP3 EP3] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:45:52 TP5 EP5] [dram-offload] stage landing received=27 granted=27 landed=27 landed_pages=1344 reused_pages=96 pages=2184 used_pages=1344 windows=273 used_windows=27
+[2026-11-16 14:46:22 TP0 EP0] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:22 TP4 EP4] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:22 TP7 EP7] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:22 TP6 EP6] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:22 TP3 EP3] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:22 TP5 EP5] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:22 TP2 EP2] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:22 TP1 EP1] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:52 TP6 EP6] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:52 TP4 EP4] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:52 TP7 EP7] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:52 TP0 EP0] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:52 TP5 EP5] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:52 TP3 EP3] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:52 TP2 EP2] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:46:52 TP1 EP1] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:47:22 TP7 EP7] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:47:22 TP0 EP0] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:47:22 TP6 EP6] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:47:22 TP4 EP4] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:47:22 TP1 EP1] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:47:22 TP3 EP3] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:47:22 TP5 EP5] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6
+[2026-11-16 14:47:22 TP2 EP2] [dram-offload] stage landing received=33 granted=33 landed=33 landed_pages=1456 reused_pages=96 pages=2184 used_pages=112 windows=273 used_windows=6

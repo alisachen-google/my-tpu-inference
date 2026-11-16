@@ -1,0 +1,88 @@
+[2026-11-16 14:43:51 PP0] [dram-offload] stage push_started=1
+[2026-11-16 14:43:51 PP1] [dram-offload] stage push_started=1
+[2026-11-16 14:43:51 PP2] [dram-offload] stage push_started=1
+[2026-11-16 14:43:51 PP3] [dram-offload] stage push_started=1
+[2026-11-16 14:43:51 PP4] [dram-offload] stage push_started=1
+[2026-11-16 14:43:51 PP5] [dram-offload] stage push_started=1
+[2026-11-16 14:43:51 PP6] [dram-offload] stage push_started=1
+[2026-11-16 14:43:51 PP7] [dram-offload] stage push_started=1
+[2026-11-16 14:44:21 PP0] [dram-offload] stage push_started=27 push_stored=24 recall_offers=32 recall_pulls=24 recall_pulled_pages=1344 recall_held=8
+[2026-11-16 14:44:21 PP2] [dram-offload] stage push_started=27 push_stored=24 recall_offers=32 recall_pulls=24 recall_pulled_pages=1344 recall_held=8
+[2026-11-16 14:44:21 PP1] [dram-offload] stage push_started=27 push_stored=24 recall_offers=32 recall_pulls=24 recall_pulled_pages=1344 recall_held=8
+[2026-11-16 14:44:21 PP3] [dram-offload] stage push_started=27 push_stored=24 recall_offers=32 recall_pulls=24 recall_pulled_pages=1344 recall_held=8
+[2026-11-16 14:44:21 PP4] [dram-offload] stage push_started=27 push_stored=24 recall_offers=32 recall_pulls=24 recall_pulled_pages=1344 recall_held=8
+[2026-11-16 14:44:21 PP5] [dram-offload] stage push_started=27 push_stored=24 recall_offers=32 recall_pulls=24 recall_pulled_pages=1344 recall_held=8
+[2026-11-16 14:44:21 PP6] [dram-offload] stage push_started=27 push_stored=24 recall_offers=32 recall_pulls=24 recall_pulled_pages=1344 recall_held=8
+[2026-11-16 14:44:21 PP7] [dram-offload] stage push_started=27 push_stored=24 recall_offers=32 recall_pulls=24 recall_pulled_pages=1344 recall_held=8
+[2026-11-16 14:44:51 PP0] [dram-offload] stage push_started=27 push_stored=24 recall_offers=117 recall_pulls=95 recall_pulled_pages=5320 recall_held=21
+[2026-11-16 14:44:51 PP2] [dram-offload] stage push_started=27 push_stored=24 recall_offers=117 recall_pulls=95 recall_pulled_pages=5320 recall_held=21
+[2026-11-16 14:44:51 PP1] [dram-offload] stage push_started=27 push_stored=24 recall_offers=117 recall_pulls=95 recall_pulled_pages=5320 recall_held=21
+[2026-11-16 14:44:51 PP3] [dram-offload] stage push_started=27 push_stored=24 recall_offers=117 recall_pulls=95 recall_pulled_pages=5320 recall_held=21
+[2026-11-16 14:44:51 PP4] [dram-offload] stage push_started=27 push_stored=24 recall_offers=117 recall_pulls=95 recall_pulled_pages=5320 recall_held=21
+[2026-11-16 14:44:51 PP5] [dram-offload] stage push_started=27 push_stored=24 recall_offers=117 recall_pulls=95 recall_pulled_pages=5320 recall_held=21
+[2026-11-16 14:44:51 PP6] [dram-offload] stage push_started=27 push_stored=24 recall_offers=117 recall_pulls=95 recall_pulled_pages=5320 recall_held=21
+[2026-11-16 14:44:51 PP7] [dram-offload] stage push_started=27 push_stored=24 recall_offers=117 recall_pulls=95 recall_pulled_pages=5320 recall_held=21
+[2026-11-16 14:45:21 PP0] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:21 PP2] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:21 PP1] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:21 PP3] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:21 PP5] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:21 PP4] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:21 PP6] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:21 PP7] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:51 PP0] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:51 PP2] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:51 PP1] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:51 PP3] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:51 PP5] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:51 PP4] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:51 PP6] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:51 PP7] [dram-offload] stage push_started=27 push_stored=24 recall_offers=120 recall_pulls=99 recall_pulled_pages=5544 recall_held=21
+[2026-11-16 14:45:56 PP0] Raiden host transfer victim:13b2b1e404d14101:9 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:45:56 PP1] Raiden host transfer victim:13b2b1e404d14101:9 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:45:56 PP2] Raiden host transfer victim:13b2b1e404d14101:9 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:45:56 PP3] Raiden host transfer victim:13b2b1e404d14101:9 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:45:56 PP4] Raiden host transfer victim:13b2b1e404d14101:9 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:45:56 PP5] Raiden host transfer victim:13b2b1e404d14101:9 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:45:56 PP6] Raiden host transfer victim:13b2b1e404d14101:9 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:45:56 PP7] Raiden host transfer victim:13b2b1e404d14101:9 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:03 PP0] Raiden host transfer victim:13b2b1e404d14101:21 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:03 PP1] Raiden host transfer victim:13b2b1e404d14101:21 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:03 PP2] Raiden host transfer victim:13b2b1e404d14101:21 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:03 PP3] Raiden host transfer victim:13b2b1e404d14101:21 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:03 PP4] Raiden host transfer victim:13b2b1e404d14101:21 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:03 PP5] Raiden host transfer victim:13b2b1e404d14101:21 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:03 PP6] Raiden host transfer victim:13b2b1e404d14101:21 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:03 PP7] Raiden host transfer victim:13b2b1e404d14101:21 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:06 PP0] Raiden host transfer victim:13b2b1e404d14101:26 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:06 PP1] Raiden host transfer victim:13b2b1e404d14101:26 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:06 PP2] Raiden host transfer victim:13b2b1e404d14101:26 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:06 PP3] Raiden host transfer victim:13b2b1e404d14101:26 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:06 PP4] Raiden host transfer victim:13b2b1e404d14101:26 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:06 PP5] Raiden host transfer victim:13b2b1e404d14101:26 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:06 PP6] Raiden host transfer victim:13b2b1e404d14101:26 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:06 PP7] Raiden host transfer victim:13b2b1e404d14101:26 failed (DEADLINE_EXCEEDED, await_pull): Transfer session timed out
+[2026-11-16 14:46:21 PP0] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:21 PP2] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:21 PP1] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:21 PP3] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:21 PP5] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:21 PP4] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:21 PP6] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:21 PP7] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:51 PP0] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:51 PP1] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:51 PP2] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:51 PP3] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:51 PP5] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:51 PP4] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:51 PP6] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:46:51 PP7] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:47:21 PP0] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:47:21 PP2] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:47:21 PP1] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:47:21 PP3] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:47:21 PP5] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:47:21 PP4] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:47:21 PP6] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
+[2026-11-16 14:47:21 PP7] [dram-offload] stage push_started=33 push_stored=33 push_stale=9 recall_offers=121 recall_pulls=100 recall_pulled_pages=5560 recall_held=21
