@@ -1,0 +1,47 @@
+[2026-11-16 12:45:21 TP5] [TPU] host heap trim via glibc (before HiCache): rss 27.27 -> 15.71 GiB in 0.71s
+[2026-11-16 12:45:21 TP6] [TPU] host heap trim via glibc (before HiCache): rss 26.70 -> 15.22 GiB in 0.63s
+[2026-11-16 12:45:21 TP2] Scheduler hit an exception: Traceback (most recent call last):
+  File "/workspace/sglang/python/sglang/srt/managers/scheduler.py", line 6381, in run_scheduler_process
+    scheduler = Scheduler(server_args, port_args)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/sglang/python/sglang/srt/managers/scheduler.py", line 583, in __init__
+    result = kv_cache_builder.build_kv_cache(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/sglang/sglang_tpu/pd_decode_swa_hicache.py", line 1014, in wrapper
+    return impl(upstream, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/sglang/sglang_tpu/pd_decode_swa_hicache.py", line 285, in _build_kv_cache
+    _validate_full_only_host_cache_config(
+  File "/workspace/sglang/sglang_tpu/pd_decode_swa_hicache.py", line 250, in _validate_full_only_host_cache_config
+--
+[2026-11-16 12:45:21] Received sigquit from a child process. It usually means the child failed.
+[2026-11-16 12:45:21] kill_process_tree called: parent_pid=210, include_parent=True, pid=210
+[2026-11-16 12:45:21 TP0] Scheduler hit an exception: Traceback (most recent call last):
+  File "/workspace/sglang/python/sglang/srt/managers/scheduler.py", line 6381, in run_scheduler_process
+    scheduler = Scheduler(server_args, port_args)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/sglang/python/sglang/srt/managers/scheduler.py", line 583, in __init__
+    result = kv_cache_builder.build_kv_cache(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/sglang/sglang_tpu/pd_decode_swa_hicache.py", line 1014, in wrapper
+    return impl(upstream, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/sglang/sglang_tpu/pd_decode_swa_hicache.py", line 285, in _build_kv_cache
+    _validate_full_only_host_cache_config(
+  File "/workspace/sglang/sglang_tpu/pd_decode_swa_hicache.py", line 250, in _validate_full_only_host_cache_config
+--
+[2026-11-16 12:45:21] Received sigquit from a child process. It usually means the child failed.
+[2026-11-16 12:45:21] kill_process_tree called: parent_pid=210, include_parent=True, pid=210
+[2026-11-16 12:45:21 TP3] Scheduler hit an exception: Traceback (most recent call last):
+  File "/workspace/sglang/python/sglang/srt/managers/scheduler.py", line 6381, in run_scheduler_process
+    scheduler = Scheduler(server_args, port_args)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/sglang/python/sglang/srt/managers/scheduler.py", line 583, in __init__
+    result = kv_cache_builder.build_kv_cache(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/sglang/sglang_tpu/pd_decode_swa_hicache.py", line 1014, in wrapper
+    return impl(upstream, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/sglang/sglang_tpu/pd_decode_swa_hicache.py", line 285, in _build_kv_cache
+    _validate_full_only_host_cache_config(
+  File "/workspace/sglang/sglang_tpu/pd_decode_swa_hicache.py", line 250, in _validate_full_only_host_cache_config

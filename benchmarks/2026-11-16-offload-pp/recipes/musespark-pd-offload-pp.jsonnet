@@ -11,6 +11,7 @@
 //   decode HiCache + radix cache   the offload's startup check and its extension need them on the decode
 //   SGLANG_PD_OFFLOAD_STAGE_STORE_GB  bounds the decode's stage-layout pools per rank
 //   Raiden socket timeouts         the offload's README asks for them on both roles
+//   SERVER_ARGS_OVERRIDES speculative_* = null   the offload refuses speculative decoding (draft sidecar KV is not moved)
 // Both jobs carry an active deadline (DEADLINE_SECONDS) so the JobSet ends on its own.
 //
 //   cdk job create musespark-pd-offload-pp-alisachen -t agent-jobs,alisachen,ws1-offload-pp \
@@ -166,6 +167,9 @@ local serverScript = agentx.fill(
         args["disaggregation_bootstrap_port"] = int(os.environ["BOOTSTRAP_PORT"])
     args.update(json.loads(os.environ["SERVER_ARGS_OVERRIDES"]))
     args.update(json.loads(os.environ["PREFILL_ARGS" if role == "prefill" else "DECODE_ARGS"]))
+    # A null override removes the argument (e.g. {"speculative_algorithm": null} serves without the draft).
+    for key in [k for k, v in args.items() if v is None]:
+        del args[key]
     env = cfg["runtime_env"]
     # One engine on this host; the router is started below.
     for key in ("LB_PORT", "HEALTH_TIMEOUT", "FORCE_SINGLE_HOST"):
