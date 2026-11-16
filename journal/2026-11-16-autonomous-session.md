@@ -92,6 +92,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | 17:08 | 1 | gpt-oss byte check rerun j-02219a9d-db9e-4078-be4e: preempted twice by spot reclaims (16:13Z, 16:31Z); the third attempt lost its prefill mid-check (connection refused). The second attempt's prefill log has the result: push_started=28 push_stored=28, recall_pulls=100 recall_pulled_pages=5600, verified_pages=5800, no mismatched page. Evidence saved, job deleted. |
 | 17:08 | 1 | Muse host-tier control j-cc8e0e61-17a1-4752-b48e never started (admitted, then Pending 1 h on capacity, failed by the pending deadline). Deleted and resubmitted as j-4df970f8-a455-4027-985a; with the byte check result it is now only a side question (does Muse's own host tier resume like its device tier). |
 | 17:09 | 1 | Draft PR 2202 description rewritten with the full live matrix (three models incl. Muse Spark draft-off, multi-host), the byte-check results, the off vs on timings, the five defects the live runs found, and what is not run. Still a draft, no reviewers. |
+| 18:09 | 1 | Muse host-tier control j-4df970f8-a455-4027-985a failed like its predecessor: the decode pod was up at 17:23Z but the prefill pod stayed Pending and the job hit the 1 h pending deadline at 18:08Z (capacity; no engine fault). Deleted and not resubmitted: it is a side question now that the byte check shows recalled pages equal pushed pages. Workstream 1 has no job left on the cluster. |
 
 ## Bugs and defects found (running list)
 
@@ -198,6 +199,7 @@ and decision, newest entries at the bottom of each section. Times are UTC. Job i
 | j-02219a9d-db9e-4078-be4e | ws1 gpt-oss byte check rerun | preempted 3 times; one attempt gave 5,800 verified pages, 0 mismatched; evidence saved, deleted 17:1xZ |
 | j-cc8e0e61-17a1-4752-b48e | ws1 Muse host-tier control | never started (capacity), deleted 17:1xZ |
 | j-4df970f8-a455-4027-985a | ws1 Muse host-tier control, offload OFF, 60 sessions, 6 h deadline; side question only; delete after collecting | submitted 17:1xZ |
+| j-4df970f8-a455-4027-985a | ws1 Muse host-tier control, second submission | never started (prefill pod Pending 1 h), deleted 18:1xZ; not resubmitted |
 
 ## Decisions taken without the user (to review)
 | 10:30 | A full Muse Spark P/D run (two 1 TB weight disks, about 3 h start-up, 8 chips) is submitted only if the cluster is free of workstream 1 and 2 jobs and an image is known to run the tree; it gets an active deadline so it ends by itself if credentials expire | Cost and contention; jobs that finish release their chips without me |
