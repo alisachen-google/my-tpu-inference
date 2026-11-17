@@ -1,0 +1,22 @@
+== prefill-0 ranks=8 warnings=0 errors=216 refused_lines=0
+  push     TP0 final: started=1367 stored=1367
+  recall   TP0 final: offers=162 pulls=136 pulled_tokens=15655040 pulled_swa_tokens=17408 skipped_local_host=25 no_memory=1
+  verdict: EQUAL across 8 ranks
+== decode-0 ranks=8 warnings=0 errors=16 refused_lines=0
+  landing  TP0 final: received=1367 granted=1367 landed=1367 landed_tokens=27809280
+  verdict: EQUAL across 8 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  static_4/all: no counter movement
+  static_8/all: no counter movement
+  static_12/all: prefill-0 push: started=37 stored=37; prefill-0 recall: offers=10 pulls=5 pulled_tokens=286528 pulled_swa_tokens=640 skipped_local_host=5; decode-0 landing: received=37 granted=37 landed=37 landed_tokens=1375872
+  static_16/all: prefill-0 push: started=84 stored=84; prefill-0 recall: offers=18 pulls=15 pulled_tokens=1229120 pulled_swa_tokens=1920 skipped_local_host=3; decode-0 landing: received=84 granted=84 landed=84 landed_tokens=2121792
+  static_20/all: prefill-0 push: started=117 stored=117; prefill-0 recall: offers=28 pulls=23 pulled_tokens=1880448 pulled_swa_tokens=2944 skipped_local_host=5; decode-0 landing: received=117 granted=117 landed=117 landed_tokens=2243200
+  static_24/all: prefill-0 push: started=188 stored=188; prefill-0 recall: offers=33 pulls=29 pulled_tokens=3009216 pulled_swa_tokens=3712 skipped_local_host=4; decode-0 landing: received=188 granted=188 landed=188 landed_tokens=3513920
+  static_28/all: prefill-0 push: started=240 stored=240; prefill-0 recall: offers=27 pulls=25 pulled_tokens=2652800 pulled_swa_tokens=3200 skipped_local_host=2; decode-0 landing: received=240 granted=240 landed=240 landed_tokens=5009280
+  static256_2/all: no counter movement
+  static256_4/all: prefill-0 push: started=3 stored=3; decode-0 landing: received=3 granted=3 landed=3 landed_tokens=311296
+  static256_6/all: prefill-0 push: started=24 stored=24; prefill-0 recall: offers=4 pulls=3 pulled_tokens=278528 pulled_swa_tokens=384 skipped_local_host=1; decode-0 landing: received=24 granted=24 landed=24 landed_tokens=1122560
+  static256_8/all: prefill-0 push: started=67 stored=67; prefill-0 recall: offers=6 pulls=5 pulled_tokens=893696 pulled_swa_tokens=640 skipped_local_host=1; decode-0 landing: received=67 granted=67 landed=67 landed_tokens=1777536
+  static256_10/all: prefill-0 push: started=108 stored=108; prefill-0 recall: offers=9 pulls=7 pulled_tokens=1065088 pulled_swa_tokens=896 skipped_local_host=1 no_memory=1; decode-0 landing: received=108 granted=108 landed=108 landed_tokens=2278016
+  static256_12/all: prefill-0 push: started=211 stored=211; prefill-0 recall: offers=13 pulls=13 pulled_tokens=2375616 pulled_swa_tokens=1664; decode-0 landing: received=211 granted=211 landed=211 landed_tokens=3385600
+  static256_14/all: prefill-0 push: started=288 stored=288; prefill-0 recall: offers=14 pulls=11 pulled_tokens=1984000 pulled_swa_tokens=1408 skipped_local_host=3; decode-0 landing: received=288 granted=288 landed=288 landed_tokens=4670208

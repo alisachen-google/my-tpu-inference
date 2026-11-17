@@ -1,0 +1,15 @@
+== prefill-0 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== decode-0 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  shared16_fill/fill: no counter movement
+  shared16_ret/recall: no counter movement
+  shared16b_fill/fill: no counter movement
+  shared16b_ret/recall: no counter movement
+  shared20_fill/fill: no counter movement
+  shared20_ret/recall: no counter movement
+  shared24_fill/fill: no counter movement
+  shared24_ret/recall: no counter movement
+  indep16_fill/fill: no counter movement
+  indep16_ret/recall: no counter movement

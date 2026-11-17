@@ -1,0 +1,18 @@
+== prefill-0 ranks=8 warnings=0 errors=16 refused_lines=0
+  push     TP0 final: started=297 stored=297
+  recall   TP0 final: offers=76 pulls=71 pulled_tokens=7185408 pulled_swa_tokens=9088 no_memory=3 over_budget=2
+  verdict: EQUAL across 8 ranks
+== decode-0 ranks=8 warnings=0 errors=32 refused_lines=0
+  landing  TP0 final: received=299 granted=299 landed=299 landed_tokens=14170944
+  verdict: EQUAL across 8 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  shared16_fill/fill: prefill-0 push: started=4 stored=4; decode-0 landing: received=4 granted=4 landed=4 landed_tokens=417792
+  shared16_ret/recall: prefill-0 push: started=47 stored=47; prefill-0 recall: offers=16 pulls=15 pulled_tokens=1646592 pulled_swa_tokens=1920 no_memory=1; decode-0 landing: received=47 granted=47 landed=47 landed_tokens=1794880
+  shared16b_fill/fill: prefill-0 push: started=20 stored=20; decode-0 landing: received=20 granted=20 landed=20 landed_tokens=1581056
+  shared16b_ret/recall: prefill-0 push: started=25 stored=25; prefill-0 recall: offers=16 pulls=16 pulled_tokens=2023552 pulled_swa_tokens=2048; decode-0 landing: received=25 granted=25 landed=25 landed_tokens=631616
+  shared20_fill/fill: prefill-0 push: started=27 stored=27; decode-0 landing: received=27 granted=27 landed=27 landed_tokens=2105344
+  shared20_ret/recall: prefill-0 push: started=35 stored=35; prefill-0 recall: offers=18 pulls=16 pulled_tokens=1666560 pulled_swa_tokens=2048 no_memory=1 over_budget=1; decode-0 landing: received=35 granted=35 landed=35 landed_tokens=680512
+  shared24_fill/fill: prefill-0 push: started=33 stored=33; decode-0 landing: received=33 granted=33 landed=33 landed_tokens=2629632
+  shared24_ret/recall: prefill-0 push: started=60 stored=60; prefill-0 recall: offers=15 pulls=14 pulled_tokens=1095040 pulled_swa_tokens=1792 over_budget=1; decode-0 landing: received=60 granted=60 landed=60 landed_tokens=2002816
+  indep16_fill/fill: prefill-0 push: started=4 stored=4; decode-0 landing: received=4 granted=4 landed=4 landed_tokens=155648
+  indep16_ret/recall: prefill-0 push: started=42 stored=42; prefill-0 recall: offers=11 pulls=10 pulled_tokens=753664 pulled_swa_tokens=1280 no_memory=1; decode-0 landing: received=44 granted=44 landed=44 landed_tokens=2171648

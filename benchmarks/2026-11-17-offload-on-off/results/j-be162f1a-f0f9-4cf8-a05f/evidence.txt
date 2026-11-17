@@ -1,0 +1,10 @@
+== prefill-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  push     TP0 final: started=0 stored=0
+  recall   TP0 final: pulls=0
+  verdict: EQUAL across 8 ranks
+== decode-0 ranks=8 warnings=0 errors=0 refused_lines=0
+  landing  TP0 final: landed=0
+  verdict: EQUAL across 8 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  shared16_fill/fill: no counter movement
+  shared16_ret/recall: no counter movement
