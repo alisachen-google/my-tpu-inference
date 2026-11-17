@@ -173,13 +173,38 @@ byte level only. Removing the gate is a small change in `startup_validation.py`,
 Decision (coordinator, 19:25Z): the gate stays. Status line: DFLASH is opt-in, byte-verified live on the Muse nightly
 config in one run; the gate is left in pending answer-level and acceptance evidence. Removing it is the user's call.
 
-### Still on the cluster (as of 19:35Z)
+### DFLASH comparison runs (2026-11-16 21:00Z to 2026-11-17 01:00Z)
 
-Three Muse runs, nightly config unchanged (DFLASH on), same 20 sessions, each ends by itself (6 h deadline). Read
-`STAGE_OFFLOAD_CHECK` in each bench container (fields `turns`, `warm_turns`, `accept_length`, `seconds`), then delete.
+All Muse Spark Open, nightly PP8 config unchanged (DFLASH on), same 20 sessions of 3,452 tokens. Jobs deleted, evidence
+in `runs/`. Time and accept length are for the 20 sequential second turns of the first pass.
 
-| Job | What | Use |
-|---|---|---|
-| `j-3fb296ed-17c7-4bdd-8762` | offload on, draft opt-in | recalled second turns: cached length, answer digest, accept length, time |
-| `j-2e39db5f-b6fd-4fd5-8ed0` | offload off, equal settings | timing and accept-length pair |
-| `j-0adaa33e-78f4-497e-9302` | offload off, prefill host ratio 12 | same sessions resumed from the prefill's own host tier; compare turn by turn with the recalled ones at equal cached length |
+| Run | Job | Second turns resumed from | Time | Accept length |
+|---|---|---|---|---|
+| offload on, draft opt-in | `j-3fb296ed-17c7-4bdd-8762` | device tier at 1,280 tokens (no recall yet) | 32.5 s | 6.25 |
+| offload off, equal settings | `j-2e39db5f-b6fd-4fd5-8ed0` | device tier at 1,280 tokens | 32.5 s | 6.15 |
+| offload off, prefill host ratio 12 | `j-0adaa33e-78f4-497e-9302` | own host tier at 3,328 tokens | 20.3 s | 4.94 |
+| offload off, host ratio 30, 40 fillers | `j-e883dfc5-8c6a-4b63-bc0c` | own host tier at 3,328 tokens | 20.3 s | 5.03 |
+
+What these show:
+
+- The draft path is deterministic: cold and warm answers are identical across independent jobs (20 of 20 each).
+- On Muse a turn that lost its sliding window resumes at the prompt minus the 2,048-token window (1,280 tokens) and
+  recomputes the window; with the window available it resumes at 3,328. That is the gain a timely recall can deliver:
+  20.3 s against 32.5 s.
+- In the offload-on run nothing was recalled in the first pass, so on and off are equal (32.5 s). The pushes (13 to 30 a
+  minute, only while serving) had not stored the branches before the windows left the prefill, and the decode's pools
+  held 10 windows with the draft sidecar in the budget.
+- With the offload off, 11 of 20 turns resumed from the prefill's own host tier answer differently from the same turns
+  resumed from the device tier at the same cached length. An answer difference after a recall can therefore not be
+  held against the offload on this model. The byte check is the integrity evidence.
+
+Still missing: an offload-on run in which the first-pass second turns are recalled (the run with 40 filler sessions
+and a 16 GB stage store, below), to compare answer digests and accept length with `j-e883dfc5-8c6a-4b63-bc0c` and to
+measure the recall's time against 20.3 s and 32.5 s.
+
+### Still on the cluster (as of 2026-11-17 01:00Z)
+
+`j-a8369017-1583-4683-9b55`: Muse, DFLASH on, offload on, draft opt-in, 16 GB stage store, 40 fillers. Queued 3 h, ran
+29 min, preempted (spot), retry 12 of 30, pending again. When it reports: read `STAGE_OFFLOAD_CHECK` (`turns`,
+`accept_length`, `seconds`) in the bench container, compare the `turns` digests with
+`runs/j-e883dfc5-8c6a-4b63-bc0c-*/check.txt`, read the prefill's `[dram-offload] stage` counters, then delete it.
