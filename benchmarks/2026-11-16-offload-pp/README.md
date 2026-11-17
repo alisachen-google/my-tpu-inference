@@ -208,11 +208,27 @@ measure the recall's time against 20.3 s and 32.5 s.
 the decode's pools held 42 windows for 60 sessions and evicted the 20 measured ones first, so again no measured turn
 was recalled in the first pass.
 
-### Still on the cluster (as of 2026-11-17 01:55Z)
+| offload on, draft opt-in, 48 GB store, 40 fillers | `j-24d2a2f8-c284-4ff8-8bd8` | 1,280 tokens, 13 of 20 turns with 512 to 1,024 recalled tokens | 31.6 s | 5.52 |
 
-`j-24d2a2f8-c284-4ff8-8bd8`: Muse, DFLASH on, offload on, draft opt-in, 48 GB stage store per decode rank (about 126
-windows), 40 fillers. Expect hours in the queue and spot retries. When it reports: read `STAGE_OFFLOAD_CHECK`
-(`turns`, `accept_length`, `seconds`) in the bench container, compare the first-pass `turns` digests with
-`runs/j-e883dfc5-8c6a-4b63-bc0c-*/check.txt` (own host tier, same sessions), read the prefill's `[dram-offload] stage`
-counters, then delete it. What it should show if the offload delivers on Muse: first-pass second turns resumed at 3,328
-tokens with host tokens, in about 20 s instead of 32.5 s.
+(Row above added 2026-11-17 03:35Z; it belongs to the table.) With a store large enough for every session the measured
+turns were recalled in the first pass (102 of 102 pushes stored, 77 recalls, nothing evicted on the decode), but the
+recalled prefixes were 512 or 1,024 tokens long and each turn still resumed at 1,280 tokens.
+
+**Finding: push policy on a hybrid model under constant host pressure.** With the nightly's 8,192-token prefill pool
+the host tier is always under pressure, so a branch is pushed while its prompt is still being prefilled, at its early
+lengths, coldest leaf first. The final length with the window that ends there is the only one worth recalling on a
+hybrid model, and it is often not stored before its window leaves the prefill. So the offload gives 31.6 s against
+32.5 s here, where having the window gives 20.3 s. Candidate fixes, not implemented: push a leaf only once its request
+left the prefill; prefer the deepest length of a session; push the final-length window first. This needs a design
+decision and a run with a realistic pool, where pressure is not constant.
+
+**Answer-level evidence for DFLASH: not obtained.** Three attempts gave no pair at equal cached length (offload on
+resumes at 1,280 tokens, the own-host-tier reference at 3,328). Accept length on the decode: 5.52 with recalled
+prefixes, 6.15 with the offload off (window recomputed), 5.03 from the prefill's own host tier. The attempts are
+stopped; integrity rests on the byte check, and the opt-in gate stays in.
+
+### Still on the cluster (as of 2026-11-17 03:40Z)
+
+Nothing submitted by workstream 1. Two running jobs carry the tag `ws1-offload-pp` but were submitted by another
+session of this account at 00:57Z and 02:41Z, recipe `musespark-pd-agentx-alisachen`: `j-dfde1813-4603-406f-b72f`
+(`agentx-c32-off`) and `j-ad7e1a80-bf0d-4656-98d2` (`agentx-c32-on`). I did not touch them.
