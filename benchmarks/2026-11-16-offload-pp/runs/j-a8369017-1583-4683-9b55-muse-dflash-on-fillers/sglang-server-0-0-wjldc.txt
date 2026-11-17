@@ -1,0 +1,120 @@
+[2026-11-17 01:38:20 PP0] [dram-offload] stage push_started=1
+[2026-11-17 01:38:20 PP1] [dram-offload] stage push_started=1
+[2026-11-17 01:38:20 PP2] [dram-offload] stage push_started=1
+[2026-11-17 01:38:20 PP3] [dram-offload] stage push_started=1
+[2026-11-17 01:38:20 PP4] [dram-offload] stage push_started=1
+[2026-11-17 01:38:20 PP5] [dram-offload] stage push_started=1
+[2026-11-17 01:38:20 PP6] [dram-offload] stage push_started=1
+[2026-11-17 01:38:20 PP7] [dram-offload] stage push_started=1
+[2026-11-17 01:38:50 PP0] [dram-offload] stage push_started=1 push_stored=1
+[2026-11-17 01:38:50 PP1] [dram-offload] stage push_started=1 push_stored=1
+[2026-11-17 01:38:50 PP2] [dram-offload] stage push_started=1 push_stored=1
+[2026-11-17 01:38:50 PP3] [dram-offload] stage push_started=1 push_stored=1
+[2026-11-17 01:38:50 PP4] [dram-offload] stage push_started=1 push_stored=1
+[2026-11-17 01:38:50 PP5] [dram-offload] stage push_started=1 push_stored=1
+[2026-11-17 01:38:50 PP6] [dram-offload] stage push_started=1 push_stored=1
+[2026-11-17 01:38:50 PP7] [dram-offload] stage push_started=1 push_stored=1
+[2026-11-17 01:39:20 PP7] [dram-offload] stage push_started=8 push_stored=7
+[2026-11-17 01:39:20 PP0] [dram-offload] stage push_started=8 push_stored=7
+[2026-11-17 01:39:20 PP6] [dram-offload] stage push_started=8 push_stored=7
+[2026-11-17 01:39:20 PP5] [dram-offload] stage push_started=8 push_stored=7
+[2026-11-17 01:39:20 PP3] [dram-offload] stage push_started=8 push_stored=7
+[2026-11-17 01:39:20 PP4] [dram-offload] stage push_started=8 push_stored=7
+[2026-11-17 01:39:20 PP2] [dram-offload] stage push_started=8 push_stored=7
+[2026-11-17 01:39:20 PP1] [dram-offload] stage push_started=8 push_stored=7
+[2026-11-17 01:39:50 PP7] [dram-offload] stage push_started=13 push_stored=13 recall_offers=1 recall_held=1
+[2026-11-17 01:39:50 PP0] [dram-offload] stage push_started=13 push_stored=13 recall_offers=1 recall_held=1
+[2026-11-17 01:39:50 PP6] [dram-offload] stage push_started=13 push_stored=13 recall_offers=1 recall_held=1
+[2026-11-17 01:39:50 PP5] [dram-offload] stage push_started=13 push_stored=13 recall_offers=1 recall_held=1
+[2026-11-17 01:39:50 PP4] [dram-offload] stage push_started=13 push_stored=13 recall_offers=1 recall_held=1
+[2026-11-17 01:39:50 PP3] [dram-offload] stage push_started=13 push_stored=13 recall_offers=1 recall_held=1
+[2026-11-17 01:39:50 PP2] [dram-offload] stage push_started=13 push_stored=13 recall_offers=1 recall_held=1
+[2026-11-17 01:39:50 PP1] [dram-offload] stage push_started=13 push_stored=13 recall_offers=1 recall_held=1
+[2026-11-17 01:40:20 PP7] [dram-offload] stage push_started=19 push_stored=19 recall_offers=1 recall_held=1
+[2026-11-17 01:40:20 PP0] [dram-offload] stage push_started=19 push_stored=19 recall_offers=1 recall_held=1
+[2026-11-17 01:40:20 PP2] [dram-offload] stage push_started=19 push_stored=19 recall_offers=1 recall_held=1
+[2026-11-17 01:40:20 PP6] [dram-offload] stage push_started=19 push_stored=19 recall_offers=1 recall_held=1
+[2026-11-17 01:40:20 PP5] [dram-offload] stage push_started=19 push_stored=19 recall_offers=1 recall_held=1
+[2026-11-17 01:40:20 PP3] [dram-offload] stage push_started=19 push_stored=19 recall_offers=1 recall_held=1
+[2026-11-17 01:40:20 PP4] [dram-offload] stage push_started=19 push_stored=19 recall_offers=1 recall_held=1
+[2026-11-17 01:40:20 PP1] [dram-offload] stage push_started=19 push_stored=19 recall_offers=1 recall_held=1
+[2026-11-17 01:40:50 PP7] [dram-offload] stage push_started=24 push_stored=24 recall_offers=1 recall_held=1
+[2026-11-17 01:40:50 PP0] [dram-offload] stage push_started=24 push_stored=24 recall_offers=1 recall_held=1
+[2026-11-17 01:40:50 PP2] [dram-offload] stage push_started=24 push_stored=24 recall_offers=1 recall_held=1
+[2026-11-17 01:40:50 PP6] [dram-offload] stage push_started=24 push_stored=24 recall_offers=1 recall_held=1
+[2026-11-17 01:40:50 PP5] [dram-offload] stage push_started=24 push_stored=24 recall_offers=1 recall_held=1
+[2026-11-17 01:40:50 PP4] [dram-offload] stage push_started=24 push_stored=24 recall_offers=1 recall_held=1
+[2026-11-17 01:40:50 PP3] [dram-offload] stage push_started=24 push_stored=24 recall_offers=1 recall_held=1
+[2026-11-17 01:40:50 PP1] [dram-offload] stage push_started=24 push_stored=24 recall_offers=1 recall_held=1
+[2026-11-17 01:41:20 PP0] [dram-offload] stage push_started=42 push_stored=39 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:20 PP2] [dram-offload] stage push_started=42 push_stored=39 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:20 PP5] [dram-offload] stage push_started=42 push_stored=39 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:20 PP4] [dram-offload] stage push_started=42 push_stored=39 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:20 PP3] [dram-offload] stage push_started=42 push_stored=39 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:20 PP6] [dram-offload] stage push_started=42 push_stored=39 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:20 PP7] [dram-offload] stage push_started=42 push_stored=39 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:20 PP1] [dram-offload] stage push_started=43 push_stored=39 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:50 PP0] [dram-offload] stage push_started=63 push_stored=60 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:50 PP4] [dram-offload] stage push_started=63 push_stored=60 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:50 PP3] [dram-offload] stage push_started=63 push_stored=60 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:50 PP2] [dram-offload] stage push_started=63 push_stored=60 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:50 PP5] [dram-offload] stage push_started=63 push_stored=60 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:50 PP1] [dram-offload] stage push_started=63 push_stored=60 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:50 PP7] [dram-offload] stage push_started=63 push_stored=60 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:41:50 PP6] [dram-offload] stage push_started=63 push_stored=60 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:42:20 PP0] [dram-offload] stage push_started=73 push_stored=71 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:42:20 PP4] [dram-offload] stage push_started=73 push_stored=71 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:42:20 PP5] [dram-offload] stage push_started=73 push_stored=71 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:42:20 PP2] [dram-offload] stage push_started=73 push_stored=71 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:42:20 PP1] [dram-offload] stage push_started=73 push_stored=71 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:42:20 PP3] [dram-offload] stage push_started=73 push_stored=71 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:42:20 PP7] [dram-offload] stage push_started=73 push_stored=71 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:42:20 PP6] [dram-offload] stage push_started=73 push_stored=71 push_stale=5 recall_offers=1 recall_held=1
+[2026-11-17 01:42:50 PP0] [dram-offload] stage push_started=79 push_stored=77 push_stale=5 recall_offers=4 recall_pulls=2 recall_pulled_pages=8 recall_held=2
+[2026-11-17 01:42:50 PP2] [dram-offload] stage push_started=79 push_stored=77 push_stale=5 recall_offers=4 recall_pulls=2 recall_pulled_pages=8 recall_held=2
+[2026-11-17 01:42:50 PP1] [dram-offload] stage push_started=79 push_stored=77 push_stale=5 recall_offers=4 recall_pulls=2 recall_pulled_pages=8 recall_held=2
+[2026-11-17 01:42:50 PP3] [dram-offload] stage push_started=79 push_stored=77 push_stale=5 recall_offers=4 recall_pulls=2 recall_pulled_pages=8 recall_held=2
+[2026-11-17 01:42:50 PP4] [dram-offload] stage push_started=79 push_stored=77 push_stale=5 recall_offers=4 recall_pulls=2 recall_pulled_pages=8 recall_held=2
+[2026-11-17 01:42:50 PP5] [dram-offload] stage push_started=79 push_stored=77 push_stale=5 recall_offers=4 recall_pulls=2 recall_pulled_pages=8 recall_held=2
+[2026-11-17 01:42:50 PP7] [dram-offload] stage push_started=79 push_stored=77 push_stale=5 recall_offers=4 recall_pulls=2 recall_pulled_pages=8 recall_held=2
+[2026-11-17 01:42:50 PP6] [dram-offload] stage push_started=79 push_stored=77 push_stale=5 recall_offers=4 recall_pulls=2 recall_pulled_pages=8 recall_held=2
+[2026-11-17 01:43:21 PP7] [dram-offload] stage push_started=85 push_stored=84 push_stale=27 recall_offers=13 recall_pulls=10 recall_pulled_pages=40 recall_held=3
+[2026-11-17 01:43:21 PP0] [dram-offload] stage push_started=85 push_stored=84 push_stale=27 recall_offers=13 recall_pulls=10 recall_pulled_pages=40 recall_held=3
+[2026-11-17 01:43:21 PP4] [dram-offload] stage push_started=85 push_stored=84 push_stale=27 recall_offers=13 recall_pulls=10 recall_pulled_pages=40 recall_held=3
+[2026-11-17 01:43:21 PP5] [dram-offload] stage push_started=85 push_stored=84 push_stale=27 recall_offers=13 recall_pulls=10 recall_pulled_pages=40 recall_held=3
+[2026-11-17 01:43:21 PP3] [dram-offload] stage push_started=85 push_stored=84 push_stale=27 recall_offers=13 recall_pulls=10 recall_pulled_pages=40 recall_held=3
+[2026-11-17 01:43:21 PP2] [dram-offload] stage push_started=85 push_stored=84 push_stale=27 recall_offers=13 recall_pulls=10 recall_pulled_pages=40 recall_held=3
+[2026-11-17 01:43:21 PP6] [dram-offload] stage push_started=85 push_stored=84 push_stale=27 recall_offers=13 recall_pulls=10 recall_pulled_pages=40 recall_held=3
+[2026-11-17 01:43:21 PP1] [dram-offload] stage push_started=85 push_stored=84 push_stale=27 recall_offers=13 recall_pulls=10 recall_pulled_pages=40 recall_held=3
+[2026-11-17 01:43:51 PP7] [dram-offload] stage push_started=96 push_stored=96 push_stale=53 recall_offers=31 recall_pulls=27 recall_pulled_pages=236 recall_held=3
+[2026-11-17 01:43:51 PP0] [dram-offload] stage push_started=96 push_stored=96 push_stale=53 recall_offers=33 recall_pulls=27 recall_pulled_pages=236 recall_held=3
+[2026-11-17 01:43:51 PP3] [dram-offload] stage push_started=96 push_stored=96 push_stale=53 recall_offers=32 recall_pulls=27 recall_pulled_pages=236 recall_held=3
+[2026-11-17 01:43:51 PP6] [dram-offload] stage push_started=96 push_stored=96 push_stale=53 recall_offers=32 recall_pulls=27 recall_pulled_pages=236 recall_held=3
+[2026-11-17 01:43:51 PP5] [dram-offload] stage push_started=96 push_stored=96 push_stale=53 recall_offers=32 recall_pulls=27 recall_pulled_pages=236 recall_held=3
+[2026-11-17 01:43:51 PP4] [dram-offload] stage push_started=96 push_stored=96 push_stale=53 recall_offers=32 recall_pulls=27 recall_pulled_pages=236 recall_held=3
+[2026-11-17 01:43:51 PP1] [dram-offload] stage push_started=96 push_stored=96 push_stale=53 recall_offers=33 recall_pulls=27 recall_pulled_pages=236 recall_held=3
+[2026-11-17 01:43:51 PP2] [dram-offload] stage push_started=96 push_stored=96 push_stale=53 recall_offers=33 recall_pulls=27 recall_pulled_pages=236 recall_held=3
+[2026-11-17 01:44:21 PP0] [dram-offload] stage push_started=96 push_stored=96 push_stale=56 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:21 PP7] [dram-offload] stage push_started=96 push_stored=96 push_stale=56 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:21 PP3] [dram-offload] stage push_started=96 push_stored=96 push_stale=56 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:21 PP6] [dram-offload] stage push_started=96 push_stored=96 push_stale=56 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:21 PP5] [dram-offload] stage push_started=96 push_stored=96 push_stale=56 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:21 PP4] [dram-offload] stage push_started=96 push_stored=96 push_stale=56 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:21 PP1] [dram-offload] stage push_started=96 push_stored=96 push_stale=56 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:21 PP2] [dram-offload] stage push_started=96 push_stored=96 push_stale=56 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:51 PP0] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:51 PP3] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:51 PP7] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:51 PP6] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:51 PP4] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:51 PP5] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:51 PP1] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:44:51 PP2] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:45:21 PP0] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:45:21 PP3] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:45:21 PP7] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:45:21 PP5] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:45:21 PP4] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:45:21 PP6] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:45:21 PP1] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3
+[2026-11-17 01:45:21 PP2] [dram-offload] stage push_started=97 push_stored=97 push_stale=57 recall_offers=47 recall_pulls=44 recall_pulled_pages=468 recall_held=3

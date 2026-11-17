@@ -202,9 +202,17 @@ Still missing: an offload-on run in which the first-pass second turns are recall
 and a 16 GB stage store, below), to compare answer digests and accept length with `j-e883dfc5-8c6a-4b63-bc0c` and to
 measure the recall's time against 20.3 s and 32.5 s.
 
-### Still on the cluster (as of 2026-11-17 01:00Z)
+| offload on, draft opt-in, 16 GB store, 40 fillers | `j-a8369017-1583-4683-9b55` | device tier at 1,280 tokens (decode had evicted them) | 32.6 s | 6.15 |
 
-`j-a8369017-1583-4683-9b55`: Muse, DFLASH on, offload on, draft opt-in, 16 GB stage store, 40 fillers. Queued 3 h, ran
-29 min, preempted (spot), retry 12 of 30, pending again. When it reports: read `STAGE_OFFLOAD_CHECK` (`turns`,
-`accept_length`, `seconds`) in the bench container, compare the `turns` digests with
-`runs/j-e883dfc5-8c6a-4b63-bc0c-*/check.txt`, read the prefill's `[dram-offload] stage` counters, then delete it.
+(Row above added 2026-11-17 01:50Z; it belongs to the table.) That run stored 97 of 97 pushes and did 44 recalls, but
+the decode's pools held 42 windows for 60 sessions and evicted the 20 measured ones first, so again no measured turn
+was recalled in the first pass.
+
+### Still on the cluster (as of 2026-11-17 01:55Z)
+
+`j-24d2a2f8-c284-4ff8-8bd8`: Muse, DFLASH on, offload on, draft opt-in, 48 GB stage store per decode rank (about 126
+windows), 40 fillers. Expect hours in the queue and spot retries. When it reports: read `STAGE_OFFLOAD_CHECK`
+(`turns`, `accept_length`, `seconds`) in the bench container, compare the first-pass `turns` digests with
+`runs/j-e883dfc5-8c6a-4b63-bc0c-*/check.txt` (own host tier, same sessions), read the prefill's `[dram-offload] stage`
+counters, then delete it. What it should show if the offload delivers on Muse: first-pass second turns resumed at 3,328
+tokens with host tokens, in about 20 s instead of 32.5 s.
