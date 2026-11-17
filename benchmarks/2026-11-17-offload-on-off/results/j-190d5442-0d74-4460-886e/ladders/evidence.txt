@@ -1,0 +1,12 @@
+== prefill-0 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+Traceback (most recent call last):
+  File "/workspace/harness/offload_counters.py", line 135, in <module>
+    main()
+  File "/workspace/harness/offload_counters.py", line 87, in main
+    series, warn, err, refused = parse(path)
+                                 ^^^^^^^^^^^
+  File "/workspace/harness/offload_counters.py", line 31, in parse
+    for line in open(path, errors="ignore"):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 116] Stale file handle

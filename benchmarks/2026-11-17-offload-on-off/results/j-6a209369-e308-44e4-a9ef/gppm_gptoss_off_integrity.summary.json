@@ -1,0 +1,136 @@
+{
+ "sessions": 16,
+ "prefix": 131072,
+ "new": 8192,
+ "out_tokens": 64,
+ "concurrent_phase_s": 361.1,
+ "probes": {
+  "sent": 90,
+  "exact": 74,
+  "min_agree": 10,
+  "errors": 0,
+  "mismatch_positions": [
+   10,
+   10,
+   22,
+   22,
+   22,
+   35,
+   35,
+   38,
+   38,
+   38,
+   53,
+   53,
+   53,
+   63,
+   63,
+   63
+  ]
+ },
+ "recall_vs_recompute": {
+  "compared": 16,
+  "exact": 16,
+  "min_agree": 64,
+  "pulled_sessions": 0,
+  "per_session": [
+   {
+    "session": 0,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 1,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 2,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 3,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 4,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 5,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 6,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 7,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 8,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 9,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 10,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 11,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 12,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 13,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 14,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   },
+   {
+    "session": 15,
+    "agree": 64,
+    "recall_cached": 0,
+    "recall_details": null
+   }
+  ]
+ },
+ "errors": 0
+}

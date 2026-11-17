@@ -1,0 +1,7 @@
+== prefill-0 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== decode-0 ranks=0 warnings=0 errors=0 refused_lines=0
+  verdict: EQUAL across 0 ranks
+== per-point TP0 counter deltas (t0 .. t1+grace)
+  mixed_long/all: no counter movement
+  mixed_short/all: no counter movement
