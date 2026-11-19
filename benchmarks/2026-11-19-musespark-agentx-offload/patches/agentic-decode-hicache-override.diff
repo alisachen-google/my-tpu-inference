@@ -1,0 +1,16 @@
+diff --git a/benchmark/tpu/recipe/configs/muse_spark/agentic.py b/benchmark/tpu/recipe/configs/muse_spark/agentic.py
+index 46dd7558..9d82524d 100644
+--- a/benchmark/tpu/recipe/configs/muse_spark/agentic.py
++++ b/benchmark/tpu/recipe/configs/muse_spark/agentic.py
+@@ -382,6 +382,11 @@ def main(argv: list[str] | None = None) -> int:
+     )
+     if args.mode == "mixed":
+         config["server_args"].update(host="0.0.0.0", port=PORT)
++    # Local benchmark override (not part of the recipe): the decode's own HiCache host tier in GB per rank, to make
++    # room for the offload's stage store on a 900 GiB host.
++    import os as _os
++    if args.mode == "decode" and _os.environ.get("MUSE_DECODE_HICACHE_GB"):
++        config["server_args"]["hicache_size"] = int(_os.environ["MUSE_DECODE_HICACHE_GB"])
+     print(json.dumps(config, indent=1))
+     if args.dry_run:
+         return 0
