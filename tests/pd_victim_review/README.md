@@ -5,6 +5,26 @@ Written 2026-10-26 against SGLang `6c60fd77b79f` and native tpu-sync
 `f2d8c3e58ea6a47a89ead8f9f4a4a81a1eab629d`. These probes live here at the owner's request; they are not part
 of the SGLang feature commit. They do not launch or access TPU model servers.
 
+## PR 2234 and 2235 review probes (2026-11-20)
+
+These standard-library probes use exact source files from the heads recorded in
+[PR 2234](../../reviews/sglang-torchtpu/PR-2234.md) and
+[PR 2235](../../reviews/sglang-torchtpu/PR-2235.md).
+
+```bash
+python3 tests/pd_victim_review/probe_pr2234_recheck.py \
+  /path/to/2234/sglang_tpu/disaggregation/decode_dram_offload/decode_dram_victim_receiver.py
+python3 tests/pd_victim_review/probe_pr2235_metadata.py /path/to/2235
+```
+
+The first executes the actual eviction method with two threads and simulated
+MAX collectives: six cases pass at the head; three collateral-release cases fail
+at the base. The second imports the real metadata table and extracts the channel
+methods: positive table/reply checks pass, and both a raising codec and malformed
+row count reproduce missing READY replies. The reproduction assertions describe
+the reviewed head and need updating after the fix. Neither probe uses the real
+radix allocator, Gloo, msgspec wire encoding, native I/O or TPU.
+
 ## PR 1789 review boundary probes (2026-11-04)
 
 [The review](../../reviews/sglang-torchtpu/PR-1789.md) covers exact head

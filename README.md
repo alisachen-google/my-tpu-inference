@@ -7,6 +7,23 @@ Snapshot taken 2026-10-21 (heads as listed in each note). Each note has a recomm
 findings ordered by severity with ready-to-paste comment text, questions, nits, and a list of threads other
 reviewers already covered so nothing is repeated.
 
+## SGLang torchtpu PR reviews (added 2026-11-20)
+
+Reviewed in order against the exact heads below. Each note explains the change,
+records actionable findings and verified non-issues, and separates local probes
+from author-reported tests and hardware validation. Recommendations were saved
+here; no upstream review or comment was posted.
+
+| PR | Reviewed head | Recommendation | Notes |
+| --- | --- | --- | --- |
+| [#2234 Recheck SWA space after FULL eviction](https://github.com/sgl-project/sglang-torchtpu/pull/2234) | `7555b3dc355f` | Approve | [Review](reviews/sglang-torchtpu/PR-2234.md): avoids collateral SWA over-eviction; no actionable defect; six simulated two-rank boundary cases pass. |
+| [#2235 Preserve host-page metadata](https://github.com/sgl-project/sglang-torchtpu/pull/2235) | `49561a1503a7` | Request changes | [Review](reviews/sglang-torchtpu/PR-2235.md): Decode export errors skip READY/refusal and delay fallback; two variants reproduced; stale-row concern qualified against current cache policy. |
+| [#2258 Isolate PD Decode health probes](https://github.com/sgl-project/sglang-torchtpu/pull/2258) | `f3ffa42b5cd1` | Request changes | [Review](reviews/sglang-torchtpu/PR-2258.md): Rust gRPC bypasses reserved client IDs; new keyword breaks CUDA checksum fixture; earlier findings rechecked against fixes. |
+
+All three had successful base CI and skipped TPU build/unit/e2e jobs at review
+time. Local probes use standard Python with simulated boundaries; no full
+SGLang, Rust, TPU/GPU serving or performance test was run in this review.
+
 ## SGLang torchtpu PR review (added 2026-11-04)
 
 | PR | Reviewed head | Recommendation | Notes |
