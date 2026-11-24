@@ -18,7 +18,8 @@ Two full AgentX runs of Muse Spark P/D on TPU7x with prefill write-back and KV o
 | Per chip, how far is TPU P/D from the GPU P/D curve? | 17,774 tok/s per chip at concurrency 32. VR200 4+4 is 9.3x higher, GB300 8+16 is 2.6x higher. |
 | Per dollar? | 52.9M tokens per dollar. VR200 4+4 is 3.1x better, the best GB300 point 1.6x better. TPU beats the decode-heavy GPU points (GB300 8+32, 8+40; VR200 8+40). |
 | Interactivity? | p90 60.5 tok/s at concurrency 32 and 50.0 at 48. Every GPU P/D point is at 120 or above. |
-| Do write-back and decode DRAM help? | At 32: no change (-0.9%). At 48: **+15% throughput**, mean TTFT 1.85x faster, p90 TTFT 2.42x faster. |
+| Do write-back and decode DRAM help? | Both on, at 32: no change (-0.9%). At 48: **+15% throughput**, mean TTFT 1.85x faster, p90 TTFT 2.42x faster. |
+| Which of the two helps? | Write-back. Write-back alone (2026-11-19) is the best TPU point: 18,697 tok/s per chip at 32 and 18,190 at 48 (+23.7% over off). Adding decode DRAM on top costs 4.9% at 32 and 7.0% at 48. |
 | What limits the curve? | The decode. Its output rate is flat at about 950 tok/s on 4 chips from concurrency 32 to 48, so the request rate stays at 0.95 per second whatever the concurrency. |
 | Second limit | Decode HBM for KV: about 4.4M tokens, 29 mean-length sessions. At 48 a request waits about 11 s for decode memory. |
 | Is prefill the limit? | Not at 32 (queue 0.27 on average). At 48 its HBM cache thrashes (77% of hits come from host memory) but the queue is still short. |
@@ -46,6 +47,35 @@ The off arm is from 2026-11-19 (same recipe, same owner stack, cdk): `j-d087a056
 |---|---|---|---|---|---|---|---|---|---|---|
 | 32 | 17,936 → 17,774 | -0.9% | 3,432 → 3,427 | -0.1% | 6.9 s → 6.2 s | 1.12x | 5.0 s → 5.3 s | 0.95x | 12.8 s → 10.8 s | 1.18x |
 | 48 | 14,703 → 16,922 | **+15.1%** | 2,939 → 3,487 | **+18.6%** | 39.3 s → 21.2 s | 1.85x | 28.4 s → 19.4 s | 1.46x | 91.0 s → 37.6 s | 2.42x |
+
+### Write-back alone against both on
+
+Write-back alone was measured on 2026-11-19 (tree `sglang-agentx-wb`, prefill `MUSE_PREFILL_WRITE_POLICY=write_back`,
+no offload to decode DRAM): `j-c7068825-9edb-4f75-bcf4` at 32 and `j-b79b6fed-ab27-4012-8846` at 48. Figures are the
+job results stored in cdk.
+
+| Concurrency | Arm | Job | Tok/s per chip | Output tok/s | Successful / total | p90 interactivity | TTFT mean | TTFT p50 | TTFT p90 |
+|---|---|---|---|---|---|---|---|---|---|
+| 32 | Off | `j-d087a056-f4f6-4e97-80f4` | 17,936 | 936 | 3,432 / 3,787 | 62.1 | 6.9 s | 5.0 s | 12.8 s |
+| 32 | Write-back only | `j-c7068825-9edb-4f75-bcf4` | 18,697 | 964 | 3,538 / 3,892 | 62.6 | 5.6 s | 4.5 s | 10.2 s |
+| 32 | Write-back + decode DRAM | `j-92cade4b-aa0e-4eac-902d` | 17,774 | 933 | 3,427 / 3,782 | 60.5 | 6.2 s | 5.3 s | 10.8 s |
+| 48 | Off | `j-7d9c883d-ceec-418f-b4f0` | 14,703 | 809 | 2,939 / 3,471 | 74.2 | 39.3 s | 28.4 s | 91.0 s |
+| 48 | Write-back only | `j-b79b6fed-ab27-4012-8846` | 18,190 | 1,027 | 3,706 / 4,238 | 53.3 | 19.1 s | 16.9 s | 33.2 s |
+| 48 | Write-back + decode DRAM | `j-7cc4852a-5c96-4ab9-977c` | 16,922 | 953 | 3,487 / 4,018 | 50.0 | 21.2 s | 19.4 s | 37.6 s |
+
+| Concurrency | Write-back only vs off, throughput | TTFT mean speedup | TTFT p90 speedup | Both on vs write-back only, throughput | TTFT mean speedup | TTFT p90 speedup |
+|---|---|---|---|---|---|---|
+| 32 | +4.2% | 1.23x | 1.25x | -4.9% | 0.91x | 0.94x |
+| 48 | **+23.7%** | 2.06x | 2.74x | -7.0% | 0.90x | 0.88x |
+
+- The gain at 48 comes from write-back. With decode DRAM added, throughput and TTFT are both worse than write-back alone.
+- The two on arms ran on different trees (`sglang-agentx-wb` and `agentx-offload-scaleout`), so the difference is not
+  proven to come from the offload switch alone.
+- Today's both-on runs reproduce the both-on runs of 2026-11-19 (`j-40188fb3-0ae0-4e07-ad9b` 17,702 at 32,
+  `j-4b22f5e5-d352-494a-b4cf` 16,834 at 48).
+- `j-7d9c883d-ceec-418f-b4f0` ran 48 and then 64 in one job. cdk keeps only the last level in the job result, so its
+  48 figures come from the archived bench log, and the dashboard shows only its 64 point.
+- Dashboard: `d-026c5a6c-5efd-439d-86ef`.
 
 A second off reference at 32 ran today on the ubench cluster (owner tree, neither feature). It was suspended 4 minutes
 before the end of the measured phase (section 6), so it is partial: 56 of 60 minutes, computed from the per-request
@@ -109,7 +139,8 @@ Reading it:
 
 ### The aggregated submission branch is ahead of P/D on TPU
 
-From the results file of `inferencex/musespark_submission` (single host, 4 chips, megakernel decode; job ids are
+From the results file of `inferencex/musespark_submission` (single host, 4 chips, megakernel v2 decode and the
+megakernel prefill program; job ids are
 abbreviated in that file, so they are not repeated here):
 
 | TPU7x configuration | Chips | Concurrency | Tok/s per chip | M tokens per $ | p90 interactivity |
@@ -120,7 +151,9 @@ abbreviated in that file, so they are not repeated here):
 
 Four chips doing prefill and decode together on the submission branch deliver 87% of the total tokens of today's
 8-chip P/D, at twice the interactivity. Per dollar that point is above every GB300 P/D point and at 56% of VR200 4+4.
-The P/D path has to pick up that decode before more chips pay off.
+Today's P/D decode already runs the decode megakernel, in the version of early November (the tree forked around
+2026-11-05); the prefill runs without any megakernel. The P/D path has to pick up the newer decode and a megakernel
+prefill before more chips pay off.
 
 ## 4. Headroom analysis
 
@@ -216,7 +249,7 @@ Estimates from the measurements above, not runs. Each assumes the other stages k
 
 | Lever | Stage | Evidence | Estimated effect on the 8-chip point |
 |---|---|---|---|
-| Megakernel decode from the submission branch in the P/D decode | decode | 4 aggregated chips do 31k tok/s per chip at p90 115.8; today's decode step is linear in batch | Decode ceiling about 2x: up to about 35k tok/s per chip (105M tokens per $) and p90 interactivity near 115 |
+| Current megakernel (v2, block-256 experts) in the P/D decode, megakernel prefill program on the prefill | decode, prefill | 4 aggregated chips do 31k tok/s per chip at p90 115.8 on the submission branch; today's decode already runs the early-November megakernel, and the prefill program needs TP8 while the P/D prefill is PP8 | Unknown until measured. The aggregated figure is not a P/D estimate |
 | Drop idle sessions from decode HBM sooner (stage store is already there) | decode | half of the pool is non-decoding sessions at 32; 10.8 s memory wait at 48 | Removes most of the 10.8 s at 48; lets concurrency rise past 48 without the TTFT cliff |
 | 1 prefill host to 2 decode hosts (4 + 8 chips) | topology | prefill queue 0.27 at 32; decode saturated | Up to about 24k tok/s per chip (+34%) if the prefill sustains 1.9 requests per s |
 | Larger prefill HBM cache or session-affine eviction | prefill | 77% of hits from host memory at 48 | Lower TTFT at 48 and above; small throughput effect while the decode is the limit |
@@ -230,8 +263,7 @@ Distance to the GPU curve:
 | VR200 4+4 per dollar (164.7M tokens per $) | 55.4k tok/s per chip, 2.95 requests per s, 2,900 output tok/s, at p90 interactivity 120 | 3.1x throughput and 2x interactivity |
 | VR200 4+4 per chip (165k tok/s per chip) | 8.8 requests per s | 9.3x; not reachable by tuning this configuration |
 
-The megakernel decode alone would pass every GB300 point per dollar if the estimate holds. VR200 4+4 per dollar needs
-that plus a further 1.6x.
+No lever above is shown to reach the best GB300 point per dollar on its own.
 
 ## 5. Offload activity
 
@@ -260,7 +292,9 @@ At 48 some pushes ended with `DEADLINE_EXCEEDED, await_pull` (34 proposed pushes
 
 - One run per point.
 - The off arm at 48 is five days older than the on arm; the tree gained scale-out router commits in between.
-- Write-back and the offload were turned on together, so their effects are not separated.
+- Sections 3 to 5 use today's both-on runs. Write-back alone is 5% to 7% faster (section 2), so the TPU points in the
+  GPU comparison are slightly below the best measured TPU points (18,697 at 32: 55.6M tokens per dollar).
+- All runs here use a tree forked around 2026-11-05: decode on the megakernel of that date, prefill without it.
 - TPU acceptance is pinned; GPU acceptance is real. Interactivity and output rate depend on it directly.
 - The lever estimates in 4.5 are not measurements.
 - The aggregated submission-branch figures are taken from that branch's results file, not rerun here.
@@ -268,7 +302,7 @@ At 48 some pushes ended with `DEADLINE_EXCEEDED, await_pull` (34 proposed pushes
 ## 8. Next steps
 
 1. Find the PP8 prefill warm-up hang on the submission branch (diff its PP relay path against the owner tree), so the
-   megakernel decode can be measured in P/D.
+   current megakernel can be measured in P/D; or run the prefill at TP8 with the megakernel prefill program.
 2. Log the per-request split of the transfer state (prefill forward against KV transfer).
 3. Measure the prefill saturation point alone, to size a 4 + 8 configuration.
-4. Rerun 32, 48 and 64 on the fixed branch, then separate write-back from the offload.
+4. Rerun 32, 48 and 64 on the fixed branch with write-back alone and with both on, from one tree.
