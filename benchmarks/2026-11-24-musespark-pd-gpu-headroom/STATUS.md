@@ -24,16 +24,15 @@ Sub-tasks:
 | Report with GPU comparison and headroom analysis | Done, [README.md](README.md). Corrected once (write-back-only arm, megakernel lever). |
 | P/D on the latest branch | Probe only (section 3.5). Every full measured point uses a tree forked around 2026-11-05. |
 | Stage attribution at concurrency 48 | Done for `j-b79b6fed-ab27-4012-8846` (section 3.3). |
-| Decode running-cap tuning | 3 of 4 points done (section 3.6). Cap 16 at concurrency 48 is being rerun after 5 node preemptions. |
+| Decode running-cap tuning | Done, 4 points (section 3.6). |
 | Megakernel prefill in P/D | **Runs end to end** in the fourth probe, `j-261db35b-f3ff-4bc7-bf8c` (600 s). Not faster yet (section 3.5). |
 | The lever estimates and stage analysis of this page in the report | Not yet in README.md. |
 
-Job running now: `j-1260b1e4-306e-4e96-9edf` (write-back, decode running cap 16, concurrency 48). Its stored result is
-a partial run published with exit code 1 when the first attempt was preempted; do not quote it until the rerun ends.
+No job is running.
 
 Dashboards: `d-026c5a6c-5efd-439d-86ef` (all TPU P/D arms; the cap runs are on sheets `...-wb-decode-run12` and
 `...-wb-decode-run16`), `d-c48f8e92-e88b-460e-9b93` (TPU arms against the VR200 and GB300 sheets of 2026-11-03; the
-cap 12 sheet was added on 2026-11-25).
+cap 12 and cap 16 sheets were added on 2026-11-25).
 
 ## 3. Findings
 
@@ -145,6 +144,7 @@ Of the extra time against VR200 at 48: decode about 67%, prefill about 20%, tran
 | 32 | 16 | `j-8ce1e047-ed6d-459c-9c86` | 18,666 | -0.2% | 70.1 | +12.0% | 6.3 s | 13% worse |
 | 32 | 12 | `j-cbc456fe-e1f2-4d0d-b98a` | 18,704 | +0.0% | 88.7 | +41.7% | 7.7 s | 38% worse |
 | 48 | none | `j-b79b6fed-ab27-4012-8846` | 18,190 | | 53.3 | | 19.1 s | |
+| 48 | 16 | `j-1260b1e4-306e-4e96-9edf` | 17,876 | -1.7% | 65.6 | +23.1% | 21.4 s | 12% worse |
 | 48 | 12 | `j-1d0961a6-c1fb-44d8-a6ce` | 17,747 | -2.4% | 83.1 | +55.9% | 24.9 s | 30% worse |
 
 - A lower cap moves the points right on the curve at near-constant throughput, as section 3.3 predicted. The time
@@ -161,7 +161,7 @@ Of the extra time against VR200 at 48: decode about 67%, prefill about 20%, tran
 
 ## 5. Next steps
 
-1. Read cap 16 at concurrency 48 when the rerun ends; try cap 8 at concurrency 32 and 48.
+1. Try cap 8 at concurrency 32 and 48: cap 12 beats cap 16 at both, the trend has not turned.
 2. Megakernel prefill: find why the TP8 prefill computes no faster than PP8 (chunk size, batch of sequences per
    step), then run a full c32 point.
 3. Next tuning candidates, one change at a time: decode host cache size, verify width, prefill HBM cache size,
