@@ -1,4 +1,4 @@
-# Muse Spark P/D on TPU7x: goal, status and findings (2026-11-24, 22:30 UTC)
+# Muse Spark P/D on TPU7x: goal, status and findings (2026-11-25, 03:40 UTC)
 
 Working summary of the P/D tuning effort. Measurements and method are in [README.md](README.md).
 
@@ -22,24 +22,18 @@ Sub-tasks:
 | Item | Status |
 |---|---|
 | Report with GPU comparison and headroom analysis | Done, [README.md](README.md). Corrected once (write-back-only arm, megakernel lever). |
-| P/D on the latest branch | **Not done.** Every measured point uses a tree forked around 2026-11-05. |
+| P/D on the latest branch | Probe only (section 3.5). Every full measured point uses a tree forked around 2026-11-05. |
 | Stage attribution at concurrency 48 | Done for `j-b79b6fed-ab27-4012-8846` (section 3.3). |
-| Decode running-cap tuning | 4 jobs running since 21:33 UTC, results expected about 23:40 UTC. |
-| Megakernel prefill in P/D | Prefill program builds on a TP8 prefill. First probe failed at warm-up; second probe running. |
+| Decode running-cap tuning | 3 of 4 points done (section 3.6). Cap 16 at concurrency 48 is being rerun after 5 node preemptions. |
+| Megakernel prefill in P/D | **Runs end to end** in the fourth probe, `j-261db35b-f3ff-4bc7-bf8c` (600 s). Not faster yet (section 3.5). |
 | The lever estimates and stage analysis of this page in the report | Not yet in README.md. |
 
-Jobs running now:
+Job running now: `j-1260b1e4-306e-4e96-9edf` (write-back, decode running cap 16, concurrency 48). Its stored result is
+a partial run published with exit code 1 when the first attempt was preempted; do not quote it until the rerun ends.
 
-| Job | What | Client concurrency |
-|---|---|---|
-| `j-cbc456fe-e1f2-4d0d-b98a` | write-back, decode running cap 12 | 32 |
-| `j-1d0961a6-c1fb-44d8-a6ce` | write-back, decode running cap 12 | 48 |
-| `j-8ce1e047-ed6d-459c-9c86` | write-back, decode running cap 16 | 32 |
-| `j-1260b1e4-306e-4e96-9edf` | write-back, decode running cap 16 | 48 |
-| `j-0288781c-5975-45b9-9407` | probe: TP8 megakernel prefill to TP8 decode, submission branch, 600 s | 32 |
-
-Dashboards: `d-026c5a6c-5efd-439d-86ef` (all TPU P/D arms; the cap runs land on sheets `...-wb-decode-run12` and
-`...-wb-decode-run16`), `d-c48f8e92-e88b-460e-9b93` (TPU arms against the VR200 and GB300 sheets of 2026-11-03).
+Dashboards: `d-026c5a6c-5efd-439d-86ef` (all TPU P/D arms; the cap runs are on sheets `...-wb-decode-run12` and
+`...-wb-decode-run16`), `d-c48f8e92-e88b-460e-9b93` (TPU arms against the VR200 and GB300 sheets of 2026-11-03; the
+cap 12 sheet was added on 2026-11-25).
 
 ## 3. Findings
 
@@ -123,8 +117,39 @@ Of the extra time against VR200 at 48: decode about 67%, prefill about 20%, tran
   - Probe 1 `j-d4a90bbb-4bc8-43b2-91f5`: the megakernel and the prefill program built
     (`Muse prefill program built: rows=4096`), then warm-up failed with `AssertionError: prefill stages hold every
     head`. The hidden-row draft path only supports a PP prefill.
-  - Probe 2 `j-0288781c-5975-45b9-9407`: ships the draft KV instead (`--sal-draft`). Running.
-  - Not yet verified: KV layout check between the two engines, the first real TP8-to-TP8 transfer.
+  - Probe 2 `j-0288781c-5975-45b9-9407`: ships the draft KV instead (`--sal-draft`). Passed warm-up, then failed with
+    `KVCacheManager.__init__() got an unexpected keyword argument 'num_staging_layers'`: the image's tpu-sync wheel
+    (2026-10-13) is too old. Fixed with `TPU_SYNC_VERSION=0.0.1.dev20261112081648`.
+  - Probe 3 `j-032a3580-61c9-402a-8cb4`: the prefill ran and transfers reached the decode, but every receive was
+    rejected (`request needs N pages but a host staging slot holds 32`). The AgentX config leaves `context_length`
+    empty, so Raiden sizes a slot for 8,192 tokens. Fixed with `SGLANG_RAIDEN_MAX_MODEL_LEN=1048576` and
+    `SGLANG_RAIDEN_HOST_POOL_GB=96` on both engines.
+  - Probe 4 `j-261db35b-f3ff-4bc7-bf8c`: **works end to end.** Zero transfer failures, warm-up 354 requests with no
+    error, 600 s measured. Result at concurrency 32: 9,089 tok/s per chip, p90 interactivity 188.8, ITL 3.1 ms, TTFT
+    mean 7.7 s (median 1.3 s), 512 requests, 28 cancelled in flight at the end.
+  - Reading of probe 4: the prefill is the bottleneck (20 or more requests queued, 1 to 2 requests running on the
+    decode). It computes 10,000 to 11,400 new tokens per s when saturated, about the same as the PP8 prefill of
+    `j-b79b6fed-ab27-4012-8846` (estimated 10,500). So the megakernel prefill program at one 4,096-token chunk per
+    step is not faster than PP8 here. The run is too short to compare: the prefix cache hit rate was still rising
+    (0.34, 0.77, 0.91 over successive 10-minute windows) and warm-up took 1,582 s against 763 s on the write-back tree.
+  - Open: prefill chunk and batch size for a prefill-only TP8 engine (it runs the mixed engine's 4,096-token limit),
+    no write-back on this branch, a full 3600 s point.
+
+### 3.6 Decode running cap (write-back only, 8 chips)
+
+`MUSE_DECODE_MAX_RUNNING` caps the decode's running requests; the compile buckets are unchanged.
+
+| Concurrency | Cap | Job | Tok/s per chip | Gain | p90 interactivity | Gain | TTFT mean | Change |
+|---|---|---|---|---|---|---|---|---|
+| 32 | none | `j-c7068825-9edb-4f75-bcf4` | 18,697 | | 62.6 | | 5.6 s | |
+| 32 | 16 | `j-8ce1e047-ed6d-459c-9c86` | 18,666 | -0.2% | 70.1 | +12.0% | 6.3 s | 13% worse |
+| 32 | 12 | `j-cbc456fe-e1f2-4d0d-b98a` | 18,704 | +0.0% | 88.7 | +41.7% | 7.7 s | 38% worse |
+| 48 | none | `j-b79b6fed-ab27-4012-8846` | 18,190 | | 53.3 | | 19.1 s | |
+| 48 | 12 | `j-1d0961a6-c1fb-44d8-a6ce` | 17,747 | -2.4% | 83.1 | +55.9% | 24.9 s | 30% worse |
+
+- A lower cap moves the points right on the curve at near-constant throughput, as section 3.3 predicted. The time
+  moves from generation to the wait for a decode slot, so TTFT grows.
+- One run per point; the cap 16 runs were preempted five times each before the run that counted.
 
 ## 4. Mistakes made today
 
@@ -136,8 +161,9 @@ Of the extra time against VR200 at 48: decode about 67%, prefill about 20%, tran
 
 ## 5. Next steps
 
-1. Read the four cap runs: check that p90 interactivity rises at near-constant throughput, and what TTFT does.
-2. Follow the probe until a TP8 megakernel prefill serves requests in P/D, then run a full c32 point.
+1. Read cap 16 at concurrency 48 when the rerun ends; try cap 8 at concurrency 32 and 48.
+2. Megakernel prefill: find why the TP8 prefill computes no faster than PP8 (chunk size, batch of sequences per
+   step), then run a full c32 point.
 3. Next tuning candidates, one change at a time: decode host cache size, verify width, prefill HBM cache size,
    1 prefill to 2 decode hosts.
-4. Move sections 3.2 to 3.4 of this page into the report.
+4. Move sections 3.2 to 3.6 of this page into the report.
